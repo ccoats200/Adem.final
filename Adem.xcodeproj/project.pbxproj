@@ -15,6 +15,15 @@
 		35D6480622ECBABB00015352 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D6480422ECBABB00015352 /* LaunchScreen.storyboard */; };
 		35D6481122ECBABB00015352 /* AdemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6481022ECBABB00015352 /* AdemTests.swift */; };
 		35D6481C22ECBABB00015352 /* AdemUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6481B22ECBABB00015352 /* AdemUITests.swift */; };
+		35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6482A22ECBAE800015352 /* TableViewTest.swift */; };
+		35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6482C22ECBB0300015352 /* TestingAccount.swift */; };
+		35D6482F22ECBB1500015352 /* productCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6482E22ECBB1500015352 /* productCell.swift */; };
+		35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483122ECBB3500015352 /* AccountVCOld.swift */; };
+		35D6483422ECBB4600015352 /* profileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483322ECBB4600015352 /* profileVC.swift */; };
+		35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483622ECBBF300015352 /* Custom Alert.swift */; };
+		35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483A22ECBC2300015352 /* Circle Trasition.swift */; };
+		35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483C22ECBC3900015352 /* CircleTransition.swift */; };
+		35D6483F22ECBC4E00015352 /* swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483E22ECBC4E00015352 /* swipe.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +58,15 @@
 		35D6481722ECBABB00015352 /* AdemUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AdemUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D6481B22ECBABB00015352 /* AdemUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdemUITests.swift; sourceTree = "<group>"; };
 		35D6481D22ECBABB00015352 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		35D6482A22ECBAE800015352 /* TableViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewTest.swift; sourceTree = "<group>"; };
+		35D6482C22ECBB0300015352 /* TestingAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestingAccount.swift; sourceTree = "<group>"; };
+		35D6482E22ECBB1500015352 /* productCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = productCell.swift; sourceTree = "<group>"; };
+		35D6483122ECBB3500015352 /* AccountVCOld.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVCOld.swift; sourceTree = "<group>"; };
+		35D6483322ECBB4600015352 /* profileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = profileVC.swift; sourceTree = "<group>"; };
+		35D6483622ECBBF300015352 /* Custom Alert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Custom Alert.swift"; sourceTree = "<group>"; };
+		35D6483A22ECBC2300015352 /* Circle Trasition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Circle Trasition.swift"; sourceTree = "<group>"; };
+		35D6483C22ECBC3900015352 /* CircleTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTransition.swift; sourceTree = "<group>"; };
+		35D6483E22ECBC4E00015352 /* swipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swipe.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +117,9 @@
 		35D647F722ECBABA00015352 /* Adem */ = {
 			isa = PBXGroup;
 			children = (
+				35D6483922ECBC0800015352 /* Transition */,
+				35D6483522ECBBDD00015352 /* Alert */,
+				35D6482922ECBADA00015352 /* New Group */,
 				35D647F822ECBABA00015352 /* AppDelegate.swift */,
 				35D647FA22ECBABA00015352 /* ViewController.swift */,
 				35D647FC22ECBABA00015352 /* Main.storyboard */,
@@ -126,6 +147,36 @@
 				35D6481D22ECBABB00015352 /* Info.plist */,
 			);
 			path = AdemUITests;
+			sourceTree = "<group>";
+		};
+		35D6482922ECBADA00015352 /* New Group */ = {
+			isa = PBXGroup;
+			children = (
+				35D6482A22ECBAE800015352 /* TableViewTest.swift */,
+				35D6482C22ECBB0300015352 /* TestingAccount.swift */,
+				35D6482E22ECBB1500015352 /* productCell.swift */,
+				35D6483122ECBB3500015352 /* AccountVCOld.swift */,
+				35D6483322ECBB4600015352 /* profileVC.swift */,
+			);
+			path = "New Group";
+			sourceTree = "<group>";
+		};
+		35D6483522ECBBDD00015352 /* Alert */ = {
+			isa = PBXGroup;
+			children = (
+				35D6483622ECBBF300015352 /* Custom Alert.swift */,
+			);
+			path = Alert;
+			sourceTree = "<group>";
+		};
+		35D6483922ECBC0800015352 /* Transition */ = {
+			isa = PBXGroup;
+			children = (
+				35D6483A22ECBC2300015352 /* Circle Trasition.swift */,
+				35D6483C22ECBC3900015352 /* CircleTransition.swift */,
+				35D6483E22ECBC4E00015352 /* swipe.swift */,
+			);
+			path = Transition;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,8 +310,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
+				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
+				35D6482F22ECBB1500015352 /* productCell.swift in Sources */,
+				35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */,
 				35D647FB22ECBABA00015352 /* ViewController.swift in Sources */,
+				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
+				35D6483422ECBB4600015352 /* profileVC.swift in Sources */,
+				35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */,
+				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,
+				35D6483F22ECBC4E00015352 /* swipe.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
