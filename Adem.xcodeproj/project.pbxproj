@@ -52,6 +52,15 @@
 		35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487822ECBEE800015352 /* pantryCellLayout.swift */; };
 		35D6487B22ECBEFE00015352 /* ItemVCLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487A22ECBEFE00015352 /* ItemVCLayout.swift */; };
 		35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487C22ECBF0D00015352 /* accountViews.swift */; };
+		35D6488022ECBF3A00015352 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487F22ECBF3A00015352 /* DataService.swift */; };
+		35D6488222ECBF4900015352 /* Cloud Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488122ECBF4900015352 /* Cloud Storage.swift */; };
+		35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488422ECBF6300015352 /* DynamicAttributes.swift */; };
+		35D6488722ECBF7300015352 /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488622ECBF7300015352 /* Products.swift */; };
+		35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488822ECBF8600015352 /* PantryDataModel.swift */; };
+		35D6488C22ECBFAA00015352 /* BLEHR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488B22ECBFAA00015352 /* BLEHR.swift */; };
+		35D6488F22ECBFD200015352 /* FirebaseFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488E22ECBFD200015352 /* FirebaseFiles.swift */; };
+		35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489122ECBFFD00015352 /* FriendsLayout.swift */; };
+		35D6489422ECC01400015352 /* SettingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489322ECC01400015352 /* SettingTVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -123,6 +132,15 @@
 		35D6487822ECBEE800015352 /* pantryCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryCellLayout.swift; sourceTree = "<group>"; };
 		35D6487A22ECBEFE00015352 /* ItemVCLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemVCLayout.swift; sourceTree = "<group>"; };
 		35D6487C22ECBF0D00015352 /* accountViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountViews.swift; sourceTree = "<group>"; };
+		35D6487F22ECBF3A00015352 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
+		35D6488122ECBF4900015352 /* Cloud Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cloud Storage.swift"; sourceTree = "<group>"; };
+		35D6488422ECBF6300015352 /* DynamicAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicAttributes.swift; sourceTree = "<group>"; };
+		35D6488622ECBF7300015352 /* Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
+		35D6488822ECBF8600015352 /* PantryDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryDataModel.swift; sourceTree = "<group>"; };
+		35D6488B22ECBFAA00015352 /* BLEHR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEHR.swift; sourceTree = "<group>"; };
+		35D6488E22ECBFD200015352 /* FirebaseFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFiles.swift; sourceTree = "<group>"; };
+		35D6489122ECBFFD00015352 /* FriendsLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsLayout.swift; sourceTree = "<group>"; };
+		35D6489322ECC01400015352 /* SettingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTVC.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -173,6 +191,11 @@
 		35D647F722ECBABA00015352 /* Adem */ = {
 			isa = PBXGroup;
 			children = (
+				35D6489022ECBFDD00015352 /* TableViewControllers */,
+				35D6488D22ECBFB400015352 /* File Mapping */,
+				35D6488A22ECBF9300015352 /* Bluetooth */,
+				35D6488322ECBF5800015352 /* Model */,
+				35D6487E22ECBF2300015352 /* Services */,
 				35D6486822ECBE4600015352 /* Views */,
 				35D6484F22ECBD3900015352 /* Controllers */,
 				35D6484322ECBC9100015352 /* Extensions */,
@@ -293,6 +316,50 @@
 				35D6487C22ECBF0D00015352 /* accountViews.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		35D6487E22ECBF2300015352 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				35D6487F22ECBF3A00015352 /* DataService.swift */,
+				35D6488122ECBF4900015352 /* Cloud Storage.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		35D6488322ECBF5800015352 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				35D6488422ECBF6300015352 /* DynamicAttributes.swift */,
+				35D6488622ECBF7300015352 /* Products.swift */,
+				35D6488822ECBF8600015352 /* PantryDataModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		35D6488A22ECBF9300015352 /* Bluetooth */ = {
+			isa = PBXGroup;
+			children = (
+				35D6488B22ECBFAA00015352 /* BLEHR.swift */,
+			);
+			path = Bluetooth;
+			sourceTree = "<group>";
+		};
+		35D6488D22ECBFB400015352 /* File Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				35D6488E22ECBFD200015352 /* FirebaseFiles.swift */,
+			);
+			path = "File Mapping";
+			sourceTree = "<group>";
+		};
+		35D6489022ECBFDD00015352 /* TableViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				35D6489122ECBFFD00015352 /* FriendsLayout.swift */,
+				35D6489322ECC01400015352 /* SettingTVC.swift */,
+			);
+			path = TableViewControllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -427,18 +494,23 @@
 			buildActionMask = 2147483647;
 			files = (
 				35D6485F22ECBDDE00015352 /* ProductInfoVC.swift in Sources */,
+				35D6488722ECBF7300015352 /* Products.swift in Sources */,
 				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
 				35D6486122ECBDEF00015352 /* settingVC.swift in Sources */,
 				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
 				35D6487722ECBED700015352 /* settingsLayout.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
+				35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
 				35D6482F22ECBB1500015352 /* productCell.swift in Sources */,
 				35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */,
 				35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */,
+				35D6488222ECBF4900015352 /* Cloud Storage.swift in Sources */,
 				35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */,
 				35D6486A22ECBE5B00015352 /* AcctCellDesign.swift in Sources */,
+				35D6489422ECC01400015352 /* SettingTVC.swift in Sources */,
 				35D647FB22ECBABA00015352 /* ViewController.swift in Sources */,
+				35D6488F22ECBFD200015352 /* FirebaseFiles.swift in Sources */,
 				35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */,
 				35D6487522ECBEC700015352 /* ItemLayout.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
@@ -451,11 +523,14 @@
 				35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */,
 				35D6484522ECBCA700015352 /* Color.swift in Sources */,
 				35D6484E22ECBD1300015352 /* toolBar.swift in Sources */,
+				35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */,
+				35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */,
 				35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */,
 				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,
 				35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */,
 				35D6486F22ECBE9500015352 /* tabBar.swift in Sources */,
 				35D6487122ECBEA700015352 /* CellLayout.swift in Sources */,
+				35D6488022ECBF3A00015352 /* DataService.swift in Sources */,
 				35D6486322ECBE0200015352 /* SearchVC.swift in Sources */,
 				35D6485722ECBD8700015352 /* PantryVC.swift in Sources */,
 				35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */,
@@ -466,6 +541,7 @@
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,
 				35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */,
+				35D6488C22ECBFAA00015352 /* BLEHR.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
