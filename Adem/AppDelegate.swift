@@ -55,8 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         //RootController
-        //window?.rootViewController = login()
-        window?.rootViewController = tabBar()
+        window?.rootViewController = login()
+        //window?.rootViewController = tabBar()
         
         
         //Current In solid green
