@@ -24,6 +24,12 @@
 		35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483A22ECBC2300015352 /* Circle Trasition.swift */; };
 		35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483C22ECBC3900015352 /* CircleTransition.swift */; };
 		35D6483F22ECBC4E00015352 /* swipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6483E22ECBC4E00015352 /* swipe.swift */; };
+		35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484122ECBC8600015352 /* SignUpInfo.swift */; };
+		35D6484522ECBCA700015352 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484422ECBCA700015352 /* Color.swift */; };
+		35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484622ECBCBA00015352 /* Design.Elements.swift */; };
+		35D6484922ECBCCC00015352 /* AppDelegateUserLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484822ECBCCC00015352 /* AppDelegateUserLogin.swift */; };
+		35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484B22ECBCEB00015352 /* Delete cell extension.swift */; };
+		35D6484E22ECBD1300015352 /* toolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484D22ECBD1300015352 /* toolBar.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -67,6 +73,12 @@
 		35D6483A22ECBC2300015352 /* Circle Trasition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Circle Trasition.swift"; sourceTree = "<group>"; };
 		35D6483C22ECBC3900015352 /* CircleTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleTransition.swift; sourceTree = "<group>"; };
 		35D6483E22ECBC4E00015352 /* swipe.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = swipe.swift; sourceTree = "<group>"; };
+		35D6484122ECBC8600015352 /* SignUpInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpInfo.swift; sourceTree = "<group>"; };
+		35D6484422ECBCA700015352 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
+		35D6484622ECBCBA00015352 /* Design.Elements.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Design.Elements.swift; sourceTree = "<group>"; };
+		35D6484822ECBCCC00015352 /* AppDelegateUserLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateUserLogin.swift; sourceTree = "<group>"; };
+		35D6484B22ECBCEB00015352 /* Delete cell extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Delete cell extension.swift"; sourceTree = "<group>"; };
+		35D6484D22ECBD1300015352 /* toolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toolBar.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +129,8 @@
 		35D647F722ECBABA00015352 /* Adem */ = {
 			isa = PBXGroup;
 			children = (
+				35D6484322ECBC9100015352 /* Extensions */,
+				35D6484022ECBC7300015352 /* SignUp */,
 				35D6483922ECBC0800015352 /* Transition */,
 				35D6483522ECBBDD00015352 /* Alert */,
 				35D6482922ECBADA00015352 /* New Group */,
@@ -177,6 +191,26 @@
 				35D6483E22ECBC4E00015352 /* swipe.swift */,
 			);
 			path = Transition;
+			sourceTree = "<group>";
+		};
+		35D6484022ECBC7300015352 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				35D6484122ECBC8600015352 /* SignUpInfo.swift */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		35D6484322ECBC9100015352 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				35D6484422ECBCA700015352 /* Color.swift */,
+				35D6484622ECBCBA00015352 /* Design.Elements.swift */,
+				35D6484822ECBCCC00015352 /* AppDelegateUserLogin.swift */,
+				35D6484B22ECBCEB00015352 /* Delete cell extension.swift */,
+				35D6484D22ECBD1300015352 /* toolBar.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -311,15 +345,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
+				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
 				35D6482F22ECBB1500015352 /* productCell.swift in Sources */,
 				35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */,
+				35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */,
 				35D647FB22ECBABA00015352 /* ViewController.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				35D6483422ECBB4600015352 /* profileVC.swift in Sources */,
+				35D6484922ECBCCC00015352 /* AppDelegateUserLogin.swift in Sources */,
 				35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */,
+				35D6484522ECBCA700015352 /* Color.swift in Sources */,
+				35D6484E22ECBD1300015352 /* toolBar.swift in Sources */,
 				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,
+				35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */,
 				35D6483F22ECBC4E00015352 /* swipe.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 			);
