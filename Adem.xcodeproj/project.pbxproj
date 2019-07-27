@@ -30,6 +30,18 @@
 		35D6484922ECBCCC00015352 /* AppDelegateUserLogin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484822ECBCCC00015352 /* AppDelegateUserLogin.swift */; };
 		35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484B22ECBCEB00015352 /* Delete cell extension.swift */; };
 		35D6484E22ECBD1300015352 /* toolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484D22ECBD1300015352 /* toolBar.swift */; };
+		35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485022ECBD4E00015352 /* Login Screen.swift */; };
+		35D6485322ECBD5D00015352 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485222ECBD5D00015352 /* ListVC.swift */; };
+		35D6485522ECBD7400015352 /* ItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485422ECBD7400015352 /* ItemVC.swift */; };
+		35D6485722ECBD8700015352 /* PantryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485622ECBD8700015352 /* PantryVC.swift */; };
+		35D6485922ECBDA300015352 /* Meals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485822ECBDA300015352 /* Meals.swift */; };
+		35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485A22ECBDBA00015352 /* AccountVC.swift */; };
+		35D6485D22ECBDC900015352 /* tabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485C22ECBDC900015352 /* tabController.swift */; };
+		35D6485F22ECBDDE00015352 /* ProductInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485E22ECBDDE00015352 /* ProductInfoVC.swift */; };
+		35D6486122ECBDEF00015352 /* settingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486022ECBDEF00015352 /* settingVC.swift */; };
+		35D6486322ECBE0200015352 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486222ECBE0200015352 /* SearchVC.swift */; };
+		35D6486522ECBE1D00015352 /* PantryVCBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486422ECBE1D00015352 /* PantryVCBackup.swift */; };
+		35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486622ECBE2F00015352 /* accountBackup.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +91,18 @@
 		35D6484822ECBCCC00015352 /* AppDelegateUserLogin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateUserLogin.swift; sourceTree = "<group>"; };
 		35D6484B22ECBCEB00015352 /* Delete cell extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Delete cell extension.swift"; sourceTree = "<group>"; };
 		35D6484D22ECBD1300015352 /* toolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toolBar.swift; sourceTree = "<group>"; };
+		35D6485022ECBD4E00015352 /* Login Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Login Screen.swift"; sourceTree = "<group>"; };
+		35D6485222ECBD5D00015352 /* ListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVC.swift; sourceTree = "<group>"; };
+		35D6485422ECBD7400015352 /* ItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemVC.swift; sourceTree = "<group>"; };
+		35D6485622ECBD8700015352 /* PantryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryVC.swift; sourceTree = "<group>"; };
+		35D6485822ECBDA300015352 /* Meals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meals.swift; sourceTree = "<group>"; };
+		35D6485A22ECBDBA00015352 /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
+		35D6485C22ECBDC900015352 /* tabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabController.swift; sourceTree = "<group>"; };
+		35D6485E22ECBDDE00015352 /* ProductInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoVC.swift; sourceTree = "<group>"; };
+		35D6486022ECBDEF00015352 /* settingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settingVC.swift; sourceTree = "<group>"; };
+		35D6486222ECBE0200015352 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
+		35D6486422ECBE1D00015352 /* PantryVCBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryVCBackup.swift; sourceTree = "<group>"; };
+		35D6486622ECBE2F00015352 /* accountBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountBackup.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +153,7 @@
 		35D647F722ECBABA00015352 /* Adem */ = {
 			isa = PBXGroup;
 			children = (
+				35D6484F22ECBD3900015352 /* Controllers */,
 				35D6484322ECBC9100015352 /* Extensions */,
 				35D6484022ECBC7300015352 /* SignUp */,
 				35D6483922ECBC0800015352 /* Transition */,
@@ -211,6 +236,25 @@
 				35D6484D22ECBD1300015352 /* toolBar.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		35D6484F22ECBD3900015352 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				35D6485022ECBD4E00015352 /* Login Screen.swift */,
+				35D6485222ECBD5D00015352 /* ListVC.swift */,
+				35D6485422ECBD7400015352 /* ItemVC.swift */,
+				35D6485622ECBD8700015352 /* PantryVC.swift */,
+				35D6485822ECBDA300015352 /* Meals.swift */,
+				35D6485A22ECBDBA00015352 /* AccountVC.swift */,
+				35D6485C22ECBDC900015352 /* tabController.swift */,
+				35D6485E22ECBDDE00015352 /* ProductInfoVC.swift */,
+				35D6486022ECBDEF00015352 /* settingVC.swift */,
+				35D6486222ECBE0200015352 /* SearchVC.swift */,
+				35D6486422ECBE1D00015352 /* PantryVCBackup.swift */,
+				35D6486622ECBE2F00015352 /* accountBackup.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -344,7 +388,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35D6485F22ECBDDE00015352 /* ProductInfoVC.swift in Sources */,
 				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
+				35D6486122ECBDEF00015352 /* settingVC.swift in Sources */,
 				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
@@ -352,16 +398,26 @@
 				35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */,
 				35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */,
 				35D647FB22ECBABA00015352 /* ViewController.swift in Sources */,
+				35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				35D6483422ECBB4600015352 /* profileVC.swift in Sources */,
 				35D6484922ECBCCC00015352 /* AppDelegateUserLogin.swift in Sources */,
+				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
+				35D6486522ECBE1D00015352 /* PantryVCBackup.swift in Sources */,
 				35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */,
 				35D6484522ECBCA700015352 /* Color.swift in Sources */,
 				35D6484E22ECBD1300015352 /* toolBar.swift in Sources */,
+				35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */,
 				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,
 				35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */,
+				35D6486322ECBE0200015352 /* SearchVC.swift in Sources */,
+				35D6485722ECBD8700015352 /* PantryVC.swift in Sources */,
+				35D6485322ECBD5D00015352 /* ListVC.swift in Sources */,
 				35D6483F22ECBC4E00015352 /* swipe.swift in Sources */,
+				35D6485D22ECBDC900015352 /* tabController.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
+				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,
+				35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
