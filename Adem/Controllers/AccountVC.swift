@@ -22,7 +22,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     //var docRef: DocumentReference!
     //var handle: AuthStateDidChangeListenerHandle?
     let user = Auth.auth().currentUser
-    var accountStuff: ProfileView!
+    
     
     
     //Cell Id's
@@ -62,38 +62,15 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         self.navigationItem.rightBarButtonItem = added
         
 
-        collectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellId4)
+       
         
         //setup all views
-        setupViews()
+        setUpAgain()
+        //setUpViews()
    
     }
     
-    //UIView Profile Pic
-    let coverPhoto: UIImageView = {
-        let cover = UIImageView()
-        cover.image = UIImage(named: "eggs")
-        cover.layer.masksToBounds = true
-        cover.clipsToBounds = true
-        cover.translatesAutoresizingMaskIntoConstraints = false
-        return cover
-    }()
-    
-    //UIView Profile Pic
-    let userProfileImage: UIImageView = {
-        let profPic = UIImageView()
-        profPic.image = UIImage(named: "bread")
-        profPic.contentMode = .scaleAspectFill
-        profPic.layer.cornerRadius = 50
-        profPic.layer.masksToBounds = true
-        profPic.clipsToBounds = true
-        profPic.layer.borderWidth = 4
-        profPic.layer.shadowColor = UIColor.clear.cgColor
-        profPic.layer.borderColor = UIColor.white.cgColor
-        profPic.translatesAutoresizingMaskIntoConstraints = false
-        
-        return profPic
-    }()
+ 
     
     let nameofUser: UILabel = {
         let userName = UILabel()
@@ -108,45 +85,46 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         print("sets the item name")
         return userName
     }()
+
+    var accountStuff: ProfileView!
+    weak var collectionView: UICollectionView!
     
-    
-    
-    let collectionView: UICollectionView = { // collection view to be added to view controller
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout());//zero size with flow layout
-        cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = .white
-        return cv
-        
-    }()
-    /*
-     func setUpAgain() {
+    func setUpAgain() {
      //SetUp views from own class
-     let ss: CGRect = UIScreen.main.bounds
-     accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: ss.width, height: 500))
-     //accountStuff = ProfileView(frame: CGRect.zero)
-     //accountStuff.backgroundColor = UIColor.red
-     self.view.addSubview(accountStuff)
-     self.view.addSubview(collectionView)
-     
-     
-     collectionView.delegate = self // set delegate
-     collectionView.dataSource = self //set data source
+        let ss: CGRect = UIScreen.main.bounds
+        accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: ss.width, height: 225))
+        
+        
+        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let profileCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
+        self.view.addSubview(accountStuff)
+        self.view.addSubview(profileCollectionView)
+        
+        profileCollectionView.delegate = self // set delegate
+        profileCollectionView.dataSource = self
+        profileCollectionView.layer.cornerRadius = 10
+
+        
+        profileCollectionView.backgroundColor = UIColor.ademGreen
+       
+        profileCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        profileCollectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellId4)
+        
      
      NSLayoutConstraint.activate([
-     //accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
-     //accountStuff.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-     //accountStuff.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-     collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-     collectionView.trailingAnchor.constraint(equalTo:  view.trailingAnchor),
-     collectionView.topAnchor.constraint(equalTo: accountStuff.bottomAnchor, constant: 25),
-     collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+     profileCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10),
+    
+     profileCollectionView.centerXAnchor.constraint(equalTo:  view.centerXAnchor),
+     profileCollectionView.topAnchor.constraint(equalTo: accountStuff.bottomAnchor, constant: 25),
+     profileCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        
      ])
+        self.collectionView = profileCollectionView
      
      }
-     */
-    
-    
-    
+
+    /*
     func setupViews() {
         
         
@@ -155,12 +133,12 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         view.addSubview(nameofUser)
         
         
-        view.addSubview(collectionView)
-        collectionView.backgroundColor = UIColor.ademGreen
-        collectionView.layer.cornerRadius = 5
+        ///view.addSubview(collectionView)
+        //collectionView.backgroundColor = UIColor.ademGreen
+        //collectionView.layer.cornerRadius = 5
         
-        collectionView.delegate = self // set delegate
-        collectionView.dataSource = self //set data source
+        //collectionView.delegate = self // set delegate
+        //collectionView.dataSource = self //set data source
         
         
         //CoverPhoto
@@ -190,6 +168,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true // width
         //collectionView.heightAnchor.constraint(equalToConstant: 450).isActive = true
     }
+    */
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
