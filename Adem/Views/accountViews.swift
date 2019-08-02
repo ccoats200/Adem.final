@@ -53,14 +53,11 @@ class ProfileView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //setupViews()
-        updateConstraints()
+        setupViews()
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        //setupViews()
-        updateConstraints()
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -90,10 +87,7 @@ class ProfileView: UIView {
     }
     
     
-    
     override func updateConstraints() {
         super.updateConstraints()
-        setupViews()
     }
-    
 }

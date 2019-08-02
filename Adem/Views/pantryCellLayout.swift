@@ -14,14 +14,12 @@ import FirebaseFirestore
 //List Delete protocol
 protocol pantryItemDelegate: class {
     func delete(cell: pantryCellLayout)
+    func addToList(cell: pantryCellLayout)
 }
 
 //Pantry Product Cell layout
 class pantryCellLayout: CellBasics {
-    
-    
     weak var delegate: pantryItemDelegate?
-    
     
     var gItem: groceryItemCellContent? {
         didSet {
@@ -30,7 +28,6 @@ class pantryCellLayout: CellBasics {
             quantity.text = gItem?.Quantity
             selectedButton.isHidden = !isEditing
             deleteButton.isHidden = !isEditing
-            
             print("set")
         }
     }
@@ -45,11 +42,11 @@ class pantryCellLayout: CellBasics {
         return selected
     }()
     
-    //Delet now editing button
+    //Delete now editing button
     let deleteButton: UIButton = {
         let delete = UIButton()
         delete.backgroundColor = UIColor.ademBlue
-        delete.layer.cornerRadius = (15/2)
+        delete.layer.cornerRadius = 15
         delete.clipsToBounds = true
         delete.layer.masksToBounds = true
         delete.translatesAutoresizingMaskIntoConstraints = false
@@ -57,28 +54,22 @@ class pantryCellLayout: CellBasics {
     }()
     
     var isEditing: Bool = false {
-        
         didSet {
             if isEditing
             {
-                //self.selectedButton.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
-                self.layer.cornerRadius = 10
-                selectedButton.isHidden = isEditing
-                self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-                self.deleteButton.isHidden = !isEditing
+                //selectedButton.isHidden = !isEditing
+                self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+                self.deleteButton.isHidden = isEditing
                 self.deleteButton.backgroundColor = UIColor.ademBlue
             } else {
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                selectedButton.isHidden = !isEditing
+                //selectedButton.isHidden = !isEditing
                 deleteButton.isHidden = !isEditing
-                
             }
-            
         }
     }
     
     override var isSelected: Bool {
-        
         didSet {
             /*
              if isEditing && isSelected {
@@ -89,27 +80,21 @@ class pantryCellLayout: CellBasics {
              }*/
             
             if isSelected {
-                selectedButton.isHidden = !isEditing
+                deleteButton.isHidden = !isEditing
+                //selectedButton.isHidden = !isEditing
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                self.selectedButton.backgroundColor = UIColor.ademGreen
-                
+                self.deleteButton.backgroundColor = UIColor.ademBlue
                 //self.tickImageView.isHidden = false
-            }
-                
-            else {
+            } else {
                 //self.transform = CGAffineTransform.identity
-                self.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-                self.selectedButton.backgroundColor = nil
-                
+                self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
+                self.deleteButton.backgroundColor = nil
                 //print(selectedButton.backgroundColor)
                 //self.contentView.backgroundColor = UIColor.blue
                 //self.tickImageView.isHidden = true
             }
-            
         }
     }
-    
-    
     
     @objc func selectedButtonDidTap(_ sender: Any) {
         delegate?.delete(cell: self)
@@ -130,7 +115,7 @@ class pantryCellLayout: CellBasics {
     let productName: UILabel = {
         let name = UILabel()
         //name.text = "\(itemName)"
-        name.textAlignment = .center
+        name.textAlignment = .left
         name.numberOfLines = 1
         name.adjustsFontSizeToFitWidth = true
         print("sets the item name")
@@ -141,8 +126,8 @@ class pantryCellLayout: CellBasics {
         let Quant = UILabel()
         //Quant.text = "\(Quantity)"
         print("sets the quantity of the items in the cart")
-        Quant.font = UIFont(name: "Helvetica", size: 12)
-        Quant.textColor = UIColor.rgb(red: 57, green: 94, blue: 102)
+        Quant.font = UIFont(name: "Helvetica", size: 15)
+        Quant.textColor = UIColor.black
         Quant.translatesAutoresizingMaskIntoConstraints = false
         return Quant
     }()
@@ -172,7 +157,7 @@ class pantryCellLayout: CellBasics {
         //Constraints: Only use if multiple constraints needed on same view
         
         //Top Constraints Quantity
-        addConstraint(NSLayoutConstraint(item: quantity, attribute: .top, relatedBy: .equal, toItem: productImageView, attribute: .top, multiplier: 1, constant: 5))
+        addConstraint(NSLayoutConstraint(item: quantity, attribute: .top, relatedBy: .equal, toItem: productImageView, attribute: .bottom, multiplier: 1, constant: 5))
         //Right Constraints Quantity
         addConstraint(NSLayoutConstraint(item: quantity, attribute: .right, relatedBy: .equal, toItem: productImageView, attribute: .right, multiplier: 1, constant: -5))
         //Height Constraint Quantity
@@ -203,9 +188,9 @@ class pantryCellLayout: CellBasics {
         //left
         addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .left, relatedBy: .equal, toItem: productImageView, attribute: .left, multiplier: 1, constant: 5))
         //Height Constraint Quantity
-        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 15))
+        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30))
         //Width Constraint
-        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0, constant: 15))
+        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0, constant: 30))
         
         
     }

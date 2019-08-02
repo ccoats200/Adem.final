@@ -14,6 +14,11 @@ import AVFoundation
 
 
 class Meals: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate {
+    //This needs to be changed to a page view controller. Breakfast/lunch/dinner.
+    //this needs a search function
+    //this needs collection View controller. the cells should have a fav button.
+    //the right nave button is a fave section
+    
     
     var products: [groceryItemCellContent]? = {
         var add = groceryItemCellContent()

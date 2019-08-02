@@ -15,6 +15,9 @@ import AVFoundation
 
 class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
+    
+    
+    
     var products: [groceryItemCellContent]? = {
         
         
@@ -74,12 +77,13 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
+    //Additional Views
+    
     let searchController = UISearchController(searchResultsController: nil)
-    weak var collectionView: UICollectionView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         //MARK: NavigationBar setup
         navigationItem.title = "Pantry"
@@ -89,32 +93,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.isTranslucent = false
         self.navigationItem.searchController = searchController
-        
-        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        let pantryCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-        
-        
-        pantryCollectionView.dataSource = self
-        pantryCollectionView.delegate = self
-        pantryCollectionView.register(pantryCellLayout.self, forCellWithReuseIdentifier: cellID)
-        pantryCollectionView.backgroundColor = UIColor.white
-        pantryCollectionView.isUserInteractionEnabled = true
-        pantryCollectionView.isScrollEnabled = true
-        //pantryCollectionView.bounces = true
-        //pantryCollectionView.alwaysBounceVertical = true
-        
-        
-        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
-        pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
-        
-        let Columns: CGFloat = 3.15
-        let insetDimension: CGFloat = 2.0
-        let cellHeight: CGFloat = 125.0
-        let cellWidth = (pantryCollectionView.frame.width/Columns) - insetDimension
-        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        
+
         //Search
         self.searchController.searchResultsUpdater = self
         self.searchController.delegate = self
@@ -138,25 +117,66 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         self.navigationItem.rightBarButtonItem = searching
         self.navigationItem.leftBarButtonItem = editButtonItem
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
+     
+        //Initializing the Collection view and add/delete view
+        setUpDifferentViews()
+    }
+   
+    var productUpdateLocationButtonView = addOrDeleteProduct()
+    weak var collectionView: UICollectionView!
+    func setUpDifferentViews() {
+        //SetUp views from own class
+        let ss: CGRect = UIScreen.main.bounds
+        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
+       
+        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let pantryCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
         
-        
-        //setup()
+        //adding subviews to the view controller
         self.view.addSubview(pantryCollectionView)
+        self.view.addSubview(productUpdateLocationButtonView)
         
+        pantryCollectionView.dataSource = self
+        pantryCollectionView.delegate = self
+        pantryCollectionView.register(pantryCellLayout.self, forCellWithReuseIdentifier: cellID)
+        pantryCollectionView.backgroundColor = UIColor.white
+        pantryCollectionView.isUserInteractionEnabled = true
+        pantryCollectionView.isScrollEnabled = true
+        pantryCollectionView.bounces = true
+        pantryCollectionView.alwaysBounceVertical = true
+        
+        
+        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
+        pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
+        
+        pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
+        
+        let Columns: CGFloat = 3.15
+        let insetDimension: CGFloat = 2.0
+        let cellHeight: CGFloat = 125.0
+        let cellWidth = (pantryCollectionView.frame.width/Columns) - insetDimension
+        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        
+       
         //Maybe delete
         NSLayoutConstraint.activate([
-            self.view.topAnchor.constraint(equalTo: pantryCollectionView.topAnchor),
-            self.view.bottomAnchor.constraint(equalTo: pantryCollectionView.bottomAnchor),
-            self.view.leadingAnchor.constraint(equalTo: pantryCollectionView.leadingAnchor),
-            self.view.trailingAnchor.constraint(equalTo: pantryCollectionView.trailingAnchor),
+            pantryCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            pantryCollectionView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
+            pantryCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pantryCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            productUpdateLocationButtonView.heightAnchor.constraint(equalToConstant: 75),
+            productUpdateLocationButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
         self.collectionView = pantryCollectionView
         
+        //User interations
         let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
         lpgr.minimumPressDuration = 0.35
         self.collectionView?.addGestureRecognizer(lpgr)
     }
-    
     
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
@@ -166,8 +186,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func updateSearchResults(for searchController: UISearchController)
     {
         let searchString = searchController.searchBar.text
-        
-        
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -179,8 +197,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     }
     
     func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        
-        
+ 
         searchController.searchBar.resignFirstResponder()
     }
     
@@ -199,8 +216,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         //self.searchController.isActive = false
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
-        
     }
+
     
     
     // MARK: - Delete Items
@@ -213,63 +230,22 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             self.navigationItem.rightBarButtonItem = nil
             self.collectionView.allowsMultipleSelection = true
             self.tabBarController?.tabBar.isHidden = true
-            self.navigationController?.toolbar.barTintColor = UIColor.white
-            self.navigationController?.isToolbarHidden = false
-            
-            var items = [UIBarButtonItem]()
-            
-            items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
-            
-            items.append(
-                UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
-            )
-            
-            items.append(
-                UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-            )
-            
-            items.append(
-                UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
-            )
-            
-            
-            items.append( UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil))
-            
-            self.toolbarItems = items
-            
-            /*
-             var items = [UIBarButtonItem]()
-             
-             let fixedSpace: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
-             fixedSpace.width = 75.0
-             items.append(fixedSpace)
-             
-             let addButton: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleProduct))
-             items.append(addButton)
-             
-             items.append(
-             UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil)
-             )
-             let addToList: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleProduct))
-             items.append(addToList)
-             let fixedSpace2: UIBarButtonItem = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: self, action: nil)
-             fixedSpace2.width = 75.0
-             items.append(fixedSpace2)
-             
-             self.toolbarItems = items
-             */
-            
-            
-            
         } else {
             let searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleProduct))
             
             self.navigationItem.rightBarButtonItem = searching
             self.navigationItem.leftBarButtonItem = editButtonItem
             self.tabBarController?.tabBar.isHidden = false
-            self.navigationController?.isToolbarHidden = true
-            //self.collectionView.allowsMultipleSelection = false
+            self.collectionView.allowsMultipleSelection = false
             
+        }
+        
+        if let indexPaths = collectionView?.indexPathsForVisibleItems {
+            for indexPath in indexPaths {
+                if let cell = collectionView?.cellForItem(at: indexPath) as? pantryCellLayout {
+                    cell.isEditing = editing
+                }
+            }
         }
     }
     
@@ -289,16 +265,17 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     }
     
     //Delete item
-    @objc func handleBatchDelete() {
+    @objc func handleBatchDeleteFromPantry() {
         
         var selectedCells = [1,2]
         for cells in selectedCells {
             //cells.delegate = self as? pantryItemDelegate
         }
-        
     }
+    
+    
     //Add item back
-    @objc func handleBatchAdd() {
+    @objc func handleBatchAddToList() {
         
         let cController = productVCLayout()
         cController.hidesBottomBarWhenPushed = true
@@ -411,8 +388,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         //self.navigationItem.searchController = searchController
         //searchController.isActive = true
-        
-        
+
         print("Settings Tab is active")
     }
     
@@ -425,12 +401,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         let cController = productVCLayout()
         cController.hidesBottomBarWhenPushed = true
-        
         //transition testing
         //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
-        
-        
-        
         cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(cController, animated: true, completion: nil)
         
@@ -451,6 +423,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
         productCell.gItem = products![indexPath.item]
+        
+        
         //collectionview.insertIems(at: indexPaths)
         productCell.layer.cornerRadius = 5
         
@@ -480,7 +454,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             
             //MARK: Add bottom bar here
             pantryCellLayout().selectedButton.isHidden = !isEditing
-            
         default:
             switch indexPath.item {
             case 1:
@@ -488,10 +461,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             default:
                 handleAlert()
             }
-            
         }
         print(pantryCellLayout().selectedButton.backgroundColor!)
-        
     }
     
     

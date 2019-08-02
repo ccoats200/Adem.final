@@ -13,11 +13,17 @@ import Firebase
 import FirebaseFirestore
 
 class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    //This needs a recipies button at the bottom. prominant. recipies can be listed as share with everyone or just friends or no one. Good for user generated content.
+    //for now no chat setting for sending recipies easily.
+    //the recipie will be photographed and in a table view, users can choose a generic pic for it. computer graphic or take a pic
+    
+    
     
     //var docRef: DocumentReference!
     //var handle: AuthStateDidChangeListenerHandle?
     let user = Auth.auth().currentUser
     var accountStuff: ProfileView!
+    
     
     //Cell Id's
     let cellId = "cellId0"
@@ -51,34 +57,16 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         docRef = Firestore.firestore().document("UserLoginInfo/user")
         
         
-        
+        //This needs to be changed
         let added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handelSignUp))
         self.navigationItem.rightBarButtonItem = added
         
-        
-        //Family Cell
-        //Collection view scrollable
-        //collectionView.register(familySection.self, forCellWithReuseIdentifier: cellId2)
-        //collectionView.register(friendsCellLayout.self, forCellWithReuseIdentifier: cellId2)
-        
-        //collectionView.register(familyCells.self, forCellWithReuseIdentifier: cellId2)
-        
-        //Device Cell
-        //collectionView.register(deviceSection.self, forCellWithReuseIdentifier: cellId3)
-        
-        //Allergies Cell
+
         collectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellId4)
-        
-        //self.collectionView.register(friendsCellLayout.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: self.headerID)
-        
-        //let flow = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
-        //flow.headerReferenceSize = CGSize(30,30)
-        
-        
         
         //setup all views
         setupViews()
-        //setUpAgain()
+   
     }
     
     //UIView Profile Pic

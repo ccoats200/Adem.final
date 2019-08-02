@@ -48,21 +48,6 @@ class addedItemAlert: UIViewController {
         setUpAddDismiss()
     }
     
-    
-    //Authentication State listner
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        handle = Auth.auth().addStateDidChangeListener { (auth, User) in
-            
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        Auth.auth().removeStateDidChangeListener(handle!)
-    }
-    
-    
     let addedItem: UIView = {
         let addedNotification = UIView()
         addedNotification.backgroundColor = UIColor.ademGreen.withAlphaComponent(0.95)
@@ -200,15 +185,86 @@ class addedItemAlert: UIViewController {
         productPreview.centerXAnchor.constraint(equalTo: addedItem.centerXAnchor).isActive = true
         productPreview.widthAnchor.constraint(equalTo: addedItem.widthAnchor, constant: -10).isActive = true
         productPreview.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        
-        
+
         alertStackView.bottomAnchor.constraint(equalTo: addedItem.bottomAnchor).isActive = true
         alertStackView.centerXAnchor.constraint(equalTo: addedItem.centerXAnchor).isActive = true
         alertStackView.widthAnchor.constraint(equalTo: addedItem.widthAnchor).isActive = true
         alertStackView.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        //loginButton.layer.cornerRadius = 20
         
     }
 }
 
+
+class addOrDeleteProduct: UIView {
+    
+    override init(frame: CGRect){
+        super.init(frame: frame)
+        setUpAddDismiss()
+    }
+
+    
+    lazy var deleteItemFromPantryButton: UIButton = {
+        let login = UIButton(type: .system)
+        login.backgroundColor = UIColor.ademBlue
+        login.setTitle("Skip", for: .normal)
+        login.translatesAutoresizingMaskIntoConstraints = false
+        login.layer.masksToBounds = true
+        login.clipsToBounds = true
+        login.setTitleColor(UIColor.black, for: .normal)
+        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        login.addTarget(self, action: #selector(deleteProductFromPantry), for: .touchUpInside)
+        login.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        return login
+        
+    }()
+    
+    @objc func deleteProductFromPantry() {
+        print("tried to click delete")
+    }
+    
+    
+    lazy var addProductToListButton: UIButton = {
+        let add = UIButton(type: .system)
+        add.backgroundColor = UIColor.ademBlue
+        add.setTitle("Add", for: .normal)
+        add.translatesAutoresizingMaskIntoConstraints = false
+        add.layer.masksToBounds = true
+        add.clipsToBounds = true
+        add.setTitleColor(UIColor.black, for: .normal)
+        add.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        add.addTarget(self, action: #selector(addProductToListFromPantry), for: .touchUpInside)
+        
+        return add
+        
+    }()
+    
+    @objc func addProductToListFromPantry() {
+        print("tried to click Add")
+        
+    }
+    
+    func setUpAddDismiss() {
+       
+        let alertStackView = UIStackView(arrangedSubviews: [deleteItemFromPantryButton, addProductToListButton])
+        alertStackView.contentMode = .scaleAspectFit
+        alertStackView.translatesAutoresizingMaskIntoConstraints = false
+        alertStackView.distribution = .fillEqually
+        alertStackView.layer.masksToBounds = true
+        alertStackView.clipsToBounds = true
+        
+        self.addSubview(alertStackView)
+        
+        alertStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        alertStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        alertStackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        alertStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
+    }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
