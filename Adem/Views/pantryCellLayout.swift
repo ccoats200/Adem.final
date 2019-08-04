@@ -27,23 +27,12 @@ class pantryCellLayout: CellBasics {
             productName.text = gItem?.itemName
             quantity.text = gItem?.Quantity
             selectedButton.isHidden = !isEditing
-            deleteButton.isHidden = !isEditing
             print("set")
         }
     }
     
-    //Allowing editing button
-    let selectedButton: UIButton = {
-        let selected = UIButton()
-        selected.backgroundColor = UIColor.white
-        //selected.alpha = 0.50
-        selected.layer.cornerRadius = 15
-        selected.translatesAutoresizingMaskIntoConstraints = false
-        return selected
-    }()
-    
     //Delete now editing button
-    let deleteButton: UIButton = {
+    let selectedButton: UIButton = {
         let delete = UIButton()
         delete.backgroundColor = UIColor.ademBlue
         delete.layer.cornerRadius = 15
@@ -59,12 +48,12 @@ class pantryCellLayout: CellBasics {
             {
                 //selectedButton.isHidden = !isEditing
                 self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-                self.deleteButton.isHidden = isEditing
-                self.deleteButton.backgroundColor = UIColor.ademBlue
+                self.selectedButton.isHidden = isEditing
+                self.selectedButton.backgroundColor = UIColor.ademBlue
             } else {
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 //selectedButton.isHidden = !isEditing
-                deleteButton.isHidden = !isEditing
+                selectedButton.isHidden = !isEditing
             }
         }
     }
@@ -80,15 +69,15 @@ class pantryCellLayout: CellBasics {
              }*/
             
             if isSelected {
-                deleteButton.isHidden = !isEditing
+                selectedButton.isHidden = !isEditing
                 //selectedButton.isHidden = !isEditing
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                self.deleteButton.backgroundColor = UIColor.ademBlue
+                self.selectedButton.backgroundColor = UIColor.ademBlue
                 //self.tickImageView.isHidden = false
             } else {
                 //self.transform = CGAffineTransform.identity
                 self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
-                self.deleteButton.backgroundColor = nil
+                self.selectedButton.backgroundColor = nil
                 //print(selectedButton.backgroundColor)
                 //self.contentView.backgroundColor = UIColor.blue
                 //self.tickImageView.isHidden = true
@@ -97,6 +86,8 @@ class pantryCellLayout: CellBasics {
     }
     
     @objc func selectedButtonDidTap(_ sender: Any) {
+        var userChangingLocationForProducts: [IndexPath] = []
+        //for (key, value) in
         delegate?.delete(cell: self)
     }
     
@@ -140,10 +131,7 @@ class pantryCellLayout: CellBasics {
         addSubview(quantity)
         print("adds the calorie count subview")
         addSubview(selectedButton)
-        addSubview(deleteButton)
-        
-        
-        
+      
         //Horizontral Constaints
         addConstraintsWithFormats(format: "H:|[v0]|", views: productImageView)
         addConstraintsWithFormats(format: "H:|-8-[v0]-8-|", views: productName)
@@ -154,8 +142,7 @@ class pantryCellLayout: CellBasics {
         //addConstraintsWithFormats(format: "V:|-3-[v0(105)]-4-[v1(20)]-8-[v2(1)]|", views: productImageView, productName, seperatorView)
         
         
-        //Constraints: Only use if multiple constraints needed on same view
-        
+        //Fix the product label to quantity distance constraint. need a fix for the text label being to big and shrinking
         //Top Constraints Quantity
         addConstraint(NSLayoutConstraint(item: quantity, attribute: .top, relatedBy: .equal, toItem: productImageView, attribute: .bottom, multiplier: 1, constant: 5))
         //Right Constraints Quantity
@@ -164,35 +151,95 @@ class pantryCellLayout: CellBasics {
         addConstraint(NSLayoutConstraint(item: quantity, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 15))
         //Width Constraint
         addConstraint(NSLayoutConstraint(item: quantity, attribute: .height, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0, constant: 15))
+  
         
-        
-        //Top Constraints Quantity
-        //addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .top, relatedBy: .equal, toItem: productImageView, attribute: .top, multiplier: 1, constant: 0))
-        //Bottom Constraints Quantity
-        addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .bottom, relatedBy: .equal, toItem: productImageView, attribute: .bottom, multiplier: 1, constant: -5))
-        //Left Constraints Quantity
-        //addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .left, relatedBy: .equal, toItem: productImageView, attribute: .left, multiplier: 1, constant: 0))
-        //RightConstraints Quantity
-        addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .right, relatedBy: .equal, toItem: productImageView, attribute: .right, multiplier: 1, constant: -5))
+        //Delete button
+        //top
+        addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .top, relatedBy: .equal, toItem: productImageView, attribute: .top, multiplier: 1, constant: 5))
+        //left
+        addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .left, relatedBy: .equal, toItem: productImageView, attribute: .left, multiplier: 1, constant: 5))
         //Height Constraint Quantity
         addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30))
         //Width Constraint
         addConstraint(NSLayoutConstraint(item: selectedButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0, constant: 30))
+    }
+}
+
+class addOrDeleteProduct: UIView {
+
+    weak var delegate: pantryItemDelegate?
+    
+    
+    override init(frame: CGRect){
+        super.init(frame: frame)
+        setUpAddDismiss()
+    }
+    
+    
+    lazy var deleteItemFromPantryButton: UIButton = {
+        let login = UIButton(type: .system)
+        login.backgroundColor = UIColor.ademBlue
+        login.setTitle("Delete", for: .normal)
+        login.translatesAutoresizingMaskIntoConstraints = false
+        login.layer.masksToBounds = true
+        login.clipsToBounds = true
+        login.setTitleColor(UIColor.black, for: .normal)
+        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        login.addTarget(self, action: #selector(deleteProductFromPantry), for: .touchUpInside)
+        login.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
+        return login
         
+    }()
+    
+    
+    @objc func deleteProductFromPantry() {
+
+        print("User clicked delete button")
+    }
+
+    lazy var addProductToListButton: UIButton = {
+        let add = UIButton(type: .system)
+        add.backgroundColor = UIColor.ademBlue
+        add.setTitle("Add", for: .normal)
+        add.translatesAutoresizingMaskIntoConstraints = false
+        add.layer.masksToBounds = true
+        add.clipsToBounds = true
+        add.setTitleColor(UIColor.black, for: .normal)
+        add.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        add.addTarget(self, action: #selector(addProductToListFromPantry), for: .touchUpInside)
         
+        return add
         
+    }()
+    
+    @objc func addProductToListFromPantry() {
         
-        //Delete button
-        //top
-        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .top, relatedBy: .equal, toItem: productImageView, attribute: .top, multiplier: 1, constant: 5))
-        //left
-        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .left, relatedBy: .equal, toItem: productImageView, attribute: .left, multiplier: 1, constant: 5))
-        //Height Constraint Quantity
-        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .height, relatedBy: .equal, toItem: self, attribute: .height, multiplier: 0, constant: 30))
-        //Width Constraint
-        addConstraint(NSLayoutConstraint(item: deleteButton, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 0, constant: 30))
+        print("User clicked add items button. User moved products from their pantry to their list.")
+    }
+    
+    func setUpAddDismiss() {
         
+        let alertStackView = UIStackView(arrangedSubviews: [addProductToListButton, deleteItemFromPantryButton])
+        alertStackView.contentMode = .scaleAspectFit
+        alertStackView.translatesAutoresizingMaskIntoConstraints = false
+        alertStackView.distribution = .fillEqually
+        alertStackView.layer.masksToBounds = true
+        alertStackView.clipsToBounds = true
         
+        self.addSubview(alertStackView)
+        
+        alertStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        alertStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        alertStackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        alertStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
+    }
+    
+    override func updateConstraints() {
+        super.updateConstraints()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
 }
 

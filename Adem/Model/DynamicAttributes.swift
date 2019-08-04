@@ -136,6 +136,8 @@ class groceryItemCellContent: NSObject {
     var itemImageName: String?
     var itemName: String?
     var Quantity: String?
+    var List: Bool?
+    var Pantry: Bool?
 }
 
 //Profile attributes

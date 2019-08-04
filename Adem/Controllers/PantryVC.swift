@@ -14,60 +14,109 @@ import AVFoundation
 
 
 class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+ 
     
+    //Cells Selected stuff
+    enum Mode {
+        case view
+        case selected
+    }
     
+    var mMode: Mode = .view {
+        didSet {
+            switch mMode {
+            case .view:
+                edit.title = "Edit"
+                collectionView.allowsSelection = false
+                print("User is in view mode")
+            case .selected:
+                edit.title = "Done"
+                collectionView.allowsSelection = true
+                print("User is in edit mode")
+            }
+        }
+    }
     
+    //Navigation buttons - Start
+    lazy var searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
+    lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
+    
+    lazy var edit = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(handleEditButtonClicked))
+    
+    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
+    //Navigation buttons - End
+
     var products: [groceryItemCellContent]? = {
-        
-        
         var eggs = groceryItemCellContent()
         eggs.itemName = "Egg"
         eggs.itemImageName = "bread"
         eggs.Quantity = "1"
+        eggs.List = true
+        eggs.Pantry = false
         
         var bre = groceryItemCellContent()
-        bre.itemName = "PantryVC"
+        bre.itemName = "Bacon"
         bre.itemImageName = "bread"
         bre.Quantity = "1"
+        bre.List = true
+        bre.Pantry = false
         
         var tea = groceryItemCellContent()
-        tea.itemName = "PantryVC"
+        tea.itemName = "Kale"
         tea.itemImageName = "bread"
         tea.Quantity = "1"
+        tea.List = true
+        tea.Pantry = true
         
         var a = groceryItemCellContent()
-        a.itemName = "PantryVC"
+        a.itemName = "Water"
         a.itemImageName = "bread"
         a.Quantity = "1"
+        a.List = false
+        a.Pantry = true
         
         var b = groceryItemCellContent()
-        b.itemName = "PantryVC"
+        b.itemName = "Salt"
         b.itemImageName = "bread"
         b.Quantity = "1"
+        b.List = false
+        b.Pantry = true
         
         var c = groceryItemCellContent()
-        c.itemName = "PantryVC"
+        c.itemName = "Tea"
         c.itemImageName = "bread"
         c.Quantity = "1"
+        c.List = false
+        c.Pantry = true
+        
         var d = groceryItemCellContent()
-        d.itemName = "PantryVC"
+        d.itemName = "Coffee"
         d.itemImageName = "bread"
         d.Quantity = "1"
+        d.List = false
+        d.Pantry = true
         
         var e = groceryItemCellContent()
-        e.itemName = "PantryVC"
+        e.itemName = "Chicken"
         e.itemImageName = "bread"
         e.Quantity = "1"
+        e.List = false
+        e.Pantry = true
         
         var f = groceryItemCellContent()
-        f.itemName = "PantryVC"
+        f.itemName = "Seltzer"
         f.itemImageName = "bread"
         f.Quantity = "1"
+        f.List = false
+        f.Pantry = true
+        
         var g = groceryItemCellContent()
-        g.itemName = "PantryVC"
+        g.itemName = "Bread"
         g.itemImageName = "bread"
         g.Quantity = "1"
+        g.List = false
+        g.Pantry = true
         
         
         return [eggs, bre,tea,a,b,c,d,e,f,g]
@@ -78,7 +127,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     let headerID = "collectionViewHeader"
     
     //Additional Views
-    
     let searchController = UISearchController(searchResultsController: nil)
     
     
@@ -110,18 +158,14 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         //This moves the Cells to the correct offsets, Stylistic choice
         //pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
         //pantryCollectionView.scrollIndicatorInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
+    
         
-        
-        let searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
-        
-        self.navigationItem.rightBarButtonItem = searching
-        self.navigationItem.leftBarButtonItem = editButtonItem
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
-     
         //Initializing the Collection view and add/delete view
         setUpDifferentViews()
+        setUpBarButtonItems()
     }
    
+    //Setting up views
     var productUpdateLocationButtonView = addOrDeleteProduct()
     weak var collectionView: UICollectionView!
     func setUpDifferentViews() {
@@ -158,8 +202,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         let cellWidth = (pantryCollectionView.frame.width/Columns) - insetDimension
         layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
         
-       
-        //Maybe delete
+        //View contstaints
         NSLayoutConstraint.activate([
             pantryCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             pantryCollectionView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
@@ -185,7 +228,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     func updateSearchResults(for searchController: UISearchController)
     {
-        let searchString = searchController.searchBar.text
+        //var searchString = searchController.searchBar.text
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -224,17 +267,15 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     override func setEditing(_ editing: Bool, animated: Bool) {
         super.setEditing(editing, animated: animated)
         
-        
         if self.isEditing {
-            self.navigationItem.leftBarButtonItem = editButtonItem
             self.navigationItem.rightBarButtonItem = nil
             self.collectionView.allowsMultipleSelection = true
             self.tabBarController?.tabBar.isHidden = true
-        } else {
-            let searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleProduct))
+            self.navigationItem.rightBarButtonItems = [added, trashed]
             
-            self.navigationItem.rightBarButtonItem = searching
-            self.navigationItem.leftBarButtonItem = editButtonItem
+        } else {
+           
+            self.navigationItem.rightBarButtonItems = [searching]
             self.tabBarController?.tabBar.isHidden = false
             self.collectionView.allowsMultipleSelection = false
             
@@ -249,6 +290,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         }
     }
     
+    
+    
     @objc func addLongGestureRecognizer(_ gestureRecognizer: UILongPressGestureRecognizer) {
         
         
@@ -262,27 +305,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         } else {
             print("can't find")
         }
-    }
-    
-    //Delete item
-    @objc func handleBatchDeleteFromPantry() {
-        
-        var selectedCells = [1,2]
-        for cells in selectedCells {
-            //cells.delegate = self as? pantryItemDelegate
-        }
-    }
-    
-    
-    //Add item back
-    @objc func handleBatchAddToList() {
-        
-        let cController = productVCLayout()
-        cController.hidesBottomBarWhenPushed = true
-        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        self.present(cController, animated: true, completion: nil)
-        
-        print("User add items in their pantry to their list ")
     }
     
     func setup() {
@@ -374,40 +396,12 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             //self.navigationItem.searchController = nil
             self.navigationController?.view.setNeedsLayout()
             self.navigationController?.view.layoutIfNeeded()
-            
-            
-            
+
         }, completion: { (Bool) -> Void in
         })
-        
-        
-        
-    }
-    //product Button
-    @objc func handleSearch() {
-        
-        //self.navigationItem.searchController = searchController
-        //searchController.isActive = true
-
-        print("Settings Tab is active")
     }
     
     
-    //product Button
-    @objc func handleProduct() {
-        
-        //transition testing
-        //let transitionCoordinator = TransitionCoordinator()
-        
-        let cController = productVCLayout()
-        cController.hidesBottomBarWhenPushed = true
-        //transition testing
-        //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
-        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        self.present(cController, animated: true, completion: nil)
-        
-        print("Settings Tab is active")
-    }
     
     //MARK: CollectonView Setup
     //Number of cells. update later for collection of cells based on product type
@@ -433,6 +427,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     
     
+    var groceryProductsSelected: [IndexPath] = []
+    var selectedGroceryProducts = [groceryItemCellContent]()
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
@@ -444,35 +440,113 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
          
          }*/
         
-        //let selectedCell: pantryCellLayout = collectionView.cellForItem(at: indexPath as IndexPath)! as! pantryCellLayout
-        //if selectedCell.selectedButton.backgroundColor == UIColor.red {}
-        
         switch isEditing {
         case true:
-            //self.products?.remove(at: indexPath.item)
-            //collectionView.deleteItems(at: [indexPath])
+            selectedProductsIndexPath[indexPath] = true
+        case false:
+            collectionView.deselectItem(at: indexPath, animated: true)
+            handleProduct()
             
-            //MARK: Add bottom bar here
-            pantryCellLayout().selectedButton.isHidden = !isEditing
-        default:
+            /*
             switch indexPath.item {
             case 1:
                 handleProduct()
             default:
                 handleAlert()
-            }
+            }*/
         }
-        print(pantryCellLayout().selectedButton.backgroundColor!)
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
-        
-        //let cellToDeselect:pantryCellLayout = collectionView.cellForItem(at: indexPath as IndexPath)! as! pantryCellLayout
-        //cellToDeselect.selectedButton.backgroundColor = UIColor.white
+        if isEditing {
+            selectedProductsIndexPath[indexPath] = false
+        }
     }
+
+    //Button Functions - Start
+    var selectedProductsIndexPath: [IndexPath: Bool] = [:]
+    
+    @objc func handleBatchDelete() {
+        for (key, value) in selectedProductsIndexPath {
+            if value {
+                groceryProductsSelected.append(key)
+            }
+        }
+        
+        for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
+            products?.remove(at: i.item)
+        }
+        collectionView.deleteItems(at: groceryProductsSelected)
+        selectedProductsIndexPath.removeAll()
+    }
+    
+    //Setting up bar buttons
+    private func setUpBarButtonItems() {
+        self.navigationItem.leftBarButtonItem = editButtonItem
+        //self.navigationItem.leftBarButtonItem = edit
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
+        self.navigationItem.rightBarButtonItem = searching
+    }
+    
+    
+    //Edit Button
+    @objc func handleEditButtonClicked() {
+        if mMode == .view {
+            setEditing(true, animated: false)
+        } else {
+            setEditing(false, animated: false)
+        }
+        //setEditing(true, animated: false)
+        mMode = mMode == .view ? .selected : .view
+        print("Edit button was clicked")
+    }
+    
+    //Add item back
+    @objc func handleBatchAdd() {
+        for (key, value) in selectedProductsIndexPath {
+            if value {
+                groceryProductsSelected.append(key)
+            }
+        }
+        
+        for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
+            
+            products?.remove(at: i.item)
+            
+        }
+        collectionView.deleteItems(at: groceryProductsSelected)
+        selectedProductsIndexPath.removeAll()
+        
+        print("User add items in their pantry to their list ")
+    }
+    
+    //product Button
+    @objc func handleSearch() {
+        
+        //self.navigationItem.searchController = searchController
+        //searchController.isActive = true
+        
+        print("Settings Tab is active")
+    }
+   
+    //product Button
+    @objc func handleProduct() {
+        
+        //transition testing
+        //let transitionCoordinator = TransitionCoordinator()
+        
+        let cController = productVCLayout()
+        cController.hidesBottomBarWhenPushed = true
+        //transition testing
+        //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
+        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        self.present(cController, animated: true, completion: nil)
+        
+        print("Settings Tab is active")
+    }
+    //Button Functions - End
+
     
     //Search Button
     @objc func handleAlert() {

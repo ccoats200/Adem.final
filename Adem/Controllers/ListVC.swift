@@ -11,8 +11,6 @@ import Firebase
 import FirebaseFirestore
 import AVFoundation
 
-
-
 class listCollectionView: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
     
@@ -23,44 +21,42 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
     
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
-    
-    
-    
+ 
     //reuse ID's
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
-    var products: [groceryItemCellContent]? = {
+    var listProducts: [groceryItemCellContent]? = {
         
         var eggs = groceryItemCellContent()
         eggs.itemName = "Egg"
         eggs.itemImageName = "eggs"
         eggs.Quantity = "1"
+        eggs.List = true
+        eggs.Pantry = false
         
         var bb = groceryItemCellContent()
         bb.itemName = "BlueBerry"
         bb.itemImageName = "blueBerry"
         bb.Quantity = "1"
+        bb.List = true
+        bb.Pantry = false
         
         return [eggs, bb]
     }()
     
     
     //var products: [groceryProductsStruct] = groceryProducts.fetchGroceryProductImages()
-    
-    var searchController = UISearchController(searchResultsController: nil)
+        var searchController = UISearchController(searchResultsController: nil)
     
     var selectedGroceryItems = [groceryItemCellContent]()
     var selectedCells = [UICollectionViewCell]()
     
     
     //var groceriesAddedFromList = [String]()
-    
-    
-    
-    //
+
     var groceriesSelected = [String]()
-    var groceryItemSelected = [IndexPath]()
+    var groceryProductsSelected = [IndexPath]()
     
     
     override func viewDidLoad() {
@@ -134,7 +130,7 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
         print("the search bar is visible \(searchController.isActive)")
         
         
-        
+        //self.tabBarController?.delegate = self as? UITabBarControllerDelegate
         
         let Columns: CGFloat = 3.0
         let insetDimension: CGFloat = 2.0
@@ -168,71 +164,7 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
         //        }
     }
     
-    //Drag and Drop
-    /*
-     
-     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal
-     {
-     if session.localDragSession != nil
-     {
-     if collectionView.hasActiveDrag
-     {
-     return UICollectionViewDropProposal(operation: .move, intent: .insertAtDestinationIndexPath)
-     }
-     else
-     {
-     return UICollectionViewDropProposal(operation: .copy, intent: .insertAtDestinationIndexPath)
-     }
-     }
-     else
-     {
-     return UICollectionViewDropProposal(operation: .forbidden)
-     }
-     }
-     
-     func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
-     
-     let destinationIndexPath: IndexPath
-     if let indexPath = coordinator.destinationIndexPath
-     {
-     destinationIndexPath = indexPath
-     }
-     else
-     {
-     // Get last index path of collection view.
-     let section = collectionView.numberOfSections - 1
-     let row = collectionView.numberOfItems(inSection: section)
-     destinationIndexPath = IndexPath(row: row, section: section)
-     }
-     
-     switch coordinator.proposal.operation
-     {
-     case .move:
-     //Add the code to reorder items
-     break
-     
-     case .copy:
-     //Add the code to copy items
-     break
-     
-     default:
-     return
-     }
-     }
-     
-     
-     
-     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-     
-     let dragedItem = self.products?[indexPath.item]
-     let itemProvider = NSItemProvider(object: dragedItem as! NSItemProviderWriting)
-     let dragItem = UIDragItem(itemProvider: itemProvider)
-     dragItem.localObject = dragedItem
-     return [dragItem]
-     }
-     
-     */
-    
+   
     //Start Long Press
     
     @objc func addLongGestureRecognizer(_ gestureRecognizer: UILongPressGestureRecognizer) {
@@ -311,8 +243,6 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
             
             self.navigationItem.rightBarButtonItems = [added, trashed]
             self.collectionView.allowsMultipleSelection = true
-            self.tabBarController?.tabBar.isHidden = true
-            
             
         } else {
             let shoppingCart = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleProduct))
@@ -320,7 +250,6 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
             self.navigationItem.rightBarButtonItems = [shoppingCart]
             self.navigationItem.leftBarButtonItem = editButtonItem
             self.tabBarController?.tabBar.isHidden = false
-            self.navigationController?.isToolbarHidden = true
             self.collectionView.allowsMultipleSelection = false
             
         }
@@ -370,7 +299,7 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        selectedGroceryItems = (products?.filter({( groceryItems : groceryItemCellContent) -> Bool in
+        selectedGroceryItems = (listProducts?.filter({( groceryItems : groceryItemCellContent) -> Bool in
             return (groceryItems.itemName?.lowercased().contains(searchText.lowercased()))!
         }))!
         
@@ -468,7 +397,6 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
                 self.searchController.isActive = false
                 self.navigationController?.view.setNeedsLayout()
                 self.navigationController?.view.layoutIfNeeded()
-                
         }
         
         
@@ -522,7 +450,6 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
     @objc func down(sender: UIGestureRecognizer) {
         print("User swiped down to search")
         
-        
         //show bar
         UINavigationBar.animate(withDuration: 0.50, animations: { () -> Void in
             
@@ -547,13 +474,8 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
             self.navigationController?.view.setNeedsLayout()
             self.navigationController?.view.layoutIfNeeded()
             
-            
-            
         }, completion: { (Bool) -> Void in
         })
-        
-        
-        
     }
     
     
@@ -584,48 +506,62 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
         if isFiltering() {
             return selectedGroceryItems.count
         }
-        
-        return products!.count
+        for i in ([productsGlobal]) {
+            if groceryItemCellContent().List == true {
+                
+                print(groceryItemCellContent().itemName)
+               //listProducts?.append(i)
+            }
+        }
+        return listProducts!.count
     }
     
+    func finding() {
+    for i in ([productsGlobal]) {
+    if groceryItemCellContent().List == true {
+        //listProducts?.append(i)
+            }
+        }
+    }
+
     //Initiating cell
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! pantryCellLayout
         
         productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
-        productCell.gItem = products![indexPath.item]
-        //collectionview.insertIems(at: indexPaths)
+        
+//        for _ in (productsGlobal)! {
+//            if groceryItemCellContent().List == true {
+//                productCell.gItem = productsGlobal![indexPath.item]
+//            }
+//        }
+        
+        productCell.gItem = listProducts![indexPath.item]
         productCell.layer.cornerRadius = 5
-        
-        //Deleting items
-        //productCell.delegate = self as? pantryItemDelegate
-        
+
         var productsInFilter: groceryItemCellContent
         if isFiltering() {
             productsInFilter = selectedGroceryItems[indexPath.item]
         } else {
-            productsInFilter = (products?[indexPath.item])!
+            productsInFilter = (listProducts?[indexPath.item])!
         }
-        
         return productCell
     }
-    
-    
-    
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         /*
          let selectedData = selectedGroceryItems[indexPath.item]
-         if groceryItemSelected.contains(indexPath) {
-         groceryItemSelected = groceryItemSelected.filter { $0 != indexPath }
+         if groceryProductsSelected.contains(indexPath) {
+         groceryProductsSelected = groceryProductsSelected.filter { $0 != indexPath }
          groceriesSelected = groceriesSelected.filter { $0 != selectedData }
          
-         }*/
+         }
+        */
         
+       
         //let selectedCell: pantryCellLayout = collectionView.cellForItem(at: indexPath as IndexPath)! as! pantryCellLayout
-        //if selectedCell.selectedButton.backgroundColor == UIColor.red {}
         
         switch isEditing {
         case true:
@@ -642,10 +578,8 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
             default:
                 handleAlert()
             }
-            
         }
         print(pantryCellLayout().selectedButton.backgroundColor!)
-        
     }
     
     
