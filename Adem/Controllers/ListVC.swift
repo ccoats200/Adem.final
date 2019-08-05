@@ -27,7 +27,7 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
     let headerID = "collectionViewHeader"
     
     var listProducts: [groceryItemCellContent]? = {
-        
+        /*
         var eggs = groceryItemCellContent()
         eggs.itemName = "Egg"
         eggs.itemImageName = "eggs"
@@ -41,8 +41,10 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
         bb.Quantity = "1"
         bb.List = true
         bb.Pantry = false
-        
+ 
         return [eggs, bb]
+ */
+        return []
     }()
     
     
@@ -267,9 +269,6 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
     //Delete item
     @objc func handleBatchDelete() {
         
-        for cells in selectedCells {
-            //cells.delegate = self as? pantryItemDelegate
-        }
         
     }
     //Add item back
@@ -506,11 +505,11 @@ class listCollectionView: UICollectionViewController, UICollectionViewDelegateFl
         if isFiltering() {
             return selectedGroceryItems.count
         }
-        for i in ([productsGlobal]) {
-            if groceryItemCellContent().List == true {
-                
-                print(groceryItemCellContent().itemName)
-               //listProducts?.append(i)
+        
+        for i in productsGlobal! {
+            print("for loop is working")
+            if i.List == true {
+               listProducts?.append(i)
             }
         }
         return listProducts!.count

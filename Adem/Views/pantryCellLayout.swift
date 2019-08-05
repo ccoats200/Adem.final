@@ -27,6 +27,7 @@ class pantryCellLayout: CellBasics {
             productName.text = gItem?.itemName
             quantity.text = gItem?.Quantity
             selectedButton.isHidden = !isEditing
+            
             print("set")
         }
     }

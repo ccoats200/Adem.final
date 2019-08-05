@@ -35,6 +35,10 @@ class ProfileView: UIView {
             profileImageCellLayout().userProfileImageView.image = UIImage(named: "eggs")
         }
     }
+    
+    //let urlImage = URL(string: "gs://adem-f0007.appspot.com/blueBerry.jpg")!
+    
+    //let task = URLSession.shared.dataTask(with: <#T##URLRequest#>)
     //UIView Profile Pic
     var coverPhoto: UIImageView = {
         let cover = UIImageView()

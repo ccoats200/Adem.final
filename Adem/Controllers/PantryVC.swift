@@ -48,6 +48,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     //Navigation buttons - End
 
     var products: [groceryItemCellContent]? = {
+        /*
         var eggs = groceryItemCellContent()
         eggs.itemName = "Egg"
         eggs.itemImageName = "bread"
@@ -120,6 +121,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         
         return [eggs, bre,tea,a,b,c,d,e,f,g]
+ */
+        return []
     }()
     
     //reuse ID's
@@ -407,6 +410,13 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     //Number of cells. update later for collection of cells based on product type
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+        for i in productsGlobal! {
+            print("for loop is working")
+            if i.Pantry == true {
+                //print(groceryItemCellContent().itemName)
+                products?.append(i)
+            }
+        }
         return products!.count
     }
     
@@ -417,6 +427,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
         productCell.gItem = products![indexPath.item]
+        //productCell.gItem = productsGlobal![indexPath.item]
         
         
         //collectionview.insertIems(at: indexPaths)
@@ -468,9 +479,16 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
     
     @objc func handleBatchDelete() {
+        
         for (key, value) in selectedProductsIndexPath {
             if value {
                 groceryProductsSelected.append(key)
+            }
+        }
+        
+        for i in productsGlobal! {
+            if i.Pantry == true {
+                i.Pantry = false
             }
         }
         
@@ -479,6 +497,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         }
         collectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
+        setEditing(false, animated: false)
     }
     
     //Setting up bar buttons
@@ -504,9 +523,16 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     //Add item back
     @objc func handleBatchAdd() {
+        
         for (key, value) in selectedProductsIndexPath {
             if value {
                 groceryProductsSelected.append(key)
+            }
+        }
+        
+        for i in productsGlobal! {
+            if i.Pantry == true {
+                i.Pantry = false
             }
         }
         
@@ -517,6 +543,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         }
         collectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
+        setEditing(false, animated: false)
         
         print("User add items in their pantry to their list ")
     }
