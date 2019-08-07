@@ -66,7 +66,8 @@ class settings: UIViewController, UITextFieldDelegate {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         
         
-        let listController = listCollectionView(collectionViewLayout: UICollectionViewFlowLayout())
+        //let listController = listCollectionView(collectionViewLayout: UICollectionViewFlowLayout())
+        let listController = listCollectionView()
         //self.navigationController?.pushViewController(listController, animated: true)
         //self.tabBarController?.present(listController, animated: true, completion: nil)
         

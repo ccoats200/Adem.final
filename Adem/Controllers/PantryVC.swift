@@ -47,83 +47,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //Navigation buttons - End
 
-    var products: [groceryItemCellContent]? = {
-        /*
-        var eggs = groceryItemCellContent()
-        eggs.itemName = "Egg"
-        eggs.itemImageName = "bread"
-        eggs.Quantity = "1"
-        eggs.List = true
-        eggs.Pantry = false
-        
-        var bre = groceryItemCellContent()
-        bre.itemName = "Bacon"
-        bre.itemImageName = "bread"
-        bre.Quantity = "1"
-        bre.List = true
-        bre.Pantry = false
-        
-        var tea = groceryItemCellContent()
-        tea.itemName = "Kale"
-        tea.itemImageName = "bread"
-        tea.Quantity = "1"
-        tea.List = true
-        tea.Pantry = true
-        
-        var a = groceryItemCellContent()
-        a.itemName = "Water"
-        a.itemImageName = "bread"
-        a.Quantity = "1"
-        a.List = false
-        a.Pantry = true
-        
-        var b = groceryItemCellContent()
-        b.itemName = "Salt"
-        b.itemImageName = "bread"
-        b.Quantity = "1"
-        b.List = false
-        b.Pantry = true
-        
-        var c = groceryItemCellContent()
-        c.itemName = "Tea"
-        c.itemImageName = "bread"
-        c.Quantity = "1"
-        c.List = false
-        c.Pantry = true
-        
-        var d = groceryItemCellContent()
-        d.itemName = "Coffee"
-        d.itemImageName = "bread"
-        d.Quantity = "1"
-        d.List = false
-        d.Pantry = true
-        
-        var e = groceryItemCellContent()
-        e.itemName = "Chicken"
-        e.itemImageName = "bread"
-        e.Quantity = "1"
-        e.List = false
-        e.Pantry = true
-        
-        var f = groceryItemCellContent()
-        f.itemName = "Seltzer"
-        f.itemImageName = "bread"
-        f.Quantity = "1"
-        f.List = false
-        f.Pantry = true
-        
-        var g = groceryItemCellContent()
-        g.itemName = "Bread"
-        g.itemImageName = "bread"
-        g.Quantity = "1"
-        g.List = false
-        g.Pantry = true
-        
-        
-        return [eggs, bre,tea,a,b,c,d,e,f,g]
- */
-        return []
-    }()
+    var products: [groceryItemCellContent]? = []
     
     //reuse ID's
     let cellID = "product"
@@ -199,7 +123,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
         
-        let Columns: CGFloat = 3.15
+        let Columns: CGFloat = 3.14
         let insetDimension: CGFloat = 2.0
         let cellHeight: CGFloat = 125.0
         let cellWidth = (pantryCollectionView.frame.width/Columns) - insetDimension
@@ -448,8 +372,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
          if groceryItemSelected.contains(indexPath) {
          groceryItemSelected = groceryItemSelected.filter { $0 != indexPath }
          groceriesSelected = groceriesSelected.filter { $0 != selectedData }
-         
-         }*/
+         }
+         */
         
         switch isEditing {
         case true:
@@ -486,13 +410,14 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             }
         }
         
-        for i in productsGlobal! {
+        for i in products! {
             if i.Pantry == true {
                 i.Pantry = false
             }
         }
         
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
+            print("User is about to remove \(products?[i.item].itemName) from their pantry and delete it from their list and pantry")
             products?.remove(at: i.item)
         }
         collectionView.deleteItems(at: groceryProductsSelected)
@@ -530,14 +455,20 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             }
         }
         
-        for i in productsGlobal! {
+        //watch out for nil val in future
+        for i in products! {
+            print("there were \(products?.count as Any) products")
+            
             if i.Pantry == true {
                 i.Pantry = false
+                i.List = true
             }
         }
         
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
             
+            
+            print("User is about to remove \(products?[i.item].itemName) from their pantry and add it to their list")
             products?.remove(at: i.item)
             
         }
@@ -545,7 +476,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
         
-        print("User add items in their pantry to their list ")
+        //listCollectionView().collectionView.reloadData()
+        groceryProductsSelected = []
     }
     
     //product Button

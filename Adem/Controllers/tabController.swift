@@ -42,11 +42,12 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
     
     func setUpTabBAR() {
         //List
-        let listLayout = UICollectionViewFlowLayout()
+        //let listLayout = UICollectionViewFlowLayout()
         //let pantryLayout = UICollectionViewFlowLayout()
         let mealsLayout = UICollectionViewFlowLayout()
         
-        let listController = listCollectionView(collectionViewLayout: listLayout)
+        //let listController = listCollectionView(collectionViewLayout: listLayout)
+        let listController = listCollectionView()
         let listTabButton = UINavigationController(rootViewController: listController)
         listTabButton.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "list"), tag: 2)
         listTabButton.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
@@ -59,6 +60,7 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         let pantryTabButton = UINavigationController(rootViewController: pantryController)
         pantryTabButton.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "Pantry_new"), tag: 2)
         pantryTabButton.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        
         
         //Meals
         let mealsController = Meals(collectionViewLayout: mealsLayout)
@@ -75,10 +77,10 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         viewControllers = [listTabButton, pantryTabButton, mealsTabButton, accountTabButton]
         
         //Attemting to Change the layout when in edit mode
-        self.tabBar.items?[3].isEnabled = isManager
-        if self.selectedViewController! == pantryTabButton {
-            viewControllers?.remove(at: 2)
-        }
+        //self.tabBar.items?[3].isEnabled = isManager
+        //if self.selectedViewController! == pantryTabButton {
+          //  viewControllers?.remove(at: 2)
+        //}
         //setViewControllers([listTabButton, pantryTabButton, mealsTabButton, accountTabButton], animated: false)
     }
     
