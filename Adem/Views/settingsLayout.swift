@@ -25,12 +25,12 @@ class accountPrivacyCellDesign: CellBasics {
     
     let accountPrivacyImages: UIImageView = {
         let aPImages = UIImageView()
-        aPImages.image = UIImage(named: "Gear")
+        //aPImages.image = UIImage(named: "Gear")
+        aPImages.backgroundColor = UIColor.black
         aPImages.contentMode = .scaleAspectFit
         aPImages.clipsToBounds = true
         aPImages.layer.masksToBounds = true
         print("rounds the corners of the image view")
-        
         aPImages.translatesAutoresizingMaskIntoConstraints = false
         
         return aPImages
@@ -66,10 +66,10 @@ class accountPrivacyCellDesign: CellBasics {
         accountPrivacyImages.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         accountPrivacyImages.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
-        accountPrivacyLabels.heightAnchor.constraint(equalToConstant: 20).isActive = true
         accountPrivacyLabels.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        accountPrivacyLabels.topAnchor.constraint(equalTo: accountPrivacyImages.bottomAnchor, constant: 10).isActive = true
-        accountPrivacyLabels.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50).isActive = true
+        accountPrivacyLabels.topAnchor.constraint(equalTo: accountPrivacyImages.bottomAnchor, constant: 5).isActive = true
+        accountPrivacyLabels.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        accountPrivacyLabels.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
     }
 }
 

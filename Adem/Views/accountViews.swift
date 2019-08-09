@@ -12,33 +12,10 @@ import FirebaseFirestore
 
 class ProfileView: UIView {
     
-    func viewWillAppear(_ animated: Bool) {
-       
-        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-            
-            let user = Auth.auth().currentUser
-            if let user = user {
-                let nameOfUser = user.email
-                //let photoURL = user.photoURL
-                //let uid = user.uid
-                
-                //                let doesNotHaveAccount = "Welcome"
-                
-                self.nameofUser.text = nameOfUser
-            }
-        }
-        docRef.addSnapshotListener { (docSnapshot, error) in
-            guard let docSnapshot = docSnapshot, docSnapshot.exists else { return }
-            let userNameData = docSnapshot.data()
-            let usersName = userNameData?["FirstName"] as? String ?? ""
-            profileImageCellLayout().userProfileName.text = "\(usersName)"
-            profileImageCellLayout().userProfileImageView.image = UIImage(named: "eggs")
-        }
-    }
-    
     //let urlImage = URL(string: "gs://adem-f0007.appspot.com/blueBerry.jpg")!
     
     //let task = URLSession.shared.dataTask(with: <#T##URLRequest#>)
+    
     //UIView Profile Pic
     var coverPhoto: UIImageView = {
         let cover = UIImageView()
@@ -74,7 +51,6 @@ class ProfileView: UIView {
         userName.font = UIFont.boldSystemFont(ofSize: 20)
         userName.textColor = UIColor.ademBlue
         userName.translatesAutoresizingMaskIntoConstraints = false
-        userName.text = "test"
         print("sets the item name")
         return userName
     }()

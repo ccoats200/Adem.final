@@ -47,7 +47,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //Navigation buttons - End
 
-    var products: [groceryItemCellContent]? = []
+    var products: [groceryItemCellContent] = []
     
     //reuse ID's
     let cellID = "product"
@@ -338,10 +338,10 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             print("for loop is working")
             if i.Pantry == true {
                 //print(groceryItemCellContent().itemName)
-                products?.append(i)
+                products.append(i)
             }
         }
-        return products!.count
+        return products.count
     }
     
     //Initiating cell
@@ -350,7 +350,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! pantryCellLayout
         
         productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
-        productCell.gItem = products![indexPath.item]
+        productCell.gItem = products[indexPath.item]
         //productCell.gItem = productsGlobal![indexPath.item]
         
         
@@ -410,15 +410,15 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             }
         }
         
-        for i in products! {
+        for i in products {
             if i.Pantry == true {
                 i.Pantry = false
             }
         }
         
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            print("User is about to remove \(products?[i.item].itemName) from their pantry and delete it from their list and pantry")
-            products?.remove(at: i.item)
+            print("User is about to remove \(products[i.item].itemName) from their pantry and delete it from their list and pantry")
+            products.remove(at: i.item)
         }
         collectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
@@ -456,8 +456,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         }
         
         //watch out for nil val in future
-        for i in products! {
-            print("there were \(products?.count as Any) products")
+        for i in products {
+            print("there were \(products.count as Any) products")
             
             if i.Pantry == true {
                 i.Pantry = false
@@ -466,10 +466,9 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         }
         
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            
-            
-            print("User is about to remove \(products?[i.item].itemName) from their pantry and add it to their list")
-            products?.remove(at: i.item)
+                        
+            print("User is about to remove \(products[i.item].itemName) from their pantry and add it to their list")
+            products.remove(at: i.item)
             
         }
         collectionView.deleteItems(at: groceryProductsSelected)

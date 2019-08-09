@@ -63,17 +63,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         
     }
     
-    
-    let loginFieldView: UIView = {
-        let logintextfield = UIView()
-        logintextfield.backgroundColor = UIColor.clear
-        logintextfield.translatesAutoresizingMaskIntoConstraints = false
-        logintextfield.layer.cornerRadius = 5
-        logintextfield.layer.masksToBounds = true
-        return logintextfield
-    }()
-    
-    
     //Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -93,9 +82,18 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     }
     
     
+    let loginFieldView: UIView = {
+        let logintextfield = UIView()
+        logintextfield.backgroundColor = UIColor.clear
+        logintextfield.translatesAutoresizingMaskIntoConstraints = false
+        logintextfield.layer.cornerRadius = 5
+        logintextfield.layer.masksToBounds = true
+        return logintextfield
+    }()
+    
+    
     @objc func handelNext()
     {
-        
         print("New user tapped signUp button")
         
         guard let firstName = firstNameTextField.text, !firstName.isEmpty else { return }
@@ -122,28 +120,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
             
         }
-        /*
-         var ref: DocumentReference? = nil
-         ref = db.collection("users").addDocument(data: [
-         "name": "Tokyo",
-         "country": "Japan"
-         ]) { err in
-         if let err = err {
-         print("Error adding document: \(err)")
-         } else {
-         print("Document added with ID: \(ref!.documentID)")
-         }
-         }
-         
-         // Add a new document in collection "cities"
-         db.collection("users").addDocument(data: dataToSave) { err in
-         if let err = err {
-         print("Error writing document: \(err)")
-         } else {
-         print("Document successfully written!")
-         }
-         }
-         */
         docRef.setData(dataToSave) { (error) in
             
             if let error = error {

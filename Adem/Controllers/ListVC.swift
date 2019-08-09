@@ -59,7 +59,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
-    var listProducts: [groceryItemCellContent]? =  []
+    var listProducts: [groceryItemCellContent] =  []
     
     //var products: [groceryProductsStruct] = groceryProducts.fetchGroceryProductImages()
         var searchController = UISearchController(searchResultsController: nil)
@@ -186,9 +186,9 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        selectedGroceryItems = (listProducts?.filter({( groceryItems : groceryItemCellContent) -> Bool in
+        selectedGroceryItems = (listProducts.filter({( groceryItems : groceryItemCellContent) -> Bool in
             return (groceryItems.itemName?.lowercased().contains(searchText.lowercased()))!
-        }))!
+        }))
         
         collectionView.reloadData()
     }
@@ -396,16 +396,16 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         }
         
         for i in productsGlobal! {
-            print("for loop is working and there are \(listProducts?.count as Any) products")
+            print("for loop is working and there are \(listProducts.count as Any) products")
             if i.List == true {
-                listProducts?.append(i)
+                listProducts.append(i)
             }
         }
         
-        print("there are \(listProducts?.count as Any) products")
+        print("there are \(listProducts.count as Any) products")
         
         
-        return listProducts!.count
+        return listProducts.count
     }
     
     
@@ -422,14 +422,14 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         //            }
         //        }
         
-        productCell.gItem = listProducts![indexPath.item]
+        productCell.gItem = listProducts[indexPath.item]
         productCell.layer.cornerRadius = 5
         
         var productsInFilter: groceryItemCellContent
         if isFiltering() {
             productsInFilter = selectedGroceryItems[indexPath.item]
         } else {
-            productsInFilter = (listProducts?[indexPath.item])!
+            productsInFilter = (listProducts[indexPath.item])
         }
         return productCell
     }
@@ -490,15 +490,15 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             }
         }
         
-        for i in listProducts! {
+        for i in listProducts {
             if i.Pantry == true {
                 i.Pantry = false
             }
         }
         
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            print("User is about to remove \(listProducts?[i.item].itemName) from their pantry and delete it from their list and pantry")
-            listProducts?.remove(at: i.item)
+            print("User is about to remove \(listProducts[i.item].itemName) from their pantry and delete it from their list and pantry")
+            listProducts.remove(at: i.item)
         }
         collectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
@@ -527,8 +527,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         }
         
         //watch out for nil val in future
-        for i in listProducts! {
-            print("there were \(listProducts?.count as Any) products")
+        for i in listProducts {
+            print("there were \(listProducts.count as Any) products")
             
             if i.List == true {
                 i.List = false
@@ -539,8 +539,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
             
             
-            print("User is about to remove \(listProducts?[i.item].itemName) from their pantry and add it to their list")
-            listProducts?.remove(at: i.item)
+            print("User is about to remove \(listProducts[i.item].itemName) from their pantry and add it to their list")
+            listProducts.remove(at: i.item)
             
         }
         collectionView.deleteItems(at: groceryProductsSelected)
