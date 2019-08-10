@@ -45,13 +45,9 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         
         view.backgroundColor = UIColor.white
         
-        
         let settings = FirestoreSettings()
-        
         Firestore.firestore().settings = settings
         // [END setup]
-        db = Firestore.firestore()
-        
         docRef = Firestore.firestore().document("\(usersInfo)")
         
         //This needs to be changed
@@ -74,7 +70,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
      //SetUp views from own class
         let ss: CGRect = UIScreen.main.bounds
         accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: ss.width, height: 225))
-        
         
         let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let profileCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
@@ -106,6 +101,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
      }
 
     var firstNameListener: ListenerRegistration!
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -127,7 +123,8 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
 //                ProfileView().nameofUser.text = nameOfUser
 //            }
 //        }
-//
+        
+        
         firstNameListener = docRef.addSnapshotListener { (docSnapshot, error) in
             guard let docSnapshot = docSnapshot, docSnapshot.exists else { return }
             let userNameData = docSnapshot.data()

@@ -12,7 +12,7 @@ import FirebaseFirestore
 
 class ProfileView: UIView {
     
-    //let urlImage = URL(string: "gs://adem-f0007.appspot.com/blueBerry.jpg")!
+    let urlImage = URL(string: "gs://adem-f0007.appspot.com/blueBerry.jpg")!
     
     //let task = URLSession.shared.dataTask(with: <#T##URLRequest#>)
     

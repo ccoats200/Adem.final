@@ -14,12 +14,17 @@
  import FirebaseFirestore
  
  class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+ //This needs a recipies button at the bottom. prominant. recipies can be listed as share with everyone or just friends or no one. Good for user generated content.
+ //for now no chat setting for sending recipies easily.
+ //the recipie will be photographed and in a table view, users can choose a generic pic for it. computer graphic or take a pic
+ 
+ 
  
  //var docRef: DocumentReference!
  //var handle: AuthStateDidChangeListenerHandle?
  let user = Auth.auth().currentUser
  
- var accountStuff: ProfileView!
+ 
  
  //Cell Id's
  let cellId = "cellId0"
@@ -53,61 +58,20 @@
  docRef = Firestore.firestore().document("UserLoginInfo/user")
  
  
- 
+ //This needs to be changed
  let added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handelSignUp))
  self.navigationItem.rightBarButtonItem = added
  
  
- //Family Cell
- //Collection view scrollable
- //collectionView.register(familySection.self, forCellWithReuseIdentifier: cellId2)
- collectionView.register(friendsCellLayout.self, forCellWithReuseIdentifier: cellId2)
- 
- //collectionView.register(familyCells.self, forCellWithReuseIdentifier: cellId2)
- 
- //Device Cell
- collectionView.register(deviceSection.self, forCellWithReuseIdentifier: cellId3)
- 
- //Allergies Cell
- collectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellId4)
- 
- //self.collectionView.register(friendsCellLayout.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: self.headerID)
- 
- //let flow = self.collectionView.collectionViewLayout as! UICollectionViewFlowLayout
- //flow.headerReferenceSize = CGSize(30,30)
- 
  
  
  //setup all views
- setupViews()
- //setUpAgain()
+ setUpAgain()
+ //setUpViews()
+ 
  }
  
- //UIView Profile Pic
- let coverPhoto: UIImageView = {
- let cover = UIImageView()
- cover.image = UIImage(named: "eggs")
- cover.layer.masksToBounds = true
- cover.clipsToBounds = true
- cover.translatesAutoresizingMaskIntoConstraints = false
- return cover
- }()
  
- //UIView Profile Pic
- let userProfileImage: UIImageView = {
- let profPic = UIImageView()
- profPic.image = UIImage(named: "bread")
- profPic.contentMode = .scaleAspectFill
- profPic.layer.cornerRadius = 50
- profPic.layer.masksToBounds = true
- profPic.clipsToBounds = true
- profPic.layer.borderWidth = 4
- profPic.layer.shadowColor = UIColor.clear.cgColor
- profPic.layer.borderColor = UIColor.white.cgColor
- profPic.translatesAutoresizingMaskIntoConstraints = false
- 
- return profPic
- }()
  
  let nameofUser: UILabel = {
  let userName = UILabel()
@@ -117,64 +81,51 @@
  //userName.font = UIFont(name: "Lato", size: 80)
  userName.font = UIFont.boldSystemFont(ofSize: 20)
  userName.textColor = UIColor.ademBlue
- //userName.text = "Coleman"
+ userName.text = "Coleman"
  userName.translatesAutoresizingMaskIntoConstraints = false
  print("sets the item name")
  return userName
  }()
  
+ var accountStuff: ProfileView!
+ weak var collectionView: UICollectionView!
  
- 
- let collectionView: UICollectionView = { // collection view to be added to view controller
- let cv = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout());//zero size with flow layout
- cv.translatesAutoresizingMaskIntoConstraints = false
- cv.backgroundColor = .white
- return cv
- 
- }()
- 
- //Search Button
- @objc func handleSearch() {
- //let cController = SettingsVC()
- let cController = SettingTVC()
- self.navigationController?.pushViewController(cController, animated: true)
- print("Settings Tab is active")
- }
- 
- //Privacy Button
- @objc func handlePrivacy() {
- 
- let privacyController = privacyTVC()
- self.navigationController?.pushViewController(privacyController, animated: true)
- print("Settings Tab is active")
- }
- /*
  func setUpAgain() {
  //SetUp views from own class
  let ss: CGRect = UIScreen.main.bounds
- accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: ss.width, height: 500))
- //accountStuff = ProfileView(frame: CGRect.zero)
- //accountStuff.backgroundColor = UIColor.red
+ accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: ss.width, height: 225))
+ 
+ 
+ let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+ let profileCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
  self.view.addSubview(accountStuff)
- self.view.addSubview(collectionView)
+ self.view.addSubview(profileCollectionView)
+ 
+ profileCollectionView.delegate = self // set delegate
+ profileCollectionView.dataSource = self
+ profileCollectionView.layer.cornerRadius = 10
  
  
- collectionView.delegate = self // set delegate
- collectionView.dataSource = self //set data source
+ profileCollectionView.backgroundColor = UIColor.ademGreen
+ 
+ profileCollectionView.translatesAutoresizingMaskIntoConstraints = false
+ 
+ profileCollectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellId4)
+ 
  
  NSLayoutConstraint.activate([
- //accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
- //accountStuff.leadingAnchor.constraint(equalTo: view.leadingAnchor),
- //accountStuff.trailingAnchor.constraint(equalTo: view.trailingAnchor),
- collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
- collectionView.trailingAnchor.constraint(equalTo:  view.trailingAnchor),
- collectionView.topAnchor.constraint(equalTo: accountStuff.bottomAnchor, constant: 25),
- collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+ profileCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10),
+ 
+ profileCollectionView.centerXAnchor.constraint(equalTo:  view.centerXAnchor),
+ profileCollectionView.topAnchor.constraint(equalTo: accountStuff.bottomAnchor, constant: 25),
+ profileCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+ 
  ])
+ self.collectionView = profileCollectionView
  
  }
- */
  
+ /*
  func setupViews() {
  
  
@@ -183,11 +134,12 @@
  view.addSubview(nameofUser)
  
  
- view.addSubview(collectionView)
+ ///view.addSubview(collectionView)
+ //collectionView.backgroundColor = UIColor.ademGreen
+ //collectionView.layer.cornerRadius = 5
  
- 
- collectionView.delegate = self // set delegate
- collectionView.dataSource = self //set data source
+ //collectionView.delegate = self // set delegate
+ //collectionView.dataSource = self //set data source
  
  
  //CoverPhoto
@@ -211,16 +163,19 @@
  
  
  //Collection
- collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true //set the location of collection view
- collectionView.trailingAnchor.constraint(equalTo:  view.trailingAnchor).isActive = true // top anchor of collection view
+ collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5).isActive = true //set the location of collection view
+ collectionView.trailingAnchor.constraint(equalTo:  view.trailingAnchor, constant: -5).isActive = true // top anchor of collection view
  collectionView.topAnchor.constraint(equalTo: nameofUser.bottomAnchor, constant: 25).isActive = true // height
- collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true // width
- 
+ collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100).isActive = true // width
+ //collectionView.heightAnchor.constraint(equalToConstant: 450).isActive = true
  }
+ */
  
  override func viewWillAppear(_ animated: Bool) {
  super.viewWillAppear(animated)
  
+ self.navigationController?.view.layoutIfNeeded()
+ self.navigationController?.view.setNeedsLayout()
  
  
  handle = Auth.auth().addStateDidChangeListener { (auth, user) in
@@ -231,7 +186,7 @@
  //let photoURL = user.photoURL
  //let uid = user.uid
  
- let doesNotHaveAccount = "Welcome"
+ //                let doesNotHaveAccount = "Welcome"
  
  self.nameofUser.text = nameOfUser
  }
@@ -274,126 +229,108 @@
  //deque cell
  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
  
- switch indexPath.section {
- 
+ switch indexPath.item {
  case 0:
- let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: cellId2, for: indexPath) as! friendsCellLayout
- cell2.backgroundColor = UIColor.blue
- cell2.layer.cornerRadius = 5
- return cell2
+ let friends = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
+ friends.accountPrivacyLabels.text = "Friends"
+ friends.backgroundColor = UIColor.white
+ friends.layer.cornerRadius = 15
  
+ 
+ return friends
  case 1:
- let cell3 = collectionView.dequeueReusableCell(withReuseIdentifier: cellId3, for: indexPath)
- return cell3
+ let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
+ devices.accountPrivacyImages.image = UIImage(named: "lock")
+ devices.accountPrivacyLabels.text = "Devices"
+ devices.backgroundColor = UIColor.white
+ devices.layer.cornerRadius = 15
+ 
+ return devices
  
  case 2:
- if indexPath.item == 0 {
- let accountInfo = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
- 
- accountInfo.layer.borderWidth = 2
- accountInfo.layer.borderColor = UIColor.white.cgColor
- accountInfo.backgroundColor = UIColor.blue
- accountInfo.layer.cornerRadius = 15
+ let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
+ settings.accountPrivacyLabels.text = "Settingss"
+ settings.backgroundColor = UIColor.white
+ settings.layer.cornerRadius = 15
  
  
- return accountInfo
- } else {
- let privacyInfo = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
+ return settings
+ case 3 :
+ let health = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
+ health.accountPrivacyImages.image = UIImage(named: "lock")
+ health.accountPrivacyLabels.text = "Health"
+ health.backgroundColor = UIColor.white
+ health.layer.cornerRadius = 15
  
- privacyInfo.accountPrivacyImages.image = UIImage(named: "lock")
- 
- privacyInfo.backgroundColor = UIColor.blue
- 
- privacyInfo.layer.cornerRadius = 5
- 
- return privacyInfo
- }
+ return health
  
  default:
- let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: cellId2, for: indexPath)
+ let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath)
  return cell2
  }
  }
  
  
- //product Button
- @objc func handleProduct() {
+ //Cell calls
+ @objc func handleFriends() {
+ let privacyController = friendsTVC()
+ self.navigationController?.pushViewController(privacyController, animated: true)
+ print("Settings Tab is active")
+ }
  
- let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
+ @objc func handleDevices() {
+ let cController = settings()
+ cController.hidesBottomBarWhenPushed = true
  self.navigationController?.pushViewController(cController, animated: true)
- 
  print("Settings Tab is active")
  }
  
  @objc func handleSettings() {
- 
- let cController = settings()
- cController.hidesBottomBarWhenPushed = true
+ let cController = SettingTVC()
  self.navigationController?.pushViewController(cController, animated: true)
+ print("Settings Tab is active")
+ }
  
- 
+ @objc func handleHealth() {
+ let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
+ self.navigationController?.pushViewController(cController, animated: true)
  print("Settings Tab is active")
  }
  
  
  
+ 
  func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
- 
- switch indexPath.section {
+ switch indexPath.item {
  case 0:
- 
- handleProduct()
+ handleFriends()
  case 1:
- 
- if indexPath.item == 0 {
- handleProduct()
- } else {
- handleSearch()
- }
+ handleDevices()
  case 2:
- 
- handleSearch()
- 
- case 3:
- 
- if indexPath.item == 0 {
  handleSettings()
- } else {
- handlePrivacy()
- }
+ case 3:
+ handleHealth()
  default:
- handleSearch()
+ handleSettings()
  }
  }
  
  // number of cells
  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
  
- switch section {
- 
- case 0:
- 
  return 4
- case 2:
- return acct!.count
- 
- default:
- return 1
- }
  }
  
  func numberOfSections(in collectionView: UICollectionView) -> Int {
- 
- return 3
+ return 1
  }
  
- 
  //inset allocation
- let sectionInsets = UIEdgeInsets(top: 2.5, left: 2.5, bottom: 2.5, right: 2.5)
+ let sectionInsets = UIEdgeInsets(top: 20, left: 5, bottom: 20, right: 5)
  
  //trying to get spacing betweenc cells
  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
- 
+ //Distance Between Cells
  return sectionInsets.bottom
  }
  
@@ -406,25 +343,9 @@
  //size of each CollecionViewCell
  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
  
- switch indexPath.section {
- 
- 
- case 0:
- let size1 = CGSize(width: view.frame.width/4 - 10, height: 100)
- return size1
- 
- case 1:
- let size2 = CGSize(width: view.frame.width - 10, height: 90)
- return size2
- 
- case 2:
- let size4 = CGSize(width: view.frame.width/2 - 10, height: 130)
+ let size4 = CGSize(width: view.frame.width/2 - 20, height: collectionView.frame.height/4 - 20)
  return size4
  
- default:
- let defaults = CGSize(width: view.frame.width - 10, height: 110)
- return defaults
- }
  }
  
  override func didReceiveMemoryWarning() {
@@ -433,4 +354,5 @@
  }
  
  
+
  */

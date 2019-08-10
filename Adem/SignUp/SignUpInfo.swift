@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Foundation
 import UIKit
 import Firebase
 import FirebaseFirestore
@@ -16,12 +15,10 @@ import FirebaseFirestore
 class UserInfo: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
-    var docRef: DocumentReference!
     var handle: AuthStateDidChangeListenerHandle?
     let user = Auth.auth().currentUser
     let minimuPasswordCount = 6
     
-    let db = Firestore.firestore()
     
     
     override func viewDidLoad() {
@@ -33,6 +30,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         self.navigationController?.view.backgroundColor = UIColor.clear
         
         //UserLoginInfo
+        colRef = Firestore.firestore().collection("User")
         docRef = Firestore.firestore().document("\(usersInfo)")
         
         firstNameTextField.delegate = self
@@ -95,7 +93,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     @objc func handelNext()
     {
         print("New user tapped signUp button")
-        
         guard let firstName = firstNameTextField.text, !firstName.isEmpty else { return }
         guard let lastName = lastNameTextField.text, !lastName.isEmpty else { return }
         guard let email = emailTextField.text, !email.isEmpty || !email.contains(".com") else { return }
@@ -118,9 +115,9 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         ]
         
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
-            
         }
-        docRef.setData(dataToSave) { (error) in
+        
+        db.collection("Users").document().setData(dataToSave) { (error) in
             
             if let error = error {
                 print("Error creating documents: \(error.localizedDescription)")
@@ -131,7 +128,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 
                 self.present(alert, animated: true, completion: nil)
             } else if self.passwordTextField.text == self.confirmPasswordTextField.text {
-                
                 
                 print("Data has been Saved")
                 //This breaks when you try to go to the next screen from any field other than the confirm field
@@ -146,6 +142,33 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 print("Brought to next Screen")
             }
         }
+        /*
+        docRef.setData(dataToSave) { (error) in
+            
+            if let error = error {
+                print("Error creating documents: \(error.localizedDescription)")
+            } else if self.passwordTextField.text != self.confirmPasswordTextField.text {
+                
+                let alert = UIAlertController(title: "Email in use", message: "This email is alread in use. ", preferredStyle: UIAlertController.Style.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
+                
+                self.present(alert, animated: true, completion: nil)
+            } else if self.passwordTextField.text == self.confirmPasswordTextField.text {
+                
+                print("Data has been Saved")
+                //This breaks when you try to go to the next screen from any field other than the confirm field
+                
+                self.confirmPasswordTextField.resignFirstResponder()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                let listController = tabBar()
+                
+                listController.resignFirstResponder()
+                appDelegate.window?.rootViewController = listController
+                appDelegate.window?.makeKeyAndVisible()
+                print("Brought to next Screen")
+            }
+        }
+ */
     }
     
     //Accessory Views

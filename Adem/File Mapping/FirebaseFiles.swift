@@ -9,10 +9,11 @@
 import Firebase
 import FirebaseFirestore
 
+let db = Firestore.firestore()
 var docRef: DocumentReference!
 var colRef: CollectionReference!
 var handle: AuthStateDidChangeListenerHandle?
-let user = Auth.auth().currentUser
+let currentUser = Auth.auth().currentUser
 
 
 let usersInfo = "Users/user/info/fluid"
@@ -21,5 +22,5 @@ let productsInPantry = "Pantry"
 let productsInList = "List"
 let productsAvailable = "Products"
 
-let usersCollection = "Users/\(user!.email!)"
+let usersCollection = "Users/\(currentUser!.uid)"
 
