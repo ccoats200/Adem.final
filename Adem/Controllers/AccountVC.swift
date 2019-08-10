@@ -19,13 +19,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     //the recipie will be photographed and in a table view, users can choose a generic pic for it. computer graphic or take a pic
     
     
-    
-    //var docRef: DocumentReference!
-    //var handle: AuthStateDidChangeListenerHandle?
-    let user = Auth.auth().currentUser
-    var db: Firestore!
-    
-    
     //Cell Id's
     let cellId = "cellId0"
     let cellId2 = "cell1"
@@ -46,13 +39,10 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         view.backgroundColor = UIColor.white
         
         let settings = FirestoreSettings()
-        Firestore.firestore().settings = settings
+        db.settings = settings
         // [END setup]
-        docRef = Firestore.firestore().document("\(usersInfo)")
         
-        //This needs to be changed
-        let added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handelSignUp))
-        self.navigationItem.rightBarButtonItem = added
+        
         
 
        
@@ -108,23 +98,31 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
         
+        docRef = db.document("\(usersInfo)")
+    
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            var user = currentUser
+            if let user = user {
+                let nameOfUser = user.email
+                let photoURL = user.photoURL
+                let uid = user.uid
+                let name = user.displayName
+                self.accountStuff.nameofUser.text = nameOfUser
+                
+                //If use is logged in they can't sign in again
+                self.navigationItem.rightBarButtonItem = nil
+            } else {
+                
+                let doesNotHaveAccount = "Chef"
+                self.accountStuff.nameofUser.text = doesNotHaveAccount
+                //If user is not signed in they can by clicking the plus. They can they also create an account.
+                let added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handelSignUp))
+                self.navigationItem.rightBarButtonItem = added
+            }
+        }
         
         
-//        handle = Auth.auth().addStateDidChangeListener { (auth, user) in
-//
-//            let user = Auth.auth().currentUser
-//            if let user = user {
-//                let nameOfUser = user.email
-//                //let photoURL = user.photoURL
-//                //let uid = user.uid
-//
-//                //                let doesNotHaveAccount = "Welcome"
-//
-//                ProfileView().nameofUser.text = nameOfUser
-//            }
-//        }
-        
-        
+        /*
         firstNameListener = docRef.addSnapshotListener { (docSnapshot, error) in
             guard let docSnapshot = docSnapshot, docSnapshot.exists else { return }
             let userNameData = docSnapshot.data()
@@ -132,23 +130,18 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             self.accountStuff.nameofUser.text = "\(usersName)"
             print("\(usersName)")
         }
+ */
     }
-    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        firstNameListener.remove()
     }
     
-    @objc func handelSignUp()
-    {
-        
-        let signUpInfo = UserInfo()
+    @objc func handelSignUp() {
+        let signUpInfo = login()
         signUpInfo.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(signUpInfo, animated: true)
-        
         print("Sending user to sign up Flow")
-        
     }
     
     var acct: [profileContent]? = {
@@ -305,6 +298,15 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         print("Settings Tab is active")
     }
     
+    @objc func handleLogout() {
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        handelSignUp()
+    }
+    
     @objc func handleHealth() {
         let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
         self.navigationController?.pushViewController(cController, animated: true)
@@ -313,17 +315,32 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     //Button actions - End
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        switch indexPath.item {
+        
+        switch indexPath.section {
         case 0:
-            handleFriends()
+            switch indexPath.item {
+            case 0:
+                handleFriends()
+            case 1:
+                handleDevices()
+            default:
+                handleHealth()
+            }
         case 1:
-            handleDevices()
+            switch indexPath.item {
+            case 0:
+                handleFriends()
+            case 1:
+                handleDevices()
+            case 2:
+                handleHealth()
+            default:
+                handleHealth()
+            }
         case 2:
-            handleSettings()
-        case 3:
-            handleHealth()
+            handleLogout()
         default:
-            handleSettings()
+            handleLogout()
         }
     }
     

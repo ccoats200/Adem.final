@@ -89,6 +89,7 @@
 		0A54AFA40FFA6A5351829C21 /* Pods-AdemTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.debug.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.debug.xcconfig"; sourceTree = "<group>"; };
 		187913B8C17B384F222CAF49 /* Pods-Adem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem.release.xcconfig"; path = "Target Support Files/Pods-Adem/Pods-Adem.release.xcconfig"; sourceTree = "<group>"; };
 		3094CA93057F1C3C582F7E2E /* Pods-AdemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.release.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.release.xcconfig"; sourceTree = "<group>"; };
+		353C123422FF5C84007DF3BB /* Adem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Adem.entitlements; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -222,6 +223,7 @@
 		35D647F722ECBABA00015352 /* Adem */ = {
 			isa = PBXGroup;
 			children = (
+				353C123422FF5C84007DF3BB /* Adem.entitlements */,
 				35D6489022ECBFDD00015352 /* TableViewControllers */,
 				35D6488D22ECBFB400015352 /* File Mapping */,
 				35D6488A22ECBF9300015352 /* Bluetooth */,
@@ -481,6 +483,11 @@
 				TargetAttributes = {
 					35D647F422ECBABA00015352 = {
 						CreatedOnToolsVersion = 10.2.1;
+						SystemCapabilities = {
+							com.apple.Keychain = {
+								enabled = 1;
+							};
+						};
 					};
 					35D6480B22ECBABB00015352 = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -873,6 +880,7 @@
 			baseConfigurationReference = A58BFA409D4C4787278BC2BF /* Pods-Adem.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Adem/Adem.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N372M2L25B;
 				INFOPLIST_FILE = Adem/Info.plist;
@@ -892,6 +900,7 @@
 			baseConfigurationReference = 187913B8C17B384F222CAF49 /* Pods-Adem.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Adem/Adem.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = N372M2L25B;
 				INFOPLIST_FILE = Adem/Info.plist;

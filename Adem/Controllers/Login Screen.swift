@@ -63,33 +63,44 @@ class login: UIViewController, UITextFieldDelegate {
     }
     
     
-    
+    func incorrectInformationAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Try again", style: .default, handler: {action in
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
     
     @objc func handelLogin()
     {
-        let listController = tabBar()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        
-        
-        guard let email = emailTextField.text, !email.isEmpty else { return }
-        guard let password = passwordTextField.text, !password.isEmpty else { return }
+        //Making sure that credentials are correct
+        guard let email = self.emailTextField.text, !email.isEmpty, let password = self.passwordTextField.text, !password.isEmpty else {
+            incorrectInformationAlert(title: "Login Failed", message: "Please enter a valid email and password")
+            return
+        }
         
         print(email)
         print(password)
         
         //User: Signed in with email
-        //Auth.auth().signIn(withEmail: emailTextField.text!, password: passwordTextField.text!)
-        
-        Auth.auth().signIn(withEmail: email, password: password) { [weak self] user, error in
+        firebaseAuth.signIn(withEmail: email, password: password) { [weak self] user, error in
             guard let strongSelf = self else { return }
+            
+            let listController = tabBar()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = listController
+            appDelegate.window?.makeKeyAndVisible()
+            print("Logging in \(email)")
         }
         
-        //Auth.auth().signInAndRetrieveData(with: <#T##AuthCredential#>, completion: <#T##AuthDataResultCallback?##AuthDataResultCallback?##(AuthDataResult?, Error?) -> Void#>)
-        
+        //Question: Why does this only need on click when in the signIn method but 2 outside it?
+        /*
+        let listController = tabBar()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.window?.rootViewController = listController
         appDelegate.window?.makeKeyAndVisible()
-        
-        print("Logging in")
+        print("Logging in \(email)")
+ */
     }
     
     

@@ -14,6 +14,7 @@ var docRef: DocumentReference!
 var colRef: CollectionReference!
 var handle: AuthStateDidChangeListenerHandle?
 let currentUser = Auth.auth().currentUser
+let firebaseAuth = Auth.auth()
 
 
 let usersInfo = "Users/user/info/fluid"
