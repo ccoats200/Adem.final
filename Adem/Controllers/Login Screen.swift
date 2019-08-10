@@ -15,9 +15,6 @@ import FirebaseFirestore
 class login: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
-    var docRef: DocumentReference!
-    var handle: AuthStateDidChangeListenerHandle?
-    let user = Auth.auth().currentUser
     //let minimuPasswordCount = 6
     
     override func viewDidLoad() {
@@ -102,27 +99,22 @@ class login: UIViewController, UITextFieldDelegate {
         print("Logging in \(email)")
  */
     }
-    
-    
-    
-    @objc func handelSignUp()
-    {
+
+    @objc func handelSignUp() {
         
+        //Check how this is transitioning and fix it for a navigation controller
         let signUpInfo = UserInfo()
         self.present(signUpInfo, animated: true, completion: nil)
-        //self.navigationController?.pushViewController(signUpInfo, animated: true)
+        //navigationController?.pushViewController(signUpInfo, animated: true)
         print("Sending user to sign up Flow")
-        
     }
     
-    @objc func handleSkip()
-    {
+    @objc func handleSkip() {
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let skipAccountCreation = tabBar()
         appDelegate.window?.rootViewController = skipAccountCreation
         print("Allowing user to skip the login or sign up flow")
-        
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -134,7 +126,6 @@ class login: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
     
     let loginFieldView: UIView = {
         let logintextfield = UIView()
@@ -158,7 +149,6 @@ class login: UIViewController, UITextFieldDelegate {
         login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         login.addTarget(self, action: #selector(handelLogin), for: .touchUpInside)
         return login
-        
     }()
     
     lazy var signUpButton: UIButton = {
@@ -169,7 +159,6 @@ class login: UIViewController, UITextFieldDelegate {
         signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         signUp.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
         return signUp
-        
     }()
     
     lazy var facebookLoginImage: UIButton = {
@@ -182,21 +171,6 @@ class login: UIViewController, UITextFieldDelegate {
         facebookLogin.backgroundColor = UIColor.white
         return facebookLogin
     }()
-    
-    
-    
-    //pull this info into the account section
-    func setTitleDisplay(_ user: User?) {
-        if let name = user?.displayName {
-            self.navigationItem.title = "Welcome \(name)"
-        } else {
-            self.navigationItem.title = "Welcome to Adem"
-        }
-        
-    }
-    
-    
-    
     
     let userNameTextField: UITextField = {
         let name = UITextField()
@@ -246,8 +220,6 @@ class login: UIViewController, UITextFieldDelegate {
         
         return ademImage
     }()
-    
-    
     
     func setuploginFieldView() {
         

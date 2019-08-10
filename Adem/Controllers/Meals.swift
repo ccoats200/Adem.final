@@ -193,9 +193,7 @@ class Meals: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIS
         let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
         cController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(cController, animated: true)
-        
-        
-        
+    
         print("Settings Tab is active")
     }
     

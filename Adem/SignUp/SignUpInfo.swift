@@ -19,11 +19,12 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     let user = Auth.auth().currentUser
     let minimuPasswordCount = 6
     
-    
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        //Might not need. Probably need to call this in a different way. 
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -39,9 +40,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         passwordTextField.delegate = self
         confirmPasswordTextField.delegate = self
         nextButton.resignFirstResponder()
-        
-        
-        
+
         //Backgound Color Start
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
@@ -115,9 +114,15 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         ]
         
         Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
+    
+            //print(currentUser?.uid as Any)
+            
         }
+        //Need to create a private and public collection when they sign up. one for sensitive info one for sharing food interests.
         
-        db.collection("Users").document().setData(dataToSave) { (error) in
+        //This gets the current users uid and creates the document in the users collection with the udi as the doc number. This is promising for linking users to accounds but may need a better way.
+        //db.collection("Users").document(currentUser!.uid).collection("private").document("UsersPrivateInfo").setData(dataToSave)
+        db.collection("Users").document().collection("private").document("UsersPrivateInfo").setData(dataToSave) { (error) in
             
             if let error = error {
                 print("Error creating documents: \(error.localizedDescription)")
@@ -208,7 +213,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return false
     }
     
-    
     //Name Section
     let firstNameTextField: UITextField = {
         let firstName = UITextField()
@@ -284,6 +288,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         password.isSecureTextEntry = true
         password.translatesAutoresizingMaskIntoConstraints = false
         password.tag = 3
+        password.textColor = UIColor.white
         
         return password
     }()
@@ -302,6 +307,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         confirmPassword.isSecureTextEntry = true
         confirmPassword.translatesAutoresizingMaskIntoConstraints = false
         confirmPassword.tag = 4
+        confirmPassword.textColor = UIColor.white
         
         return confirmPassword
     }()

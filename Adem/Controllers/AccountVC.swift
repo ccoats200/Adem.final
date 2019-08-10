@@ -31,7 +31,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-     self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
@@ -101,6 +101,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         docRef = db.document("\(usersInfo)")
     
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            
             var user = currentUser
             if let user = user {
                 let nameOfUser = user.email
@@ -112,7 +113,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                 //If use is logged in they can't sign in again
                 self.navigationItem.rightBarButtonItem = nil
             } else {
-                
                 let doesNotHaveAccount = "Chef"
                 self.accountStuff.nameofUser.text = doesNotHaveAccount
                 //If user is not signed in they can by clicking the plus. They can they also create an account.
@@ -145,8 +145,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     }
     
     var acct: [profileContent]? = {
-        
-        
         var acctImage = profileContent()
         acctImage.accountImage = "Coleman"
         acctImage.userNameLabel = "eggs"
