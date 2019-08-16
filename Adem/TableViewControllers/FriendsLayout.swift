@@ -34,8 +34,7 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let setText = UILabel()
         setText.text = "Friends"
-        setText.font = UIFont(name: "Lato", size: 20)
-        setText.textColor = UIColor.black
+        setText.textColor = UIColor.white
         navigationItem.titleView = setText
         navigationController?.navigationBar.isTranslucent = false
         
@@ -44,11 +43,11 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         
-        
-        
         tableView.backgroundColor = UIColor.white
         self.tableView.register(customTableViewCell.self, forCellReuseIdentifier: privacy)
+
         
+        //tableView?(<#T##tableView: UITableView##UITableView#>, leadingSwipeActionsConfigurationForRowAt: <#T##IndexPath#>)
         //self.tableView.separatorStyle = .none
         
         self.tableView.dataSource = self
@@ -56,6 +55,31 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(tableView)
         
     }
+    
+    
+    //Header Testing
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        switch section {
+        case 0:
+            let closeFriends = "Kitchen Staff"
+            return closeFriends
+        default:
+            let allOther = "Friends"
+            return allOther
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        let height = 40
+        
+        return CGFloat(height)
+    }
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
     
     //product Button
     @objc func inspectingFriend() {
@@ -67,12 +91,13 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return data.count 
+        
+        return data.count
     }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+    
         //let dataSwitch = UISwitch()
         
         let privacy = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath) as! customTableViewCell
@@ -103,7 +128,7 @@ class customTableViewCell: UITableViewCell {
     let friendsPicture: UIImageView = {
         let picOfFriend = UIImageView()
         picOfFriend.contentMode = .scaleAspectFill
-        picOfFriend.layer.cornerRadius = 25
+        picOfFriend.layer.cornerRadius = 15
         picOfFriend.layer.masksToBounds = true
         picOfFriend.clipsToBounds = true
         picOfFriend.layer.shadowColor = UIColor.clear.cgColor

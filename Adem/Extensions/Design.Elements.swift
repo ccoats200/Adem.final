@@ -7,14 +7,16 @@
 //
 import Foundation
 import UIKit
+
 //Color Extension
 extension UIColor {
+    
     static func rgb(red: CGFloat, green: CGFloat, blue: CGFloat) -> UIColor {
         return UIColor(red: red/255, green: green/255, blue: blue/255, alpha: 1)
     }
     
+    //All custom color names
     static let ademGreen = UIColor.rgb(red: 30, green: 188, blue: 29)
-    
     static let ademBlue = UIColor.rgb(red: 59, green: 94, blue: 101)
 }
 

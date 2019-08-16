@@ -403,6 +403,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
     
     @objc func handleBatchDelete() {
+        let nada = "No products found"
         
         for (key, value) in selectedProductsIndexPath {
             if value {
@@ -415,9 +416,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                 i.Pantry = false
             }
         }
-        
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            print("User is about to remove \(products[i.item].itemName) from their pantry and delete it from their list and pantry")
+            print("User is about to remove \(products[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
             products.remove(at: i.item)
         }
         collectionView.deleteItems(at: groceryProductsSelected)
@@ -464,10 +464,10 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
                 i.List = true
             }
         }
-        
+        let nada = "No products found"
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
                         
-            print("User is about to remove \(products[i.item].itemName) from their pantry and add it to their list")
+            print("User is about to remove \(products[i.item].itemName ?? nada) from their pantry and add it to their list")
             products.remove(at: i.item)
             
         }

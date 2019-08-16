@@ -140,7 +140,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         listCollectionView.dataSource = self
         listCollectionView.delegate = self
-        listCollectionView.register(pantryCellLayout.self, forCellWithReuseIdentifier: cellID)
+        listCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
         listCollectionView.backgroundColor = UIColor.white
         listCollectionView.isUserInteractionEnabled = true
         listCollectionView.isScrollEnabled = true
@@ -269,7 +269,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         if let indexPaths = collectionView?.indexPathsForVisibleItems {
             for indexPath in indexPaths {
-                if let cell = collectionView?.cellForItem(at: indexPath) as? pantryCellLayout {
+                if let cell = collectionView?.cellForItem(at: indexPath) as? itemCellLayout {
                     cell.isEditing = editing
                 }
             }
@@ -412,7 +412,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     //Initiating cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! pantryCellLayout
+        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! itemCellLayout
         
         productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
         
@@ -495,9 +495,9 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
                 i.Pantry = false
             }
         }
-        
+        let nada = "nada"
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            print("User is about to remove \(listProducts[i.item].itemName) from their pantry and delete it from their list and pantry")
+            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
             listProducts.remove(at: i.item)
         }
         collectionView.deleteItems(at: groceryProductsSelected)
@@ -536,10 +536,11 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             }
         }
         
+        let nada = "nada"
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
             
             
-            print("User is about to remove \(listProducts[i.item].itemName) from their pantry and add it to their list")
+            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and add it to their list")
             listProducts.remove(at: i.item)
             
         }

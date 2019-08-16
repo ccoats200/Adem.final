@@ -216,11 +216,12 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             }
             
         case 2:
-            let health = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-            health.accountPrivacyLabels.text = "Recipes"
-            health.backgroundColor = UIColor.white
-            health.layer.cornerRadius = 5
-            return health
+            let recipes = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
+            recipes.accountPrivacyLabels.text = "Recipes"
+            recipes.accountPrivacyImages.image = UIImage(named: "lock")
+            recipes.backgroundColor = UIColor.white
+            recipes.layer.cornerRadius = 5
+            return recipes
             
         default:
             let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign

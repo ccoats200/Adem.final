@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12352301CD3B007DF3BB /* mealsBackup.swift */; };
+		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
+		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -90,6 +93,9 @@
 		187913B8C17B384F222CAF49 /* Pods-Adem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem.release.xcconfig"; path = "Target Support Files/Pods-Adem/Pods-Adem.release.xcconfig"; sourceTree = "<group>"; };
 		3094CA93057F1C3C582F7E2E /* Pods-AdemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.release.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.release.xcconfig"; sourceTree = "<group>"; };
 		353C123422FF5C84007DF3BB /* Adem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Adem.entitlements; sourceTree = "<group>"; };
+		353C12352301CD3B007DF3BB /* mealsBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsBackup.swift; sourceTree = "<group>"; };
+		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
+		353C12392305C20B007DF3BB /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -332,6 +338,7 @@
 				35D6486422ECBE1D00015352 /* PantryVCBackup.swift */,
 				35D6486622ECBE2F00015352 /* accountBackup.swift */,
 				35D6489B22FA620400015352 /* ListVCBackup.swift */,
+				353C12352301CD3B007DF3BB /* mealsBackup.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -349,6 +356,8 @@
 				35D6487822ECBEE800015352 /* pantryCellLayout.swift */,
 				35D6487A22ECBEFE00015352 /* ItemVCLayout.swift */,
 				35D6487C22ECBF0D00015352 /* accountViews.swift */,
+				353C12372301D0E3007DF3BB /* mealsCellLayout.swift */,
+				353C12392305C20B007DF3BB /* ItemCellLayout.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -661,7 +670,10 @@
 				35D6486122ECBDEF00015352 /* settingVC.swift in Sources */,
 				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
 				35D6487722ECBED700015352 /* settingsLayout.swift in Sources */,
+				353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */,
+				353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
+				353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */,
 				35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
 				35D6482F22ECBB1500015352 /* productCell.swift in Sources */,

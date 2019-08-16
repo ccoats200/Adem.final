@@ -26,7 +26,7 @@ class accountPrivacyCellDesign: CellBasics {
     let accountPrivacyImages: UIImageView = {
         let aPImages = UIImageView()
         //aPImages.image = UIImage(named: "Gear")
-        aPImages.backgroundColor = UIColor.black
+        aPImages.backgroundColor = UIColor.ademGreen
         aPImages.contentMode = .scaleAspectFit
         aPImages.clipsToBounds = true
         aPImages.layer.masksToBounds = true
@@ -63,8 +63,8 @@ class accountPrivacyCellDesign: CellBasics {
         print("adds the product name subview")
         
         
+        accountPrivacyImages.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
         accountPrivacyImages.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        accountPrivacyImages.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         
         accountPrivacyLabels.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         accountPrivacyLabels.topAnchor.constraint(equalTo: accountPrivacyImages.bottomAnchor, constant: 5).isActive = true

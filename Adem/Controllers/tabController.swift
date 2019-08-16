@@ -44,7 +44,7 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         //List
         //let listLayout = UICollectionViewFlowLayout()
         //let pantryLayout = UICollectionViewFlowLayout()
-        let mealsLayout = UICollectionViewFlowLayout()
+        //let mealsLayout = UICollectionViewFlowLayout()
         
         //let listController = listCollectionView(collectionViewLayout: listLayout)
         let listController = listCollectionView()
@@ -63,7 +63,8 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         
         
         //Meals
-        let mealsController = Meals(collectionViewLayout: mealsLayout)
+        //let mealsController = Meals(collectionViewLayout: mealsLayout)
+        let mealsController = Meals()
         let mealsTabButton = UINavigationController(rootViewController: mealsController)
         mealsTabButton.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), tag: 2)
         mealsTabButton.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)

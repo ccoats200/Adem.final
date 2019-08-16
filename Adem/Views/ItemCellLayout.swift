@@ -1,8 +1,8 @@
 //
-//  pantryCellLayout.swift
+//  ItemCellLayout.swift
 //  Adem
 //
-//  Created by Coleman Coats on 7/27/19.
+//  Created by Coleman Coats on 8/15/19.
 //  Copyright © 2019 Coleman Coats. All rights reserved.
 //
 
@@ -12,19 +12,21 @@ import FirebaseFirestore
 
 
 //List Delete protocol
-protocol pantryItemDelegate: class {
-    func delete(cell: pantryCellLayout)
-    func addToList(cell: pantryCellLayout)
+protocol ItemDelegate: class {
+    func delete(cell: itemCellLayout)
+    func addToList(cell: itemCellLayout)
 }
 
 //Pantry Product Cell layout
-class pantryCellLayout: UICollectionViewCell {
-    weak var delegate: pantryItemDelegate?
+class itemCellLayout: UICollectionViewCell {
+    weak var delegate: ItemDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
     }
+    
+   
     
     var gItem: groceryItemCellContent? {
         didSet {
@@ -58,7 +60,6 @@ class pantryCellLayout: UICollectionViewCell {
                 self.selectedButton.backgroundColor = UIColor.ademBlue
             } else {
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                //selectedButton.isHidden = !isEditing
                 selectedButton.isHidden = !isEditing
             }
         }
@@ -76,17 +77,11 @@ class pantryCellLayout: UICollectionViewCell {
             
             if isSelected {
                 selectedButton.isHidden = !isEditing
-                //selectedButton.isHidden = !isEditing
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
                 self.selectedButton.backgroundColor = UIColor.ademBlue
-                //self.tickImageView.isHidden = false
             } else {
-                //self.transform = CGAffineTransform.identity
                 self.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
                 self.selectedButton.backgroundColor = nil
-                //print(selectedButton.backgroundColor)
-                //self.contentView.backgroundColor = UIColor.blue
-                //self.tickImageView.isHidden = true
             }
         }
     }
@@ -99,7 +94,6 @@ class pantryCellLayout: UICollectionViewCell {
     
     let productImageView: UIImageView = {
         let image = UIImageView()
-        //image.image = UIImage(named: itemImageName)
         image.contentMode = .scaleAspectFill
         image.clipsToBounds = true
         image.layer.masksToBounds = true
@@ -111,8 +105,8 @@ class pantryCellLayout: UICollectionViewCell {
     
     let productName: UILabel = {
         let name = UILabel()
-        //name.text = "\(itemName)"
         name.textAlignment = .left
+        //name.backgroundColor = UIColor.red
         name.numberOfLines = 1
         name.adjustsFontSizeToFitWidth = true
         name.translatesAutoresizingMaskIntoConstraints = false
@@ -122,7 +116,6 @@ class pantryCellLayout: UICollectionViewCell {
     
     let quantity: UILabel = {
         let Quant = UILabel()
-        //Quant.text = "\(Quantity)"
         print("sets the quantity of the items in the cart")
         Quant.font = UIFont(name: "Helvetica", size: 15)
         Quant.textColor = UIColor.black
@@ -139,7 +132,8 @@ class pantryCellLayout: UICollectionViewCell {
         addSubview(quantity)
         print("adds the calorie count subview")
         addSubview(selectedButton)
-      
+        
+        
         NSLayoutConstraint.activate([
             productImageView.topAnchor.constraint(equalTo: self.topAnchor),
             productImageView.leftAnchor.constraint(equalTo: self.leftAnchor),
@@ -158,83 +152,6 @@ class pantryCellLayout: UICollectionViewCell {
             selectedButton.widthAnchor.constraint(equalToConstant: 30),
             selectedButton.heightAnchor.constraint(equalToConstant: 30),
             ])
-    }
-    
-    override func updateConstraints() {
-        super.updateConstraints()
-    }
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-}
-
-class addOrDeleteProduct: UIView {
-
-    weak var delegate: pantryItemDelegate?
-    
-    
-    override init(frame: CGRect){
-        super.init(frame: frame)
-        setUpAddDismiss()
-    }
-    
-    
-    lazy var deleteItemFromPantryButton: UIButton = {
-        let login = UIButton(type: .system)
-        login.backgroundColor = UIColor.ademBlue
-        login.setTitle("Delete", for: .normal)
-        login.translatesAutoresizingMaskIntoConstraints = false
-        login.layer.masksToBounds = true
-        login.clipsToBounds = true
-        login.setTitleColor(UIColor.black, for: .normal)
-        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        login.addTarget(self, action: #selector(deleteProductFromPantry), for: .touchUpInside)
-        login.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-        return login
-        
-    }()
-    
-    
-    @objc func deleteProductFromPantry() {
-
-        print("User clicked delete button")
-    }
-
-    lazy var addProductToListButton: UIButton = {
-        let add = UIButton(type: .system)
-        add.backgroundColor = UIColor.ademBlue
-        add.setTitle("Add", for: .normal)
-        add.translatesAutoresizingMaskIntoConstraints = false
-        add.layer.masksToBounds = true
-        add.clipsToBounds = true
-        add.setTitleColor(UIColor.black, for: .normal)
-        add.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        add.addTarget(self, action: #selector(addProductToListFromPantry), for: .touchUpInside)
-        
-        return add
-        
-    }()
-    
-    @objc func addProductToListFromPantry() {
-        
-        print("User clicked add items button. User moved products from their pantry to their list.")
-    }
-    
-    func setUpAddDismiss() {
-        
-        let alertStackView = UIStackView(arrangedSubviews: [addProductToListButton, deleteItemFromPantryButton])
-        alertStackView.contentMode = .scaleAspectFit
-        alertStackView.translatesAutoresizingMaskIntoConstraints = false
-        alertStackView.distribution = .fillEqually
-        alertStackView.layer.masksToBounds = true
-        alertStackView.clipsToBounds = true
-        
-        self.addSubview(alertStackView)
-        
-        alertStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-        alertStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-        alertStackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-        alertStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
     }
     
     override func updateConstraints() {
