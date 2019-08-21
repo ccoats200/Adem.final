@@ -15,16 +15,5 @@ class ProductCell: UICollectionViewCell {
     @IBOutlet weak var productPrice: UILabel!
     @IBOutlet weak var calCount: UILabel!
     
-    
-    
-    
-    
-    //    func updateViews(product: Product){
-    //        itemImage.image = UIImage(named: product.imageName)
-    //        productName.text = product.title
-    //        calCount.text = product.cal
-    //        productPrice.text = product.price
-    //    }
-    //
 }
 

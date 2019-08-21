@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+/*
 class searchControllers: CellBasics {
     
     let searchBars: UISearchBar = {
@@ -49,3 +50,4 @@ class headerViews: UICollectionReusableView {
         fatalError("init(coder:) has not been implemented")
     }
 }
+*/

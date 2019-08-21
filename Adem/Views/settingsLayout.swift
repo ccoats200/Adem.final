@@ -12,7 +12,16 @@ import Firebase
 import FirebaseFirestore
 
 //Account and Privacy Image Product Cell layout
-class accountPrivacyCellDesign: CellBasics {
+class accountPrivacyCellDesign: UICollectionViewCell {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     var accountImage: profileContent? {
         didSet {
@@ -22,6 +31,7 @@ class accountPrivacyCellDesign: CellBasics {
             print("The Account and Privacy celll layout and UI elements are set")
         }
     }
+    
     
     let accountPrivacyImages: UIImageView = {
         let aPImages = UIImageView()
@@ -56,7 +66,7 @@ class accountPrivacyCellDesign: CellBasics {
     
     
     
-    override func setupViews() {
+    func setupViews() {
         addSubview(accountPrivacyImages)
         print("adds the product image subview")
         addSubview(accountPrivacyLabels)
@@ -72,5 +82,3 @@ class accountPrivacyCellDesign: CellBasics {
         accountPrivacyLabels.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
     }
 }
-
-

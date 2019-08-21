@@ -40,7 +40,6 @@
 		35D6485922ECBDA300015352 /* Meals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485822ECBDA300015352 /* Meals.swift */; };
 		35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485A22ECBDBA00015352 /* AccountVC.swift */; };
 		35D6485D22ECBDC900015352 /* tabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485C22ECBDC900015352 /* tabController.swift */; };
-		35D6485F22ECBDDE00015352 /* ProductInfoVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485E22ECBDDE00015352 /* ProductInfoVC.swift */; };
 		35D6486122ECBDEF00015352 /* settingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486022ECBDEF00015352 /* settingVC.swift */; };
 		35D6486322ECBE0200015352 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486222ECBE0200015352 /* SearchVC.swift */; };
 		35D6486522ECBE1D00015352 /* PantryVCBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486422ECBE1D00015352 /* PantryVCBackup.swift */; };
@@ -55,8 +54,6 @@
 		35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487822ECBEE800015352 /* pantryCellLayout.swift */; };
 		35D6487B22ECBEFE00015352 /* ItemVCLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487A22ECBEFE00015352 /* ItemVCLayout.swift */; };
 		35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487C22ECBF0D00015352 /* accountViews.swift */; };
-		35D6488022ECBF3A00015352 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6487F22ECBF3A00015352 /* DataService.swift */; };
-		35D6488222ECBF4900015352 /* Cloud Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488122ECBF4900015352 /* Cloud Storage.swift */; };
 		35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488422ECBF6300015352 /* DynamicAttributes.swift */; };
 		35D6488722ECBF7300015352 /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488622ECBF7300015352 /* Products.swift */; };
 		35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488822ECBF8600015352 /* PantryDataModel.swift */; };
@@ -132,7 +129,6 @@
 		35D6485822ECBDA300015352 /* Meals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meals.swift; sourceTree = "<group>"; };
 		35D6485A22ECBDBA00015352 /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
 		35D6485C22ECBDC900015352 /* tabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabController.swift; sourceTree = "<group>"; };
-		35D6485E22ECBDDE00015352 /* ProductInfoVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductInfoVC.swift; sourceTree = "<group>"; };
 		35D6486022ECBDEF00015352 /* settingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settingVC.swift; sourceTree = "<group>"; };
 		35D6486222ECBE0200015352 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
 		35D6486422ECBE1D00015352 /* PantryVCBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryVCBackup.swift; sourceTree = "<group>"; };
@@ -147,8 +143,6 @@
 		35D6487822ECBEE800015352 /* pantryCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryCellLayout.swift; sourceTree = "<group>"; };
 		35D6487A22ECBEFE00015352 /* ItemVCLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemVCLayout.swift; sourceTree = "<group>"; };
 		35D6487C22ECBF0D00015352 /* accountViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountViews.swift; sourceTree = "<group>"; };
-		35D6487F22ECBF3A00015352 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
-		35D6488122ECBF4900015352 /* Cloud Storage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Cloud Storage.swift"; sourceTree = "<group>"; };
 		35D6488422ECBF6300015352 /* DynamicAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicAttributes.swift; sourceTree = "<group>"; };
 		35D6488622ECBF7300015352 /* Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
 		35D6488822ECBF8600015352 /* PantryDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryDataModel.swift; sourceTree = "<group>"; };
@@ -231,7 +225,6 @@
 			children = (
 				353C123422FF5C84007DF3BB /* Adem.entitlements */,
 				35D6489022ECBFDD00015352 /* TableViewControllers */,
-				35D6488D22ECBFB400015352 /* File Mapping */,
 				35D6488A22ECBF9300015352 /* Bluetooth */,
 				35D6488322ECBF5800015352 /* Model */,
 				35D6487E22ECBF2300015352 /* Services */,
@@ -241,7 +234,7 @@
 				35D6484022ECBC7300015352 /* SignUp */,
 				35D6483922ECBC0800015352 /* Transition */,
 				35D6483522ECBBDD00015352 /* Alert */,
-				35D6482922ECBADA00015352 /* New Group */,
+				35D6482922ECBADA00015352 /* Review for Delete */,
 				35D647F822ECBABA00015352 /* AppDelegate.swift */,
 				35D647FA22ECBABA00015352 /* ViewController.swift */,
 				35D6489922ECF8CC00015352 /* GoogleService-Info.plist */,
@@ -272,16 +265,19 @@
 			path = AdemUITests;
 			sourceTree = "<group>";
 		};
-		35D6482922ECBADA00015352 /* New Group */ = {
+		35D6482922ECBADA00015352 /* Review for Delete */ = {
 			isa = PBXGroup;
 			children = (
+				35D6486222ECBE0200015352 /* SearchVC.swift */,
+				35D6486E22ECBE9500015352 /* tabBar.swift */,
+				35D6487222ECBEB900015352 /* AcctElements.swift */,
 				35D6482A22ECBAE800015352 /* TableViewTest.swift */,
 				35D6482C22ECBB0300015352 /* TestingAccount.swift */,
 				35D6482E22ECBB1500015352 /* productCell.swift */,
 				35D6483122ECBB3500015352 /* AccountVCOld.swift */,
 				35D6483322ECBB4600015352 /* profileVC.swift */,
 			);
-			path = "New Group";
+			path = "Review for Delete";
 			sourceTree = "<group>";
 		};
 		35D6483522ECBBDD00015352 /* Alert */ = {
@@ -332,9 +328,7 @@
 				35D6485822ECBDA300015352 /* Meals.swift */,
 				35D6485A22ECBDBA00015352 /* AccountVC.swift */,
 				35D6485C22ECBDC900015352 /* tabController.swift */,
-				35D6485E22ECBDDE00015352 /* ProductInfoVC.swift */,
 				35D6486022ECBDEF00015352 /* settingVC.swift */,
-				35D6486222ECBE0200015352 /* SearchVC.swift */,
 				35D6486422ECBE1D00015352 /* PantryVCBackup.swift */,
 				35D6486622ECBE2F00015352 /* accountBackup.swift */,
 				35D6489B22FA620400015352 /* ListVCBackup.swift */,
@@ -348,9 +342,7 @@
 			children = (
 				35D6486922ECBE5B00015352 /* AcctCellDesign.swift */,
 				35D6486B22ECBE7100015352 /* ProductCell.swift */,
-				35D6486E22ECBE9500015352 /* tabBar.swift */,
 				35D6487022ECBEA700015352 /* CellLayout.swift */,
-				35D6487222ECBEB900015352 /* AcctElements.swift */,
 				35D6487422ECBEC700015352 /* ItemLayout.swift */,
 				35D6487622ECBED700015352 /* settingsLayout.swift */,
 				35D6487822ECBEE800015352 /* pantryCellLayout.swift */,
@@ -365,8 +357,7 @@
 		35D6487E22ECBF2300015352 /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				35D6487F22ECBF3A00015352 /* DataService.swift */,
-				35D6488122ECBF4900015352 /* Cloud Storage.swift */,
+				35D6488E22ECBFD200015352 /* FirebaseFiles.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -387,14 +378,6 @@
 				35D6488B22ECBFAA00015352 /* BLEHR.swift */,
 			);
 			path = Bluetooth;
-			sourceTree = "<group>";
-		};
-		35D6488D22ECBFB400015352 /* File Mapping */ = {
-			isa = PBXGroup;
-			children = (
-				35D6488E22ECBFD200015352 /* FirebaseFiles.swift */,
-			);
-			path = "File Mapping";
 			sourceTree = "<group>";
 		};
 		35D6489022ECBFDD00015352 /* TableViewControllers */ = {
@@ -664,7 +647,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				35D6485F22ECBDDE00015352 /* ProductInfoVC.swift in Sources */,
 				35D6488722ECBF7300015352 /* Products.swift in Sources */,
 				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
 				35D6486122ECBDEF00015352 /* settingVC.swift in Sources */,
@@ -680,7 +662,6 @@
 				35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */,
 				35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */,
 				35D6489C22FA620400015352 /* ListVCBackup.swift in Sources */,
-				35D6488222ECBF4900015352 /* Cloud Storage.swift in Sources */,
 				35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */,
 				35D6486A22ECBE5B00015352 /* AcctCellDesign.swift in Sources */,
 				35D6489422ECC01400015352 /* SettingTVC.swift in Sources */,
@@ -705,7 +686,6 @@
 				35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */,
 				35D6486F22ECBE9500015352 /* tabBar.swift in Sources */,
 				35D6487122ECBEA700015352 /* CellLayout.swift in Sources */,
-				35D6488022ECBF3A00015352 /* DataService.swift in Sources */,
 				35D6486322ECBE0200015352 /* SearchVC.swift in Sources */,
 				35D6485722ECBD8700015352 /* PantryVC.swift in Sources */,
 				35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */,

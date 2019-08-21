@@ -13,7 +13,7 @@ import FirebaseFirestore
 import AVFoundation
 
 
-class Meals: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
+class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate {
     
     //TablView
     var tableViewCategories = ["Breakfast", "Lunch", "Dinner"]
@@ -35,8 +35,8 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate,
         
         //tv
         mealsTableView = UITableView(frame: self.view.bounds)
-        mealsTableView.delegate = self
-        mealsTableView.dataSource = self
+        self.mealsTableView.delegate = self
+        self.mealsTableView.dataSource = self
         self.view.addSubview(mealsTableView)
         
         mealsTableView.register(mealsTableViewCell.self, forCellReuseIdentifier: mealsCellID)
@@ -71,7 +71,13 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate,
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mealsCell = tableView.dequeueReusableCell(withIdentifier: mealsCellID) as! mealsTableViewCell
+        
+        
         return mealsCell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 150
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -80,10 +86,6 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UITableViewDelegate,
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return tableViewCategories[section]
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
     }
     
     /*

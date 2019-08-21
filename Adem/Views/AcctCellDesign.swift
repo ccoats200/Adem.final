@@ -10,7 +10,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 import CoreBluetooth
-
+/*
 
 //Second cell implementation elements
 class familySection: UICollectionViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -388,3 +388,4 @@ class privacySection: UICollectionViewCell, UICollectionViewDataSource, UICollec
 }
 
 
+*/

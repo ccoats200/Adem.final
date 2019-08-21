@@ -11,14 +11,7 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
-
 class productVCLayout: UIViewController {
-    
-    
-    // Add a new document with a generated ID
-    var docRef: DocumentReference!
-    var handle: AuthStateDidChangeListenerHandle?
-    let user = Auth.auth().currentUser
     
     let atTop = CGFloat(0.0)
     var likeReallyAtTop = false
@@ -69,7 +62,6 @@ class productVCLayout: UIViewController {
     }
     
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-    
     @objc func panGestureRecognizerAction(_ gesture: UIPanGestureRecognizer) {
         
         let touchPoint = gesture.location(in: self.view?.window)
@@ -97,7 +89,7 @@ class productVCLayout: UIViewController {
         scrollable.backgroundColor = UIColor.clear
         scrollable.translatesAutoresizingMaskIntoConstraints = false
         scrollable.contentSize.height = 1000
-        
+        scrollable.isPagingEnabled = true
         return scrollable
     }()
     
@@ -110,7 +102,6 @@ class productVCLayout: UIViewController {
         lightColor.widthAnchor.constraint(equalToConstant: 300).isActive = true
         lightColor.heightAnchor.constraint(equalToConstant: 300).isActive = true
         lightColor.layer.cornerRadius = 150
-        
         return lightColor
     }()
     
@@ -128,7 +119,6 @@ class productVCLayout: UIViewController {
         productImageDesign.widthAnchor.constraint(equalToConstant: 200).isActive = true
         productImageDesign.heightAnchor.constraint(equalToConstant: 200).isActive = true //125 also looks good
         print("Created Image for the product image in the details VC")
-        
         return productImageDesign
     }()
     
@@ -138,7 +128,7 @@ class productVCLayout: UIViewController {
         notify.setImage(notifyImage, for: .normal)
         notify.translatesAutoresizingMaskIntoConstraints = false
         notify.contentMode = .scaleAspectFit
-        notify.backgroundColor = UIColor.blue
+        //notify.backgroundColor = UIColor.blue
         return notify
     }()
     
@@ -179,10 +169,7 @@ class productVCLayout: UIViewController {
         calories.text = "Calories: "
         return calories
     }()
-    
-    
-    //var cost = 2.99
-    
+
     let priceLabel: UILabel = {
         let cost = 2.99
         let price = UILabel()
@@ -211,7 +198,7 @@ class productVCLayout: UIViewController {
     
     lazy var backButton: UIButton = {
         let back = UIButton(type: .system)
-        back.setTitle("Berries", for: .normal)
+        back.setTitle("Blueberries", for: .normal)
         back.translatesAutoresizingMaskIntoConstraints = false
         back.setTitleColor(UIColor.white, for: .normal)
         back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
@@ -223,14 +210,12 @@ class productVCLayout: UIViewController {
     
     //product Button
     @objc func handleBack() {
-        
         self.dismiss(animated: true, completion: nil)
-        
-        print("went back")
+        print("went back to previous page")
     }
     
     
-    
+    //var productImageView: listProductImageLayout!
     func setUpScrollView() {
         scrolling.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
         scrolling.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
@@ -275,15 +260,11 @@ class productVCLayout: UIViewController {
         
     }
     
-    
-    
-    
-    
     func setupproductInfoHolder() {
-        
         
         let healthInfoStackView = UIStackView(arrangedSubviews: [healthfFacts, alwaysNotify])
         healthInfoStackView.contentMode = .scaleAspectFit
+        healthInfoStackView.spacing = 5
         healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
         healthInfoStackView.distribution = .fillEqually
         
@@ -294,7 +275,7 @@ class productVCLayout: UIViewController {
         productInfoHolder.topAnchor.constraint(equalTo: imageMatting.bottomAnchor, constant: 15).isActive = true
         productInfoHolder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         productInfoHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25).isActive = true
-        productInfoHolder.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        productInfoHolder.heightAnchor.constraint(equalToConstant: 350).isActive = true
         productInfoHolder.layer.cornerRadius = 10
         
         healthInfoStackView.topAnchor.constraint(equalTo: productInfoHolder.topAnchor, constant: 5).isActive = true

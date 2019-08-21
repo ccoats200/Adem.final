@@ -12,7 +12,7 @@ import CoreBluetooth
 import Firebase
 import FirebaseFirestore
 
-
+/*
 class AccountCell: CellBasics {
     
     
@@ -297,3 +297,4 @@ class accountAndPrivacyCollectionViewCells: CellBasics {
     }
 }
 
+*/

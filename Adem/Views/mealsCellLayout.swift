@@ -18,8 +18,10 @@ protocol mealsItemDelegate: class {
 
 //Pantry Product Cell layout
 class mealsCellLayout: UICollectionViewCell {
-    weak var delegate: mealsItemDelegate?
     
+    weak var delegate: mealsItemDelegate?
+    var eachCell: UIViewController?
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -100,7 +102,7 @@ class mealsCellLayout: UICollectionViewCell {
     let mealName: UILabel = {
         let mealName = UILabel()
         //name.text = "\(itemName)"
-        mealName.backgroundColor = UIColor.blue
+        //mealName.backgroundColor = UIColor.blue
         mealName.textAlignment = .left
         mealName.numberOfLines = 1
         mealName.adjustsFontSizeToFitWidth = true
@@ -133,12 +135,12 @@ class mealsCellLayout: UICollectionViewCell {
             mealImageView.topAnchor.constraint(equalTo: self.topAnchor),
             mealImageView.leftAnchor.constraint(equalTo: self.leftAnchor),
             mealImageView.rightAnchor.constraint(equalTo: self.rightAnchor),
-            mealImageView.heightAnchor.constraint(equalToConstant: 90),
+            mealImageView.heightAnchor.constraint(equalToConstant: 100),
             mealName.topAnchor.constraint(equalTo: mealImageView.bottomAnchor),
             mealName.rightAnchor.constraint(equalTo: favoriteButton.leftAnchor),
             mealName.leftAnchor.constraint(equalTo: mealImageView.leftAnchor),
-            mealName.heightAnchor.constraint(equalToConstant: 30),
-            favoriteButton.topAnchor.constraint(equalTo: mealImageView.bottomAnchor),
+            mealName.heightAnchor.constraint(equalToConstant: 20),
+            favoriteButton.centerYAnchor.constraint(equalTo: mealName.centerYAnchor),
             favoriteButton.rightAnchor.constraint(equalTo: mealImageView.rightAnchor),
             favoriteButton.widthAnchor.constraint(equalToConstant: 20),
             favoriteButton.heightAnchor.constraint(equalToConstant: 20),
@@ -155,7 +157,7 @@ class mealsCellLayout: UICollectionViewCell {
     }
 }
 
-class mealsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var selectedGroceryItems = [groceryItemCellContent]()
     var selectedCells = [UICollectionViewCell]()
@@ -167,34 +169,40 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollect
     var mealsCollectionView: UICollectionView!
     let mealsCellID = "meals"
     let mealsCCellID = "Cmeals"
+    
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        let collectionViewlayouts = UICollectionViewFlowLayout()
-        collectionViewlayouts.scrollDirection = .horizontal
+        let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
+        mealsCollectionViewlayouts.scrollDirection = .horizontal
         
-        mealsCollectionView = UICollectionView(frame: self.bounds, collectionViewLayout: collectionViewlayouts)
-    
-        mealsCollectionView.dataSource = self
-        mealsCollectionView.delegate = self
-        mealsCollectionView.register(mealsCellLayout.self, forCellWithReuseIdentifier: mealsCCellID)
-        mealsCollectionView.backgroundColor = UIColor.white
-        mealsCollectionView.isUserInteractionEnabled = true
-        mealsCollectionView.isScrollEnabled = true
         
-        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
-        mealsCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-        let cellHeight: CGFloat = 175.0
-        let cellWidth: CGFloat = 175.0
-        collectionViewlayouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        self.mealsCollectionView = UICollectionView(frame: self.bounds, collectionViewLayout: mealsCollectionViewlayouts)
         
+    
+        mealsCollectionView.showsHorizontalScrollIndicator = false
+        self.mealsCollectionView.dataSource = self
+        self.mealsCollectionView.delegate = self
+        self.mealsCollectionView.register(mealsCellLayout.self, forCellWithReuseIdentifier: mealsCCellID)
+        self.mealsCollectionView.backgroundColor = UIColor.white
+        self.mealsCollectionView.isUserInteractionEnabled = true
+        self.mealsCollectionView.isScrollEnabled = true
+        
+        
+        self.mealsCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //adding subviews to the view controller
         self.addSubview(mealsCollectionView)
+        
+        NSLayoutConstraint.activate([
+            self.mealsCollectionView!.topAnchor.constraint(equalTo: self.topAnchor),
+            self.mealsCollectionView!.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            self.mealsCollectionView!.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.mealsCollectionView!.rightAnchor.constraint(equalTo: self.rightAnchor),
+            ])
+        
     }
     
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         for i in productsGlobal! {
@@ -211,45 +219,44 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDataSource, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let mealsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! mealsCellLayout
         
-        mealsCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
+        let mealsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! mealsCellLayout
+        //mealsCell.eachCell = self
+        mealsCell.backgroundColor = UIColor.white
         
         mealsCell.gItem = listProducts[indexPath.item]
         mealsCell.layer.cornerRadius = 5
-        
-        
         return mealsCell
     }
-
+    
+    //product Button
+    @objc func handleMeal() {
+        let cController = productVCLayout()
+        cController.hidesBottomBarWhenPushed = true
+        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        //self.present(cController, animated: true, completion: nil)
+        print("Collection View cell tap recognized")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let itemWidth = 150
+        let itemHeight = 150
+        return CGSize(width: itemWidth, height: itemHeight)
+    }
+    
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
-    //product Button
-    @objc func handleProduct() {
-        
-        //transition testing
-        //let transitionCoordinator = TransitionCoordinator()
-        
-        let cController = productVCLayout()
-        cController.hidesBottomBarWhenPushed = true
-        //transition testing
-        //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
-        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        //self.present(cController, animated: true, completion: nil)
-        
-        print("Settings Tab is active")
-    }
+    
     
     //Space between rows
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 15
     }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
-    }
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
