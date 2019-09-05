@@ -62,7 +62,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         //MARK: NavigationBar setup
         navigationItem.title = "Pantry"
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
+        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -494,7 +494,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         //transition testing
         //let transitionCoordinator = TransitionCoordinator()
         
-        let cController = productVCLayout()
+        let cController = pantryProductVCLayout()
         cController.hidesBottomBarWhenPushed = true
         //transition testing
         //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate

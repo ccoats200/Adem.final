@@ -10,6 +10,7 @@
 		353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12352301CD3B007DF3BB /* mealsBackup.swift */; };
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
+		353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C123B230CD74B007DF3BB /* pantryProductScreen.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -93,6 +94,7 @@
 		353C12352301CD3B007DF3BB /* mealsBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsBackup.swift; sourceTree = "<group>"; };
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
 		353C12392305C20B007DF3BB /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
+		353C123B230CD74B007DF3BB /* pantryProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryProductScreen.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -350,6 +352,7 @@
 				35D6487C22ECBF0D00015352 /* accountViews.swift */,
 				353C12372301D0E3007DF3BB /* mealsCellLayout.swift */,
 				353C12392305C20B007DF3BB /* ItemCellLayout.swift */,
+				353C123B230CD74B007DF3BB /* pantryProductScreen.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -670,6 +673,7 @@
 				35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */,
 				35D6487522ECBEC700015352 /* ItemLayout.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
+				353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */,
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
 				35D6483422ECBB4600015352 /* profileVC.swift in Sources */,
 				35D6484922ECBCCC00015352 /* AppDelegateUserLogin.swift in Sources */,

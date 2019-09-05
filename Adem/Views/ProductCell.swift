@@ -17,3 +17,16 @@ class ProductCell: UICollectionViewCell {
     
 }
 
+class pantryProductFirstCell: UICollectionViewCell {
+    //This cell is for basic info on the product and has general price and prdouct infor as well as buttons to view controllers that have text boxes. ie: Vegan, nurtuition info
+    
+    
+}
+
+class pantryProductSecondCell: UICollectionViewCell {
+    //This Cell is for similar products scroll view and recepies scroll view
+}
+
+class pantryProductThirdCell: UICollectionViewCell {
+    //This Cell is for reviews
+}
