@@ -251,6 +251,10 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     }
     
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        handleMeal()
+    }
+    
     
     //Space between rows
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

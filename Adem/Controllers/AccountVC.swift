@@ -42,11 +42,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         db.settings = settings
         // [END setup]
         
-        
-        
-
-       
-        
         //setup all views
         setUpAgain()
         //setUpViews()
@@ -95,6 +90,13 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        //Nav bar is see through
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        //Nav bar is see through
+        
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
         
@@ -132,6 +134,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         }
  */
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -186,7 +189,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             case 0:
                 let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
                 devices.accountPrivacyImages.image = UIImage(named: "lock")
-                devices.accountPrivacyLabels.text = "Account"
+                devices.accountPrivacyLabels.text = "Settings"
                 devices.backgroundColor = UIColor.white
                 devices.layer.cornerRadius = 5
                 
@@ -321,14 +324,14 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             case 0:
                 handleFriends()
             case 1:
-                handleDevices()
+                handleSettings()
             default:
                 handleHealth()
             }
         case 1:
             switch indexPath.item {
             case 0:
-                handleFriends()
+                handleDevices()
             case 1:
                 handleDevices()
             case 2:

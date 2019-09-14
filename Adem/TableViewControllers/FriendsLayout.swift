@@ -45,7 +45,6 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         tableView.backgroundColor = UIColor.white
         self.tableView.register(customTableViewCell.self, forCellReuseIdentifier: privacy)
-
         
         //tableView?(<#T##tableView: UITableView##UITableView#>, leadingSwipeActionsConfigurationForRowAt: <#T##IndexPath#>)
         //self.tableView.separatorStyle = .none

@@ -11,7 +11,146 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 
+class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    
+    //reuse ID's
+    let privacy = "privacy"
+    private var settingsTableView: UITableView!
+    
+    let settingsOptions = ["Log out", "List view"]
+    
+    
+    
+    
+    //let cellHeight = 70
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        let setText = UILabel()
+        setText.text = "Settings"
+        setText.font = UIFont(name: "Lato", size: 20)
+        setText.textColor = UIColor.white
+        navigationItem.titleView = setText
+        navigationController?.navigationBar.isTranslucent = false
+        
+        
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+        
+        settingsTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        
+        
+        
+        settingsTableView.backgroundColor = UIColor.white
+        self.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
+        
+        //self.tableView.separatorStyle = .none
+        
+        self.settingsTableView.dataSource = self
+        self.settingsTableView.delegate = self
+        self.view.addSubview(settingsTableView)
+        
+    }
+    
+    //UIView Profile Pic
+    let settingsImage: UIImageView = {
+        let settingsIcon = UIImageView()
+        settingsIcon.contentMode = .scaleAspectFill
+        settingsIcon.layer.masksToBounds = true
+        settingsIcon.clipsToBounds = true
+        settingsIcon.layer.shadowColor = UIColor.clear.cgColor
+        settingsIcon.layer.borderColor = UIColor.white.cgColor
+        settingsIcon.translatesAutoresizingMaskIntoConstraints = false
+        
+        return settingsIcon
+    }()
+    
+    //Settings Table View header - Start
+    var settingsCategories = ["Visual", "You", "Data"]
+    
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return settingsCategories[section]
+    }
+    
+    //Settings Sections - Start
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return settingsCategories.count
+    }
+    //Settings Sections - End
+    
+    
+    //Settings Table View header - End
+    
+    //Settings Row handlers - Start
+    @objc func settingsRowOne() {
+        
+        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
+        self.navigationController?.pushViewController(cController, animated: true)
+        
+        print("Settings Tab is active")
+    }
+    //Settings Row handlers - End
+    
+    //Settings Rows and headers - Start
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        switch section {
+        case 0:
+            return settingsOptions.count
+        default:
+            return 1
+        }
+    }
+    //Settings Rows and headers - End
+    
+    func image( _ image:UIImage, withSize newSize:CGSize) -> UIImage {
+        
+        UIGraphicsBeginImageContext(newSize)
+        image.draw(in: CGRect(x: 0,y: 0,width: newSize.width,height: newSize.height))
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage!.withRenderingMode(.automatic)
+    }
+    
+    /*
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let returnedView = UIView(frame: CGRect(x: x, y: y, width: width, height: height)) //set these values as necessary
+        returnedView.backgroundColor = .white
+        
+        let label = UILabel(frame: CGRect(x: x, y: y, width: width, height: height))
+        
+        label.text = self.sectionHeaderTitleArray[section]
+        returnedView.addSubview(label)
+        
+        return returnedView
+    }
+    */
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let dataSwitch = UISwitch()
+        let settingsListOptions = UITableViewCell(style: .subtitle, reuseIdentifier: self.privacy)
+        
+        settingsListOptions.textLabel?.text = settingsOptions[indexPath.row]
+        settingsListOptions.textLabel?.textAlignment = .left
+        settingsListOptions.textLabel?.textColor = UIColor.black
+        settingsListOptions.detailTextLabel?.text = "test"
+        settingsListOptions.detailTextLabel?.textColor = UIColor.black
+        settingsListOptions.detailTextLabel?.textAlignment = .left
+        
+        settingsListOptions.imageView?.image = image(UIImage(named: "bread")!, withSize: CGSize(width: 40, height: 40))
+        settingsListOptions.imageView?.clipsToBounds = true
+        settingsListOptions.imageView?.layer.masksToBounds = true
+        settingsListOptions.accessoryView = dataSwitch
+        
+        return settingsListOptions
+    }
+}
 
+
+
+
+/*
 class settings: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
@@ -218,3 +357,4 @@ class settings: UIViewController, UITextFieldDelegate {
     }
     
 }
+*/

@@ -235,7 +235,7 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
         productImage.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor).isActive = true
 
         
-        let healthInfoStackView = UIStackView(arrangedSubviews: [healthfFacts, alwaysNotify, pantryPageControl])
+        let healthInfoStackView = UIStackView(arrangedSubviews: [healthfFacts, pantryPageControl, alwaysNotify])
         healthInfoStackView.contentMode = .scaleAspectFit
         healthInfoStackView.spacing = 5
         healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
@@ -244,9 +244,6 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
         
         view.addSubview(healthInfoStackView)
         
-        
-        
-        
         productInfoHolder.topAnchor.constraint(equalTo: imageMatting.bottomAnchor, constant: 15).isActive = true
         productInfoHolder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
         productInfoHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25).isActive = true
@@ -254,22 +251,18 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
         productInfoHolder.layer.cornerRadius = 10
         
         pCollectionView.centerXAnchor.constraint(equalTo: productInfoHolder.centerXAnchor).isActive = true
-        pCollectionView.centerYAnchor.constraint(equalTo: productInfoHolder.centerYAnchor).isActive = true
+        pCollectionView.topAnchor.constraint(equalTo: productInfoHolder.topAnchor).isActive = true
         pCollectionView.widthAnchor.constraint(equalTo: productInfoHolder.widthAnchor).isActive = true
-        pCollectionView.heightAnchor.constraint(equalTo: productInfoHolder.heightAnchor).isActive = true
-        pCollectionView.layer.cornerRadius = 15
-        //pCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25).isActive = true
-        //pCollectionView.heightAnchor.constraint(equalToConstant: 350).isActive = true
-        //pCollectionView.layer.cornerRadius = 10
+        pCollectionView.bottomAnchor.constraint(equalTo: productInfoHolder.bottomAnchor, constant: -30).isActive = true
+        pCollectionView.layer.cornerRadius = 10
+
         
-        
-        /*
-        healthInfoStackView.topAnchor.constraint(equalTo: productInfoHolder.topAnchor, constant: 5).isActive = true
-        healthInfoStackView.leadingAnchor.constraint(equalTo: productInfoHolder.leadingAnchor, constant: 5).isActive = true
+        healthInfoStackView.topAnchor.constraint(equalTo: pCollectionView.bottomAnchor, constant: 5).isActive = true
+        healthInfoStackView.centerXAnchor.constraint(equalTo: productInfoHolder.centerXAnchor).isActive = true
         //healthInfoStackView.trailingAnchor.constraint(equalTo: productInfoHolder.trailingAnchor, constant: -5).isActive = true
-        healthInfoStackView.widthAnchor.constraint(equalToConstant: 100).isActive = true
+        healthInfoStackView.widthAnchor.constraint(equalTo: productInfoHolder.widthAnchor).isActive = true
         healthInfoStackView.heightAnchor.constraint(equalToConstant: 25).isActive = true
-        
+        /*
         //calories
         calLabel.topAnchor.constraint(equalTo: alwaysNotify.bottomAnchor, constant: 5).isActive = true
         calLabel.leftAnchor.constraint(equalTo: productInfoHolder.leftAnchor, constant: 12).isActive = true
