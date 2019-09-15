@@ -17,9 +17,15 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let privacy = "privacy"
     private var settingsTableView: UITableView!
     
-    let settingsOptions = ["Log out", "List view"]
+    let settingsOptions = ["Notifications","Privacy","Security","Help","Account","About","List view","Log out"]
+    //Settings Table View header - Start
+    var settingsCategories = ["Visual", "You", "Data"]
+    var settingsSubtitles = ["List", "Images", "Data"]
     
     
+    
+    //var colorSwitch: UISwitch!
+    //let colorSwitch = UISwitch()
     
     
     //let cellHeight = 70
@@ -39,6 +45,8 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         settingsTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         
+        //editing to reorder cell
+        //self.settingsTableView.isEditing = true
         
         
         settingsTableView.backgroundColor = UIColor.white
@@ -51,6 +59,22 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(settingsTableView)
         
     }
+    /*
+    //editing to reorder cell - Start
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
+    
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let movedObject = self.settingsCategories[sourceIndexPath.row]
+        settingsCategories.remove(at: sourceIndexPath.row)
+        settingsCategories.insert(movedObject, at: destinationIndexPath.row)
+    }
+    //editing to reorder cell - End
+*/
     
     //UIView Profile Pic
     let settingsImage: UIImageView = {
@@ -64,9 +88,6 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         return settingsIcon
     }()
-    
-    //Settings Table View header - Start
-    var settingsCategories = ["Visual", "You", "Data"]
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return settingsCategories[section]
@@ -126,22 +147,74 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     */
     
+    /*
+    func changeBackground() {
+        if colorSwitch.isOn {
+            self.view.backgroundColor = UIColor.red
+            return
+        }
+        else
+        {
+            self.view.backgroundColor = UIColor.yellow
+            return
+        }
+    }
+*/
+    @objc func switchForListDesign(sender: UISwitch) {
+        //changeBackground()
+        
+        if (sender.isOn == true) {
+            
+            print("User is viewing the list in list view style")
+        } else {
+            
+            print("User is viewing the list in collection view style")
+        }
+        //settingsTableView.reloadData()
+    }
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let dataSwitch = UISwitch()
-        let settingsListOptions = UITableViewCell(style: .subtitle, reuseIdentifier: self.privacy)
         
-        settingsListOptions.textLabel?.text = settingsOptions[indexPath.row]
+        let settingsListOptions = UITableViewCell(style: .subtitle, reuseIdentifier: self.privacy)
+        let row = indexPath.row
+        let section = indexPath.section
+        
+        let colorSwitch = UISwitch(frame: .zero)
+        colorSwitch.isOn = false
+        colorSwitch.setOn(false, animated: true)
+        colorSwitch.tag = row // for detect which row switch Changed
+        colorSwitch.addTarget(self, action: #selector(switchForListDesign), for: .valueChanged)
+
+        
+        settingsListOptions.textLabel?.text = settingsOptions[row]
         settingsListOptions.textLabel?.textAlignment = .left
         settingsListOptions.textLabel?.textColor = UIColor.black
-        settingsListOptions.detailTextLabel?.text = "test"
+        
+        //settingsListOptions.detailTextLabel?.text = "Values"
+        
+        
         settingsListOptions.detailTextLabel?.textColor = UIColor.black
         settingsListOptions.detailTextLabel?.textAlignment = .left
         
         settingsListOptions.imageView?.image = image(UIImage(named: "bread")!, withSize: CGSize(width: 40, height: 40))
         settingsListOptions.imageView?.clipsToBounds = true
         settingsListOptions.imageView?.layer.masksToBounds = true
-        settingsListOptions.accessoryView = dataSwitch
+        
+        switch section {
+        case 0:
+            if row == 1 {
+                settingsListOptions.accessoryView = colorSwitch
+            }
+        case 1:
+            settingsListOptions.accessoryView = nil
+        case 2:
+            settingsListOptions.accessoryView = nil
+        default:
+            settingsListOptions.accessoryView = nil
+        }
+        
+        
         
         return settingsListOptions
     }

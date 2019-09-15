@@ -107,4 +107,3 @@ class SettingTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
 }
 
-
