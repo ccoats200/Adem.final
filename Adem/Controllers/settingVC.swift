@@ -17,7 +17,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     let privacy = "privacy"
     private var settingsTableView: UITableView!
     
-    let settingsOptions = ["Notifications","Privacy","Security","Help","Account","About","List view","Log out"]
+    let settingsOptions = ["Notifications","List view","Privacy","Security","Help","Account","About","Log out"]
     //Settings Table View header - Start
     var settingsCategories = ["Visual", "You", "Data"]
     var settingsSubtitles = ["List", "Images", "Data"]
@@ -192,24 +192,33 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsListOptions.textLabel?.textColor = UIColor.black
         
         //settingsListOptions.detailTextLabel?.text = "Values"
-        
+        settingsListOptions.imageView?.image = image(UIImage(named: "Pantry_new")!, withSize: CGSize(width: 40, height: 40))
+        settingsListOptions.imageView?.clipsToBounds = true
+        settingsListOptions.imageView?.layer.masksToBounds = true
         
         settingsListOptions.detailTextLabel?.textColor = UIColor.black
         settingsListOptions.detailTextLabel?.textAlignment = .left
         
-        settingsListOptions.imageView?.image = image(UIImage(named: "bread")!, withSize: CGSize(width: 40, height: 40))
-        settingsListOptions.imageView?.clipsToBounds = true
-        settingsListOptions.imageView?.layer.masksToBounds = true
+        
         
         switch section {
         case 0:
             if row == 1 {
                 settingsListOptions.accessoryView = colorSwitch
+                settingsListOptions.imageView?.image = image(UIImage(named: "bread")!, withSize: CGSize(width: 40, height: 40))
+                settingsListOptions.imageView?.clipsToBounds = true
+                settingsListOptions.imageView?.layer.masksToBounds = true
             }
         case 1:
             settingsListOptions.accessoryView = nil
+            settingsListOptions.imageView?.image = image(UIImage(named: "Pencil")!, withSize: CGSize(width: 40, height: 40))
+            settingsListOptions.imageView?.clipsToBounds = true
+            settingsListOptions.imageView?.layer.masksToBounds = true
         case 2:
             settingsListOptions.accessoryView = nil
+            settingsListOptions.imageView?.image = image(UIImage(named: "Vegan")!, withSize: CGSize(width: 40, height: 40))
+            settingsListOptions.imageView?.clipsToBounds = true
+            settingsListOptions.imageView?.layer.masksToBounds = true
         default:
             settingsListOptions.accessoryView = nil
         }
@@ -217,6 +226,18 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         
         return settingsListOptions
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellRow = indexPath.row
+        let cellSection = indexPath.section
+        
+        switch cellRow {
+        case 0:
+            print("1")
+        default:
+            print("2")
+        }
     }
 }
 

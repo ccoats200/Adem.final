@@ -19,7 +19,7 @@ class ProfileView: UIView {
     //UIView Profile Pic
     var coverPhoto: UIImageView = {
         let cover = UIImageView()
-        cover.image = UIImage(named: "eggs")
+        cover.image = UIImage(named: "coverPhoto")
         cover.layer.masksToBounds = true
         cover.clipsToBounds = true
         cover.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +75,7 @@ class ProfileView: UIView {
         coverPhoto.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true //set the location of collection view
         coverPhoto.trailingAnchor.constraint(equalTo:  self.trailingAnchor).isActive = true // top anchor of collection view
         coverPhoto.topAnchor.constraint(equalTo: self.topAnchor).isActive = true // height
-        coverPhoto.heightAnchor.constraint(equalToConstant: 150).isActive = true // width
+        coverPhoto.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 7/10).isActive = true // width
         
         //Profile Pic
         userProfileImage.centerXAnchor.constraint(equalTo: coverPhoto.centerXAnchor).isActive = true //set the location of collection view
