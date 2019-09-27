@@ -25,12 +25,25 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         super.viewDidLoad()
         //MARK: NavigationBar setup
         navigationItem.title = "Meals"
+        
+        /*
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.isTranslucent = false
-
+*/
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.backgroundColor = UIColor.ademGreen
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            
+        }
         
         
         //tv
@@ -87,6 +100,27 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return tableViewCategories[section]
     }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        handleProduct()
+    }
+    
+    //MARK: Button handlers - Start
+    @objc func handleProduct() {
+        
+        //transition testing
+        //let transitionCoordinator = TransitionCoordinator()
+        
+        let cController = productVCLayout()
+        cController.hidesBottomBarWhenPushed = true
+        //transition testing
+        //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
+        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        self.present(cController, animated: true, completion: nil)
+        
+        print("Settings Tab is active")
+    }
+
     
     /*
     

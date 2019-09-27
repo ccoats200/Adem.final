@@ -45,7 +45,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     let user = Auth.auth().currentUser
     
     //MARK: Navigation Bar Buttons - Start
-    lazy var searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
+    lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
     lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
     
@@ -126,7 +126,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.obscuresBackgroundDuringPresentation = true
         self.searchController.searchBar.placeholder = "What Can I Add For You?"
-    
+        
+        
         setUpDifferentViews()
         setUpBarButtonItems()
     }
