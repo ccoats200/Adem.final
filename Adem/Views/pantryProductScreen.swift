@@ -91,7 +91,7 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
     
     let alwaysNotify: UIButton = {
         let notify = UIButton()
-        let notifyImage = UIImage(named: "fave")
+        let notifyImage = UIImage(named: nutritionFacts)
         notify.setImage(notifyImage, for: .normal)
         notify.translatesAutoresizingMaskIntoConstraints = false
         notify.contentMode = .scaleAspectFit

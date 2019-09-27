@@ -62,14 +62,28 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         //MARK: NavigationBar setup
         navigationItem.title = "Pantry"
+        /*
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.isTranslucent = false
+        */
+        
+        
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.backgroundColor = UIColor.ademGreen
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+        }
+        
+        //MARK: Search
         self.navigationItem.searchController = searchController
-
-        //Search
         self.searchController.searchResultsUpdater = self
         self.searchController.delegate = self
         self.searchController.searchBar.delegate = self
@@ -80,7 +94,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         searchController.searchBar.becomeFirstResponder()
         
         
-        self.searchController.searchBar.placeholder = "Search for Items"
+        self.searchController.searchBar.placeholder = "What's in your Pantry"
         
         //This moves the Cells to the correct offsets, Stylistic choice
         //pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)

@@ -25,3 +25,7 @@ let productsAvailable = "Products"
 
 let usersCollection = "Users/\(currentUser!.uid)"
 
+
+//Icons
+let nutritionFacts = "nutritionFacts"
+

@@ -54,7 +54,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     func setUpAgain() {
      //SetUp views from own class
         let ss: CGRect = UIScreen.main.bounds
-        accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: ss.width, height: 225))
+        accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 225))
         
         let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let profileCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
@@ -169,7 +169,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                 let friends = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
                 friends.accountPrivacyImages.image = UIImage(named: "lock")
                 friends.accountPrivacyLabels.text = "Friends"
-                friends.backgroundColor = UIColor.white
+                friends.backgroundColor = UIColor.ademBlue
                 friends.layer.cornerRadius = 5
                 
                 
@@ -178,7 +178,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                 let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
                 devices.accountPrivacyImages.image = UIImage(named: "lock")
                 devices.accountPrivacyLabels.text = "Devices"
-                devices.backgroundColor = UIColor.white
+                devices.backgroundColor = UIColor.ademBlue
                 devices.layer.cornerRadius = 5
                 
                 return devices
@@ -188,7 +188,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             switch indexPath.item {
             case 0:
                 let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                devices.accountPrivacyImages.image = UIImage(named: "lock")
+                devices.accountPrivacyImages.image = UIImage(named: "notifications")
                 devices.accountPrivacyLabels.text = "Settings"
                 devices.backgroundColor = UIColor.white
                 devices.layer.cornerRadius = 5
@@ -198,7 +198,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                 let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
                 devices.accountPrivacyImages.image = UIImage(named: "lock")
                 devices.accountPrivacyLabels.text = "Health"
-                devices.backgroundColor = UIColor.white
+                devices.backgroundColor = UIColor.ademBlue
                 devices.layer.cornerRadius = 5
                 
                 return devices
@@ -206,14 +206,14 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                 let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
                 devices.accountPrivacyImages.image = UIImage(named: "lock")
                 devices.accountPrivacyLabels.text = "Apps"
-                devices.backgroundColor = UIColor.white
+                devices.backgroundColor = UIColor.ademBlue
                 devices.layer.cornerRadius = 5
                 
                 return devices
             default:
                 let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
                 settings.accountPrivacyLabels.text = "Settings"
-                settings.backgroundColor = UIColor.white
+                settings.backgroundColor = UIColor.ademBlue
                 settings.layer.cornerRadius = 5
                 return settings
             }
@@ -222,14 +222,14 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             let recipes = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
             recipes.accountPrivacyLabels.text = "Recipes"
             recipes.accountPrivacyImages.image = UIImage(named: "lock")
-            recipes.backgroundColor = UIColor.white
+            recipes.backgroundColor = UIColor.ademBlue
             recipes.layer.cornerRadius = 5
             return recipes
             
         default:
             let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
             settings.accountPrivacyLabels.text = "Settings"
-            settings.backgroundColor = UIColor.white
+            settings.backgroundColor = UIColor.ademBlue
             settings.layer.cornerRadius = 15
             
             return settings

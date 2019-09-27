@@ -21,11 +21,19 @@ struct friendsListInfo {
 class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var data = [friendsListInfo]()
+    var refreshControl = UIRefreshControl()
     
     private var tableView: UITableView!
     //reuse ID's
     let privacy = "privacy"
     let cellHeight = 60
+    
+    
+    @objc func refresh(sender: AnyObject) {
+          // Code to refresh table view
+        self.tableView.reloadData()
+        self.refreshControl.endRefreshing()
+       }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +45,12 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         setText.textColor = UIColor.white
         navigationItem.titleView = setText
         navigationController?.navigationBar.isTranslucent = false
+        
+        
+        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        self.refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+
+        
         
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
@@ -54,7 +68,7 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(tableView)
         
     }
-    
+   
     
     //Header Testing
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -36,7 +36,7 @@ class accountPrivacyCellDesign: UICollectionViewCell {
     let accountPrivacyImages: UIImageView = {
         let aPImages = UIImageView()
         //aPImages.image = UIImage(named: "Gear")
-        aPImages.backgroundColor = UIColor.ademGreen
+        //aPImages.backgroundColor = UIColor.ademGreen
         aPImages.contentMode = .scaleAspectFit
         aPImages.clipsToBounds = true
         aPImages.layer.masksToBounds = true

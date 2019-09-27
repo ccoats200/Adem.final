@@ -15,6 +15,9 @@ import CoreData
 class listCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
     
+
+    var refreshControl = UIRefreshControl()
+    
     //Cells Selected stuff
     enum Mode {
         case view
@@ -41,7 +44,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     var handle: AuthStateDidChangeListenerHandle?
     let user = Auth.auth().currentUser
     
-    //Navigation buttons - Start
+    //MARK: Navigation Bar Buttons - Start
     lazy var searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
     lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
@@ -49,13 +52,13 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     lazy var edit = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(handleEditButtonClicked))
     
     lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
-    //Navigation buttons - End
+    //MARK: Navigation buttons - End
     
     
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
  
-    //reuse ID's
+    //MARK: reuse ID's
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
@@ -76,13 +79,30 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         //MARK: NavigationBar setup
         navigationItem.title = "List"
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
-        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isTranslucent = false
+        //MARK: might be for ios 12
+        //let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
+        //navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        //navigationController?.navigationBar.barTintColor = UIColor.ademGreen
+        //navigationController?.navigationBar.titleTextAttributes = textAttributes
+        //navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.scrollEdgeAppearance
         
-        self.searchController = UISearchController(searchResultsController: nil)
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.backgroundColor = UIColor.ademGreen
+            navigationController?.navigationBar.prefersLargeTitles = true
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            
+        }
+        
+        //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        
         //Drag and Drop
         //self.collectionView.dragDelegate = self
         //self.collectionView.dropDelegate = self
@@ -93,25 +113,26 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
         
       
-        //This moves the Cells to the correct offsets, Stylistic choice
-        collectionView?.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
-        collectionView?.scrollIndicatorInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
         
         
-        searchController.searchBar.delegate = self
-        navigationItem.searchController = searchController
+        //MARK: Search bar
+        //let search = UISearchController(searchResultsController: nil)
+        self.searchController.searchBar.delegate = self
+        self.navigationItem.searchController = searchController
         navigationItem.searchController?.hidesNavigationBarDuringPresentation = true
         self.searchController.isActive = true
         searchController.searchResultsUpdater = self
         searchController.searchBar.autocorrectionType = .default
         searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.obscuresBackgroundDuringPresentation = true
-        searchController.searchBar.placeholder = "Search"
-        print("the search bar is visible \(searchController.isActive)")
-       
+        self.searchController.searchBar.placeholder = "What Can I Add For You?"
     
         setUpDifferentViews()
         setUpBarButtonItems()
+    }
+    
+    @objc func refresh(sender: AnyObject) {
+       // Code to refresh table view
     }
     
     //Setting up bar buttons
@@ -144,6 +165,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         listCollectionView.backgroundColor = UIColor.white
         listCollectionView.isUserInteractionEnabled = true
         listCollectionView.isScrollEnabled = true
+        //dragging
         listCollectionView.bounces = true
         listCollectionView.alwaysBounceVertical = true
         
@@ -152,13 +174,19 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         listCollectionView.translatesAutoresizingMaskIntoConstraints = false
         productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
         
-        listCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
+        //MARK: Need to understand
+        listCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
+        listCollectionView.showsVerticalScrollIndicator = true
+        //listCollectionView.flashScrollIndicators()
         
+        
+        //MARK: Size of cell
         let Columns: CGFloat = 3.14
-        let insetDimension: CGFloat = 2.0
+        let insetDimension: CGFloat = 10.0
         let cellHeight: CGFloat = 125.0
         let cellWidth = (listCollectionView.frame.width/Columns) - insetDimension
         layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        print("the sss = \(listCollectionView.frame.width/3 - insetDimension)")
         
         //View contstaints
         NSLayoutConstraint.activate([
@@ -178,6 +206,10 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         lpgr.minimumPressDuration = 0.35
         self.collectionView?.addGestureRecognizer(lpgr)
     }
+    
+    
+    
+    
     
     // MARK: - Private instance methods
     func searchBarIsEmpty() -> Bool {
