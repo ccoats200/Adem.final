@@ -111,10 +111,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         //MARK: Cirular transition
         //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
-        
-      
-        
-        
+
         //MARK: Search bar
         //let search = UISearchController(searchResultsController: nil)
         self.searchController.searchBar.delegate = self
@@ -126,7 +123,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.obscuresBackgroundDuringPresentation = true
         self.searchController.searchBar.placeholder = "What Can I Add For You?"
-        
         
         setUpDifferentViews()
         setUpBarButtonItems()
@@ -145,18 +141,23 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     //Setting up views
-    //Setting up views
     var productUpdateLocationButtonView = addOrDeleteProduct()
     weak var collectionView: UICollectionView!
+    weak var tableView: UITableView!
     func setUpDifferentViews() {
+        
+        
         //SetUp views from own class
         let ss: CGRect = UIScreen.main.bounds
         productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
         
         let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let listCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
+        let listTableView: UITableView = UITableView(frame: CGRect(x: 0, y: 0, width: ss.width, height: ss.height))
+        
         
         //adding subviews to the view controller
+        self.view.addSubview(listTableView)
         self.view.addSubview(listCollectionView)
         self.view.addSubview(productUpdateLocationButtonView)
         

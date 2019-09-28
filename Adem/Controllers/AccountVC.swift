@@ -72,6 +72,10 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         
      
      NSLayoutConstraint.activate([
+        accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
+        accountStuff.widthAnchor.constraint(equalTo: view.widthAnchor),
+        accountStuff.heightAnchor.constraint(equalToConstant: 225),
+        accountStuff.centerXAnchor.constraint(equalTo: view.centerXAnchor),
      profileCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10),
     
      profileCollectionView.centerXAnchor.constraint(equalTo:  view.centerXAnchor),
