@@ -140,6 +140,8 @@ class groceryItemCellContent: NSObject {
     var Pantry: Bool?
 }
 
+
+
 //Profile attributes
 class profileContent: NSObject {
     

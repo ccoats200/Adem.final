@@ -67,9 +67,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
 
         
         profileCollectionView.backgroundColor = UIColor.ademGreen
-       
         profileCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        
         profileCollectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellID)
         
      

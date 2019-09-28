@@ -15,20 +15,14 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //reuse ID's
     let privacy = "privacy"
+    let cellWithSwitch = "Switchcell"
     private var settingsTableView: UITableView!
     
     let settingsOptions = ["Notifications","List view","Privacy","Security","Help","Account","About","Log out"]
-    //Settings Table View header - Start
+    
+    //MARK: Settings Table View header - Start
     var settingsCategories = ["Visual", "You", "Data"]
     var settingsSubtitles = ["List", "Images", "Data"]
-    
-    
-    
-    //var colorSwitch: UISwitch!
-    //let colorSwitch = UISwitch()
-    
-    
-    //let cellHeight = 70
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,12 +41,12 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         //editing to reorder cell
         //self.settingsTableView.isEditing = true
-        
-        
         settingsTableView.backgroundColor = UIColor.white
-        self.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
         
-        //self.tableView.separatorStyle = .none
+        //MARK: Custom Cells
+        self.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
+        self.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: cellWithSwitch)
+
         
         self.settingsTableView.dataSource = self
         self.settingsTableView.delegate = self
@@ -76,7 +70,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //editing to reorder cell - End
 */
     
-    //UIView Profile Pic
+    //MARK: Settings Icons - START
     let settingsImage: UIImageView = {
         let settingsIcon = UIImageView()
         settingsIcon.contentMode = .scaleAspectFill
@@ -88,6 +82,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         return settingsIcon
     }()
+    //MARK: Settings Icons - END
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return settingsCategories[section]
@@ -124,7 +119,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     //Settings Rows and headers - End
     
-    func image( _ image:UIImage, withSize newSize:CGSize) -> UIImage {
+    func image( _ image: UIImage, withSize newSize: CGSize) -> UIImage {
         
         UIGraphicsBeginImageContext(newSize)
         image.draw(in: CGRect(x: 0,y: 0,width: newSize.width,height: newSize.height))
@@ -133,6 +128,18 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return newImage!.withRenderingMode(.automatic)
     }
     
+    @objc func switchForListDesign(sender: UISwitch) {
+        //changeBackground()
+        
+        if (sender.isOn == true) {
+            
+            print("User is viewing the list in list view style")
+        } else {
+            
+            print("User is viewing the list in collection view style")
+        }
+        //settingsTableView.reloadData()
+    }
     /*
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let returnedView = UIView(frame: CGRect(x: x, y: y, width: width, height: height)) //set these values as necessary
@@ -147,38 +154,16 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     */
     
-    /*
-    func changeBackground() {
-        if colorSwitch.isOn {
-            self.view.backgroundColor = UIColor.red
-            return
-        }
-        else
-        {
-            self.view.backgroundColor = UIColor.yellow
-            return
-        }
-    }
-*/
-    @objc func switchForListDesign(sender: UISwitch) {
-        //changeBackground()
-        
-        if (sender.isOn == true) {
-            
-            print("User is viewing the list in list view style")
-        } else {
-            
-            print("User is viewing the list in collection view style")
-        }
-        //settingsTableView.reloadData()
-    }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        
         let settingsListOptions = UITableViewCell(style: .subtitle, reuseIdentifier: self.privacy)
+        
+        //MARK: Cell instantiation
+        
+        
         let row = indexPath.row
         let section = indexPath.section
+        
         
         let colorSwitch = UISwitch(frame: .zero)
         colorSwitch.isOn = false
@@ -191,11 +176,6 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsListOptions.textLabel?.textAlignment = .left
         settingsListOptions.textLabel?.textColor = UIColor.black
         
-        //settingsListOptions.detailTextLabel?.text = "Values"
-        settingsListOptions.imageView?.image = image(UIImage(named: "Pantry_new")!, withSize: CGSize(width: 40, height: 40))
-        settingsListOptions.imageView?.clipsToBounds = true
-        settingsListOptions.imageView?.layer.masksToBounds = true
-        
         settingsListOptions.detailTextLabel?.textColor = UIColor.black
         settingsListOptions.detailTextLabel?.textAlignment = .left
         
@@ -204,8 +184,11 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         switch section {
         case 0:
             if row == 1 {
-                settingsListOptions.accessoryView = colorSwitch
-                settingsListOptions.imageView?.image = image(UIImage(named: "bread")!, withSize: CGSize(width: 40, height: 40))
+                //let cellWithSwitcher = settingsListOptions.dequeueReusableCell(withIdentifier: cellWithSwitch, for: indexPath)
+                //return cellWithSwitcher
+            } else {
+                settingsListOptions.accessoryView = nil
+                settingsListOptions.imageView?.image = image(UIImage(named: "nutritionFacts")!, withSize: CGSize(width: 40, height: 40))
                 settingsListOptions.imageView?.clipsToBounds = true
                 settingsListOptions.imageView?.layer.masksToBounds = true
             }

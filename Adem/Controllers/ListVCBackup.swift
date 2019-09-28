@@ -12,6 +12,8 @@ import Firebase
 import FirebaseFirestore
 import AVFoundation
 import CoreData
+
+
 /*
 class listCollectionView: UICollectionViewController, UICollectionViewDelegateFlowLayout, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
