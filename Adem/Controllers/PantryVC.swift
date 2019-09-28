@@ -94,7 +94,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         searchController.searchBar.becomeFirstResponder()
         
         
-        self.searchController.searchBar.placeholder = "What's in your Pantry"
+        self.searchController.searchBar.placeholder = "What's in your Pantry?"
         
         //This moves the Cells to the correct offsets, Stylistic choice
         //pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
