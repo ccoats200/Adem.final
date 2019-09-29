@@ -37,9 +37,7 @@ class SettingTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         settingsTableView.backgroundColor = UIColor.white
         self.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
-        
-        //self.tableView.separatorStyle = .none
-        
+  
         self.settingsTableView.dataSource = self
         self.settingsTableView.delegate = self
         self.view.addSubview(settingsTableView)

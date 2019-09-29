@@ -12,7 +12,10 @@ import FirebaseFirestore
 import AVFoundation
 import CoreData
 
-class listCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+class listCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
+    
+   
+    
     
     
 
@@ -73,6 +76,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     var groceriesSelected = [String]()
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -124,9 +128,36 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         searchController.obscuresBackgroundDuringPresentation = true
         self.searchController.searchBar.placeholder = "What Can I Add For You?"
         
-        setUpDifferentViews()
+       
         setUpBarButtonItems()
+        
+        //User interations
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
+        lpgr.minimumPressDuration = 0.35
+        self.collectionView?.addGestureRecognizer(lpgr)
     }
+    
+    //MARK: Authentication State listner
+       override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+           if UserDefaults.standard.bool(forKey: "SwitchKey") == true {
+                     setUpListView()
+                  } else {
+                  setUpCollectionView()
+                  }
+        
+           //self.searchController.isActive = true
+           self.navigationController?.view.layoutIfNeeded()
+           self.navigationController?.view.setNeedsLayout()
+       }
+       
+       override func viewWillDisappear(_ animated: Bool) {
+           super.viewWillDisappear(animated)
+           //self.searchController.isActive = false
+           self.navigationController?.view.layoutIfNeeded()
+           self.navigationController?.view.setNeedsLayout()
+       }
+       
     
     @objc func refresh(sender: AnyObject) {
        // Code to refresh table view
@@ -140,11 +171,12 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         self.navigationItem.rightBarButtonItem = searching
     }
     
+    
+
     //Setting up views
     var productUpdateLocationButtonView = addOrDeleteProduct()
     weak var collectionView: UICollectionView!
-    weak var tableView: UITableView!
-    func setUpDifferentViews() {
+    func setUpCollectionView() {
         
         
         //SetUp views from own class
@@ -153,17 +185,13 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let listCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-        let listTableView: UITableView = UITableView(frame: CGRect(x: 0, y: 0, width: ss.width, height: ss.height))
         
-        
-        //adding subviews to the view controller
-        self.view.addSubview(listTableView)
+        listCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
+        listCollectionView.dataSource = self
+        listCollectionView.delegate = self
         self.view.addSubview(listCollectionView)
         self.view.addSubview(productUpdateLocationButtonView)
         
-        listCollectionView.dataSource = self
-        listCollectionView.delegate = self
-        listCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
         listCollectionView.backgroundColor = UIColor.white
         listCollectionView.isUserInteractionEnabled = true
         listCollectionView.isScrollEnabled = true
@@ -202,16 +230,54 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
         self.collectionView = listCollectionView
+    }
+    
+    var listTableView: UITableView!
+    func setUpListView() {
         
-        //User interations
-        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
-        lpgr.minimumPressDuration = 0.35
-        self.collectionView?.addGestureRecognizer(lpgr)
+        
+        //SetUp views from own class
+        let ss: CGRect = UIScreen.main.bounds
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
+    
+        listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        listTableView.backgroundColor = UIColor.white
+        
+        listTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
+        listTableView.dataSource = self
+        listTableView.delegate = self
+        
+        self.view.addSubview(listTableView)
+        self.view.addSubview(productUpdateLocationButtonView)
+        listTableView.translatesAutoresizingMaskIntoConstraints = false
+        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
+     
+        //View contstaints
+        NSLayoutConstraint.activate([
+            listTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            listTableView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
+            listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            productUpdateLocationButtonView.heightAnchor.constraint(equalToConstant: 75),
+            productUpdateLocationButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
     }
     
     
     
-    
+        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+           return 1
+       }
+       let privacy = "test"
+       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+           let privacy = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath)
+           privacy.textLabel?.text = "Test"
+           return privacy
+       }
     
     // MARK: - Private instance methods
     func searchBarIsEmpty() -> Bool {
@@ -265,22 +331,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     
-    //Authentication State listner
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        //self.searchController.isActive = true
-        self.navigationController?.view.layoutIfNeeded()
-        self.navigationController?.view.setNeedsLayout()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        //self.searchController.isActive = false
-        self.navigationController?.view.layoutIfNeeded()
-        self.navigationController?.view.setNeedsLayout()
-    }
-    
+   
     
     
     // MARK: - Delete Items

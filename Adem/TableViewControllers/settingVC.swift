@@ -18,7 +18,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     private var settingsTableView: UITableView!
     
     let userDefinedSettings = UserDefaults.standard
-    let switchKey = "SwitchKey"
+    //let switchKey = "SwitchKey"
     
     var firstTimeAppLaunch: Bool {
         get {
@@ -48,8 +48,6 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         //editing to reorder cell
         //self.settingsTableView.isEditing = true
-        //MARK: Remeber switch value
-        colorSwitch.isOn = userDefinedSettings.bool(forKey: switchKey)
         
         
         //MARK: Custom Cells
@@ -60,10 +58,10 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         self.view.addSubview(settingsTableView)
         
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        colorSwitch.isOn = userDefinedSettings.bool(forKey: switchKey)
+    override func viewWillAppear(_ animated: Bool) {
+        colorSwitch.isOn = userDefinedSettings.bool(forKey: "SwitchKey")
     }
+    
     
     
     
@@ -98,7 +96,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }()
     
     @objc func switchForListDesign(sender: UISwitch) {
-        userDefinedSettings.set(sender.isOn, forKey: switchKey)
+        userDefinedSettings.set(sender.isOn, forKey: "SwitchKey")
     }
     
       //MARK: Settings Sections - Start
