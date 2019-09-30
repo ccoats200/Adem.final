@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		351B8DF32342CA17006CEAE1 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF22342CA17006CEAE1 /* API.swift */; };
 		353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12352301CD3B007DF3BB /* mealsBackup.swift */; };
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
@@ -90,6 +91,7 @@
 		0A54AFA40FFA6A5351829C21 /* Pods-AdemTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.debug.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.debug.xcconfig"; sourceTree = "<group>"; };
 		187913B8C17B384F222CAF49 /* Pods-Adem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem.release.xcconfig"; path = "Target Support Files/Pods-Adem/Pods-Adem.release.xcconfig"; sourceTree = "<group>"; };
 		3094CA93057F1C3C582F7E2E /* Pods-AdemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.release.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.release.xcconfig"; sourceTree = "<group>"; };
+		351B8DF22342CA17006CEAE1 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		353C123422FF5C84007DF3BB /* Adem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Adem.entitlements; sourceTree = "<group>"; };
 		353C12352301CD3B007DF3BB /* mealsBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsBackup.swift; sourceTree = "<group>"; };
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
@@ -360,6 +362,7 @@
 			isa = PBXGroup;
 			children = (
 				35D6488E22ECBFD200015352 /* FirebaseFiles.swift */,
+				351B8DF22342CA17006CEAE1 /* API.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -684,6 +687,7 @@
 				35D6484522ECBCA700015352 /* Color.swift in Sources */,
 				35D6484E22ECBD1300015352 /* toolBar.swift in Sources */,
 				35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */,
+				351B8DF32342CA17006CEAE1 /* API.swift in Sources */,
 				35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */,
 				35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */,
 				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,

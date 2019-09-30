@@ -119,9 +119,10 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             } else {
                 let doesNotHaveAccount = "Chef"
                 self.accountStuff.nameofUser.text = doesNotHaveAccount
-                //If user is not signed in they can by clicking the plus. They can they also create an account.
-                let added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(self.handelSignUp))
-                self.navigationItem.rightBarButtonItem = added
+                //CreateAccount
+                
+                let signInOrCreateAccount = UIBarButtonItem(image: UIImage(named: "CreateAccount"), style: .done, target: self, action: #selector(self.handelSignUp))
+                self.navigationItem.rightBarButtonItem = signInOrCreateAccount
             }
         }
         
@@ -236,49 +237,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             
             return settings
         }
-        
-        /*
-        switch indexPath.item {
-        case 0:
-            let friends = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
-            friends.accountPrivacyLabels.text = "Friends"
-            friends.backgroundColor = UIColor.white
-            friends.layer.cornerRadius = 15
-            
-            
-            return friends
-        case 1:
-            let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
-            devices.accountPrivacyImages.image = UIImage(named: "lock")
-            devices.accountPrivacyLabels.text = "Devices"
-            devices.backgroundColor = UIColor.white
-            devices.layer.cornerRadius = 15
-            
-            return devices
-            
-        case 2:
-            let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
-            settings.accountPrivacyLabels.text = "Settingss"
-            settings.backgroundColor = UIColor.white
-            settings.layer.cornerRadius = 15
-            
-            
-            return settings
-        case 3:
-            let health = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath) as! accountPrivacyCellDesign
-            health.accountPrivacyImages.image = UIImage(named: "lock")
-            health.accountPrivacyLabels.text = "Health"
-            health.backgroundColor = UIColor.white
-            health.layer.cornerRadius = 15
-            
-            return health
-            
-        default:
-            let cell2 = collectionView.dequeueReusableCell(withReuseIdentifier: cellId4, for: indexPath)
-            return cell2
-        }
- 
- */
     }
     
     

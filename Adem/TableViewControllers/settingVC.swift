@@ -184,14 +184,44 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let cellRow = indexPath.row
         
         switch cellRow {
-        case 3:
-            let destination = PantryVC() // Your destination
-            navigationController?.pushViewController(destination, animated: true)
+        case 7:
+            handleAlert()
             print("1")
         default:
             print("2")
         }
     }
     
+    //MARK: Alert Buttons
+    @objc func handleLogout() {
+        do {
+            try firebaseAuth.signOut()
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+        handleLogin()
+    }
     
+    //Button Action - Start
+    @objc func handleLogin() {
+        let logBackIn = login()
+        self.present(logBackIn, animated: true, completion: nil)
+        print("Settings Tab is active")
+    }
+    
+    //Logout Alert
+    @objc func handleAlert() {
+        let alert = UIAlertController(title: "Leaving So Soon?", message: "Are you sure you want to leave the Kitchen?", preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Log Out", comment: "User is logging out"), style: .default, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+            self.handleLogout()
+        }))
+        
+        alert.addAction(UIAlertAction(title: NSLocalizedString("No", comment: "User is logging out"), style: .default, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+            self.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
+    }
 }
