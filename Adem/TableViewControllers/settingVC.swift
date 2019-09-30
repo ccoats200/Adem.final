@@ -99,7 +99,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
         
-        label.text = "Adem"
+        label.text = "Adem is further than it was this morning"
         footerView.addSubview(label)
            return footerView
     }
