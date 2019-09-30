@@ -9,6 +9,8 @@
 import Firebase
 import FirebaseFirestore
 
+//MARK: ALL table View images need to be 22 px By 22 px
+
 let db = Firestore.firestore()
 var docRef: DocumentReference!
 var colRef: CollectionReference!

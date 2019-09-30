@@ -116,6 +116,17 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         //MARK: Cirular transition
         //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
 
+        
+       
+        setUpBarButtonItems()
+        
+       
+    }
+    
+    //MARK: Authentication State listner
+       override func viewWillAppear(_ animated: Bool) {
+           super.viewWillAppear(animated)
+        
         //MARK: Search bar
         //let search = UISearchController(searchResultsController: nil)
         self.searchController.searchBar.delegate = self
@@ -127,20 +138,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.obscuresBackgroundDuringPresentation = true
         self.searchController.searchBar.placeholder = "What Can I Add For You?"
-        
-       
-        setUpBarButtonItems()
-        
-        //User interations
-        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
-        lpgr.minimumPressDuration = 0.35
-        self.collectionView?.addGestureRecognizer(lpgr)
-    }
-    
-    //MARK: Authentication State listner
-       override func viewWillAppear(_ animated: Bool) {
-           super.viewWillAppear(animated)
-           if UserDefaults.standard.bool(forKey: "SwitchKey") == true {
+
+        if UserDefaults.standard.bool(forKey: "SwitchKey") == true {
                      setUpListView()
                   } else {
                   setUpCollectionView()
@@ -230,6 +229,11 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
         self.collectionView = listCollectionView
+        
+        //User interations
+               let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
+               lpgr.minimumPressDuration = 0.35
+               self.collectionView?.addGestureRecognizer(lpgr)
     }
     
     var listTableView: UITableView!
@@ -265,19 +269,46 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
+        //listTableView.isEditing = true
     }
     
+    var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
     
+        //MARK: editing to reorder cell - Start
+        func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+            return .none
+        }
+        
+        func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+            return false
+        }
+        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+            let movedObject = self.settingsOptions[sourceIndexPath.row]
+            settingsOptions.remove(at: sourceIndexPath.row)
+            settingsOptions.insert(movedObject, at: destinationIndexPath.row)
+        }
+
     
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-           return 1
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return settingsOptions.count
        }
-       let privacy = "test"
-       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-           let privacy = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath)
-           privacy.textLabel?.text = "Test"
-           return privacy
+    let privacy = "test"
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath)
+        let row = indexPath.row
+        
+        productsListViewLayout.textLabel?.text = settingsOptions[row]
+        productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
+        
+        return productsListViewLayout
        }
+    
+    //MARK: Cell selection handler
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let cellRow = indexPath.row
+        handleProduct()
+    }
     
     // MARK: - Private instance methods
     func searchBarIsEmpty() -> Bool {
@@ -289,7 +320,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         selectedGroceryItems = (listProducts.filter({( groceryItems : groceryItemCellContent) -> Bool in
             return (groceryItems.itemName?.lowercased().contains(searchText.lowercased()))!
         }))
-        
+        //TODO: Why is this breaking when I switch back from list to collection view
         collectionView.reloadData()
     }
     
@@ -329,10 +360,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         searchController.searchBar.resignFirstResponder()
     }
-    
-    
-   
-    
     
     // MARK: - Delete Items
     override func setEditing(_ editing: Bool, animated: Bool) {

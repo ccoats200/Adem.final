@@ -190,7 +190,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             switch indexPath.item {
             case 0:
                 let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                devices.accountPrivacyImages.image = UIImage(named: "notifications")
+                devices.accountPrivacyImages.image = UIImage(named: "Settings")
                 devices.accountPrivacyLabels.text = "Settings"
                 devices.backgroundColor = UIColor.white
                 devices.layer.cornerRadius = 5

@@ -29,7 +29,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     //MARK: Settings Table View header - Start
-    let settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
+    let settingsOptions = ["List view","Pantry View","Account","About","Privacy","Security","Help","Log out"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,9 +46,6 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsTableView = UITableView(frame: CGRect(x: 0, y: 0, width: screenWidth, height: screenHeight))
         settingsTableView.backgroundColor = UIColor.white
         
-        //editing to reorder cell
-        //self.settingsTableView.isEditing = true
-        
         
         //MARK: Custom Cells
         self.settingsTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
@@ -61,27 +58,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewWillAppear(_ animated: Bool) {
         colorSwitch.isOn = userDefinedSettings.bool(forKey: "SwitchKey")
     }
-    
-    
-    
-    
-    /*
-    //editing to reorder cell - Start
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
-    }
-    
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-        let movedObject = self.settingsCategories[sourceIndexPath.row]
-        settingsCategories.remove(at: sourceIndexPath.row)
-        settingsCategories.insert(movedObject, at: destinationIndexPath.row)
-    }
-    //editing to reorder cell - End
-*/
-    
+  
     //MARK: Settings Icons - START
     let settingsImage: UIImageView = {
         let settingsIcon = UIImageView()
@@ -141,6 +118,14 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         return switcher
     }()
+    let pantrySwitch: UISwitch = {
+        let switcher = UISwitch()
+        switcher.isOn = false
+        switcher.setOn(false, animated: true)
+        switcher.addTarget(self, action: #selector(switchForListDesign), for: .valueChanged)
+        
+        return switcher
+    }()
 
     //MARK: Cell for Row
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -153,6 +138,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         settingsListOptions.textLabel?.text = settingsOptions[row]
         settingsListOptions.textLabel?.textAlignment = .left
         settingsListOptions.textLabel?.textColor = UIColor.black
+        settingsListOptions.accessoryType = .disclosureIndicator
         
         switch row {
         case 0:
@@ -162,11 +148,19 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
             settingsListOptions.imageView?.clipsToBounds = true
             settingsListOptions.imageView?.layer.masksToBounds = true
         case 1:
-            settingsListOptions.imageView?.image = UIImage(named: "notifications")
+            settingsListOptions.accessoryView = pantrySwitch
+            settingsListOptions.imageView?.image = UIImage(named: "nutritionFacts")
+            
             settingsListOptions.imageView?.clipsToBounds = true
             settingsListOptions.imageView?.layer.masksToBounds = true
         case 2:
+            settingsListOptions.accessoryType = .detailDisclosureButton
             settingsListOptions.imageView?.image = UIImage(named: "notifications")
+            settingsListOptions.imageView?.clipsToBounds = true
+            settingsListOptions.imageView?.layer.masksToBounds = true
+        case 3:
+            settingsListOptions.accessoryType = .detailButton
+            settingsListOptions.imageView?.image = UIImage(named: "Info")
             settingsListOptions.imageView?.clipsToBounds = true
             settingsListOptions.imageView?.layer.masksToBounds = true
         default:
@@ -190,7 +184,9 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
         let cellRow = indexPath.row
         
         switch cellRow {
-        case 0:
+        case 3:
+            let destination = PantryVC() // Your destination
+            navigationController?.pushViewController(destination, animated: true)
             print("1")
         default:
             print("2")
