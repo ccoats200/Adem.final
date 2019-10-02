@@ -20,7 +20,8 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         
         //Tab bar is its own delegate
         self.delegate = self
-        tabBar.backgroundColor = UIColor.white
+        self.tabBar.backgroundColor = UIColor.white
+        self.tabBar.barTintColor = UIColor.white
         self.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         setUpTabBAR()
         //determineEditingStateOfViewController()

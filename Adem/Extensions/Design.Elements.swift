@@ -16,7 +16,7 @@ extension UIColor {
     }
     
     //All custom color names
-    static let ademGreen = UIColor.rgb(red: 30, green: 188, blue: 29)
+    static let ademGreen = UIColor.rgb(red: 2, green: 180, blue: 0)//30, green: 188, blue: 29)
     static let ademBlue = UIColor.rgb(red: 59, green: 94, blue: 101)
 }
 

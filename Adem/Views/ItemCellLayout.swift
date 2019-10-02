@@ -108,7 +108,7 @@ class itemCellLayout: UICollectionViewCell {
         name.textAlignment = .left
         //name.backgroundColor = UIColor.red
         name.numberOfLines = 1
-        name.adjustsFontSizeToFitWidth = true
+        //name.adjustsFontSizeToFitWidth = true
         name.translatesAutoresizingMaskIntoConstraints = false
         print("sets the item name")
         return name
@@ -126,11 +126,8 @@ class itemCellLayout: UICollectionViewCell {
     func setupViews() {
         
         addSubview(productImageView)
-        print("adds the product image subview")
         addSubview(productName)
-        print("adds the product name subview")
         addSubview(quantity)
-        print("adds the calorie count subview")
         addSubview(selectedButton)
         
         
@@ -138,15 +135,15 @@ class itemCellLayout: UICollectionViewCell {
             productImageView.topAnchor.constraint(equalTo: self.topAnchor),
             productImageView.leftAnchor.constraint(equalTo: self.leftAnchor),
             productImageView.rightAnchor.constraint(equalTo: self.rightAnchor),
-            productImageView.heightAnchor.constraint(equalToConstant: 100),
-            productName.topAnchor.constraint(equalTo: productImageView.bottomAnchor),
-            productName.rightAnchor.constraint(equalTo: quantity.leftAnchor),
-            productName.leftAnchor.constraint(equalTo: productImageView.leftAnchor),
+            productImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 2/3),//(equalToConstant: 100),
+            productName.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 1),
+            productName.trailingAnchor.constraint(equalTo: quantity.leadingAnchor,constant: -5),
+            productName.leftAnchor.constraint(equalTo: productImageView.leftAnchor, constant: 5),
             productName.heightAnchor.constraint(equalToConstant: 20),
-            quantity.topAnchor.constraint(equalTo: productImageView.bottomAnchor),
-            quantity.rightAnchor.constraint(equalTo: productImageView.rightAnchor),
-            quantity.widthAnchor.constraint(equalToConstant: 20),
-            quantity.heightAnchor.constraint(equalToConstant: 20),
+            quantity.topAnchor.constraint(equalTo: productName.topAnchor),
+            quantity.rightAnchor.constraint(equalTo: productImageView.rightAnchor, constant: -5),
+            quantity.widthAnchor.constraint(equalToConstant: 10),
+            quantity.heightAnchor.constraint(equalTo: productName.heightAnchor),
             selectedButton.topAnchor.constraint(equalTo: productImageView.topAnchor),
             selectedButton.leftAnchor.constraint(equalTo: productImageView.leftAnchor),
             selectedButton.widthAnchor.constraint(equalToConstant: 30),

@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		351B8DF32342CA17006CEAE1 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF22342CA17006CEAE1 /* API.swift */; };
+		351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF42342F10A006CEAE1 /* imageText.swift */; };
+		351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF62343C215006CEAE1 /* ListTVC.swift */; };
 		353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12352301CD3B007DF3BB /* mealsBackup.swift */; };
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
@@ -92,6 +94,8 @@
 		187913B8C17B384F222CAF49 /* Pods-Adem.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem.release.xcconfig"; path = "Target Support Files/Pods-Adem/Pods-Adem.release.xcconfig"; sourceTree = "<group>"; };
 		3094CA93057F1C3C582F7E2E /* Pods-AdemTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.release.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.release.xcconfig"; sourceTree = "<group>"; };
 		351B8DF22342CA17006CEAE1 /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		351B8DF42342F10A006CEAE1 /* imageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageText.swift; sourceTree = "<group>"; };
+		351B8DF62343C215006CEAE1 /* ListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTVC.swift; sourceTree = "<group>"; };
 		353C123422FF5C84007DF3BB /* Adem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Adem.entitlements; sourceTree = "<group>"; };
 		353C12352301CD3B007DF3BB /* mealsBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsBackup.swift; sourceTree = "<group>"; };
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
@@ -363,6 +367,7 @@
 			children = (
 				35D6488E22ECBFD200015352 /* FirebaseFiles.swift */,
 				351B8DF22342CA17006CEAE1 /* API.swift */,
+				351B8DF42342F10A006CEAE1 /* imageText.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -391,6 +396,7 @@
 				35D6489122ECBFFD00015352 /* FriendsLayout.swift */,
 				35D6489322ECC01400015352 /* SettingTVC.swift */,
 				35D6486022ECBDEF00015352 /* settingVC.swift */,
+				351B8DF62343C215006CEAE1 /* ListTVC.swift */,
 			);
 			path = TableViewControllers;
 			sourceTree = "<group>";
@@ -662,6 +668,7 @@
 				353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
 				353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */,
+				351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */,
 				35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
 				35D6482F22ECBB1500015352 /* productCell.swift in Sources */,
@@ -700,6 +707,7 @@
 				35D6485322ECBD5D00015352 /* ListVC.swift in Sources */,
 				35D6483F22ECBC4E00015352 /* swipe.swift in Sources */,
 				35D6485D22ECBDC900015352 /* tabController.swift in Sources */,
+				351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */,
 				35D6487322ECBEB900015352 /* AcctElements.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,

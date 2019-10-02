@@ -16,10 +16,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     
    
     
-    
-    
 
-    var refreshControl = UIRefreshControl()
+    
     
     //Cells Selected stuff
     enum Mode {
@@ -41,11 +39,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             }
         }
     }
-    
-    // Add a new document with a generated ID
-    var docRef: DocumentReference!
-    var handle: AuthStateDidChangeListenerHandle?
-    let user = Auth.auth().currentUser
+
     
     //MARK: Navigation Bar Buttons - Start
     lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
@@ -61,22 +55,23 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
  
-    //MARK: reuse ID's
+    //MARK: Cell re-use ID
+    let tableViewCell = "test"
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
+    //Populate List
+    var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
+    //Populate colllection
     var listProducts: [groceryItemCellContent] =  []
     
+    //TODO: what do these do?
     //var products: [groceryProductsStruct] = groceryProducts.fetchGroceryProductImages()
-        var searchController = UISearchController(searchResultsController: nil)
-    
     var selectedGroceryItems = [groceryItemCellContent]()
     var selectedCells = [UICollectionViewCell]()
-    
     var groceriesSelected = [String]()
     
-    
-    
+    var searchController = UISearchController(searchResultsController: nil)
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -104,6 +99,19 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             
         }
         
+        //MARK: Search bar
+        self.searchController.searchBar.delegate = self
+        self.definesPresentationContext = true
+        self.navigationItem.searchController = searchController
+        navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
+        
+        self.searchController.isActive = true
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocorrectionType = .default
+        searchController.searchBar.enablesReturnKeyAutomatically = true
+        searchController.obscuresBackgroundDuringPresentation = true
+        self.searchController.searchBar.placeholder = "What Can I Add For You?"
+        
         //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
         
@@ -116,8 +124,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         //MARK: Cirular transition
         //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
 
-        
-       
         setUpBarButtonItems()
         
        
@@ -127,28 +133,17 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
        override func viewWillAppear(_ animated: Bool) {
            super.viewWillAppear(animated)
         
-        //MARK: Search bar
-        //let search = UISearchController(searchResultsController: nil)
-        self.searchController.searchBar.delegate = self
-        self.navigationItem.searchController = searchController
-        navigationItem.searchController?.hidesNavigationBarDuringPresentation = true
-        self.searchController.isActive = true
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.autocorrectionType = .default
-        searchController.searchBar.enablesReturnKeyAutomatically = true
-        searchController.obscuresBackgroundDuringPresentation = true
-        self.searchController.searchBar.placeholder = "What Can I Add For You?"
-
-        if UserDefaults.standard.bool(forKey: "SwitchKey") == true {
-                     setUpListView()
-                  } else {
-                  setUpCollectionView()
-                  }
         
-           //self.searchController.isActive = true
+        if UserDefaults.standard.bool(forKey: "SwitchKey") == true {
+            setUpListView()
+        } else {
+            setUpCollectionView()
+            
+        }
            self.navigationController?.view.layoutIfNeeded()
            self.navigationController?.view.setNeedsLayout()
-       }
+        
+    }
        
        override func viewWillDisappear(_ animated: Bool) {
            super.viewWillDisappear(animated)
@@ -158,21 +153,22 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
        }
        
     
+    //MARK: Refresh
+    var refreshControl = UIRefreshControl()
     @objc func refresh(sender: AnyObject) {
-       // Code to refresh table view
+        //TODO: Code to refresh table view
     }
     
-    //Setting up bar buttons
+    //MARK: Setting up NAV bar buttons
     private func setUpBarButtonItems() {
         self.navigationItem.leftBarButtonItem = editButtonItem
-        //self.navigationItem.leftBarButtonItem = edit
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
         self.navigationItem.rightBarButtonItem = searching
     }
     
     
 
-    //Setting up views
+    //MARK: Setting up Collection View
     var productUpdateLocationButtonView = addOrDeleteProduct()
     weak var collectionView: UICollectionView!
     func setUpCollectionView() {
@@ -195,6 +191,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         listCollectionView.isUserInteractionEnabled = true
         listCollectionView.isScrollEnabled = true
         //dragging
+        
+        //FIXME: Search bar won't go back to hidden if there aren't enough cells
         listCollectionView.bounces = true
         listCollectionView.alwaysBounceVertical = true
         
@@ -203,13 +201,13 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         listCollectionView.translatesAutoresizingMaskIntoConstraints = false
         productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
         
-        //MARK: Need to understand
+        //TODO: Need to understand
         listCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
         listCollectionView.showsVerticalScrollIndicator = true
         //listCollectionView.flashScrollIndicators()
         
         
-        //MARK: Size of cell
+        //FIXME: Size of cell
         let Columns: CGFloat = 3.14
         let insetDimension: CGFloat = 10.0
         let cellHeight: CGFloat = 125.0
@@ -217,7 +215,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
         print("the sss = \(listCollectionView.frame.width/3 - insetDimension)")
         
-        //View contstaints
+        //Collection View contstaints
+        //TODO: Decide if I remove the other View
         NSLayoutConstraint.activate([
             listCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
             listCollectionView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
@@ -228,6 +227,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
+        //FIXME: Re-evaluate the colllection implimentation
         self.collectionView = listCollectionView
         
         //User interations
@@ -236,9 +236,12 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
                self.collectionView?.addGestureRecognizer(lpgr)
     }
     
+    
+    
+    //MARK: Table View
     var listTableView: UITableView!
+    //TODO: Does this need to be a weak var?
     func setUpListView() {
-        
         
         //SetUp views from own class
         let ss: CGRect = UIScreen.main.bounds
@@ -249,7 +252,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         listTableView.backgroundColor = UIColor.white
         
-        listTableView.register(UITableViewCell.self, forCellReuseIdentifier: privacy)
+        listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
         listTableView.dataSource = self
         listTableView.delegate = self
         
@@ -259,6 +262,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
      
         //View contstaints
+        
+        //TODO: Decide if I remove the other View
         NSLayoutConstraint.activate([
             listTableView.topAnchor.constraint(equalTo: view.topAnchor),
             listTableView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
@@ -269,46 +274,47 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
-        //listTableView.isEditing = true
+        listTableView.isEditing = true
     }
     
-    var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
     
-        //MARK: editing to reorder cell - Start
-        func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-            return .none
-        }
+    
+    //MARK: editing to reorder cell - Start
+    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+        return .none
+    }
         
-        func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-            return false
-        }
-        func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            let movedObject = self.settingsOptions[sourceIndexPath.row]
-            settingsOptions.remove(at: sourceIndexPath.row)
-            settingsOptions.insert(movedObject, at: destinationIndexPath.row)
-        }
+    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+        return false
+    }
+        
+    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+            
+        let movedObject = self.settingsOptions[sourceIndexPath.row]
+        settingsOptions.remove(at: sourceIndexPath.row)
+        settingsOptions.insert(movedObject, at: destinationIndexPath.row)
+    }
 
     
+    //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return settingsOptions.count
-       }
-    let privacy = "test"
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath)
-        let row = indexPath.row
+        let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
+        //let row = indexPath.row
         
-        productsListViewLayout.textLabel?.text = settingsOptions[row]
-        productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
-        
+        //productsListViewLayout.textLabel?.text = settingsOptions[row]
+        //productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
         return productsListViewLayout
-       }
+    }
     
-    //MARK: Cell selection handler
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let cellRow = indexPath.row
+        //let cellRow = indexPath.row
         handleProduct()
     }
+    //MARK: Table view cell properties - End
     
     // MARK: - Private instance methods
     func searchBarIsEmpty() -> Bool {
@@ -321,7 +327,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             return (groceryItems.itemName?.lowercased().contains(searchText.lowercased()))!
         }))
         //TODO: Why is this breaking when I switch back from list to collection view
-        collectionView.reloadData()
+        
+        //collectionView.reloadData()
     }
     
     func isFiltering() -> Bool {
@@ -343,23 +350,27 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         self.dismiss(animated: true, completion: nil)
     }
     
-    func updateSearchResults(for searchController: UISearchController)
-    {
-        filterContentForSearchText(searchController.searchBar.text!)
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-    }
-    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-    }
-    
-    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
-        
         searchController.searchBar.resignFirstResponder()
     }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        print(text)
+        //filterContentForSearchText(searchController.searchBar.text!)
+        
+        
+        // Strip out all the leading and trailing spaces.
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString =
+            searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        
+    }
+    
+    
+    
+    
     
     // MARK: - Delete Items
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -526,7 +537,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! itemCellLayout
         
-        productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
+        productCell.backgroundColor = UIColor.ademBlue
         
         //        for _ in (productsGlobal)! {
         //            if groceryItemCellContent().List == true {

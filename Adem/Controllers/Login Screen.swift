@@ -28,7 +28,7 @@ class login: UIViewController, UITextFieldDelegate {
         
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
-        gradient.colors = [UIColor.rgb(red: 59, green: 94, blue: 101).cgColor,UIColor.ademGreen.cgColor]
+        gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
         //Top left
         gradient.startPoint = CGPoint(x: 0, y: 0)
         //Top right
