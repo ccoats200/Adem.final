@@ -39,11 +39,10 @@ class login: UIViewController, UITextFieldDelegate {
         view.addSubview(loginFieldView)
         view.addSubview(loginButton)
         view.addSubview(signUpButton)
-        view.addSubview(facebookLoginImage)
+        
         
         //setupademImageHolder()
         setuploginFieldView()
-        setuploginRegisterButton()
         
     }
     //Authentication State listner
@@ -161,15 +160,47 @@ class login: UIViewController, UITextFieldDelegate {
         return signUp
     }()
     
+    lazy var maybeLaterButton: UIButton = {
+        let maybeLater = UIButton(type: .system)
+        maybeLater.setTitle("Maybe Later", for: .normal)
+        maybeLater.translatesAutoresizingMaskIntoConstraints = false
+        maybeLater.setTitleColor(UIColor.white, for: .normal)
+        maybeLater.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        maybeLater.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
+        return maybeLater
+    }()
+    
     lazy var facebookLoginImage: UIButton = {
         let facebookLogin = UIButton(type: .system)
         facebookLogin.setImage(UIImage.init(named: "Home"), for: .normal)
         facebookLogin.translatesAutoresizingMaskIntoConstraints = false
-        facebookLogin.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
+        facebookLogin.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
         facebookLogin.layer.cornerRadius = 30
         facebookLogin.layer.borderWidth = 1
         facebookLogin.backgroundColor = UIColor.white
         return facebookLogin
+    }()
+    
+    lazy var twitterLoginImage: UIButton = {
+        let twitterLogin = UIButton(type: .system)
+        twitterLogin.setImage(UIImage.init(named: "Home"), for: .normal)
+        twitterLogin.translatesAutoresizingMaskIntoConstraints = false
+        twitterLogin.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        twitterLogin.layer.cornerRadius = 30
+        twitterLogin.layer.borderWidth = 1
+        twitterLogin.backgroundColor = UIColor.white
+        return twitterLogin
+    }()
+    
+    lazy var GoogleLoginImage: UIButton = {
+        let googleLogin = UIButton(type: .system)
+        googleLogin.setImage(UIImage.init(named: "Home"), for: .normal)
+        googleLogin.translatesAutoresizingMaskIntoConstraints = false
+        googleLogin.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        googleLogin.layer.cornerRadius = 30
+        googleLogin.layer.borderWidth = 1
+        googleLogin.backgroundColor = UIColor.white
+        return googleLogin
     }()
     
     let userNameTextField: UITextField = {
@@ -222,69 +253,79 @@ class login: UIViewController, UITextFieldDelegate {
     }()
     
     func setuploginFieldView() {
-        
-        ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5).isActive = true
-        ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        ademImageHolder.heightAnchor.constraint(equalToConstant: 255).isActive = true
-        
-        //login Fields
-        loginFieldView.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 55).isActive = true
-        loginFieldView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        loginFieldView.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
-        loginFieldView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
-        loginFieldView.heightAnchor.constraint(equalToConstant: 95).isActive = true //125 also looks good
-        
         //loginFieldView.addSubview(userNameTextField)
         loginFieldView.addSubview(emailTextField)
         loginFieldView.addSubview(emailTextSeparator)
         loginFieldView.addSubview(passwordTextField)
         
+        let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
+        differentSignUpMethodsStackView.contentMode = .scaleAspectFit
+        differentSignUpMethodsStackView.spacing = 5
+        differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
+        differentSignUpMethodsStackView.distribution = .fillEqually
+        
+        view.addSubview(differentSignUpMethodsStackView)
+        view.addSubview(maybeLaterButton)
+
+        
+        NSLayoutConstraint.activate([
+            
+            ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
+            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+            ademImageHolder.heightAnchor.constraint(equalToConstant: 255),
+        
+        //login Fields
+            loginFieldView.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 55),
+            loginFieldView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            loginFieldView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            loginFieldView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+            loginFieldView.heightAnchor.constraint(equalToConstant: 95), //125 also looks good
         
         //Email text
-        emailTextField.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12).isActive = true
-        emailTextField.topAnchor.constraint(equalTo: loginFieldView.topAnchor).isActive = true
-        emailTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24).isActive = true
-        emailTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/2).isActive = true
+            emailTextField.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
+            emailTextField.topAnchor.constraint(equalTo: loginFieldView.topAnchor),
+            emailTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+            emailTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/2),
         
         //Name separator
-        //emailTextSeparator.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: -20).isActive = true
-        emailTextSeparator.topAnchor.constraint(equalTo: emailTextField.bottomAnchor).isActive = true
-        emailTextSeparator.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor).isActive = true
-        emailTextSeparator.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor,  constant: -25).isActive = true
-        emailTextSeparator.heightAnchor.constraint(equalToConstant: 1).isActive = true
+        //emailTextSeparator.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: -20),
+            emailTextSeparator.topAnchor.constraint(equalTo: emailTextField.bottomAnchor),
+            emailTextSeparator.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor),
+            emailTextSeparator.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor,  constant: -25),
+            emailTextSeparator.heightAnchor.constraint(equalToConstant: 1),
         
         //Password text
-        passwordTextField.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12).isActive = true
-        passwordTextField.topAnchor.constraint(equalTo: emailTextSeparator.topAnchor).isActive = true
-        passwordTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24).isActive = true
-        passwordTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/2).isActive = true
+            passwordTextField.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
+            passwordTextField.topAnchor.constraint(equalTo: emailTextSeparator.topAnchor),
+            passwordTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+            passwordTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/2),
+            
+         //Login Button
+            loginButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+            loginButton.topAnchor.constraint(equalTo: loginFieldView.bottomAnchor, constant: 12),
+            loginButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+            loginButton.heightAnchor.constraint(equalToConstant: 50),
+            
+          //SignUp Button
+            signUpButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+            signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 12),
+            signUpButton.widthAnchor.constraint(equalToConstant: 60),
+            signUpButton.heightAnchor.constraint(equalToConstant: 20),
+            
+          //Social Buttons
+            differentSignUpMethodsStackView.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+            differentSignUpMethodsStackView.bottomAnchor.constraint(equalTo: maybeLaterButton.topAnchor, constant: -12),
+            differentSignUpMethodsStackView.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+            differentSignUpMethodsStackView.heightAnchor.constraint(equalToConstant: 60),
+            
+           //Maybe Later Button
+            maybeLaterButton.centerXAnchor.constraint(equalTo: differentSignUpMethodsStackView.centerXAnchor),
+            maybeLaterButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            maybeLaterButton.widthAnchor.constraint(equalTo: differentSignUpMethodsStackView.widthAnchor, multiplier: 1/2),
+            maybeLaterButton.heightAnchor.constraint(equalToConstant: 60),
+            
+        ])
         
-    }
-    
-    func addRightImageTo(textField: UITextField, addImage img: UIImage) {
-        let rightImageView = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: img.size.width, height: img.size.height))
-        rightImageView.image = img
-        textField.rightView = rightImageView
-        textField.rightViewMode = .always
-        
-    }
-    
-    func setuploginRegisterButton() {
-        loginButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor).isActive = true
-        loginButton.topAnchor.constraint(equalTo: loginFieldView.bottomAnchor, constant: 12).isActive = true
-        loginButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor).isActive = true
-        loginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        
-        signUpButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor).isActive = true
-        signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 12).isActive = true
-        signUpButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        signUpButton.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        
-        
-        facebookLoginImage.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor).isActive = true
-        facebookLoginImage.topAnchor.constraint(equalTo: signUpButton.bottomAnchor, constant: 12).isActive = true
-        facebookLoginImage.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        facebookLoginImage.heightAnchor.constraint(equalToConstant: 60).isActive = true
     }
 }
