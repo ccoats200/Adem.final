@@ -19,36 +19,25 @@ protocol ItemDelegate: class {
 
 //Pantry Product Cell layout
 class itemCellLayout: UICollectionViewCell {
+    
     weak var delegate: ItemDelegate?
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+                
         setupViews()
     }
     
-   
-    
     var gItem: groceryItemCellContent? {
+        
         didSet {
             productImageView.image = UIImage(named: (gItem?.itemImageName)!)
             productName.text = gItem?.itemName
-            quantity.text = gItem?.Quantity
             selectedButton.isHidden = !isEditing
-            
-            print("set")
         }
     }
     
-    //Delete now editing button
-    let selectedButton: UIButton = {
-        let delete = UIButton()
-        delete.backgroundColor = UIColor.ademBlue
-        delete.layer.cornerRadius = 15
-        delete.clipsToBounds = true
-        delete.layer.masksToBounds = true
-        delete.translatesAutoresizingMaskIntoConstraints = false
-        return delete
-    }()
+    
     
     var isEditing: Bool = false {
         didSet {
@@ -66,15 +55,8 @@ class itemCellLayout: UICollectionViewCell {
     }
     
     override var isSelected: Bool {
+        
         didSet {
-            /*
-             if isEditing && isSelected {
-             selectedButton.isHidden = !isEditing
-             self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-             self.selectedButton.backgroundColor = UIColor.red
-             //print(selectedButton.backgroundColor)
-             }*/
-            
             if isSelected {
                 selectedButton.isHidden = !isEditing
                 self.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
@@ -99,55 +81,59 @@ class itemCellLayout: UICollectionViewCell {
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 5
         image.translatesAutoresizingMaskIntoConstraints = false
-        print("rounds the corners of the image view")
         return image
     }()
     
     let productName: UILabel = {
         let name = UILabel()
         name.textAlignment = .left
-        //name.backgroundColor = UIColor.red
+        name.textColor = UIColor.white
+        name.font = UIFont(name:"HelveticaNeue", size: 15.0)
         name.numberOfLines = 1
-        //name.adjustsFontSizeToFitWidth = true
         name.translatesAutoresizingMaskIntoConstraints = false
-        print("sets the item name")
         return name
     }()
     
-    let quantity: UILabel = {
-        let Quant = UILabel()
-        print("sets the quantity of the items in the cart")
-        Quant.font = UIFont(name: "Helvetica", size: 15)
-        Quant.textColor = UIColor.black
-        Quant.translatesAutoresizingMaskIntoConstraints = false
-        return Quant
+    //Delete now editing button
+    let selectedButton: UIButton = {
+        let delete = UIButton()
+        delete.backgroundColor = UIColor.blue
+        delete.clipsToBounds = true
+        delete.layer.masksToBounds = true
+        delete.translatesAutoresizingMaskIntoConstraints = false
+        return delete
     }()
     
     func setupViews() {
         
         addSubview(productImageView)
         addSubview(productName)
-        addSubview(quantity)
         addSubview(selectedButton)
-        
+        selectedButton.layer.cornerRadius = 10
         
         NSLayoutConstraint.activate([
+            
+            //Product Image
             productImageView.topAnchor.constraint(equalTo: self.topAnchor),
-            productImageView.leftAnchor.constraint(equalTo: self.leftAnchor),
-            productImageView.rightAnchor.constraint(equalTo: self.rightAnchor),
-            productImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 2/3),//(equalToConstant: 100),
-            productName.topAnchor.constraint(equalTo: productImageView.bottomAnchor, constant: 1),
-            productName.trailingAnchor.constraint(equalTo: quantity.leadingAnchor,constant: -5),
-            productName.leftAnchor.constraint(equalTo: productImageView.leftAnchor, constant: 5),
-            productName.heightAnchor.constraint(equalToConstant: 20),
-            quantity.topAnchor.constraint(equalTo: productName.topAnchor),
-            quantity.rightAnchor.constraint(equalTo: productImageView.rightAnchor, constant: -5),
-            quantity.widthAnchor.constraint(equalToConstant: 10),
-            quantity.heightAnchor.constraint(equalTo: productName.heightAnchor),
-            selectedButton.topAnchor.constraint(equalTo: productImageView.topAnchor),
-            selectedButton.leftAnchor.constraint(equalTo: productImageView.leftAnchor),
-            selectedButton.widthAnchor.constraint(equalToConstant: 30),
-            selectedButton.heightAnchor.constraint(equalToConstant: 30),
+            productImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            productImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            productImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            productImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 7/10),//(equalToConstant: 100),
+            
+            //Product Name
+            productName.topAnchor.constraint(equalTo: productImageView.bottomAnchor),
+            productName.centerXAnchor.constraint(equalTo: productImageView.centerXAnchor),
+            productName.leadingAnchor.constraint(equalTo: productImageView.leadingAnchor, constant: 5),
+            productName.trailingAnchor.constraint(equalTo: productImageView.trailingAnchor,constant: -5),
+            productName.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 3/10),
+            
+            //Selected Button
+            selectedButton.topAnchor.constraint(equalTo: productImageView.topAnchor, constant: 5),
+            selectedButton.leadingAnchor.constraint(equalTo: productImageView.leadingAnchor, constant: 5),
+            selectedButton.widthAnchor.constraint(equalToConstant: 20),
+            selectedButton.heightAnchor.constraint(equalToConstant: 20),
+            
+            
             ])
     }
     

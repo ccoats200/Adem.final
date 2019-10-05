@@ -11,6 +11,8 @@ import UIKit
 import Firebase
 import FirebaseFirestore
 
+
+//MARK: Might kill
 class listTableViewCell: UITableViewCell {
     
     var friendName: String?

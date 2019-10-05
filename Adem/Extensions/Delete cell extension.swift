@@ -13,7 +13,8 @@ import UIKit
 extension listCollectionView : ListItemDelegate {
     
     func delete(cell: productCell) {
-        if let indexPath = collectionView?.indexPath(for: cell) {
+        //if let indexPath = collectionView?.indexPath(for: cell) {
+        if let indexPath = listCollectionView?.indexPath(for: cell) {
             //    products?[indexPath.section].itemName?.remove(at: indexPath.item)
             
             //    collectionView?.deleteItems(at: [indexPath])

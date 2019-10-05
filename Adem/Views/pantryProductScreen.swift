@@ -13,10 +13,6 @@ import FirebaseFirestore
 
 class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
