@@ -22,6 +22,12 @@ class login: UIViewController, UITextFieldDelegate {
         
         docRef = Firestore.firestore().document("\(userNames)")
         
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        
         emailTextField.delegate = self
         passwordTextField.delegate = self
         
@@ -99,22 +105,9 @@ class login: UIViewController, UITextFieldDelegate {
  */
     }
 
-    @objc func handelSignUp() {
-        
-        //Check how this is transitioning and fix it for a navigation controller
-        let signUpInfo = UserInfo()
-        self.present(signUpInfo, animated: true, completion: nil)
-        //navigationController?.pushViewController(signUpInfo, animated: true)
-        print("Sending user to sign up Flow")
-    }
+   
     
-    @objc func handleSkip() {
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let skipAccountCreation = tabBar()
-        appDelegate.window?.rootViewController = skipAccountCreation
-        print("Allowing user to skip the login or sign up flow")
-    }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         emailTextField.resignFirstResponder()
@@ -153,14 +146,31 @@ class login: UIViewController, UITextFieldDelegate {
     }()
     
     lazy var signUpButton: UIButton = {
-        let signUp = UIButton(type: .system)
+        let signUp = UIButton()
         signUp.setTitle("Sign up", for: .normal)
         signUp.translatesAutoresizingMaskIntoConstraints = false
         signUp.setTitleColor(UIColor.white, for: .normal)
         signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        signUp.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        signUp.addTarget(self, action: #selector(self.handelSignUp), for: .touchUpInside)
         return signUp
     }()
+    
+    @objc func handelSignUp(sender: UIButton!) {
+        
+        //Check how this is transitioning and fix it for a navigation controller
+     let signUpInfo = UserInfo()
+     //self.navigationController?.pushViewController(signUpInfo, animated: true)
+     self.present(signUpInfo, animated: true, completion: nil)
+     print("Sending user to sign up Flow")
+    }
+    
+    @objc func handleSkip() {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let skipAccountCreation = tabBar()
+        appDelegate.window?.rootViewController = skipAccountCreation
+        print("Allowing user to skip the login or sign up flow")
+    }
     
     lazy var maybeLaterButton: UIButton = {
         let maybeLater = UIButton(type: .system)

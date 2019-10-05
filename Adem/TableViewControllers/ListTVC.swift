@@ -23,6 +23,8 @@ class listTableViewCell: UITableViewCell {
         picOfFriend.contentMode = .scaleAspectFill
         picOfFriend.layer.cornerRadius = 15
         picOfFriend.layer.masksToBounds = true
+        picOfFriend.image = UIImage(named: "egg")
+        picOfFriend.contentMode = .scaleAspectFit
         picOfFriend.clipsToBounds = true
         picOfFriend.layer.shadowColor = UIColor.clear.cgColor
         picOfFriend.layer.borderColor = UIColor.white.cgColor
@@ -47,17 +49,18 @@ class listTableViewCell: UITableViewCell {
     }()
     
     let listProductQuantity: UILabel = {
-        let access = UILabel()
-        access.textAlignment = .left
-        access.numberOfLines = 1
-        access.adjustsFontSizeToFitWidth = true
+        let quantity = UILabel()
+        quantity.textAlignment = .left
+        quantity.numberOfLines = 1
+        quantity.text = "1"
+        quantity.adjustsFontSizeToFitWidth = true
         //userName.font = UIFont(name: "Lato", size: 80)
-        access.font = UIFont.boldSystemFont(ofSize: 20)
-        access.textColor = UIColor.ademBlue
-        access.backgroundColor = UIColor.red
-        access.translatesAutoresizingMaskIntoConstraints = false
+        quantity.font = UIFont.boldSystemFont(ofSize: 20)
+        quantity.textColor = UIColor.ademBlue
+        //quantity.backgroundColor = UIColor.red
+        quantity.translatesAutoresizingMaskIntoConstraints = false
         print("sets the item name")
-        return access
+        return quantity
     }()
     
     
@@ -112,12 +115,13 @@ class listTableViewCell: UITableViewCell {
             listProductName.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
             listProductName.trailingAnchor.constraint(equalTo: listProductQuantity.leadingAnchor, constant: -5),
             
-            listProductQuantity.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+            listProductQuantity.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -35),
             listProductQuantity.centerYAnchor.constraint(equalTo: listProductName.centerYAnchor),
             listProductQuantity.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            listProductQuantity.widthAnchor.constraint(equalToConstant: 50),
+            listProductQuantity.widthAnchor.constraint(equalToConstant: 10),
             
             ])
+    
     }
     
     override func layoutSubviews() {

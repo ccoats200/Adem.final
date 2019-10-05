@@ -244,57 +244,58 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     func setUpListView() {
         
         //SetUp views from own class
-        let ss: CGRect = UIScreen.main.bounds
+        //let ss: CGRect = UIScreen.main.bounds
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
-        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
     
         listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         listTableView.backgroundColor = UIColor.white
         
-        listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
+        listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
+        //listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
         listTableView.dataSource = self
         listTableView.delegate = self
         
         self.view.addSubview(listTableView)
-        self.view.addSubview(productUpdateLocationButtonView)
         listTableView.translatesAutoresizingMaskIntoConstraints = false
-        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
      
         //View contstaints
         
         //TODO: Decide if I remove the other View
         NSLayoutConstraint.activate([
             listTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            listTableView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
+            listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            productUpdateLocationButtonView.heightAnchor.constraint(equalToConstant: 75),
-            productUpdateLocationButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
-        listTableView.isEditing = true
+        //listTableView.isEditing = true
     }
     
-    
-    
-    //MARK: editing to reorder cell - Start
-    func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-        return .none
-    }
-        
-    func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-        
-    func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
-            
-        let movedObject = self.settingsOptions[sourceIndexPath.row]
-        settingsOptions.remove(at: sourceIndexPath.row)
-        settingsOptions.insert(movedObject, at: destinationIndexPath.row)
-    }
+  
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteItem = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
+            boolValue(true) // pass true if you want the handler to allow the action
+            print("Leading Action style .normal")
+        }
+        deleteItem.backgroundColor = UIColor.ademRed
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteItem])
 
+        return swipeActions
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
+
+      // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
+      let contextItem = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
+            boolValue(true) // pass true if you want the handler to allow the action
+            print("Leading Action style .normal")
+        }
+        contextItem.backgroundColor = UIColor.ademBlue
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
+
+        return swipeActions
+    }
     
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -302,17 +303,39 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
+        //let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
+        let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         //let row = indexPath.row
         
         //productsListViewLayout.textLabel?.text = settingsOptions[row]
         //productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
+        productsListViewLayout.imageView?.image = UIImage(named: "egg")
+        productsListViewLayout.textLabel!.text = settingsOptions[indexPath.row]
+        productsListViewLayout.accessoryType = .disclosureIndicator
         return productsListViewLayout
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cellRow = indexPath.row
         handleProduct()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+           footerView.backgroundColor = UIColor.ademBlue
+        
+        //let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
+        
+        //label.text = "Adem is further than it was this morning"
+        //footerView.addSubview(label)
+           return footerView
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellHeight = 50
+        
+        return CGFloat(cellHeight)
     }
     //MARK: Table view cell properties - End
     

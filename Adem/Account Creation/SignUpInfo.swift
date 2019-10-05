@@ -23,16 +23,16 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        //Might not need. Probably need to call this in a different way. 
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
+
         
         //UserLoginInfo
         colRef = Firestore.firestore().collection("User")
         docRef = Firestore.firestore().document("\(usersInfo)")
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
         
         firstNameTextField.delegate = self
         lastNameTextField.delegate = self

@@ -18,6 +18,7 @@ extension UIColor {
     //All custom color names
     static let ademGreen = UIColor.rgb(red: 2, green: 180, blue: 0)//30, green: 188, blue: 29)
     static let ademBlue = UIColor.rgb(red: 59, green: 94, blue: 101)
+    static let ademRed = UIColor.rgb(red: 216, green: 15, blue: 4)
 }
 
 //Constraints Extension

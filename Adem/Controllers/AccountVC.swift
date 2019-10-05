@@ -121,7 +121,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
                 self.accountStuff.nameofUser.text = doesNotHaveAccount
                 //CreateAccount
                 
-                let signInOrCreateAccount = UIBarButtonItem(image: UIImage(named: "CreateAccount"), style: .done, target: self, action: #selector(self.handelSignUp))
+                let signInOrCreateAccount = UIBarButtonItem(image: UIImage(named: "CreateAccount"), style: .done, target: self, action: #selector(self.handelLogin))
                 self.navigationItem.rightBarButtonItem = signInOrCreateAccount
             }
         }
@@ -143,10 +143,10 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         super.viewWillDisappear(animated)
     }
     
-    @objc func handelSignUp() {
-        let signUpInfo = login()
-        signUpInfo.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(signUpInfo, animated: true)
+    @objc func handelLogin() {
+        let loginInfo = login()
+        loginInfo.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(loginInfo, animated: true)
         print("Sending user to sign up Flow")
     }
     
@@ -266,7 +266,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
         }
-        handelSignUp()
+        handelLogin()
     }
     
     @objc func handleHealth() {
