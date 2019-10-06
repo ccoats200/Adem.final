@@ -34,13 +34,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
         
-        //Ciruclar Transition
-        //let transitionCoordinator = TransitionCoordinator()
-        
-        //Firestore
+       
+        //MARK: Firestore
         FirebaseApp.configure()
         let db = Firestore.firestore()
         let storage = Storage.storage()
@@ -52,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //db.settings = settings
         
         
-        //RootController
+        //MARK: RootController
         //window?.rootViewController = login()
         window?.rootViewController = tabBar()
         
@@ -80,8 +79,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             
             let statusBarBackgroundColor = UIView()
             statusBarBackgroundColor.backgroundColor = UIColor.ademGreen
-            
-            //statusBarBackgroundColor.backgroundColor = UIColor.rgb(red: 38, green: 96, blue: 164)
             
             window?.addSubview(statusBarBackgroundColor)
             window?.addConstraintsWithFormats(format: "H:|[v0]|", views: statusBarBackgroundColor)

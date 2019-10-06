@@ -31,3 +31,13 @@ let usersCollection = "Users/\(currentUser!.uid)"
 //Icons
 let nutritionFacts = "nutritionFacts"
 
+class food {
+    var key: String
+    var name: String
+    
+    init(dictionary: [String: Any], key: String) {
+        self.key = key
+        self.name = dictionary["Users"] as! String
+    }
+    
+}

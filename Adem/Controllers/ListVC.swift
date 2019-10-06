@@ -54,15 +54,14 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
-    //Populate List
+    //MARK: FireBase Populate List
     var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
-    //Populate colllection
+    var products: [food] = [food]()
     
     //TODO: what do these do?
-    //var products: [groceryProductsStruct] = groceryProducts.fetchGroceryProductImages()
     var selectedGroceryItems = [groceryItemCellContent]()
-    var selectedCells = [UICollectionViewCell]()
     var groceriesSelected = [String]()
+    
     
     var searchController = UISearchController(searchResultsController: nil)
     override func viewDidLoad() {
@@ -107,18 +106,45 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         
         //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        
         setUpBarButtonItems()
+        countingCollections()
     }
     
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        
+        
+        
         listScreenDesign()
         
            self.navigationController?.view.layoutIfNeeded()
            self.navigationController?.view.setNeedsLayout()
     }
+    
+    func countingCollections() {
+
+        let collection = db.collection("Users")
+        print("starting observing")
+        collection.getDocuments() { (allDocs, err) in
+        if let err = err {
+            print("Error getting documents: \(err)")
+        } else {
+            for document in allDocs!.documents {
+                
+                print("hello \(document.documentID) => \(document.data())")
+            }
+            
+            let sized = allDocs!.count
+            //let bla = "fuck"
+            print("kinda \(sized)")
+            
+        }
+        //collection.observe(.value, with: { (snapshot: DataSnapshot!) in })
+    }
+}
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -127,6 +153,54 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         self.navigationController?.view.setNeedsLayout()
        }
        
+    
+    
+    //MARK: Spoon Api Reference
+    var tableArray = [String] ()
+    
+    func parseJSON() {
+        
+        //https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0
+        var searchterm = "pizza"
+        let apiKey = "5f40f799c85b4be089e48ca83e01d3c0"
+        let url = URL(string: "https://api.spoonacular.com/food/products/search?query=\(searchterm)&apiKey=\(apiKey)")
+        
+        let task = URLSession.shared.dataTask(with: url!) {(data, response, error ) in
+
+          guard error == nil else {
+              print("returned error")
+              return
+          }
+
+          if error != nil {
+
+          } else {
+            print("returned error")
+          }
+
+          guard let content = data else {
+
+              print("No data")
+              return
+          }
+
+          guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
+                  print("Not containing JSON")
+                  return
+          }
+            if let array = json["companies"] as? [String] {
+                    self.tableArray = array
+                }
+            print(self.tableArray)
+            DispatchQueue.main.async {
+                self.listTableView.reloadData()
+            }
+        }
+        task.resume()
+    }
+    
+    
+    
     
     //MARK: Refresh
     var refreshControl = UIRefreshControl()
@@ -180,7 +254,6 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
             listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             ])
-        //listTableView.isEditing = true
     }
     
   
@@ -248,6 +321,19 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cellRow = indexPath.row
         handleProduct()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        headerView.backgroundColor = UIColor.ademBlue
+        
+        let label = UILabel(frame: CGRect(x: 5, y: -5, width: 80, height: 40))
+        
+        label.text = "List"
+        label.textColor = UIColor.white
+        headerView.addSubview(label)
+        
+        return headerView
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
