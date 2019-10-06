@@ -13,8 +13,8 @@ import FirebaseFirestore
 import AVFoundation
 
 
-class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
- 
+class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
+
     
     //Cells Selected stuff
     enum Mode {
@@ -27,49 +27,64 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             switch mMode {
             case .view:
                 edit.title = "Edit"
-                collectionView.allowsSelection = false
+                //collectionView.allowsSelection = false
+                listCollectionView.allowsSelection = false
                 print("User is in view mode")
             case .selected:
                 edit.title = "Done"
-                collectionView.allowsSelection = true
+                //collectionView.allowsSelection = true
+                listCollectionView.allowsSelection = true
                 print("User is in edit mode")
             }
         }
     }
+
     
-    //Navigation buttons - Start
-    lazy var searching = UIBarButtonItem(image: UIImage(named: "search")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
+    //MARK: Navigation Bar Buttons - Start
+    lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
     lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
     
     lazy var edit = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(handleEditButtonClicked))
     
     lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
-    //Navigation buttons - End
-
-    var products: [groceryItemCellContent] = []
+    //MARK: Navigation buttons - End
     
-    //reuse ID's
+    
+    let mostRecent = "most recent"
+    let productRFIDNumber = "3860407808"
+ 
+    //MARK: Cell re-use ID
+    let tableViewCell = "test"
     let cellID = "product"
     let headerID = "collectionViewHeader"
     
-    //Additional Views
-    let searchController = UISearchController(searchResultsController: nil)
+    //Populate List
+    var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
+    //Populate colllection
+    var listProducts: [groceryItemCellContent] =  []
     
+    //TODO: what do these do?
+    //var products: [groceryProductsStruct] = groceryProducts.fetchGroceryProductImages()
+    var selectedGroceryItems = [groceryItemCellContent]()
+    var selectedCells = [UICollectionViewCell]()
+    var groceriesSelected = [String]()
     
+    var searchController = UISearchController(searchResultsController: nil)
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //MARK: NavigationBar setup
         navigationItem.title = "Pantry"
-        /*
-        let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.white]
-        navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.isTranslucent = false
-        */
-        
+        //MARK: might be for ios 12
+        //let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
+        //navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        //navigationController?.navigationBar.barTintColor = UIColor.ademGreen
+        //navigationController?.navigationBar.titleTextAttributes = textAttributes
+        //navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.scrollEdgeAppearance
         
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -80,129 +95,306 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            
         }
         
-        //MARK: Search
-        self.navigationItem.searchController = searchController
-        self.searchController.searchResultsUpdater = self
-        self.searchController.delegate = self
+        //MARK: Search bar
         self.searchController.searchBar.delegate = self
         self.definesPresentationContext = true
-        self.searchController.hidesNavigationBarDuringPresentation = false
-        self.searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.sizeToFit()
-        searchController.searchBar.becomeFirstResponder()
+        self.navigationItem.searchController = searchController
+        navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
+        
+        self.searchController.isActive = true
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.autocorrectionType = .default
+        searchController.searchBar.enablesReturnKeyAutomatically = true
+        searchController.obscuresBackgroundDuringPresentation = true
+        self.searchController.searchBar.placeholder = "What Can I Add For You?"
+        
+        //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        
+        //Drag and Drop
+        //self.collectionView.dragDelegate = self
+        //self.collectionView.dropDelegate = self
+        //self.collectionView.dragInteractionEnabled = true
         
         
-        self.searchController.searchBar.placeholder = "What's in your Pantry?"
-        
-        //This moves the Cells to the correct offsets, Stylistic choice
-        //pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
-        //pantryCollectionView.scrollIndicatorInsets = UIEdgeInsets.init(top: 0, left: 0, bottom: 50, right: 0)
-    
-        
-        //Initializing the Collection view and add/delete view
-        setUpDifferentViews()
+        //MARK: Cirular transition
+        //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
+
         setUpBarButtonItems()
-    }
-   
-    //Setting up views
-    var productUpdateLocationButtonView = addOrDeleteProduct()
-    weak var collectionView: UICollectionView!
-    func setUpDifferentViews() {
-        //SetUp views from own class
-        let ss: CGRect = UIScreen.main.bounds
-        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
+        
        
-        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        let pantryCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-        
-        //adding subviews to the view controller
-        self.view.addSubview(pantryCollectionView)
-        self.view.addSubview(productUpdateLocationButtonView)
-        
-        pantryCollectionView.dataSource = self
-        pantryCollectionView.delegate = self
-        pantryCollectionView.register(pantryCellLayout.self, forCellWithReuseIdentifier: cellID)
-        pantryCollectionView.backgroundColor = UIColor.white
-        pantryCollectionView.isUserInteractionEnabled = true
-        pantryCollectionView.isScrollEnabled = true
-        pantryCollectionView.bounces = true
-        pantryCollectionView.alwaysBounceVertical = true
-        
-        
-        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
-        pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
-        
-        pantryCollectionView.contentInset = UIEdgeInsets.init(top: 1, left: 1, bottom: 1, right: 1)
-        
-        let Columns: CGFloat = 3.14
-        let insetDimension: CGFloat = 2.0
-        let cellHeight: CGFloat = 125.0
-        let cellWidth = (pantryCollectionView.frame.width/Columns) - insetDimension
-        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        
-        //View contstaints
-        NSLayoutConstraint.activate([
-            pantryCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            pantryCollectionView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
-            pantryCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pantryCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            productUpdateLocationButtonView.heightAnchor.constraint(equalToConstant: 75),
-            productUpdateLocationButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
-        self.collectionView = pantryCollectionView
-        
-        //User interations
-        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
-        lpgr.minimumPressDuration = 0.35
-        self.collectionView?.addGestureRecognizer(lpgr)
     }
     
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func updateSearchResults(for searchController: UISearchController)
-    {
-        //var searchString = searchController.searchBar.text
-    }
-    
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-    }
-    
-    func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
- 
-        searchController.searchBar.resignFirstResponder()
-    }
-    
-    
-    //Authentication State listner
+    //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //self.searchController.isActive = true
-        self.navigationController?.view.layoutIfNeeded()
-        self.navigationController?.view.setNeedsLayout()
+        listScreenDesign()
+        
+           self.navigationController?.view.layoutIfNeeded()
+           self.navigationController?.view.setNeedsLayout()
     }
+    
+   
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //self.searchController.isActive = false
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
+       }
+       
+    
+    //MARK: Refresh
+    var refreshControl = UIRefreshControl()
+    @objc func refresh(sender: AnyObject) {
+        //TODO: Code to refresh table view
+    }
+    
+    //MARK: Setting up NAV bar buttons
+    private func setUpBarButtonItems() {
+        self.navigationItem.leftBarButtonItem = editButtonItem
+        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
+        self.navigationItem.rightBarButtonItem = searching
     }
 
     
+    func listScreenDesign() {
+        setUpListView()
+        
+        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
+        guard switchDefaults else {
+            return setUpCollectionView()
+        }
+        
+           //if switchDefaults != true {
+               
+           //}
+       }
+    
+    //MARK: Setting up Collection View
+    var productUpdateLocationButtonView = addOrDeleteProduct()
+    var listCollectionView: UICollectionView!
+    
+    func setUpCollectionView() {
+
+        //SetUp views from own class
+        let ss: CGRect = UIScreen.main.bounds
+        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
+        
+        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        listCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
+        
+        listCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
+        listCollectionView.dataSource = self
+        listCollectionView.delegate = self
+        self.view.addSubview(listCollectionView)
+        self.view.addSubview(productUpdateLocationButtonView)
+        
+        listCollectionView.backgroundColor = UIColor.white
+        listCollectionView.isUserInteractionEnabled = true
+        listCollectionView.isScrollEnabled = true
+        listCollectionView.isPrefetchingEnabled = true
+                
+        //FIXME: Search bar won't go back to hidden if there aren't enough cells
+        listCollectionView.bounces = true
+        listCollectionView.alwaysBounceVertical = true
+        
+        
+        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
+        listCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
+        
+        //TODO: Need to understand
+        listCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
+        listCollectionView.showsVerticalScrollIndicator = true
+        
+        //FIXME: Size of cell
+        let Columns: CGFloat = 3.14
+        let insetDimension: CGFloat = 10.0
+        let cellHeight: CGFloat = 125.0
+        let cellWidth = (listCollectionView.frame.width/Columns) - insetDimension
+        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
+        print("the sss = \(listCollectionView.frame.width/3 - insetDimension)")
+        
+        //Collection View contstaints
+        //TODO: Decide if I remove the other View
+        NSLayoutConstraint.activate([
+            listCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            listCollectionView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
+            listCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            listCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            productUpdateLocationButtonView.heightAnchor.constraint(equalToConstant: 75),
+            productUpdateLocationButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
+
+        
+        //User interations
+        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
+        lpgr.minimumPressDuration = 0.35
+        self.listCollectionView.addGestureRecognizer(lpgr)
+    }
+    
+    
+    
+    //MARK: Table View
+    var listTableView: UITableView!
+    //TODO: Does this need to be a weak var?
+    func setUpListView() {
+        
+        //SetUp views from own class
+        //let ss: CGRect = UIScreen.main.bounds
+        let displayWidth: CGFloat = self.view.frame.width
+        let displayHeight: CGFloat = self.view.frame.height
+    
+        listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        listTableView.backgroundColor = UIColor.white
+        
+        listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
+        //listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
+        listTableView.dataSource = self
+        listTableView.delegate = self
+        
+        self.view.addSubview(listTableView)
+        listTableView.translatesAutoresizingMaskIntoConstraints = false
+     
+        //View contstaints
+        
+        //TODO: Decide if I remove the other View
+        NSLayoutConstraint.activate([
+            listTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            ])
+        //listTableView.isEditing = true
+    }
+    
+  
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteItem = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
+            boolValue(true) // pass true if you want the handler to allow the action
+            print("Leading Action style .normal")
+        }
+        deleteItem.backgroundColor = UIColor.ademRed
+        let swipeActions = UISwipeActionsConfiguration(actions: [deleteItem])
+
+        return swipeActions
+    }
+    
+    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
+
+      // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
+      let contextItem = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
+            boolValue(true) // pass true if you want the handler to allow the action
+            print("Leading Action style .normal")
+        }
+        contextItem.backgroundColor = UIColor.ademBlue
+        
+        let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
+
+        return swipeActions
+    }
+    
+    //MARK: Table view cell properties - Start
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return settingsOptions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        //let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
+        let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
+        //let row = indexPath.row
+        
+        //productsListViewLayout.textLabel?.text = settingsOptions[row]
+        //productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
+        productsListViewLayout.imageView?.image = UIImage(named: "egg")
+        productsListViewLayout.textLabel!.text = settingsOptions[indexPath.row]
+        productsListViewLayout.accessoryType = .disclosureIndicator
+        return productsListViewLayout
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //let cellRow = indexPath.row
+        handleProduct()
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+           footerView.backgroundColor = UIColor.ademBlue
+        
+        //let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
+        
+        //label.text = "Adem is further than it was this morning"
+        //footerView.addSubview(label)
+           return footerView
+    }
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let cellHeight = 50
+        
+        return CGFloat(cellHeight)
+    }
+    //MARK: Table view cell properties - End
+    
+    // MARK: - Private instance methods
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    
+    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
+        selectedGroceryItems = (listProducts.filter({( groceryItems : groceryItemCellContent) -> Bool in
+            return (groceryItems.itemName?.lowercased().contains(searchText.lowercased()))!
+        }))
+        //TODO: Why is this breaking when I switch back from list to collection view
+        
+        //collectionView.reloadData()
+    }
+    
+    func isFiltering() -> Bool {
+        return searchController.isActive && !searchBarIsEmpty()
+    }
+    
+    /*
+    func setupKeyboardDismissRecognizer(){
+        let tapRecognizer: UITapGestureRecognizer = UITapGestureRecognizer(
+            target: self,
+            action: #selector(listCollectionView.searchBarSearchButtonClicked))
+        
+        
+        self.view.addGestureRecognizer(tapRecognizer)
+        //setup()
+    }
+   */
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchController.searchBar.resignFirstResponder()
+    }
+    
+    func updateSearchResults(for searchController: UISearchController) {
+        guard let text = searchController.searchBar.text else { return }
+        print(text)
+        //filterContentForSearchText(searchController.searchBar.text!)
+        
+        
+        // Strip out all the leading and trailing spaces.
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString =
+            searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        
+    }
+  
     
     // MARK: - Delete Items
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -210,21 +402,24 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         if self.isEditing {
             self.navigationItem.rightBarButtonItem = nil
-            self.collectionView.allowsMultipleSelection = true
+            //self.collectionView.allowsMultipleSelection = true
+            self.listCollectionView.allowsMultipleSelection = true
             self.tabBarController?.tabBar.isHidden = true
             self.navigationItem.rightBarButtonItems = [added, trashed]
             
         } else {
-           
+            
             self.navigationItem.rightBarButtonItems = [searching]
             self.tabBarController?.tabBar.isHidden = false
-            self.collectionView.allowsMultipleSelection = false
-            
+            //self.collectionView.allowsMultipleSelection = false
+            self.listCollectionView.allowsMultipleSelection = false
         }
         
-        if let indexPaths = collectionView?.indexPathsForVisibleItems {
+        //if let indexPaths = collectionView?.indexPathsForVisibleItems {
+        if let indexPaths = listCollectionView?.indexPathsForVisibleItems {
             for indexPath in indexPaths {
-                if let cell = collectionView?.cellForItem(at: indexPath) as? pantryCellLayout {
+                if let cell = listCollectionView?.cellForItem(at: indexPath) as? itemCellLayout {
+                //if let cell = collectionView?.cellForItem(at: indexPath) as? itemCellLayout {
                     cell.isEditing = editing
                 }
             }
@@ -237,8 +432,10 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         
         if gestureRecognizer.state != .began { return }
-        let p = gestureRecognizer.location(in: self.collectionView)
-        if let indexPath = self.collectionView.indexPathForItem(at: p) {
+        //let p = gestureRecognizer.location(in: self.collectionView)
+        let p = gestureRecognizer.location(in: self.listCollectionView)
+        //if let indexPath = self.collectionView.indexPathForItem(at: p) {
+        if let indexPath = self.listCollectionView.indexPathForItem(at: p) {
             //let cell = self.collectionView.cellForItem(at: indexPath)
             
             navigationController?.isEditing = true
@@ -247,134 +444,53 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             print("can't find")
         }
     }
-    
-    func setup() {
-        
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(down))
-        swipeDown.direction = .down
-        
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(up))
-        swipeUp.direction = .up
-        
-        
-        self.view.addGestureRecognizer(swipeDown)
-        self.view.addGestureRecognizer(swipeUp)
-        
-    }
-    
-    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-    let interactor = Interactor()
-    @objc func panGestureRecognizerAction(_ gesture: UIPanGestureRecognizer) {
-        
-        let translation = gesture.translation(in: view)
-        
-        let progress = searchProgression.calculateProgress(
-            translationInView: translation,
-            viewBounds: view.bounds,
-            direction: .Down
-        )
-        
-        let close = searchProgression.calculateProgress(
-            translationInView: translation,
-            viewBounds: view.bounds,
-            direction: .Up
-        )
-        //down
-        searchProgression.mapGestureStateToInteractor(
-            gestureState: gesture.state,
-            progress: progress,
-            interactor: interactor) {
-                // 6
-                self.navigationItem.searchController = self.searchController
-                self.searchController.isActive = true
-                self.navigationController?.view.setNeedsLayout()
-                self.navigationController?.view.layoutIfNeeded()
-                self.searchController.hidesNavigationBarDuringPresentation = false
-        }
-        //UP
-        searchProgression.mapGestureStateToInteractor(
-            gestureState: gesture.state,
-            progress: close,
-            interactor: interactor) {
-                // 6
-                //self.navigationItem.searchController = nil
-                self.searchController.isActive = false
-                self.navigationController?.view.setNeedsLayout()
-                self.navigationController?.view.layoutIfNeeded()
-                
-        }
-    }
-    
-    //Swipe Down to search
-    @objc func down(sender: UIGestureRecognizer) {
-        print("User swiped down to search")
-        
-        self.navigationController?.view.setNeedsLayout()
-        self.navigationController?.view.layoutIfNeeded()
-        
-        
-        //show bar
-        UINavigationBar.animate(withDuration: 0.50, animations: { () -> Void in
-            
-            self.navigationItem.searchController = self.searchController
-            self.definesPresentationContext = true
-            self.navigationController?.view.setNeedsLayout()
-            self.navigationController?.view.layoutIfNeeded()
-            //self.searchController.isActive = true
-            
-            self.searchController.hidesNavigationBarDuringPresentation = false
-            self.searchController.searchBar.becomeFirstResponder()
-            
-        }, completion: { (Bool) -> Void in
-        })
-    }
-    
-    @objc func up(sender: UIGestureRecognizer) {
-        print("User Swipped up dismiss search")
-        
-        
-        UINavigationBar.animate(withDuration: 0.50, animations:  { () -> Void in
-            //self.navigationItem.searchController = nil
-            self.navigationController?.view.setNeedsLayout()
-            self.navigationController?.view.layoutIfNeeded()
 
-        }, completion: { (Bool) -> Void in
-        })
-    }
-    
-    
-    
     //MARK: CollectonView Setup
     //Number of cells. update later for collection of cells based on product type
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
+        if isFiltering() {
+            return selectedGroceryItems.count
+        }
+        
         for i in productsGlobal! {
-            print("for loop is working")
+            print("for loop is working and there are \(listProducts.count as Any) products")
             if i.Pantry == true {
-                //print(groceryItemCellContent().itemName)
-                products.append(i)
+                listProducts.append(i)
             }
         }
-        return products.count
+        
+        print("there are \(listProducts.count as Any) products")
+        
+        
+        return listProducts.count
     }
+    
     
     //Initiating cell
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! pantryCellLayout
+        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! itemCellLayout
         
-        productCell.backgroundColor = UIColor.rgb(red: 241, green: 249, blue: 255)
-        productCell.gItem = products[indexPath.item]
-        //productCell.gItem = productsGlobal![indexPath.item]
+        productCell.backgroundColor = UIColor.ademBlue
         
+        //        for _ in (productsGlobal)! {
+        //            if groceryItemCellContent().List == true {
+        //                productCell.gItem = productsGlobal![indexPath.item]
+        //            }
+        //        }
         
-        //collectionview.insertIems(at: indexPaths)
+        productCell.gItem = listProducts[indexPath.item]
         productCell.layer.cornerRadius = 5
         
+        var productsInFilter: groceryItemCellContent
+        if isFiltering() {
+            productsInFilter = selectedGroceryItems[indexPath.item]
+        } else {
+            productsInFilter = (listProducts[indexPath.item])
+        }
         return productCell
     }
-    
-    
     
     var groceryProductsSelected: [IndexPath] = []
     var selectedGroceryProducts = [groceryItemCellContent]()
@@ -383,11 +499,15 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         /*
          let selectedData = selectedGroceryItems[indexPath.item]
-         if groceryItemSelected.contains(indexPath) {
-         groceryItemSelected = groceryItemSelected.filter { $0 != indexPath }
+         if groceryProductsSelected.contains(indexPath) {
+         groceryProductsSelected = groceryProductsSelected.filter { $0 != indexPath }
          groceriesSelected = groceriesSelected.filter { $0 != selectedData }
+         
          }
          */
+        
+        
+        //let selectedCell: pantryCellLayout = collectionView.cellForItem(at: indexPath as IndexPath)! as! pantryCellLayout
         
         switch isEditing {
         case true:
@@ -397,27 +517,30 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             handleProduct()
             
             /*
-            switch indexPath.item {
-            case 1:
-                handleProduct()
-            default:
-                handleAlert()
-            }*/
+             switch indexPath.item {
+             case 1:
+             handleProduct()
+             default:
+             handleAlert()
+             }*/
         }
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
         
         if isEditing {
             selectedProductsIndexPath[indexPath] = false
         }
     }
-
+    
+    
     //Button Functions - Start
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
     
     @objc func handleBatchDelete() {
-        let nada = "No products found"
         
         for (key, value) in selectedProductsIndexPath {
             if value {
@@ -425,28 +548,21 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             }
         }
         
-        for i in products {
+        for i in listProducts {
             if i.Pantry == true {
                 i.Pantry = false
             }
         }
+        let nada = "nada"
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            print("User is about to remove \(products[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
-            products.remove(at: i.item)
+            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
+            listProducts.remove(at: i.item)
         }
-        collectionView.deleteItems(at: groceryProductsSelected)
+        //collectionView.deleteItems(at: groceryProductsSelected)
+        listCollectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
     }
-    
-    //Setting up bar buttons
-    private func setUpBarButtonItems() {
-        self.navigationItem.leftBarButtonItem = editButtonItem
-        //self.navigationItem.leftBarButtonItem = edit
-        self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
-        self.navigationItem.rightBarButtonItem = searching
-    }
-    
     
     //Edit Button
     @objc func handleEditButtonClicked() {
@@ -470,28 +586,32 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         }
         
         //watch out for nil val in future
-        for i in products {
-            print("there were \(products.count as Any) products")
+        for i in listProducts {
+            print("there were \(listProducts.count as Any) products")
             
-            if i.Pantry == true {
-                i.Pantry = false
-                i.List = true
+            if i.List == true {
+                i.List = false
+                i.Pantry = true
             }
         }
-        let nada = "No products found"
+        
+        let nada = "nada"
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-                        
-            print("User is about to remove \(products[i.item].itemName ?? nada) from their pantry and add it to their list")
-            products.remove(at: i.item)
+            
+            
+            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and add it to their list")
+            listProducts.remove(at: i.item)
             
         }
-        collectionView.deleteItems(at: groceryProductsSelected)
+        //collectionView.deleteItems(at: groceryProductsSelected)
+        listCollectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
         
         //listCollectionView().collectionView.reloadData()
         groceryProductsSelected = []
     }
+
     
     //product Button
     @objc func handleSearch() {
@@ -501,24 +621,25 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         print("Settings Tab is active")
     }
-   
+    
     //product Button
     @objc func handleProduct() {
         
         //transition testing
         //let transitionCoordinator = TransitionCoordinator()
         
-        let cController = pantryProductVCLayout()
-        cController.hidesBottomBarWhenPushed = true
+        //let cController = productVCLayout()
+        let productScreen = pantryProductVCLayout()
+        productScreen.hidesBottomBarWhenPushed = true
         //transition testing
         //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
-        cController.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        self.present(cController, animated: true, completion: nil)
+        productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        self.present(productScreen, animated: true, completion: nil)
         
         print("Settings Tab is active")
     }
     //Button Functions - End
-
+    
     
     //Search Button
     @objc func handleAlert() {
@@ -529,6 +650,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
     }
     
+    
     //Space between rows
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 15
@@ -537,10 +659,4 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
 }
-

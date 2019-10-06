@@ -12,7 +12,7 @@ import FirebaseFirestore
 import AVFoundation
 import CoreData
 
-class listCollectionView: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
+class listCollectionView: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
 
     
     //Cells Selected stuff
@@ -26,13 +26,9 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             switch mMode {
             case .view:
                 edit.title = "Edit"
-                //collectionView.allowsSelection = false
-                listCollectionView.allowsSelection = false
                 print("User is in view mode")
             case .selected:
                 edit.title = "Done"
-                //collectionView.allowsSelection = true
-                listCollectionView.allowsSelection = true
                 print("User is in edit mode")
             }
         }
@@ -61,7 +57,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     //Populate List
     var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
     //Populate colllection
-    var listProducts: [groceryItemCellContent] =  []
     
     //TODO: what do these do?
     //var products: [groceryProductsStruct] = groceryProducts.fetchGroceryProductImages()
@@ -112,19 +107,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
-        
-        //Drag and Drop
-        //self.collectionView.dragDelegate = self
-        //self.collectionView.dropDelegate = self
-        //self.collectionView.dragInteractionEnabled = true
-        
-        
-        //MARK: Cirular transition
-        //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
-
         setUpBarButtonItems()
-        
-       
     }
     
     //MARK: Authentication State listner
@@ -136,9 +119,7 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
            self.navigationController?.view.layoutIfNeeded()
            self.navigationController?.view.setNeedsLayout()
     }
-    
-   
-    
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //self.searchController.isActive = false
@@ -165,82 +146,10 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         setUpListView()
         
         let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
-        guard switchDefaults else {
-            return setUpCollectionView()
-        }
-        
-           //if switchDefaults != true {
-               
-           //}
+     
        }
     
-    //MARK: Setting up Collection View
-    var productUpdateLocationButtonView = addOrDeleteProduct()
-    var listCollectionView: UICollectionView!
-    
-    func setUpCollectionView() {
 
-        //SetUp views from own class
-        let ss: CGRect = UIScreen.main.bounds
-        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
-        
-        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        listCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-        
-        listCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
-        listCollectionView.dataSource = self
-        listCollectionView.delegate = self
-        self.view.addSubview(listCollectionView)
-        self.view.addSubview(productUpdateLocationButtonView)
-        
-        listCollectionView.backgroundColor = UIColor.white
-        listCollectionView.isUserInteractionEnabled = true
-        listCollectionView.isScrollEnabled = true
-        listCollectionView.isPrefetchingEnabled = true
-                
-        //FIXME: Search bar won't go back to hidden if there aren't enough cells
-        listCollectionView.bounces = true
-        listCollectionView.alwaysBounceVertical = true
-        
-        
-        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
-        listCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
-        
-        //TODO: Need to understand
-        listCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
-        listCollectionView.showsVerticalScrollIndicator = true
-        
-        //FIXME: Size of cell
-        let Columns: CGFloat = 3.14
-        let insetDimension: CGFloat = 10.0
-        let cellHeight: CGFloat = 125.0
-        let cellWidth = (listCollectionView.frame.width/Columns) - insetDimension
-        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        print("the sss = \(listCollectionView.frame.width/3 - insetDimension)")
-        
-        //Collection View contstaints
-        //TODO: Decide if I remove the other View
-        NSLayoutConstraint.activate([
-            listCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            listCollectionView.bottomAnchor.constraint(equalTo: productUpdateLocationButtonView.topAnchor),
-            listCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            listCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            productUpdateLocationButtonView.heightAnchor.constraint(equalToConstant: 75),
-            productUpdateLocationButtonView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            productUpdateLocationButtonView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            productUpdateLocationButtonView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
-
-        
-        //User interations
-        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
-        lpgr.minimumPressDuration = 0.35
-        self.listCollectionView.addGestureRecognizer(lpgr)
-    }
-    
-    
-    
     //MARK: Table View
     var listTableView: UITableView!
     //TODO: Does this need to be a weak var?
@@ -293,16 +202,33 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             boolValue(true) // pass true if you want the handler to allow the action
             print("Leading Action style .normal")
         }
+        let addtopantry = UIContextualAction(style: .normal, title: "Pantry") { (contextualAction, view, boolValue) in
+            boolValue(true) // pass true if you want the handler to allow the action
+            print("Leading Action style .normal")
+        }
+        addtopantry.backgroundColor = UIColor.ademGreen
         contextItem.backgroundColor = UIColor.ademBlue
         
-        let swipeActions = UISwipeActionsConfiguration(actions: [contextItem])
+        let swipeActions = UISwipeActionsConfiguration(actions: [contextItem, addtopantry])
 
         return swipeActions
     }
     
+    
+    var listProducts: [groceryItemCellContent] =  []
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingsOptions.count
+        
+        for i in productsGlobal! {
+            if i.List == true {
+                listProducts.append(i)
+            }
+            //print("for loop is working and there are \(listProducts.count as Any) products")
+        }
+        print("\(productsGlobal?.count)")
+        
+        //return settingsOptions.count
+        return listProducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -313,7 +239,8 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         //productsListViewLayout.textLabel?.text = settingsOptions[row]
         //productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
         productsListViewLayout.imageView?.image = UIImage(named: "egg")
-        productsListViewLayout.textLabel!.text = settingsOptions[indexPath.row]
+        //productsListViewLayout.textLabel!.text = settingsOptions[indexPath.row]
+        //productsListViewLayout.textLabel!.text = listProducts[indexPath.row]
         productsListViewLayout.accessoryType = .disclosureIndicator
         return productsListViewLayout
     }
@@ -401,8 +328,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         
         if self.isEditing {
             self.navigationItem.rightBarButtonItem = nil
-            //self.collectionView.allowsMultipleSelection = true
-            self.listCollectionView.allowsMultipleSelection = true
             self.tabBarController?.tabBar.isHidden = true
             self.navigationItem.rightBarButtonItems = [added, trashed]
             
@@ -410,131 +335,13 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             
             self.navigationItem.rightBarButtonItems = [searching]
             self.tabBarController?.tabBar.isHidden = false
-            //self.collectionView.allowsMultipleSelection = false
-            self.listCollectionView.allowsMultipleSelection = false
         }
-        
-        //if let indexPaths = collectionView?.indexPathsForVisibleItems {
-        if let indexPaths = listCollectionView?.indexPathsForVisibleItems {
-            for indexPath in indexPaths {
-                if let cell = listCollectionView?.cellForItem(at: indexPath) as? itemCellLayout {
-                //if let cell = collectionView?.cellForItem(at: indexPath) as? itemCellLayout {
-                    cell.isEditing = editing
-                }
-            }
-        }
-    }
-    
-    
-    
-    @objc func addLongGestureRecognizer(_ gestureRecognizer: UILongPressGestureRecognizer) {
-        
-        
-        if gestureRecognizer.state != .began { return }
-        //let p = gestureRecognizer.location(in: self.collectionView)
-        let p = gestureRecognizer.location(in: self.listCollectionView)
-        //if let indexPath = self.collectionView.indexPathForItem(at: p) {
-        if let indexPath = self.listCollectionView.indexPathForItem(at: p) {
-            //let cell = self.collectionView.cellForItem(at: indexPath)
-            
-            navigationController?.isEditing = true
-            
-        } else {
-            print("can't find")
-        }
-    }
-
-    //MARK: CollectonView Setup
-    //Number of cells. update later for collection of cells based on product type
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        if isFiltering() {
-            return selectedGroceryItems.count
-        }
-        
-        for i in productsGlobal! {
-            print("for loop is working and there are \(listProducts.count as Any) products")
-            if i.List == true {
-                listProducts.append(i)
-            }
-        }
-        
-        print("there are \(listProducts.count as Any) products")
-        
-        
-        return listProducts.count
-    }
-    
-    
-    //Initiating cell
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! itemCellLayout
-        
-        productCell.backgroundColor = UIColor.ademBlue
-        
-        //        for _ in (productsGlobal)! {
-        //            if groceryItemCellContent().List == true {
-        //                productCell.gItem = productsGlobal![indexPath.item]
-        //            }
-        //        }
-        
-        productCell.gItem = listProducts[indexPath.item]
-        productCell.layer.cornerRadius = 5
-        
-        var productsInFilter: groceryItemCellContent
-        if isFiltering() {
-            productsInFilter = selectedGroceryItems[indexPath.item]
-        } else {
-            productsInFilter = (listProducts[indexPath.item])
-        }
-        return productCell
     }
     
     var groceryProductsSelected: [IndexPath] = []
     var selectedGroceryProducts = [groceryItemCellContent]()
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        /*
-         let selectedData = selectedGroceryItems[indexPath.item]
-         if groceryProductsSelected.contains(indexPath) {
-         groceryProductsSelected = groceryProductsSelected.filter { $0 != indexPath }
-         groceriesSelected = groceriesSelected.filter { $0 != selectedData }
-         
-         }
-         */
-        
-        
-        //let selectedCell: pantryCellLayout = collectionView.cellForItem(at: indexPath as IndexPath)! as! pantryCellLayout
-        
-        switch isEditing {
-        case true:
-            selectedProductsIndexPath[indexPath] = true
-        case false:
-            collectionView.deselectItem(at: indexPath, animated: true)
-            handleProduct()
-            
-            /*
-             switch indexPath.item {
-             case 1:
-             handleProduct()
-             default:
-             handleAlert()
-             }*/
-        }
-    }
-    
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        
-        
-        if isEditing {
-            selectedProductsIndexPath[indexPath] = false
-        }
-    }
-    
+   
     
     //Button Functions - Start
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
@@ -557,8 +364,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
             listProducts.remove(at: i.item)
         }
-        //collectionView.deleteItems(at: groceryProductsSelected)
-        listCollectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
     }
@@ -602,8 +407,6 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
             listProducts.remove(at: i.item)
             
         }
-        //collectionView.deleteItems(at: groceryProductsSelected)
-        listCollectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
         
@@ -614,24 +417,14 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
     
     //product Button
     @objc func handleSearch() {
-        
-        //self.navigationItem.searchController = searchController
-        //searchController.isActive = true
-        
-        print("Settings Tab is active")
+
     }
     
     //product Button
     @objc func handleProduct() {
         
-        //transition testing
-        //let transitionCoordinator = TransitionCoordinator()
-        
-        //let cController = productVCLayout()
         let productScreen = pantryProductVCLayout()
         productScreen.hidesBottomBarWhenPushed = true
-        //transition testing
-        //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
         productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(productScreen, animated: true, completion: nil)
         
@@ -648,14 +441,5 @@ class listCollectionView: UIViewController, UICollectionViewDataSource, UICollec
         self.present(alert, animated: true, completion: nil)
         
     }
-    
-    
-    //Space between rows
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
+
 }

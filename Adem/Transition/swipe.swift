@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+/*
 class Interactor: UIPercentDrivenInteractiveTransition {
     var hasStarted = false
     var shouldFinish = false
@@ -164,3 +165,4 @@ extension PantryVC: UIViewControllerTransitioningDelegate {
         return interactor.hasStarted ? interactor : nil
     }
 }
+*/

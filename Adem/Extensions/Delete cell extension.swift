@@ -9,12 +9,12 @@
 import Foundation
 import UIKit
 
-
-extension listCollectionView : ListItemDelegate {
+/*
+extension PantryVC : ListItemDelegate {
     
     func delete(cell: productCell) {
         //if let indexPath = collectionView?.indexPath(for: cell) {
-        if let indexPath = listCollectionView?.indexPath(for: cell) {
+        if let indexPath = PantryVC?.indexPath(for: cell) {
             //    products?[indexPath.section].itemName?.remove(at: indexPath.item)
             
             //    collectionView?.deleteItems(at: [indexPath])
@@ -23,3 +23,5 @@ extension listCollectionView : ListItemDelegate {
         }
     }
 }
+*/
+
