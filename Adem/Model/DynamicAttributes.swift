@@ -55,34 +55,8 @@ import Firebase
  }
  */
 
-struct groceryProductsStruct {
-    
-    //USER Specific
-    var groceryProductImageName: String
-    var groceryProductName: [String]
-    var groceryProductQuantity: String
-    var groceryProductCategory: String
-    
-    /*
-     //Manufacture produced Info
-     var groceryProductServingSize: String
-     var groceryProductCalories: String
-     var groceryProductTotalFat: String
-     var groceryProductSaturatedFat: String
-     var groceryProductTransFat: String
-     var groceryProductCholesterol: String
-     var groceryProductSodium: String
-     var groceryProductTotalCarbohydrate: String
-     var groceryProductDietaryFiber: String
-     var groceryProductSugars: String
-     var groceryProductProtein: String
-     var groceryProductVitmans: String
-     */
-    
-    
-}
 
-
+/*
 class groceryProducts {
     
     class func fetchGroceryProductImages() -> [groceryProductsStruct] {
@@ -120,27 +94,7 @@ class groceryProducts {
         
     }
 }
-
-//Product attributes
-class groceryItemCellContent: NSObject {
-    
-    //    var docRef: DocumentReference!
-    //
-    //    docRef.getDocument(completion: { (docSnapshot, error) in
-    //    guard let docSnapshot = docSnapshot, docSnapshot.exists else { return }
-    //    let personNameData = docSnapshot.data()
-    //    let nameData = personNameData?["list"] as? String ?? ""
-    //
-    //    })
-    
-    var itemImageName: String?
-    var listImageName: String?
-    var itemName: String?
-    var Quantity: String?
-    var List: Bool?
-    var Pantry: Bool?
-    
-}
+*/
 
 
 

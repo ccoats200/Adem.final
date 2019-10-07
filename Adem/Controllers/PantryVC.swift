@@ -336,6 +336,11 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     }
     
     
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let cellHeight = 50
         

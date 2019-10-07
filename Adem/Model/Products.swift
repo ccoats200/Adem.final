@@ -12,6 +12,39 @@ import FirebaseFirestore
 import Firebase
 
 
+struct groceryProductsDatabase {
+    
+    //USER Specific
+    //var groceryProductImgUrl: String
+    var groceryProductName: String
+    //var groceryProductCategory: String
+}
+
+var allproductsInList = [
+    groceryProductsDatabase(groceryProductName: "Eggs"),
+    groceryProductsDatabase(groceryProductName: "Bacon"),
+    groceryProductsDatabase(groceryProductName: "Waffels"),
+    groceryProductsDatabase(groceryProductName: "Chicken"),
+    groceryProductsDatabase(groceryProductName: "Kale"),
+    groceryProductsDatabase(groceryProductName: "Kraft Mac and cheese"),
+    groceryProductsDatabase(groceryProductName: "Milk")
+]
+
+
+//Product attributes
+class groceryItemCellContent: NSObject {
+    
+    var itemImageName: String?
+    var listImageName: String?
+    var itemName: String?
+    var Quantity: String?
+    var List: Bool?
+    var Pantry: Bool?
+    
+}
+
+
+
 var productsGlobal: [groceryItemCellContent]? = {
     
     var eggs = groceryItemCellContent()
