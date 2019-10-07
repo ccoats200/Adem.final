@@ -427,7 +427,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         
-        return 2
+        return 1
     }
     
     
