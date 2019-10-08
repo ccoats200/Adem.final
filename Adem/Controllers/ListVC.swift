@@ -379,7 +379,8 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         //let cellRow = indexPath.row
         
         
-        handleProduct()
+        //handleProduct()
+        handleListProduct()
         /*
         if cellRow == 0 {
             handleAlert()
@@ -623,6 +624,17 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     @objc func handleProduct() {
         
         let productScreen = pantryProductVCLayout()
+        productScreen.hidesBottomBarWhenPushed = true
+        productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+        self.present(productScreen, animated: true, completion: nil)
+        
+        print("Settings Tab is active")
+    }
+    
+    //product Button
+    @objc func handleListProduct() {
+        
+        let productScreen = listProductVCLayout()
         productScreen.hidesBottomBarWhenPushed = true
         productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(productScreen, animated: true, completion: nil)

@@ -10,77 +10,69 @@ import Foundation
 import UIKit
 
 
-class CircularProgressView: UIView {
-    
-    // First create two layer properties
-    private var circleLayer = CAShapeLayer()
-    private var progressLayer = CAShapeLayer()
-    
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        createCircularPath()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        createCircularPath()
-    }
-    
-    func createCircularPath() {
-        
-        let circularPath = UIBezierPath(arcCenter: CGPoint(x: frame.size.width / 2.0, y: frame.size.height / 2.0), radius: 80, startAngle: -.pi / 2, endAngle: 3 * .pi / 2, clockwise: true)
-        
-        //Circle
-        circleLayer.path = circularPath.cgPath
-        circleLayer.fillColor = UIColor.clear.cgColor
-        circleLayer.lineCap = .round
-        circleLayer.lineWidth = 5.0
-        circleLayer.strokeColor = UIColor.ademGreen.cgColor
-        
-        //Progress
-        progressLayer.path = circularPath.cgPath
-        progressLayer.fillColor = UIColor.clear.cgColor
-        progressLayer.lineCap = .round
-        progressLayer.lineWidth = 5.0
-        progressLayer.strokeEnd = 0
-        progressLayer.strokeColor = UIColor.ademRed.cgColor
-        layer.addSublayer(circleLayer)
-        layer.addSublayer(progressLayer)
-    }
-    
-    
-    func progressAnimation(duration: TimeInterval) {
-        let circularProgressAnimation = CABasicAnimation(keyPath: "strokeEnd")
-        circularProgressAnimation.duration = duration
-        circularProgressAnimation.toValue = 1.0
-        circularProgressAnimation.fillMode = .backwards
-        circularProgressAnimation.isRemovedOnCompletion = false
-        progressLayer.add(circularProgressAnimation, forKey: "progressAnim")
-        
-    }
-}
-
-
 class circleTest: UIViewController {
     
-    @IBOutlet weak var containerView: UIView!
+   
     
-    var circularView: CircularProgressView!
-    var duration: TimeInterval!
+    let shapeLayer = CAShapeLayer()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        circularView.center = view.center
-        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
-        view.addSubview(circularView)
         
-    }
+        view.backgroundColor = UIColor.white
+        
+        
+        //Create track
+        let trackLayer = CAShapeLayer()
+        
+        
+        
+        let center = view.center
+        
+        //http://www.math.com/tables/geometry/circles.htm
+        let circularPath = UIBezierPath(arcCenter: center,
+                                        radius: 20,
+                                        startAngle: ((3/2) * CGFloat.pi),//(-CGFloat.pi/2),
+                                        endAngle: ((5/3) * CGFloat.pi),//(/2 * CGFloat.pi),
+                                        clockwise: false)
+        
+        
+        trackLayer.path = circularPath.cgPath
+        
+        trackLayer.strokeColor = UIColor.ademGreen.cgColor
+        trackLayer.lineWidth = 5
+        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.lineCap = .round
+        view.layer.addSublayer(trackLayer)
+        
+        shapeLayer.path = circularPath.cgPath
+        
+        shapeLayer.strokeColor = UIColor.ademRed.cgColor
+        shapeLayer.lineWidth = 5
+        shapeLayer.strokeEnd = 0
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineCap = .round
+        
 
-    @objc func handleTap() {
-        duration = 5    //Play with whatever value you want :]
-        circularView.progressAnimation(duration: duration)
+        view.layer.addSublayer(shapeLayer)
+        view.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTap)))
         
     }
+    
+    let strokeEnd = "strokeEnd"
+    let ur = "urSoBasic"
+    
+    @objc private func handleTap() {
+        print("attempting to animate stroke")
+        let basicAnimation = CABasicAnimation(keyPath: strokeEnd)
+        basicAnimation.toValue = 1
+        basicAnimation.duration = 2
+        basicAnimation.fillMode = .forwards
+        basicAnimation.isRemovedOnCompletion = false
+        shapeLayer.add(basicAnimation, forKey: ur)
+    }
+    
+   
 }
 
