@@ -19,7 +19,8 @@ class ProfileView: UIView {
     //UIView Profile Pic
     var coverPhoto: UIImageView = {
         let cover = UIImageView()
-        cover.image = UIImage(named: "coverPhotos")//coverPhotoL
+        //cover.image = UIImage(named: "coverPhotos")//coverPhotoL
+        cover.backgroundColor = UIColor.ademBlue
         cover.layer.masksToBounds = true
         cover.clipsToBounds = true
         cover.translatesAutoresizingMaskIntoConstraints = false
