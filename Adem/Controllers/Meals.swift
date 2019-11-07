@@ -20,6 +20,9 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
     
+    //MARK: Food.com API Command
+    //kaggle datasets download -d shuyangli94/food-com-recipes-and-user-interactions
+    
     var mealsTableView: UITableView!
     override func viewDidLoad() {
         super.viewDidLoad()
