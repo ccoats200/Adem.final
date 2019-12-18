@@ -158,7 +158,8 @@ class login: UIViewController, UITextFieldDelegate {
     @objc func handelSignUp(sender: UIButton!) {
         
         //Check how this is transitioning and fix it for a navigation controller
-     let signUpInfo = UserInfo()
+     //let signUpInfo = UserInfo()
+        let signUpInfo = moreInfo()
      //self.navigationController?.pushViewController(signUpInfo, animated: true)
      self.present(signUpInfo, animated: true, completion: nil)
      print("Sending user to sign up Flow")

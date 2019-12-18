@@ -14,6 +14,10 @@
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
 		353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C123B230CD74B007DF3BB /* pantryProductScreen.swift */; };
+		357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35ED23A9CFC100223F51 /* continuedInfo.swift */; };
+		357B35F023A9DDEA00223F51 /* camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35EF23A9DDEA00223F51 /* camera.swift */; };
+		357B35F223A9DE7000223F51 /* camController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F123A9DE7000223F51 /* camController.swift */; };
+		357B35F423A9DE8E00223F51 /* photoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -102,6 +106,10 @@
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
 		353C12392305C20B007DF3BB /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
 		353C123B230CD74B007DF3BB /* pantryProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryProductScreen.swift; sourceTree = "<group>"; };
+		357B35ED23A9CFC100223F51 /* continuedInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = continuedInfo.swift; sourceTree = "<group>"; };
+		357B35EF23A9DDEA00223F51 /* camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camera.swift; sourceTree = "<group>"; };
+		357B35F123A9DE7000223F51 /* camController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camController.swift; sourceTree = "<group>"; };
+		357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoCaptureDelegate.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -314,6 +322,7 @@
 			children = (
 				35D6485022ECBD4E00015352 /* Login Screen.swift */,
 				35D6484122ECBC8600015352 /* SignUpInfo.swift */,
+				357B35ED23A9CFC100223F51 /* continuedInfo.swift */,
 			);
 			path = "Account Creation";
 			sourceTree = "<group>";
@@ -389,6 +398,9 @@
 			isa = PBXGroup;
 			children = (
 				35D6488B22ECBFAA00015352 /* BLEHR.swift */,
+				357B35EF23A9DDEA00223F51 /* camera.swift */,
+				357B35F123A9DE7000223F51 /* camController.swift */,
+				357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */,
 			);
 			path = Bluetooth;
 			sourceTree = "<group>";
@@ -669,6 +681,7 @@
 				35D6487722ECBED700015352 /* settingsLayout.swift in Sources */,
 				353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */,
 				353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */,
+				357B35F223A9DE7000223F51 /* camController.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
 				353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */,
 				351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */,
@@ -707,12 +720,15 @@
 				35D6487122ECBEA700015352 /* CellLayout.swift in Sources */,
 				35D6486322ECBE0200015352 /* SearchVC.swift in Sources */,
 				35D6485722ECBD8700015352 /* PantryVC.swift in Sources */,
+				357B35F423A9DE8E00223F51 /* photoCaptureDelegate.swift in Sources */,
 				35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */,
 				35D6485322ECBD5D00015352 /* ListVC.swift in Sources */,
 				35D6483F22ECBC4E00015352 /* swipe.swift in Sources */,
+				357B35F023A9DDEA00223F51 /* camera.swift in Sources */,
 				35D6485D22ECBDC900015352 /* tabController.swift in Sources */,
 				351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */,
 				35D6487322ECBEB900015352 /* AcctElements.swift in Sources */,
+				357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,
 				35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */,

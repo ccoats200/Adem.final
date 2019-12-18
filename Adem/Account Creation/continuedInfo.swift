@@ -1,8 +1,8 @@
 //
-//  SignUpInfo.swift
+//  continuedInfo.swift
 //  Adem
 //
-//  Created by Coleman Coats on 7/27/19.
+//  Created by Coleman Coats on 12/17/19.
 //  Copyright © 2019 Coleman Coats. All rights reserved.
 //
 
@@ -12,7 +12,7 @@ import Firebase
 import FirebaseFirestore
 
 
-class UserInfo: UIViewController, UITextFieldDelegate {
+class moreInfo: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
     var handle: AuthStateDidChangeListenerHandle?
@@ -34,10 +34,9 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         
-        firstNameTextField.delegate = self
-        lastNameTextField.delegate = self
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
+        searchFoodsQ.delegate = self
+        allergiesQ.delegate = self
+        ageQ.delegate = self
         nextButton.resignFirstResponder()
 
         //Backgound Color Start
@@ -54,10 +53,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         setuploginFieldView()
         
     }
-    
-    
-    
-    
+
     //Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -77,31 +73,32 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     }
     
 
+    @objc func handleCamera() {
+        
+        print("Camera button working")
+    }
     
     
-    @objc func handelNext()
+    @objc func handleNext()
     {
         print("New user tapped signUp button")
-        guard let firstName = firstNameTextField.text, !firstName.isEmpty else { return }
-        guard let lastName = lastNameTextField.text, !lastName.isEmpty else { return }
-        guard let email = emailTextField.text, !email.isEmpty || !email.contains(".com") else { return }
-        guard let password = passwordTextField.text, !password.isEmpty else { return }
+        guard let firstName = searchFoodsQ.text, !firstName.isEmpty else { return }
+        guard let email = allergiesQ.text, !email.isEmpty || !email.contains(".com") else { return }
+        guard let password = ageQ.text, !password.isEmpty else { return }
     
         
         
         print(firstName)
-        print(lastName)
         print(email)
         print(password)
         
         let dataToSave: [String: Any] = [
             "FirstName": firstName,
-            "LastName": lastName,
             "Email": email,
             "Password": password
         ]
         
-        Auth.auth().createUser(withEmail: emailTextField.text!, password: passwordTextField.text!) { authResult, error in
+        Auth.auth().createUser(withEmail: allergiesQ.text!, password: ageQ.text!) { authResult, error in
     
             //print(currentUser?.uid as Any)
             
@@ -114,26 +111,23 @@ class UserInfo: UIViewController, UITextFieldDelegate {
             
             if let error = error {
                 print("Error creating documents: \(error.localizedDescription)")
-            } else if self.passwordTextField.text!.count < self.minimuPasswordCount {
+            } else if self.ageQ.text!.count < self.minimuPasswordCount {
                 
                 let alert = UIAlertController(title: "Email in use", message: "This email is alread in use. ", preferredStyle: UIAlertController.Style.alert)
                 alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
                 
                 self.present(alert, animated: true, completion: nil)
-            } else if self.passwordTextField.text!.count > self.minimuPasswordCount {
+            } else if self.ageQ.text!.count > self.minimuPasswordCount {
                 
                 print("Data has been Saved")
                 //This breaks when you try to go to the next screen from any field other than the confirm field
                 
-                self.passwordTextField.resignFirstResponder()
+                self.ageQ.resignFirstResponder()
                 let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let moreController = moreInfo()
-                //let listController = tabBar()
+                let listController = tabBar()
                 
-                //listController.resignFirstResponder()
-                moreController.resignFirstResponder()
-                //appDelegate.window?.rootViewController = listController
-                appDelegate.window?.rootViewController = moreController
+                listController.resignFirstResponder()
+                appDelegate.window?.rootViewController = listController
                 appDelegate.window?.makeKeyAndVisible()
                 print("Brought to next Screen")
             }
@@ -174,7 +168,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         textField.leftView = leftImageView
         textField.leftViewMode = .always
         
-        if passwordTextField.isEditing == true {
+        if ageQ.isEditing == true {
             return leftImageView.tintColor = UIColor.blue
         }
         
@@ -213,24 +207,10 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return logintextfield
     }()
     
-    
     //Name Section
-    let welcomeLabel: UILabel = {
-        let welcome = UILabel()
-        welcome.text = "Welcome to Adem"
-        welcome.textAlignment = .center
-        welcome.textColor = UIColor.white
-        welcome.font = UIFont(name:"HelveticaNeue", size: 20.0)
-        //welcome.font = UIFont.systemFont(ofSize: 40)
-        //welcome.font = UIFont.boldSystemFont(ofSize: 16)
-        welcome.translatesAutoresizingMaskIntoConstraints = false
-        return welcome
-    }()
-    
-    //Name Section
-    let firstNameTextField: UITextField = {
+    let searchFoodsQ: UITextField = {
         let firstName = UITextField()
-        firstName.attributedPlaceholder = NSAttributedString(string: "First Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        firstName.attributedPlaceholder = NSAttributedString(string: "What do you like?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         firstName.translatesAutoresizingMaskIntoConstraints = false
         firstName.textColor = UIColor.white
         firstName.returnKeyType = .continue
@@ -238,50 +218,36 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return firstName
     }()
     
-    let firstNameTextSeparator: UIView = {
-        let firstTextSeparator = UIView()
-        firstTextSeparator.backgroundColor = UIColor.white
-        firstTextSeparator.translatesAutoresizingMaskIntoConstraints = false
-        return firstTextSeparator
-    }()
-    
-    let lastNameTextField: UITextField = {
-        let lastName = UITextField()
-        lastName.attributedPlaceholder = NSAttributedString(string: "Last Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        lastName.translatesAutoresizingMaskIntoConstraints = false
-        lastName.textColor = UIColor.white
-        lastName.tag = 1
-        return lastName
-    }()
-    
-    let lastNameTextSeparator: UIView = {
-        let lastTextSeparator = UIView()
-        lastTextSeparator.backgroundColor = UIColor.white
-        lastTextSeparator.translatesAutoresizingMaskIntoConstraints = false
-        return lastTextSeparator
+    let foodFinder: UIView = {
+        let searchFoods = UIView()
+        searchFoods.backgroundColor = UIColor.white
+        searchFoods.translatesAutoresizingMaskIntoConstraints = false
+        searchFoods.layer.cornerRadius = 5
+        return searchFoods
     }()
     
     //Email Section
-    let emailTextField: UITextField = {
+    let allergiesQ: UITextField = {
         let email = UITextField()
-        email.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        email.attributedPlaceholder = NSAttributedString(string: "Have any allergies?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         email.translatesAutoresizingMaskIntoConstraints = false
         email.textColor = UIColor.white
         email.tag = 2
         return email
     }()
     
-    let emailTextSeparator: UIView = {
-        let emailSeparator = UIView()
-        emailSeparator.backgroundColor = UIColor.white
-        emailSeparator.translatesAutoresizingMaskIntoConstraints = false
-        return emailSeparator
+    let allergiesFinder: UIView = {
+        let allergiesSearchView = UIView()
+        allergiesSearchView.backgroundColor = UIColor.white
+        allergiesSearchView.translatesAutoresizingMaskIntoConstraints = false
+        allergiesSearchView.layer.cornerRadius = 5
+        return allergiesSearchView
     }()
     
     //Password Section
-    let passwordTextField: UITextField = {
+    let ageQ: UITextField = {
         let password = UITextField()
-        password.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        password.attributedPlaceholder = NSAttributedString(string: "Are you 21?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         password.isSecureTextEntry = true
         password.translatesAutoresizingMaskIntoConstraints = false
         password.tag = 3
@@ -290,12 +256,12 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return password
     }()
     
-    let passwordTextSeparator: UIView = {
-        let passwordSeparator = UIView()
-        passwordSeparator.backgroundColor = UIColor.white
-        passwordSeparator.translatesAutoresizingMaskIntoConstraints = false
-        
-        return passwordSeparator
+    let ageFinder: UIView = {
+        let ageView = UIView()
+        ageView.backgroundColor = UIColor.white
+        ageView.translatesAutoresizingMaskIntoConstraints = false
+        ageView.layer.cornerRadius = 5
+        return ageView
     }()
     
     //Next Button
@@ -308,10 +274,29 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         createAccount.layer.masksToBounds = true
         createAccount.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
         createAccount.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        createAccount.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
+        createAccount.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
         createAccount.resignFirstResponder()
         
         return createAccount
+        
+    }()
+    
+    //MARK: Later Button
+    lazy var laterButton: UIButton = {
+        let finishAccountLater = UIButton(type: .system)
+        finishAccountLater.backgroundColor = UIColor.white
+        finishAccountLater.setTitle("Maybe Later", for: .normal)
+        finishAccountLater.translatesAutoresizingMaskIntoConstraints = false
+        finishAccountLater.layer.cornerRadius = 5
+        finishAccountLater.layer.masksToBounds = true
+        finishAccountLater.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
+        finishAccountLater.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        //TODO: swap selector
+        //finishAccountLater.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
+        finishAccountLater.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
+        finishAccountLater.resignFirstResponder()
+        
+        return finishAccountLater
         
     }()
     
@@ -330,30 +315,20 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         view.addSubview(scrollView)
         
         view.addSubview(ademImageHolder)
-        view.addSubview(welcomeLabel)
         scrollView.addSubview(loginFieldView)
         scrollView.addSubview(nextButton)
+        scrollView.addSubview(laterButton)
         
         
         //Subviews
-        loginFieldView.addSubview(firstNameTextField)
-        loginFieldView.addSubview(firstNameTextSeparator)
-        loginFieldView.addSubview(lastNameTextField)
-        //loginFieldView.addSubview(lastNameTextSeparator)
-        loginFieldView.addSubview(emailTextField)
-        loginFieldView.addSubview(emailTextSeparator)
-        loginFieldView.addSubview(passwordTextField)
-        loginFieldView.addSubview(passwordTextSeparator)
+        loginFieldView.addSubview(searchFoodsQ)
+        loginFieldView.addSubview(foodFinder)
+        loginFieldView.addSubview(allergiesQ)
+        loginFieldView.addSubview(allergiesFinder)
+        loginFieldView.addSubview(ageQ)
+        loginFieldView.addSubview(ageFinder)
         
-        let namesStackView = UIStackView(arrangedSubviews: [firstNameTextField, lastNameTextField])
-        namesStackView.contentMode = .scaleAspectFit
-        namesStackView.spacing = 5
-        namesStackView.translatesAutoresizingMaskIntoConstraints = false
-        namesStackView.distribution = .fillEqually
-        
-        view.addSubview(namesStackView)
-        
-        
+       
         NSLayoutConstraint.activate([
             
         
@@ -362,12 +337,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
         ademImageHolder.heightAnchor.constraint(equalToConstant: 145),
         
-        welcomeLabel.centerXAnchor.constraint(equalTo: ademImageHolder.centerXAnchor),
-        welcomeLabel.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 5),
-        welcomeLabel.widthAnchor.constraint(equalTo: ademImageHolder.widthAnchor, constant: -24),
-        welcomeLabel.heightAnchor.constraint(equalToConstant: 60),
-            
-        scrollView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 5),
+        scrollView.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 5),
         scrollView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         scrollView.widthAnchor.constraint(equalTo: view.widthAnchor),
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
@@ -375,54 +345,54 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         loginFieldView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5),
         loginFieldView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
         loginFieldView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
-        loginFieldView.heightAnchor.constraint(equalToConstant: 265),
+        loginFieldView.heightAnchor.constraint(equalToConstant: 365),
         
         //Social Buttons
-        namesStackView.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-        namesStackView.topAnchor.constraint(equalTo: loginFieldView.topAnchor, constant: 5),
-        namesStackView.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
-        namesStackView.heightAnchor.constraint(equalToConstant: 60),
+        searchFoodsQ.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        searchFoodsQ.topAnchor.constraint(equalTo: loginFieldView.topAnchor, constant: 5),
+        searchFoodsQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        searchFoodsQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
         
         //First name separator
-        firstNameTextSeparator.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor),
-        firstNameTextSeparator.topAnchor.constraint(equalTo: namesStackView.bottomAnchor),
-        firstNameTextSeparator.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
-        firstNameTextSeparator.heightAnchor.constraint(equalToConstant: 1),
-        
+        foodFinder.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        foodFinder.topAnchor.constraint(equalTo: searchFoodsQ.bottomAnchor),
+        foodFinder.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        foodFinder.heightAnchor.constraint(equalToConstant: 50),
         
         //Email text
-        emailTextField.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
-        emailTextField.topAnchor.constraint(equalTo: firstNameTextSeparator.bottomAnchor),
-        emailTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
-        emailTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/5),
+        allergiesQ.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
+        allergiesQ.topAnchor.constraint(equalTo: foodFinder.bottomAnchor),
+        allergiesQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        allergiesQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
         
         //Name separator
-        emailTextSeparator.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor),
-        emailTextSeparator.topAnchor.constraint(equalTo: emailTextField.bottomAnchor),
-        emailTextSeparator.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
-        emailTextSeparator.heightAnchor.constraint(equalToConstant: 1),
+        allergiesFinder.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        allergiesFinder.topAnchor.constraint(equalTo: allergiesQ.bottomAnchor),
+        allergiesFinder.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        allergiesFinder.heightAnchor.constraint(equalToConstant: 50),
         
         //Password text
-        passwordTextField.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
-        passwordTextField.topAnchor.constraint(equalTo: emailTextSeparator.bottomAnchor),
-        passwordTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
-        passwordTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/5),
+        ageQ.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
+        ageQ.topAnchor.constraint(equalTo: allergiesFinder.bottomAnchor),
+        ageQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        ageQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
         
         //Password separator
-        passwordTextSeparator.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor),
-        passwordTextSeparator.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor),
-        passwordTextSeparator.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
-        passwordTextSeparator.heightAnchor.constraint(equalToConstant: 1),
+        ageFinder.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        ageFinder.topAnchor.constraint(equalTo: ageQ.bottomAnchor),
+        ageFinder.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        ageFinder.heightAnchor.constraint(equalToConstant: 50),
         
         nextButton.topAnchor.constraint(equalTo: loginFieldView.bottomAnchor, constant: 5),
         nextButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
         nextButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
         nextButton.heightAnchor.constraint(equalToConstant: 50),
+        
+        laterButton.topAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 5),
+        laterButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        laterButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+        laterButton.heightAnchor.constraint(equalToConstant: 50),
     
         ])
     }
-    
-    
 }
-
-
