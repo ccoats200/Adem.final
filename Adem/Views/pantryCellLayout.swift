@@ -172,12 +172,15 @@ class addOrDeleteProduct: UIView {
 
     weak var delegate: pantryItemDelegate?
     
-    
     override init(frame: CGRect){
         super.init(frame: frame)
         setUpAddDismiss()
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+        setUpAddDismiss()
+    }
     
     lazy var deleteItemFromPantryButton: UIButton = {
         let login = UIButton(type: .system)
@@ -189,7 +192,6 @@ class addOrDeleteProduct: UIView {
         login.setTitleColor(UIColor.black, for: .normal)
         login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         login.addTarget(self, action: #selector(deleteProductFromPantry), for: .touchUpInside)
-        login.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
         return login
         
     }()
@@ -235,13 +237,5 @@ class addOrDeleteProduct: UIView {
         alertStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         alertStackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
         alertStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-    }
-    
-    override func updateConstraints() {
-        super.updateConstraints()
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }

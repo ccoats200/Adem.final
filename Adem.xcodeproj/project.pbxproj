@@ -18,6 +18,10 @@
 		357B35F023A9DDEA00223F51 /* camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35EF23A9DDEA00223F51 /* camera.swift */; };
 		357B35F223A9DE7000223F51 /* camController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F123A9DE7000223F51 /* camController.swift */; };
 		357B35F423A9DE8E00223F51 /* photoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */; };
+		358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5023BB00110013EE64 /* imageVCRecipt.swift */; };
+		358C2C5323BE68920013EE64 /* accountComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5223BE68920013EE64 /* accountComponents.swift */; };
+		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
+		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -65,7 +69,6 @@
 		35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488422ECBF6300015352 /* DynamicAttributes.swift */; };
 		35D6488722ECBF7300015352 /* Products.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488622ECBF7300015352 /* Products.swift */; };
 		35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488822ECBF8600015352 /* PantryDataModel.swift */; };
-		35D6488C22ECBFAA00015352 /* BLEHR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488B22ECBFAA00015352 /* BLEHR.swift */; };
 		35D6488F22ECBFD200015352 /* FirebaseFiles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6488E22ECBFD200015352 /* FirebaseFiles.swift */; };
 		35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489122ECBFFD00015352 /* FriendsLayout.swift */; };
 		35D6489422ECC01400015352 /* SettingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489322ECC01400015352 /* SettingTVC.swift */; };
@@ -110,6 +113,10 @@
 		357B35EF23A9DDEA00223F51 /* camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camera.swift; sourceTree = "<group>"; };
 		357B35F123A9DE7000223F51 /* camController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camController.swift; sourceTree = "<group>"; };
 		357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoCaptureDelegate.swift; sourceTree = "<group>"; };
+		358C2C5023BB00110013EE64 /* imageVCRecipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageVCRecipt.swift; sourceTree = "<group>"; };
+		358C2C5223BE68920013EE64 /* accountComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountComponents.swift; sourceTree = "<group>"; };
+		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
+		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -163,7 +170,6 @@
 		35D6488422ECBF6300015352 /* DynamicAttributes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicAttributes.swift; sourceTree = "<group>"; };
 		35D6488622ECBF7300015352 /* Products.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Products.swift; sourceTree = "<group>"; };
 		35D6488822ECBF8600015352 /* PantryDataModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryDataModel.swift; sourceTree = "<group>"; };
-		35D6488B22ECBFAA00015352 /* BLEHR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BLEHR.swift; sourceTree = "<group>"; };
 		35D6488E22ECBFD200015352 /* FirebaseFiles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseFiles.swift; sourceTree = "<group>"; };
 		35D6489122ECBFFD00015352 /* FriendsLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsLayout.swift; sourceTree = "<group>"; };
 		35D6489322ECC01400015352 /* SettingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTVC.swift; sourceTree = "<group>"; };
@@ -244,7 +250,7 @@
 				353C123422FF5C84007DF3BB /* Adem.entitlements */,
 				35D6484022ECBC7300015352 /* Account Creation */,
 				35D6489022ECBFDD00015352 /* TableViewControllers */,
-				35D6488A22ECBF9300015352 /* Bluetooth */,
+				35D6488A22ECBF9300015352 /* Camera */,
 				35D6488322ECBF5800015352 /* Model */,
 				35D6487E22ECBF2300015352 /* Services */,
 				35D6486822ECBE4600015352 /* Views */,
@@ -323,6 +329,7 @@
 				35D6485022ECBD4E00015352 /* Login Screen.swift */,
 				35D6484122ECBC8600015352 /* SignUpInfo.swift */,
 				357B35ED23A9CFC100223F51 /* continuedInfo.swift */,
+				358C2C5223BE68920013EE64 /* accountComponents.swift */,
 			);
 			path = "Account Creation";
 			sourceTree = "<group>";
@@ -394,15 +401,17 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		35D6488A22ECBF9300015352 /* Bluetooth */ = {
+		35D6488A22ECBF9300015352 /* Camera */ = {
 			isa = PBXGroup;
 			children = (
-				35D6488B22ECBFAA00015352 /* BLEHR.swift */,
 				357B35EF23A9DDEA00223F51 /* camera.swift */,
 				357B35F123A9DE7000223F51 /* camController.swift */,
 				357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */,
+				3591FBCC23BAD29700C410CF /* camViewController.swift */,
+				3591FBCE23BADA9100C410CF /* OCR.swift */,
+				358C2C5023BB00110013EE64 /* imageVCRecipt.swift */,
 			);
-			path = Bluetooth;
+			path = Camera;
 			sourceTree = "<group>";
 		};
 		35D6489022ECBFDD00015352 /* TableViewControllers */ = {
@@ -698,6 +707,7 @@
 				35D6488F22ECBFD200015352 /* FirebaseFiles.swift in Sources */,
 				35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */,
 				35D6487522ECBEC700015352 /* ItemLayout.swift in Sources */,
+				3591FBCF23BADA9100C410CF /* OCR.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */,
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
@@ -712,6 +722,7 @@
 				35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */,
 				351B8DF32342CA17006CEAE1 /* API.swift in Sources */,
 				35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */,
+				3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */,
 				35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */,
 				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,
 				35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */,
@@ -731,8 +742,9 @@
 				357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,
+				358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */,
 				35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */,
-				35D6488C22ECBFAA00015352 /* BLEHR.swift in Sources */,
+				358C2C5323BE68920013EE64 /* accountComponents.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

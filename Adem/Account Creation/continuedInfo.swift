@@ -20,6 +20,8 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     let minimuPasswordCount = 6
     
 
+    //MARK: Searchview
+    var searchView = continuedInfo()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,7 +37,6 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         self.navigationController?.view.backgroundColor = UIColor.clear
         
         searchFoodsQ.delegate = self
-        allergiesQ.delegate = self
         ageQ.delegate = self
         nextButton.resignFirstResponder()
 
@@ -74,10 +75,18 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     
 
     @objc func handleCamera() {
+        if #available(iOS 13.0, *) {
+            let productScreen = camVC()
+            productScreen.hidesBottomBarWhenPushed = true
+            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+            self.present(productScreen, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+        }
         
         print("Camera button working")
     }
-    
+
     
     @objc func handleNext()
     {
@@ -160,6 +169,13 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         }
  */
     }
+    @objc func finishLaterButton() {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let skipAccountCreation = tabBar()
+        appDelegate.window?.rootViewController = skipAccountCreation
+        print("Allowing user to skip the login or sign up flow")
+    }
     
     func addLeftImageTo(textField: UITextField, addImage img: UIImage) {
         let leftImageView = UIImageView(frame: CGRect(x: 0.0, y: 0.0, width: img.size.width, height: img.size.height))
@@ -218,26 +234,17 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         return firstName
     }()
     
-    let foodFinder: UIView = {
-        let searchFoods = UIView()
-        searchFoods.backgroundColor = UIColor.white
-        searchFoods.translatesAutoresizingMaskIntoConstraints = false
-        searchFoods.layer.cornerRadius = 5
-        return searchFoods
-    }()
-    
     //Email Section
-    let allergiesQ: UITextField = {
-        let email = UITextField()
-        email.attributedPlaceholder = NSAttributedString(string: "Have any allergies?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        email.translatesAutoresizingMaskIntoConstraints = false
-        email.textColor = UIColor.white
-        email.tag = 2
-        return email
+    let allergiesQ: UILabel = {
+        let allg = UILabel()
+        allg.text = "Have any allergies?"
+        allg.translatesAutoresizingMaskIntoConstraints = false
+        allg.textColor = UIColor.white
+        return allg
     }()
     
-    let allergiesFinder: UIView = {
-        let allergiesSearchView = UIView()
+    let allergiesFinder: UISearchBar = {
+        let allergiesSearchView = UISearchBar()
         allergiesSearchView.backgroundColor = UIColor.white
         allergiesSearchView.translatesAutoresizingMaskIntoConstraints = false
         allergiesSearchView.layer.cornerRadius = 5
@@ -285,15 +292,15 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     lazy var laterButton: UIButton = {
         let finishAccountLater = UIButton(type: .system)
         finishAccountLater.backgroundColor = UIColor.white
-        finishAccountLater.setTitle("Maybe Later", for: .normal)
+        finishAccountLater.setTitle("Finish Later", for: .normal)
         finishAccountLater.translatesAutoresizingMaskIntoConstraints = false
         finishAccountLater.layer.cornerRadius = 5
         finishAccountLater.layer.masksToBounds = true
         finishAccountLater.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
         finishAccountLater.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         //TODO: swap selector
-        //finishAccountLater.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
-        finishAccountLater.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
+        //finishAccountLater.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
+        finishAccountLater.addTarget(self, action: #selector(finishLaterButton), for: .touchUpInside)
         finishAccountLater.resignFirstResponder()
         
         return finishAccountLater
@@ -308,11 +315,11 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         
         return ademImage
     }()
-    
-    
     func setuploginFieldView() {
         
         view.addSubview(scrollView)
+        
+    
         
         view.addSubview(ademImageHolder)
         scrollView.addSubview(loginFieldView)
@@ -322,7 +329,9 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         
         //Subviews
         loginFieldView.addSubview(searchFoodsQ)
-        loginFieldView.addSubview(foodFinder)
+        loginFieldView.addSubview(searchView)
+        searchView.translatesAutoresizingMaskIntoConstraints = false
+        searchView.layer.cornerRadius = 5
         loginFieldView.addSubview(allergiesQ)
         loginFieldView.addSubview(allergiesFinder)
         loginFieldView.addSubview(ageQ)
@@ -331,7 +340,6 @@ class moreInfo: UIViewController, UITextFieldDelegate {
        
         NSLayoutConstraint.activate([
             
-        
         ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
         ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
@@ -352,16 +360,17 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         searchFoodsQ.topAnchor.constraint(equalTo: loginFieldView.topAnchor, constant: 5),
         searchFoodsQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         searchFoodsQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
-        
+ 
         //First name separator
-        foodFinder.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-        foodFinder.topAnchor.constraint(equalTo: searchFoodsQ.bottomAnchor),
-        foodFinder.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
-        foodFinder.heightAnchor.constraint(equalToConstant: 50),
+        searchView.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        searchView.topAnchor.constraint(equalTo: searchFoodsQ.bottomAnchor),
+        searchView.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        searchView.heightAnchor.constraint(equalToConstant: 50),
         
+            
         //Email text
         allergiesQ.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
-        allergiesQ.topAnchor.constraint(equalTo: foodFinder.bottomAnchor),
+        allergiesQ.topAnchor.constraint(equalTo: searchView.bottomAnchor),
         allergiesQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         allergiesQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
         

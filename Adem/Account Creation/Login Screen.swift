@@ -172,7 +172,7 @@ class login: UIViewController, UITextFieldDelegate {
         appDelegate.window?.rootViewController = skipAccountCreation
         print("Allowing user to skip the login or sign up flow")
     }
-    
+
     lazy var maybeLaterButton: UIButton = {
         let maybeLater = UIButton(type: .system)
         maybeLater.setTitle("Maybe Later", for: .normal)
@@ -229,6 +229,7 @@ class login: UIViewController, UITextFieldDelegate {
         email.placeholder = "Email"
         email.translatesAutoresizingMaskIntoConstraints = false
         email.autocapitalizationType = .none
+        email.textColor = UIColor.black
         return email
     }()
     

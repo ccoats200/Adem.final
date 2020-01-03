@@ -182,8 +182,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func setUpCollectionView() {
 
         //SetUp views from own class
-        let ss: CGRect = UIScreen.main.bounds
-        productUpdateLocationButtonView = addOrDeleteProduct(frame: CGRect(x: 0, y: 0, width: ss.width, height: 75))
+        view.addSubview(productUpdateLocationButtonView)
+        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
         
         let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         listCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
@@ -192,7 +192,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         listCollectionView.dataSource = self
         listCollectionView.delegate = self
         self.view.addSubview(listCollectionView)
-        self.view.addSubview(productUpdateLocationButtonView)
         
         listCollectionView.backgroundColor = UIColor.white
         listCollectionView.isUserInteractionEnabled = true
@@ -206,7 +205,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
         listCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        productUpdateLocationButtonView.translatesAutoresizingMaskIntoConstraints = false
         
         //TODO: Need to understand
         listCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
