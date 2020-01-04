@@ -237,7 +237,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     //Email Section
     let allergiesQ: UILabel = {
         let allg = UILabel()
-        allg.text = "Have any allergies?"
+        allg.text = "Have any diet restrictions?"
         allg.translatesAutoresizingMaskIntoConstraints = false
         allg.textColor = UIColor.white
         return allg

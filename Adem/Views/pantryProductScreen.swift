@@ -206,11 +206,11 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
         pCollectionView.dataSource = self
         pCollectionView.delegate = self
         pCollectionView.register(pantryProductFirstCell.self, forCellWithReuseIdentifier: cellID)
-        pCollectionView.backgroundColor = UIColor.white
         pCollectionView.translatesAutoresizingMaskIntoConstraints = false
         pCollectionView.clipsToBounds = true
         pCollectionView.layer.masksToBounds = true
-        pCollectionView.backgroundColor = UIColor.blue
+        //MARK: collectionView Color
+        pCollectionView.backgroundColor = UIColor.white
         pCollectionView.isScrollEnabled = true
         self.view.addSubview(pCollectionView)
         
@@ -247,7 +247,7 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
         productInfoHolder.layer.cornerRadius = 10
         
         pCollectionView.centerXAnchor.constraint(equalTo: productInfoHolder.centerXAnchor).isActive = true
-        pCollectionView.topAnchor.constraint(equalTo: productInfoHolder.topAnchor).isActive = true
+        pCollectionView.topAnchor.constraint(equalTo: productInfoHolder.topAnchor, constant: -50).isActive = true
         pCollectionView.widthAnchor.constraint(equalTo: productInfoHolder.widthAnchor).isActive = true
         pCollectionView.bottomAnchor.constraint(equalTo: productInfoHolder.bottomAnchor, constant: -30).isActive = true
         pCollectionView.layer.cornerRadius = 10
@@ -318,7 +318,7 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
     }
     
   
-    
+    /*
     let imageMatting: UIView = {
         let lightColor = UIView()
         lightColor.backgroundColor = UIColor.white.withAlphaComponent(0.10)
@@ -346,7 +346,7 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
         print("Created Image for the product image in the details VC")
         return productImageDesign
     }()
-    
+    */
     let alwaysNotify: UIButton = {
         let notify = UIButton()
         let notifyImage = UIImage(named: nutritionFacts)
@@ -377,12 +377,13 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
     
     
     var listProductCollectionView: UICollectionView!
+   
     let productInfoHolder: UIView = {
         let productInfo = UIView()
-        productInfo.backgroundColor = UIColor.white
-        productInfo.translatesAutoresizingMaskIntoConstraints = false
+        productInfo.backgroundColor = UIColor.ademRed
+        //productInfo.translatesAutoresizingMaskIntoConstraints = false
         productInfo.layer.cornerRadius = 5
-        productInfo.layer.masksToBounds = true
+        //productInfo.layer.masksToBounds = true
         return productInfo
     }()
     
@@ -405,30 +406,6 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
         return calories
     }()
     
-    let priceLabel: UILabel = {
-        let cost = 2.99
-        let price = UILabel()
-        price.translatesAutoresizingMaskIntoConstraints = false
-        price.layer.cornerRadius = 5
-        price.layer.masksToBounds = true
-        price.text = "$\(cost)"
-        price.textColor = UIColor.white
-        price.font = UIFont.boldSystemFont(ofSize: 16)
-        return price
-    }()
-    
-    lazy var productNameAndBackButton: UIButton = {
-        let back = UIButton(type: .system)
-        back.setTitle("Bread", for: .normal)
-        back.translatesAutoresizingMaskIntoConstraints = false
-        back.setTitleColor(UIColor.white, for: .normal)
-        back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        back.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
-        return back
-        
-    }()
-    
     //product Button
     @objc func handleBack() {
         self.dismiss(animated: true, completion: nil)
@@ -444,6 +421,8 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
         return pc
     }()
     
+    var pInfo = productViews()
+    var imageV = productImageViews()
     let cellID = "cell"
     func setupProductImageAttributes() {
         
@@ -451,57 +430,67 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
         let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         let pCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
         
-        view.addSubview(productNameAndBackButton)
-        view.addSubview(imageMatting)
-        view.addSubview(productInfoHolder)
-        view.addSubview(productImage)
-        view.addSubview(calLabel)
-        view.addSubview(priceLabel)
+        //view.addSubview(productNameAndBackButton)
+        //view.addSubview(imageMatting)
         
+        //view.addSubview(productImage)
+        view.addSubview(imageV)
+        view.addSubview(pInfo)
+        view.addSubview(productInfoHolder)
         view.addSubview(pantryPageControl)
+        imageV.translatesAutoresizingMaskIntoConstraints = false
+        pInfo.translatesAutoresizingMaskIntoConstraints = false
+        productInfoHolder.translatesAutoresizingMaskIntoConstraints = false
+        pInfo.layer.cornerRadius = 20
     
         //collectionView
         pCollectionView.dataSource = self
         pCollectionView.delegate = self
         pCollectionView.register(pantryProductFirstCell.self, forCellWithReuseIdentifier: cellID)
         pCollectionView.backgroundColor = UIColor.white
+        view.addSubview(pCollectionView)
         pCollectionView.translatesAutoresizingMaskIntoConstraints = false
         pCollectionView.clipsToBounds = true
         pCollectionView.layer.masksToBounds = true
-        pCollectionView.backgroundColor = UIColor.blue
+        pCollectionView.backgroundColor = UIColor.white
         pCollectionView.isScrollEnabled = true
-        self.view.addSubview(pCollectionView)
         
         
         
-        productNameAndBackButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        productNameAndBackButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        productNameAndBackButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -150).isActive = true
-        productNameAndBackButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        productNameAndBackButton.layer.cornerRadius = 20
-        
-        priceLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
-        priceLabel.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 15).isActive = true
-        priceLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        priceLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        priceLabel.layer.cornerRadius = 20
-        
-        calLabel.topAnchor.constraint(equalTo: productNameAndBackButton.topAnchor).isActive = true
+        pInfo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15).isActive = true
+        pInfo.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        pInfo.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
+        pInfo.heightAnchor.constraint(equalToConstant: 50).isActive = true
+ /*
+        calLabel.topAnchor.constraint(equalTo: test.topAnchor).isActive = true
         calLabel.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 15).isActive = true
-        calLabel.rightAnchor.constraint(equalTo: productNameAndBackButton.leftAnchor, constant: -15).isActive = true
+        calLabel.rightAnchor.constraint(equalTo: test.leftAnchor, constant: -15).isActive = true
         calLabel.widthAnchor.constraint(equalToConstant: 50).isActive = true
         calLabel.heightAnchor.constraint(equalToConstant: 50).isActive = true
         calLabel.layer.cornerRadius = 20
 
+        */
+        
+        /*
         
         //Product Image matting
-        imageMatting.topAnchor.constraint(equalTo: productNameAndBackButton.bottomAnchor, constant: 10).isActive = true
-        imageMatting.centerXAnchor.constraint(equalTo: productNameAndBackButton.centerXAnchor).isActive = true
+        imageMatting.topAnchor.constraint(equalTo: test.bottomAnchor, constant: 10).isActive = true
+        imageMatting.centerXAnchor.constraint(equalTo: test.centerXAnchor).isActive = true
         
         //Prodcut Image
         productImage.centerXAnchor.constraint(equalTo: imageMatting.centerXAnchor).isActive = true
         productImage.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor).isActive = true
-
+*/
+        imageV.topAnchor.constraint(equalTo: pInfo.bottomAnchor, constant: 10).isActive = true
+        imageV.centerXAnchor.constraint(equalTo: pInfo.centerXAnchor).isActive = true
+        imageV.heightAnchor.constraint(equalToConstant: 300).isActive = true
+        
+        //MARK: This is where the issue should be
+        productInfoHolder.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 15).isActive = true
+        productInfoHolder.centerXAnchor.constraint(equalTo: imageV.centerXAnchor).isActive = true
+        productInfoHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25).isActive = true
+        productInfoHolder.heightAnchor.constraint(equalToConstant: 350).isActive = true
+        productInfoHolder.layer.cornerRadius = 10
         
         let healthInfoStackView = UIStackView(arrangedSubviews: [healthfFacts, pantryPageControl, alwaysNotify])
         healthInfoStackView.contentMode = .scaleAspectFit
@@ -509,13 +498,6 @@ class listProductVCLayout: UIViewController, UICollectionViewDelegate, UICollect
         healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
         healthInfoStackView.distribution = .fillEqually
         view.addSubview(healthInfoStackView)
-        
-        
-        productInfoHolder.topAnchor.constraint(equalTo: imageMatting.bottomAnchor, constant: 15).isActive = true
-        productInfoHolder.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor).isActive = true
-        productInfoHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25).isActive = true
-        productInfoHolder.heightAnchor.constraint(equalToConstant: 350).isActive = true
-        productInfoHolder.layer.cornerRadius = 10
         
         pCollectionView.centerXAnchor.constraint(equalTo: productInfoHolder.centerXAnchor).isActive = true
         pCollectionView.topAnchor.constraint(equalTo: productInfoHolder.topAnchor).isActive = true

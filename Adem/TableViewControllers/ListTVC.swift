@@ -44,7 +44,7 @@ class listTableViewCell: UITableViewCell {
         nameOfFriend.font = UIFont.boldSystemFont(ofSize: 20)
         //nameOfFriend.textColor = UIColor.ademBlue
         nameOfFriend.backgroundColor = UIColor.blue
-        nameOfFriend.text = "Coleman"
+        nameOfFriend.text = "Add a product"
         nameOfFriend.translatesAutoresizingMaskIntoConstraints = false
         print("sets the item name")
         return nameOfFriend

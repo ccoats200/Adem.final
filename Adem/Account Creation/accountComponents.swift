@@ -85,24 +85,6 @@ class searchView: UIView {
         }
 }
 
-struct se {
-   var w = "sd"
-}
-/*
-protocol switchVC {
-    
-    func handleSwitchingVC() {
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let skipAccountCreation = tabBar()
-        appDelegate.window?.rootViewController = skipAccountCreation
-        print("Allowing user to skip the login or sign up flow")
-    }
-
-}
-*/
-
-
 //MARK: Continued info view
 class continuedInfo: UIView {
   
@@ -129,9 +111,17 @@ class continuedInfo: UIView {
     let expandButton: UIButton = {
         let expand = UIButton()
         expand.backgroundColor = UIColor.blue
+        expand.layer.cornerRadius = 5
+        expand.addTarget(self, action: #selector(expandAction), for: .touchUpInside)
         expand.translatesAutoresizingMaskIntoConstraints = false
         return expand
     }()
+    
+    //MARK: Expand button
+    @objc func expandAction() {
+        
+        print("User expanded their items")
+    }
        
   //common func to init our view
   private func setupView() {
@@ -141,15 +131,18 @@ class continuedInfo: UIView {
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.clipsToBounds = true
     
-    searchBar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1).isActive = true
-    searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 1).isActive = true
-    searchBar.widthAnchor.constraint(equalToConstant: 275).isActive = true
-    searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 1).isActive = true
+    NSLayoutConstraint.activate([
+    searchBar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+    searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 1),
+    searchBar.widthAnchor.constraint(equalToConstant: 275),
+    searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
     
-    expandButton.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-    expandButton.leftAnchor.constraint(equalTo: searchBar.rightAnchor).isActive = true
-    expandButton.rightAnchor.constraint(equalTo: self.rightAnchor).isActive = true
-    expandButton.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+    expandButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+    expandButton.leftAnchor.constraint(equalTo: searchBar.rightAnchor),
+    expandButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -1),
+    expandButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
+        
+    ])
   }
 }
 

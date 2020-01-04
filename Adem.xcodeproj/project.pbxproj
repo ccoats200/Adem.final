@@ -20,6 +20,7 @@
 		357B35F423A9DE8E00223F51 /* photoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */; };
 		358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5023BB00110013EE64 /* imageVCRecipt.swift */; };
 		358C2C5323BE68920013EE64 /* accountComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5223BE68920013EE64 /* accountComponents.swift */; };
+		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
 		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
@@ -115,6 +116,7 @@
 		357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoCaptureDelegate.swift; sourceTree = "<group>"; };
 		358C2C5023BB00110013EE64 /* imageVCRecipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageVCRecipt.swift; sourceTree = "<group>"; };
 		358C2C5223BE68920013EE64 /* accountComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountComponents.swift; sourceTree = "<group>"; };
+		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
 		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 				353C12372301D0E3007DF3BB /* mealsCellLayout.swift */,
 				353C12392305C20B007DF3BB /* ItemCellLayout.swift */,
 				353C123B230CD74B007DF3BB /* pantryProductScreen.swift */,
+				358C2C5423BFBAC10013EE64 /* ProductsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -718,6 +721,7 @@
 				35D6487B22ECBEFE00015352 /* ItemVCLayout.swift in Sources */,
 				35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */,
 				35D6484522ECBCA700015352 /* Color.swift in Sources */,
+				358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */,
 				35D6484E22ECBD1300015352 /* toolBar.swift in Sources */,
 				35D6488922ECBF8600015352 /* PantryDataModel.swift in Sources */,
 				351B8DF32342CA17006CEAE1 /* API.swift in Sources */,

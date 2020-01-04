@@ -395,7 +395,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return "fuck"
+        return "What are you cooking today"
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -442,7 +442,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHeight = 50
+        let cellHeight = 60
         
         return CGFloat(cellHeight)
     }
@@ -533,9 +533,6 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     func deleteMultipleAtOnce() {
-        
-        
-        
         
     }
     
