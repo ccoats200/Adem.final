@@ -10,7 +10,6 @@
 		351B8DF32342CA17006CEAE1 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF22342CA17006CEAE1 /* API.swift */; };
 		351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF42342F10A006CEAE1 /* imageText.swift */; };
 		351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF62343C215006CEAE1 /* ListTVC.swift */; };
-		353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12352301CD3B007DF3BB /* mealsBackup.swift */; };
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
 		353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C123B230CD74B007DF3BB /* pantryProductScreen.swift */; };
@@ -23,6 +22,7 @@
 		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
 		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
+		35C3A35823C58E3500E12747 /* listViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35723C58E3500E12747 /* listViews.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -55,8 +55,6 @@
 		35D6485D22ECBDC900015352 /* tabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485C22ECBDC900015352 /* tabController.swift */; };
 		35D6486122ECBDEF00015352 /* settingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486022ECBDEF00015352 /* settingVC.swift */; };
 		35D6486322ECBE0200015352 /* SearchVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486222ECBE0200015352 /* SearchVC.swift */; };
-		35D6486522ECBE1D00015352 /* PantryVCBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486422ECBE1D00015352 /* PantryVCBackup.swift */; };
-		35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486622ECBE2F00015352 /* accountBackup.swift */; };
 		35D6486A22ECBE5B00015352 /* AcctCellDesign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486922ECBE5B00015352 /* AcctCellDesign.swift */; };
 		35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486B22ECBE7100015352 /* ProductCell.swift */; };
 		35D6486F22ECBE9500015352 /* tabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6486E22ECBE9500015352 /* tabBar.swift */; };
@@ -74,8 +72,8 @@
 		35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489122ECBFFD00015352 /* FriendsLayout.swift */; };
 		35D6489422ECC01400015352 /* SettingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489322ECC01400015352 /* SettingTVC.swift */; };
 		35D6489A22ECF8CC00015352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35D6489922ECF8CC00015352 /* GoogleService-Info.plist */; };
-		35D6489C22FA620400015352 /* ListVCBackup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489B22FA620400015352 /* ListVCBackup.swift */; };
 		35DE93B4234AC37A000B2BE8 /* circularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DE93B3234AC37A000B2BE8 /* circularProgressBar.swift */; };
+		35FDD16A23C4102200A85023 /* listProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FDD16923C4102200A85023 /* listProduct.swift */; };
 		5E2C21DEDCB99D8ACB64F84C /* Pods_Adem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 552FA8DCCC99612FFFFF0E7C /* Pods_Adem.framework */; };
 		723B0AC4CAA30209E8DE6F04 /* Pods_AdemUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9B64C42DC6A7F3895662EC /* Pods_AdemUITests.framework */; };
 		9290EA1B6B1AB70595BF479B /* Pods_AdemTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EC95AA97B539CF189A3A1199 /* Pods_AdemTests.framework */; };
@@ -106,7 +104,6 @@
 		351B8DF42342F10A006CEAE1 /* imageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageText.swift; sourceTree = "<group>"; };
 		351B8DF62343C215006CEAE1 /* ListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTVC.swift; sourceTree = "<group>"; };
 		353C123422FF5C84007DF3BB /* Adem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Adem.entitlements; sourceTree = "<group>"; };
-		353C12352301CD3B007DF3BB /* mealsBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsBackup.swift; sourceTree = "<group>"; };
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
 		353C12392305C20B007DF3BB /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
 		353C123B230CD74B007DF3BB /* pantryProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryProductScreen.swift; sourceTree = "<group>"; };
@@ -119,6 +116,7 @@
 		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
 		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
+		35C3A35723C58E3500E12747 /* listViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listViews.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -157,8 +155,6 @@
 		35D6485C22ECBDC900015352 /* tabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabController.swift; sourceTree = "<group>"; };
 		35D6486022ECBDEF00015352 /* settingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = settingVC.swift; sourceTree = "<group>"; };
 		35D6486222ECBE0200015352 /* SearchVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchVC.swift; sourceTree = "<group>"; };
-		35D6486422ECBE1D00015352 /* PantryVCBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryVCBackup.swift; sourceTree = "<group>"; };
-		35D6486622ECBE2F00015352 /* accountBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountBackup.swift; sourceTree = "<group>"; };
 		35D6486922ECBE5B00015352 /* AcctCellDesign.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcctCellDesign.swift; sourceTree = "<group>"; };
 		35D6486B22ECBE7100015352 /* ProductCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductCell.swift; sourceTree = "<group>"; };
 		35D6486E22ECBE9500015352 /* tabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = tabBar.swift; sourceTree = "<group>"; };
@@ -176,8 +172,8 @@
 		35D6489122ECBFFD00015352 /* FriendsLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsLayout.swift; sourceTree = "<group>"; };
 		35D6489322ECC01400015352 /* SettingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTVC.swift; sourceTree = "<group>"; };
 		35D6489922ECF8CC00015352 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
-		35D6489B22FA620400015352 /* ListVCBackup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVCBackup.swift; sourceTree = "<group>"; };
 		35DE93B3234AC37A000B2BE8 /* circularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = circularProgressBar.swift; sourceTree = "<group>"; };
+		35FDD16923C4102200A85023 /* listProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listProduct.swift; sourceTree = "<group>"; };
 		552FA8DCCC99612FFFFF0E7C /* Pods_Adem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Adem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641E0606A6B657153B72FDF6 /* Pods-AdemUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemUITests.debug.xcconfig"; path = "Target Support Files/Pods-AdemUITests/Pods-AdemUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		A58BFA409D4C4787278BC2BF /* Pods-Adem.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem.debug.xcconfig"; path = "Target Support Files/Pods-Adem/Pods-Adem.debug.xcconfig"; sourceTree = "<group>"; };
@@ -357,10 +353,7 @@
 				35D6485822ECBDA300015352 /* Meals.swift */,
 				35D6485A22ECBDBA00015352 /* AccountVC.swift */,
 				35D6485C22ECBDC900015352 /* tabController.swift */,
-				35D6486422ECBE1D00015352 /* PantryVCBackup.swift */,
-				35D6486622ECBE2F00015352 /* accountBackup.swift */,
-				35D6489B22FA620400015352 /* ListVCBackup.swift */,
-				353C12352301CD3B007DF3BB /* mealsBackup.swift */,
+				35FDD16923C4102200A85023 /* listProduct.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -380,6 +373,7 @@
 				353C12392305C20B007DF3BB /* ItemCellLayout.swift */,
 				353C123B230CD74B007DF3BB /* pantryProductScreen.swift */,
 				358C2C5423BFBAC10013EE64 /* ProductsView.swift */,
+				35C3A35723C58E3500E12747 /* listViews.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -692,7 +686,6 @@
 				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
 				35D6487722ECBED700015352 /* settingsLayout.swift in Sources */,
 				353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */,
-				353C12362301CD3B007DF3BB /* mealsBackup.swift in Sources */,
 				357B35F223A9DE7000223F51 /* camController.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
 				353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */,
@@ -700,15 +693,16 @@
 				35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
 				35D6482F22ECBB1500015352 /* productCell.swift in Sources */,
+				35C3A35823C58E3500E12747 /* listViews.swift in Sources */,
 				35D6482B22ECBAE800015352 /* TableViewTest.swift in Sources */,
 				35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */,
-				35D6489C22FA620400015352 /* ListVCBackup.swift in Sources */,
 				35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */,
 				35D6486A22ECBE5B00015352 /* AcctCellDesign.swift in Sources */,
 				35D6489422ECC01400015352 /* SettingTVC.swift in Sources */,
 				35D647FB22ECBABA00015352 /* ViewController.swift in Sources */,
 				35D6488F22ECBFD200015352 /* FirebaseFiles.swift in Sources */,
 				35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */,
+				35FDD16A23C4102200A85023 /* listProduct.swift in Sources */,
 				35D6487522ECBEC700015352 /* ItemLayout.swift in Sources */,
 				3591FBCF23BADA9100C410CF /* OCR.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
@@ -717,7 +711,6 @@
 				35D6483422ECBB4600015352 /* profileVC.swift in Sources */,
 				35D6484922ECBCCC00015352 /* AppDelegateUserLogin.swift in Sources */,
 				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
-				35D6486522ECBE1D00015352 /* PantryVCBackup.swift in Sources */,
 				35D6487B22ECBEFE00015352 /* ItemVCLayout.swift in Sources */,
 				35D6483222ECBB3500015352 /* AccountVCOld.swift in Sources */,
 				35D6484522ECBCA700015352 /* Color.swift in Sources */,
@@ -727,7 +720,6 @@
 				351B8DF32342CA17006CEAE1 /* API.swift in Sources */,
 				35D6488522ECBF6300015352 /* DynamicAttributes.swift in Sources */,
 				3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */,
-				35D6486722ECBE2F00015352 /* accountBackup.swift in Sources */,
 				35D6482D22ECBB0300015352 /* TestingAccount.swift in Sources */,
 				35D6484222ECBC8600015352 /* SignUpInfo.swift in Sources */,
 				35DE93B4234AC37A000B2BE8 /* circularProgressBar.swift in Sources */,

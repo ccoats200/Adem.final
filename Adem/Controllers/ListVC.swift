@@ -12,8 +12,7 @@ import FirebaseFirestore
 import AVFoundation
 import CoreData
 
-class listCollectionView: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
-
+class listViewController: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
     
     //Cells Selected stuff
     enum Mode {
@@ -57,15 +56,11 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     //MARK: FireBase Populate List
     var products: [food] = [food]()
     
-    
-    
     //Search Controller implementation
     let tableViewSearchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         //MARK: NavigationBar setup
         navigationItem.title = "List"
@@ -104,6 +99,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
         tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"
         
+        
         //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
        
@@ -112,7 +108,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
         self.navigationItem.rightBarButtonItem = searching
         
-        
+        toolBarSetUp()
         countingCollections()
     }
     
@@ -120,19 +116,17 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setUpListView()
+           
+        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
         
         
-        
-        listScreenDesign()
-        
-           self.navigationController?.view.layoutIfNeeded()
-           self.navigationController?.view.setNeedsLayout()
+        self.navigationController?.view.layoutIfNeeded()
+        self.navigationController?.view.setNeedsLayout()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-    
-        
     }
     
     func countingCollections() {
@@ -219,24 +213,21 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         //TODO: Code to refresh table view
     }
     
-    
-
-    
-    func listScreenDesign() {
-        setUpListView()
-        
-        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
-     
-       }
-    
+//    func listScreenDesign() {
+//        setUpListView()
+//        
+//        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
+//     
+//       }
+//    
 
     //MARK: Table View
-    var listTableView: UITableView!
+    
     //TODO: Does this need to be a weak var?
+    var listTableView: UITableView!
     func setUpListView() {
         
         //SetUp views from own class
-        //let ss: CGRect = UIScreen.main.bounds
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
     
@@ -248,7 +239,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         listTableView.dataSource = self
         listTableView.delegate = self
         listTableView.translatesAutoresizingMaskIntoConstraints = false
-        
+        listTableView.allowsMultipleSelection = true
         
         self.view.addSubview(listTableView)
         
@@ -264,8 +255,6 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     
     //MARK: Swipe actions
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
-
-        
         //If the product in not in the list and they are searching they can swipe to the left to add it to their list
       // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
         let checkedAsInBasket = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
@@ -277,9 +266,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
             boolValue(true) // pass true if you want the handler to allow the action
             print("User is adding the product back to their pantry")
         }
-        
         addToPantry.backgroundColor = UIColor.ademGreen
-        
         checkedAsInBasket.backgroundColor = UIColor.ademBlue
         
         let swipeActions = UISwipeActionsConfiguration(actions: [checkedAsInBasket])
@@ -290,24 +277,14 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         
-        
         let deleteItemFromListAndPanty = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
             boolValue(true) // pass true if you want the handler to allow the action
-            
-            
-            print("User is deleting the product from their account entierly")
         }
-        
-        
         deleteItemFromListAndPanty.backgroundColor = UIColor.ademRed
-        
         let swipeActions = UISwipeActionsConfiguration(actions: [deleteItemFromListAndPanty])
-
         return swipeActions
     }
-    
-    
-    
+
     var listProducts: [groceryItemCellContent] =  []
     
     //MARK: Table view cell properties - Start
@@ -370,26 +347,12 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         productsListViewLayout.imageView?.image = UIImage(named: "egg")
         productsListViewLayout.accessoryType = .disclosureIndicator
         
-    
         return productsListViewLayout
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        //let cellRow = indexPath.row
-        
-        
-        //handleProduct()
         handleListProduct()
-        /*
-        if cellRow == 0 {
-            handleAlert()
-        } else {
-            handleProduct()
-        }
-        */
-        
-        //Deselect Row
+
         listTableView.deselectRow(at: indexPath, animated: false)
     }
     
@@ -402,32 +365,12 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         return 50
     }
     
-    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        /*
-        if self.isEditing == true {
-        
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.ademBlue
-            
-        return headerView
-            
-        }
-        */
-        
         return nil
-        
-        /*
-        let headerView = CircularProgressView()
-       
-        return headerView
- */
     }
  
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        
         return 1
     }
     
@@ -458,10 +401,6 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     //MARK: Table view cell properties - End
-    
-    
-    
-    
     
     //MARK: Search bar stuff - start
     
@@ -508,7 +447,7 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         // Strip out all the leading and trailing spaces.
         let whitespaceCharacterSet = CharacterSet.whitespaces
         let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
-        let searchItems = strippedString.components(separatedBy: " ") as [String]
+        //let searchItems = strippedString.components(separatedBy: " ") as [String]
         
     }
     //MARK: Search bar stuff - End
@@ -519,26 +458,38 @@ class listCollectionView: UIViewController, UISearchControllerDelegate, UISearch
         super.setEditing(editing, animated: animated)
         
         if self.isEditing {
+            listTableView.isEditing = true
             self.navigationItem.rightBarButtonItem = nil
             self.tabBarController?.tabBar.isHidden = true
-            listTableView.isEditing = true
             self.navigationItem.rightBarButtonItems = [added, trashed]
-            
+            self.navigationController?.isToolbarHidden = false
         } else {
-            
-            listTableView.isEditing = false
+            self.navigationController?.isToolbarHidden = true
             self.navigationItem.rightBarButtonItems = [searching]
             self.tabBarController?.tabBar.isHidden = false
+            listTableView.isEditing = false
         }
     }
     
-    func deleteMultipleAtOnce() {
+    func toolBarSetUp() {
+
+        let fixedWidth = 15
         
+        let leftSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        leftSpacer.width = CGFloat(fixedWidth)
+        let add = UIBarButtonItem(barButtonSystemItem: .add, target: nil, action: nil)
+        let leftCenterSpacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let centerSpacer = UIBarButtonItem(title: "Select Groceries", style: .plain, target: nil, action: nil)
+        centerSpacer.tintColor = UIColor.ademBlue
+        let delete = UIBarButtonItem(barButtonSystemItem: .trash, target: nil, action: nil)
+        let rightCenterSpacer = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let rightSpacer = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        rightSpacer.width = CGFloat(fixedWidth)
+        
+        self.setToolbarItems([leftSpacer, add, leftCenterSpacer, centerSpacer, rightCenterSpacer, delete, rightSpacer], animated: false)
     }
     
-   
-    
-    //Button Functions - Start
+    //MARK: Button Functions - Start
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
     var groceryProductsSelected: [IndexPath] = []
     //var selectedGroceryProducts = [groceryItemCellContent]()

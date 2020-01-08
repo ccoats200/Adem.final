@@ -30,6 +30,8 @@ let usersCollection = "Users/\(currentUser!.uid)"
 
 //Icons
 let nutritionFacts = "nutritionFacts"
+let heartImage = "Fave"
+let infoImage = "Info"
 
 class food {
     var key: String

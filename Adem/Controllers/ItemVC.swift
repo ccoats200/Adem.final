@@ -59,7 +59,7 @@ class ProductVC: UICollectionViewController, UICollectionViewDelegateFlowLayout 
     //Account Button
     @objc func home() {
         //let bController = listCollectionView(collectionViewLayout: UICollectionViewFlowLayout())
-        let bController = listCollectionView()
+        let bController = listViewController()
         self.navigationController?.pushViewController(bController, animated: true)
         //self.present(bController, animated: true, completion: nil)
         print(123)

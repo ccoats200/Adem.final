@@ -30,13 +30,13 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         //MARK: NavigationBar setup
         navigationItem.title = "Meals"
         
-        /*
+        
         let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
         navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.isTranslucent = false
-*/
+
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
