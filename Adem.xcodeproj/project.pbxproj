@@ -23,6 +23,7 @@
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
 		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
 		35C3A35823C58E3500E12747 /* listViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35723C58E3500E12747 /* listViews.swift */; };
+		35C3A35A23C6075400E12747 /* loginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35923C6075400E12747 /* loginViews.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -117,6 +118,7 @@
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
 		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		35C3A35723C58E3500E12747 /* listViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listViews.swift; sourceTree = "<group>"; };
+		35C3A35923C6075400E12747 /* loginViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginViews.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 				35D6484122ECBC8600015352 /* SignUpInfo.swift */,
 				357B35ED23A9CFC100223F51 /* continuedInfo.swift */,
 				358C2C5223BE68920013EE64 /* accountComponents.swift */,
+				35C3A35923C6075400E12747 /* loginViews.swift */,
 			);
 			path = "Account Creation";
 			sourceTree = "<group>";
@@ -698,6 +701,7 @@
 				35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */,
 				35D6484C22ECBCEB00015352 /* Delete cell extension.swift in Sources */,
 				35D6486A22ECBE5B00015352 /* AcctCellDesign.swift in Sources */,
+				35C3A35A23C6075400E12747 /* loginViews.swift in Sources */,
 				35D6489422ECC01400015352 /* SettingTVC.swift in Sources */,
 				35D647FB22ECBABA00015352 /* ViewController.swift in Sources */,
 				35D6488F22ECBFD200015352 /* FirebaseFiles.swift in Sources */,

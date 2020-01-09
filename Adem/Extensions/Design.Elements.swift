@@ -8,6 +8,12 @@
 import Foundation
 import UIKit
 
+//MARK: Fonts
+let headerFont = "Montserrat"
+let searchPromptFont = "Montserrat"
+let buttonFont = "Avenir"
+let productFont = "Open Sans"
+
 //Color Extension
 extension UIColor {
     

@@ -41,10 +41,7 @@ class login: UIViewController, UITextFieldDelegate {
         gradient.endPoint = CGPoint(x: 1, y: 1)
         view.layer.addSublayer(gradient)
         
-        view.addSubview(ademImageHolder)
-        view.addSubview(loginFieldView)
-        view.addSubview(loginButton)
-        view.addSubview(signUpButton)
+        
         
         
         //setupademImageHolder()
@@ -137,6 +134,7 @@ class login: UIViewController, UITextFieldDelegate {
         login.backgroundColor = UIColor.white
         login.setTitle("Login", for: .normal)
         login.translatesAutoresizingMaskIntoConstraints = false
+        login.titleLabel?.font = UIFont(name: headerFont, size: 20)
         login.layer.cornerRadius = 5
         login.layer.masksToBounds = true
         login.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
@@ -150,16 +148,26 @@ class login: UIViewController, UITextFieldDelegate {
         signUp.setTitle("Sign up", for: .normal)
         signUp.translatesAutoresizingMaskIntoConstraints = false
         signUp.setTitleColor(UIColor.white, for: .normal)
+        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 16)
         signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         signUp.addTarget(self, action: #selector(self.handelSignUp), for: .touchUpInside)
         return signUp
     }()
+    @objc func handelSocialsignUp(sender: UIButton!) {
+        
+        //Check how this is transitioning and fix it for a navigation controller
+     let signUpInfo = moreInfo()
+     self.present(signUpInfo, animated: true, completion: nil)
+     print("Sending user to sign up Flow")
+    }
+    
+    
     
     @objc func handelSignUp(sender: UIButton!) {
         
         //Check how this is transitioning and fix it for a navigation controller
-     //let signUpInfo = UserInfo()
-        let signUpInfo = moreInfo()
+     let signUpInfo = UserInfo()
+     //   let signUpInfo = moreInfo()
      //self.navigationController?.pushViewController(signUpInfo, animated: true)
      self.present(signUpInfo, animated: true, completion: nil)
      print("Sending user to sign up Flow")
@@ -177,8 +185,8 @@ class login: UIViewController, UITextFieldDelegate {
         let maybeLater = UIButton(type: .system)
         maybeLater.setTitle("Maybe Later", for: .normal)
         maybeLater.translatesAutoresizingMaskIntoConstraints = false
+        maybeLater.titleLabel?.font = UIFont(name: productFont, size: 12)
         maybeLater.setTitleColor(UIColor.white, for: .normal)
-        maybeLater.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         maybeLater.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
         return maybeLater
     }()
@@ -187,7 +195,7 @@ class login: UIViewController, UITextFieldDelegate {
         let facebookLogin = UIButton(type: .system)
         facebookLogin.setImage(UIImage.init(named: "Home"), for: .normal)
         facebookLogin.translatesAutoresizingMaskIntoConstraints = false
-        facebookLogin.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        facebookLogin.addTarget(self, action: #selector(handelSocialsignUp), for: .touchUpInside)
         facebookLogin.layer.cornerRadius = 30
         facebookLogin.layer.borderWidth = 1
         facebookLogin.backgroundColor = UIColor.white
@@ -198,7 +206,7 @@ class login: UIViewController, UITextFieldDelegate {
         let twitterLogin = UIButton(type: .system)
         twitterLogin.setImage(UIImage.init(named: "Home"), for: .normal)
         twitterLogin.translatesAutoresizingMaskIntoConstraints = false
-        twitterLogin.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        twitterLogin.addTarget(self, action: #selector(handelSocialsignUp), for: .touchUpInside)
         twitterLogin.layer.cornerRadius = 30
         twitterLogin.layer.borderWidth = 1
         twitterLogin.backgroundColor = UIColor.white
@@ -209,7 +217,7 @@ class login: UIViewController, UITextFieldDelegate {
         let googleLogin = UIButton(type: .system)
         googleLogin.setImage(UIImage.init(named: "Home"), for: .normal)
         googleLogin.translatesAutoresizingMaskIntoConstraints = false
-        googleLogin.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        googleLogin.addTarget(self, action: #selector(handelSocialsignUp), for: .touchUpInside)
         googleLogin.layer.cornerRadius = 30
         googleLogin.layer.borderWidth = 1
         googleLogin.backgroundColor = UIColor.white
@@ -266,11 +274,20 @@ class login: UIViewController, UITextFieldDelegate {
         return ademImage
     }()
     
+    var userInfoCaptureElements = loginInfoView()
+    
     func setuploginFieldView() {
+        
+        view.addSubview(ademImageHolder)
+        view.addSubview(userInfoCaptureElements)
+        userInfoCaptureElements.translatesAutoresizingMaskIntoConstraints = false
+        //view.addSubview(loginFieldView)
+        view.addSubview(loginButton)
+        view.addSubview(signUpButton)
         //loginFieldView.addSubview(userNameTextField)
-        loginFieldView.addSubview(emailTextField)
-        loginFieldView.addSubview(emailTextSeparator)
-        loginFieldView.addSubview(passwordTextField)
+        //loginFieldView.addSubview(emailTextField)
+        //loginFieldView.addSubview(emailTextSeparator)
+        //loginFieldView.addSubview(passwordTextField)
         
         let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
         differentSignUpMethodsStackView.contentMode = .scaleAspectFit
@@ -289,6 +306,12 @@ class login: UIViewController, UITextFieldDelegate {
             ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
             ademImageHolder.heightAnchor.constraint(equalToConstant: 255),
         
+            userInfoCaptureElements.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 55),
+            userInfoCaptureElements.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            userInfoCaptureElements.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            userInfoCaptureElements.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+            userInfoCaptureElements.heightAnchor.constraint(equalToConstant: 95), //125 also looks good
+            /*
         //login Fields
             loginFieldView.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 55),
             loginFieldView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -314,23 +337,25 @@ class login: UIViewController, UITextFieldDelegate {
             passwordTextField.topAnchor.constraint(equalTo: emailTextSeparator.topAnchor),
             passwordTextField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
             passwordTextField.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/2),
+            */
+            
             
          //Login Button
-            loginButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-            loginButton.topAnchor.constraint(equalTo: loginFieldView.bottomAnchor, constant: 12),
-            loginButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+            loginButton.centerXAnchor.constraint(equalTo: userInfoCaptureElements.centerXAnchor),
+            loginButton.topAnchor.constraint(equalTo: userInfoCaptureElements.bottomAnchor, constant: 12),
+            loginButton.widthAnchor.constraint(equalTo: userInfoCaptureElements.widthAnchor),
             loginButton.heightAnchor.constraint(equalToConstant: 50),
             
           //SignUp Button
-            signUpButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+            signUpButton.centerXAnchor.constraint(equalTo: userInfoCaptureElements.centerXAnchor),
             signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor, constant: 12),
             signUpButton.widthAnchor.constraint(equalToConstant: 60),
             signUpButton.heightAnchor.constraint(equalToConstant: 20),
             
           //Social Buttons
-            differentSignUpMethodsStackView.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+            differentSignUpMethodsStackView.centerXAnchor.constraint(equalTo: userInfoCaptureElements.centerXAnchor),
             differentSignUpMethodsStackView.bottomAnchor.constraint(equalTo: maybeLaterButton.topAnchor, constant: -12),
-            differentSignUpMethodsStackView.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+            differentSignUpMethodsStackView.widthAnchor.constraint(equalTo: userInfoCaptureElements.widthAnchor),
             differentSignUpMethodsStackView.heightAnchor.constraint(equalToConstant: 60),
             
            //Maybe Later Button
