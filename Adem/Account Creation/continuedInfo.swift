@@ -223,7 +223,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         let allg = UILabel()
         allg.text = "Have any diet restrictions?"
         allg.textColor = UIColor.white
-        allg.layer.cornerRadius = 5
+        allg.layer.cornerRadius = 15
         allg.translatesAutoresizingMaskIntoConstraints = false
         
         return allg
