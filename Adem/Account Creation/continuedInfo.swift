@@ -22,6 +22,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
 
     //MARK: Searchview
     var searchView = continuedInfo()
+    var dietField = continuedInfo()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,6 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         self.navigationController?.view.backgroundColor = UIColor.clear
         
         searchFoodsQ.delegate = self
-        ageQ.delegate = self
         nextButton.resignFirstResponder()
 
         //Backgound Color Start
@@ -71,20 +71,6 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         Auth.auth().removeStateDidChangeListener(handle!)
-    }
-    
-
-    @objc func handleCamera() {
-        if #available(iOS 13.0, *) {
-            let productScreen = camVC()
-            productScreen.hidesBottomBarWhenPushed = true
-            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            self.present(productScreen, animated: true, completion: nil)
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        print("Camera button working")
     }
 
     
@@ -184,10 +170,6 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         textField.leftView = leftImageView
         textField.leftViewMode = .always
         
-        if ageQ.isEditing == true {
-            return leftImageView.tintColor = UIColor.blue
-        }
-        
     }
     
     
@@ -209,7 +191,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         let scrolling = UIScrollView()
         scrolling.backgroundColor = UIColor.clear
         scrolling.translatesAutoresizingMaskIntoConstraints = false
-        //scrolling.contentSize.height = 500
+        scrolling.contentSize.height = 700
         //scrolling.layer.masksToBounds = true
         return scrolling
     }()
@@ -225,50 +207,87 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     
     //Name Section
     let searchFoodsQ: UITextField = {
-        let firstName = UITextField()
-        firstName.attributedPlaceholder = NSAttributedString(string: "What do you like?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        firstName.translatesAutoresizingMaskIntoConstraints = false
-        firstName.textColor = UIColor.white
-        firstName.returnKeyType = .continue
-        firstName.tag = 0
-        return firstName
+        let foods = UITextField()
+        foods.attributedPlaceholder = NSAttributedString(string: "What do you like?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        foods.textColor = UIColor.white
+        foods.returnKeyType = .continue
+        foods.tag = 0
+        foods.layer.cornerRadius = 5
+        foods.translatesAutoresizingMaskIntoConstraints = false
+
+        return foods
     }()
     
     //Email Section
     let allergiesQ: UILabel = {
         let allg = UILabel()
         allg.text = "Have any diet restrictions?"
-        allg.translatesAutoresizingMaskIntoConstraints = false
         allg.textColor = UIColor.white
+        allg.layer.cornerRadius = 5
+        allg.translatesAutoresizingMaskIntoConstraints = false
+        
         return allg
     }()
     
-    let allergiesFinder: UISearchBar = {
-        let allergiesSearchView = UISearchBar()
-        allergiesSearchView.backgroundColor = UIColor.white
-        allergiesSearchView.translatesAutoresizingMaskIntoConstraints = false
-        allergiesSearchView.layer.cornerRadius = 5
-        return allergiesSearchView
-    }()
-    
     //Password Section
-    let ageQ: UITextField = {
-        let password = UITextField()
-        password.attributedPlaceholder = NSAttributedString(string: "Are you 21?", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        password.isSecureTextEntry = true
-        password.translatesAutoresizingMaskIntoConstraints = false
-        password.tag = 3
-        password.textColor = UIColor.white
+    let ageQ: UILabel = {
+        let ageEntry = UILabel()
+        ageEntry.text = "Are you 21?"
+        ageEntry.translatesAutoresizingMaskIntoConstraints = false
+        ageEntry.tag = 3
+        ageEntry.textColor = UIColor.white
         
-        return password
+        return ageEntry
     }()
     
-    let ageFinder: UIView = {
-        let ageView = UIView()
-        ageView.backgroundColor = UIColor.white
-        ageView.translatesAutoresizingMaskIntoConstraints = false
-        ageView.layer.cornerRadius = 5
-        return ageView
+    let ageInput: UIView = {
+        let ageText = UIView()
+        ageText.backgroundColor = UIColor.clear
+        ageText.translatesAutoresizingMaskIntoConstraints = false
+        ageText.layer.cornerRadius = 5
+        return ageText
+    }()
+    
+    let agePicker: UIDatePicker = {
+       let agePick = UIDatePicker()
+        agePick.datePickerMode = UIDatePicker.Mode.date
+
+        return agePick
+    }()
+    
+    let ageDay: UITextField = {
+        let day = UITextField()
+        day.attributedPlaceholder = NSAttributedString(string: "DD", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        day.textColor = UIColor.black
+        day.backgroundColor = UIColor.white
+        day.textAlignment = .center
+        day.layer.cornerRadius = 5
+        day.translatesAutoresizingMaskIntoConstraints = false
+        
+        return day
+    }()
+    
+    let ageMonth: UITextField = {
+        let month = UITextField()
+        month.attributedPlaceholder = NSAttributedString(string: "MM", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        month.textColor = UIColor.black
+        month.backgroundColor = UIColor.white
+        month.textAlignment = .center
+        month.layer.cornerRadius = 5
+        month.translatesAutoresizingMaskIntoConstraints = false
+        return month
+    }()
+    
+    let ageYear: UITextField = {
+        let year = UITextField()
+        year.attributedPlaceholder = NSAttributedString(string: "YYYY", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        year.textColor = UIColor.black
+        year.backgroundColor = UIColor.white
+        year.textAlignment = .center
+        year.layer.cornerRadius = 5
+        year.translatesAutoresizingMaskIntoConstraints = false
+        
+        return year
     }()
     
     //Next Button
@@ -299,7 +318,6 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         finishAccountLater.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
         finishAccountLater.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         //TODO: swap selector
-        //finishAccountLater.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
         finishAccountLater.addTarget(self, action: #selector(finishLaterButton), for: .touchUpInside)
         finishAccountLater.resignFirstResponder()
         
@@ -315,11 +333,11 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         
         return ademImage
     }()
+    
+    
     func setuploginFieldView() {
         
         view.addSubview(scrollView)
-        
-    
         
         view.addSubview(ademImageHolder)
         scrollView.addSubview(loginFieldView)
@@ -331,11 +349,28 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         loginFieldView.addSubview(searchFoodsQ)
         loginFieldView.addSubview(searchView)
         searchView.translatesAutoresizingMaskIntoConstraints = false
+        searchView.searchBar.placeholder = "Favorite foods"
         searchView.layer.cornerRadius = 5
         loginFieldView.addSubview(allergiesQ)
-        loginFieldView.addSubview(allergiesFinder)
+        loginFieldView.addSubview(dietField)
+        dietField.translatesAutoresizingMaskIntoConstraints = false
+        dietField.searchBar.placeholder = "Allergies?"
+        dietField.layer.cornerRadius = 5
         loginFieldView.addSubview(ageQ)
-        loginFieldView.addSubview(ageFinder)
+        loginFieldView.addSubview(ageInput)
+        
+        
+        let ageStackView = UIStackView(arrangedSubviews: [ageDay, ageMonth, ageYear])
+        ageInput.addSubview(ageStackView)
+        
+        ageStackView.contentMode = .scaleAspectFit
+        ageStackView.spacing = 5
+        //ageStackView.setCustomSpacing(40, after: whereToBuy)
+        ageStackView.translatesAutoresizingMaskIntoConstraints = false
+        ageStackView.clipsToBounds = true
+        ageStackView.layer.masksToBounds = true
+        ageStackView.distribution = .fillEqually
+        ageStackView.backgroundColor = UIColor.white
         
        
         NSLayoutConstraint.activate([
@@ -366,40 +401,53 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         searchView.topAnchor.constraint(equalTo: searchFoodsQ.bottomAnchor),
         searchView.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         searchView.heightAnchor.constraint(equalToConstant: 50),
-        
+    
             
         //Email text
         allergiesQ.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
         allergiesQ.topAnchor.constraint(equalTo: searchView.bottomAnchor),
         allergiesQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         allergiesQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
-        
+ 
         //Name separator
-        allergiesFinder.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-        allergiesFinder.topAnchor.constraint(equalTo: allergiesQ.bottomAnchor),
-        allergiesFinder.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
-        allergiesFinder.heightAnchor.constraint(equalToConstant: 50),
+        dietField.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        dietField.topAnchor.constraint(equalTo: allergiesQ.bottomAnchor),
+        dietField.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        dietField.heightAnchor.constraint(equalToConstant: 50),
         
         //Password text
         ageQ.leftAnchor.constraint(equalTo: loginFieldView.leftAnchor, constant: 12),
-        ageQ.topAnchor.constraint(equalTo: allergiesFinder.bottomAnchor),
+        ageQ.topAnchor.constraint(equalTo: dietField.bottomAnchor),
         ageQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         ageQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
         
         //Password separator
-        ageFinder.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-        ageFinder.topAnchor.constraint(equalTo: ageQ.bottomAnchor),
-        ageFinder.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
-        ageFinder.heightAnchor.constraint(equalToConstant: 50),
+        ageInput.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        ageInput.topAnchor.constraint(equalTo: ageQ.bottomAnchor),
+        ageInput.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        ageInput.heightAnchor.constraint(equalToConstant: 50),
+
+/*
+        agePicker.centerXAnchor.constraint(equalTo: ageInput.centerXAnchor),
+        agePicker.centerYAnchor.constraint(equalTo: ageInput.centerYAnchor),
+        agePicker.heightAnchor.constraint(equalTo: ageInput.heightAnchor),
+        agePicker.widthAnchor.constraint(equalTo: ageInput.widthAnchor),
+        */
+        
+        ageStackView.centerXAnchor.constraint(equalTo: ageInput.centerXAnchor),
+        ageStackView.centerYAnchor.constraint(equalTo: ageInput.centerYAnchor),
+        ageStackView.heightAnchor.constraint(equalTo: ageInput.heightAnchor),
+        ageStackView.widthAnchor.constraint(equalTo: ageInput.widthAnchor),
+ 
         
         nextButton.topAnchor.constraint(equalTo: loginFieldView.bottomAnchor, constant: 5),
         nextButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-        nextButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+        nextButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         nextButton.heightAnchor.constraint(equalToConstant: 50),
         
         laterButton.topAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: 5),
         laterButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
-        laterButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor),
+        laterButton.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -200),
         laterButton.heightAnchor.constraint(equalToConstant: 50),
     
         ])

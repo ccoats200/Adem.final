@@ -8,6 +8,28 @@
 
 import UIKit
 
+
+class additonalProductCollectionView: UICollectionView {
+   
+    
+    /*
+    //initWithFrame to init view from code
+    init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+     }
+     
+     //initWithCode to init view from xib or storyboard
+     required init?(coder aDecoder: NSCoder) {
+       super.init(coder: aDecoder)
+       setupView()
+     }
+     
+    private func setupView() {
+    }
+ */
+}
+
 class ProductCell: UICollectionViewCell {
     
     @IBOutlet weak var itemImage: UIImageView!
@@ -17,14 +39,84 @@ class ProductCell: UICollectionViewCell {
     
 }
 
-class pantryProductFirstCell: UICollectionViewCell {
-    //This cell is for basic info on the product and has general price and prdouct infor as well as buttons to view controllers that have text boxes. ie: Vegan, nurtuition info
-    
-    
+//List Delete protocol
+protocol recItemDelegate: class {
+    func notInterested(cell: recommendedProductCells)
+    func interested(cell: recommendedProductCells)
 }
 
-class pantryProductSecondCell: UICollectionViewCell {
-    //This Cell is for similar products scroll view and recepies scroll view
+class recommendedProductCells: UICollectionViewCell {
+    //MARK: This cell is for all the free cells
+    
+    weak var delegate: recItemDelegate?
+    
+    
+    //initWithFrame to init view from code
+    override init(frame: CGRect) {
+      super.init(frame: frame)
+        setupView()
+        setUpConstraintsForCell()
+    }
+    
+    //initWithCode to init view from xib or storyboard
+    required init?(coder aDecoder: NSCoder) {
+      super.init(coder: aDecoder)
+      setupView()
+    }
+    
+    let productImageView: UIImageView = {
+        let image = UIImageView()
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
+        image.layer.masksToBounds = true
+        image.layer.cornerRadius = 5
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.backgroundColor = UIColor.red
+        return image
+    }()
+    
+     private func setupView() {
+        
+        addSubview(productImageView)
+        productImageView.translatesAutoresizingMaskIntoConstraints = false
+            
+    }
+    
+    private func setUpConstraintsForCell() {
+        
+        NSLayoutConstraint.activate([
+            
+            productImageView.topAnchor.constraint(equalTo: self.topAnchor),
+            productImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            productImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            productImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            productImageView.heightAnchor.constraint(equalTo: self.heightAnchor)
+            
+    ])
+        
+    }
+}
+
+class sponsoredProductCells: UICollectionViewCell {
+    //MARK: This cell is for all the sponsored cells
+    
+    
+    
+    //initWithFrame to init view from code
+    override init(frame: CGRect) {
+      super.init(frame: frame)
+      setupView()
+    }
+    
+    //initWithCode to init view from xib or storyboard
+    required init?(coder aDecoder: NSCoder) {
+      super.init(coder: aDecoder)
+      setupView()
+    }
+    
+     private func setupView() {
+            
+    }
 }
 
 class pantryProductThirdCell: UICollectionViewCell {

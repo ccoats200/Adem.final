@@ -301,7 +301,9 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingsOptions.count
+        
+        return allproductsInList.count
+        //return settingsOptions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -465,8 +467,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         print("there are \(listProducts.count as Any) products")
         
-        
-        return listProducts.count
+        return allproductsInList.count
+        //return listProducts.count
     }
     
     

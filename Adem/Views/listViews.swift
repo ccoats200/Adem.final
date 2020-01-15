@@ -37,11 +37,10 @@ class listTableView: UIView {
     
     lazy var productNameAndBackButton: UIButton = {
         let back = UIButton(type: .system)
-        back.setTitle("Bread", for: .normal)
+        //back.setTitle("Bread", for: .normal)
         back.setTitleColor(UIColor.white, for: .normal)
         back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
-        //back.addTarget(self, action: #selector(listProductVCLayout.handleBack), for: .touchUpInside)
         return back
         
     }()

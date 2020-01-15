@@ -8,16 +8,14 @@
 
 import Foundation
 import UIKit
-import Firebase
-import FirebaseFirestore
 
-
-//MARK: Product name view
+//MARK: Login text fields view
 class loginInfoView: UIView, UITextFieldDelegate {
   
     //initWithFrame to init view from code
   override init(frame: CGRect) {
     super.init(frame: frame)
+   
     emailTextField.delegate = self
     passwordTextField.delegate = self
     setupView()
@@ -26,6 +24,7 @@ class loginInfoView: UIView, UITextFieldDelegate {
   //initWithCode to init view from xib or storyboard
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+    
     setupView()
   }
   
@@ -114,3 +113,164 @@ class loginInfoView: UIView, UITextFieldDelegate {
     ])
   }
 }
+
+//MARK: Login button view
+class loginButtonView: UIView {
+  
+    //initWithFrame to init view from code
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  
+    setupView()
+  }
+  
+  //initWithCode to init view from xib or storyboard
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    setupView()
+  }
+  
+    lazy var loginButton: UIButton = {
+        let login = UIButton(type: .system)
+        login.backgroundColor = UIColor.white
+        login.setTitle("Login", for: .normal)
+        login.translatesAutoresizingMaskIntoConstraints = false
+        login.titleLabel?.font = UIFont(name: headerFont, size: 20)
+        login.layer.cornerRadius = 5
+        login.layer.masksToBounds = true
+        login.setTitleColor(UIColor.ademBlue, for: .normal)
+        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        return login
+    }()
+    
+    lazy var signUpButton: UIButton = {
+        let signUp = UIButton()
+        signUp.setTitle("Sign up", for: .normal)
+        signUp.setTitleColor(UIColor.white, for: .normal)
+        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 16)
+        signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        signUp.translatesAutoresizingMaskIntoConstraints = false
+        return signUp
+    }()
+       
+  //common func to init our view
+  private func setupView() {
+
+    self.layer.masksToBounds = true
+    
+    self.addSubview(loginButton)
+    self.addSubview(signUpButton)
+    loginButton.translatesAutoresizingMaskIntoConstraints = false
+    signUpButton.translatesAutoresizingMaskIntoConstraints = false
+    
+    
+    NSLayoutConstraint.activate([
+        
+        loginButton.topAnchor.constraint(equalTo: self.topAnchor),
+        loginButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        loginButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant:  -24),
+        loginButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
+        
+
+        signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor),
+        signUpButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        signUpButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -24),
+        signUpButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
+    ])
+  }
+}
+
+//MARK: Social button view
+class socialButtonView: UIView {
+  
+    //initWithFrame to init view from code
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  
+    setupView()
+  }
+  
+  //initWithCode to init view from xib or storyboard
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    setupView()
+  }
+  
+    lazy var maybeLaterButton: UIButton = {
+        let maybeLater = UIButton(type: .system)
+        maybeLater.setTitle("Maybe Later", for: .normal)
+        maybeLater.translatesAutoresizingMaskIntoConstraints = false
+        maybeLater.titleLabel?.font = UIFont(name: productFont, size: 12)
+        maybeLater.setTitleColor(UIColor.white, for: .normal)
+        return maybeLater
+    }()
+    
+    lazy var facebookLoginImage: UIButton = {
+        let facebookLogin = UIButton(type: .system)
+        facebookLogin.setImage(UIImage.init(named: "Home"), for: .normal)
+        facebookLogin.translatesAutoresizingMaskIntoConstraints = false
+        facebookLogin.layer.cornerRadius = 30
+        facebookLogin.layer.borderWidth = 1
+        facebookLogin.backgroundColor = UIColor.white
+        return facebookLogin
+    }()
+    
+    lazy var twitterLoginImage: UIButton = {
+        let twitterLogin = UIButton(type: .system)
+        twitterLogin.setImage(UIImage.init(named: "Home"), for: .normal)
+        twitterLogin.translatesAutoresizingMaskIntoConstraints = false
+        twitterLogin.layer.cornerRadius = 30
+        twitterLogin.layer.borderWidth = 1
+        twitterLogin.backgroundColor = UIColor.white
+        return twitterLogin
+    }()
+    
+    lazy var GoogleLoginImage: UIButton = {
+        let googleLogin = UIButton(type: .system)
+        googleLogin.setImage(UIImage.init(named: "Home"), for: .normal)
+        googleLogin.translatesAutoresizingMaskIntoConstraints = false
+        googleLogin.layer.cornerRadius = 30
+        googleLogin.layer.borderWidth = 1
+        googleLogin.backgroundColor = UIColor.white
+        return googleLogin
+    }()
+    
+  //common func to init our view
+  private func setupView() {
+
+    self.layer.masksToBounds = true
+    
+    self.addSubview(maybeLaterButton)
+    
+    maybeLaterButton.translatesAutoresizingMaskIntoConstraints = false
+    
+    
+    let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
+    differentSignUpMethodsStackView.contentMode = .scaleAspectFit
+    differentSignUpMethodsStackView.spacing = 5
+    differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
+    differentSignUpMethodsStackView.distribution = .fillEqually
+    
+    
+    self.addSubview(differentSignUpMethodsStackView)
+    differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
+    
+    
+    NSLayoutConstraint.activate([
+        
+        differentSignUpMethodsStackView.topAnchor.constraint(equalTo: self.topAnchor),
+        differentSignUpMethodsStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        differentSignUpMethodsStackView.widthAnchor.constraint(equalTo: self.widthAnchor),
+        differentSignUpMethodsStackView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
+        
+
+        maybeLaterButton.topAnchor.constraint(equalTo: differentSignUpMethodsStackView.bottomAnchor),
+        maybeLaterButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        maybeLaterButton.widthAnchor.constraint(equalTo: self.widthAnchor),
+        maybeLaterButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
+    ])
+  }
+}
+

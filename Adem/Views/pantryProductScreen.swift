@@ -131,7 +131,7 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! pantryProductFirstCell
+        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! recommendedProductCells
         return productCell
     }
     
@@ -205,7 +205,7 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
         //collectionView
         pCollectionView.dataSource = self
         pCollectionView.delegate = self
-        pCollectionView.register(pantryProductFirstCell.self, forCellWithReuseIdentifier: cellID)
+        pCollectionView.register(recommendedProductCells.self, forCellWithReuseIdentifier: cellID)
         pCollectionView.translatesAutoresizingMaskIntoConstraints = false
         pCollectionView.clipsToBounds = true
         pCollectionView.layer.masksToBounds = true

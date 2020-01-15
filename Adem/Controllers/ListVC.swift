@@ -351,7 +351,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        handleListProduct()
+        if indexPath.row == 0 {
+            handleProductOptiontwo()
+        } else {
+            handleListProduct()
+    }
 
         listTableView.deselectRow(at: indexPath, animated: false)
     }
@@ -580,6 +584,16 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     //product Button
+    @objc func handleProductOptiontwo() {
+        
+        let productScreen = listProductVCLayout()
+        productScreen.hidesBottomBarWhenPushed = true
+        self.present(productScreen, animated: true, completion: nil)
+        
+        print("Settings Tab is active")
+    }
+    
+    //product Button
     @objc func handleListProduct() {
         
         let productScreen = listProductVCLayout()
@@ -590,7 +604,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         print("Settings Tab is active")
     }
     //Button Functions - End
-    
     
     //Search Button
     @objc func handleAlert() {

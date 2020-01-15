@@ -24,6 +24,7 @@ class productViews: UIView {
     setupView()
   }
   
+    
     let priceLabel: UILabel = {
         let cost = 2.99
         let price = UILabel()
@@ -41,10 +42,10 @@ class productViews: UIView {
         back.setTitleColor(UIColor.white, for: .normal)
         back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
-        //back.addTarget(self, action: #selector(listProductVCLayout.handleBack), for: .touchUpInside)
         return back
         
     }()
+
        
   //common func to init our view
   private func setupView() {
@@ -91,11 +92,11 @@ class productImageViews: UIView {
     let imageMatting: UIView = {
         let lightColor = UIView()
         lightColor.backgroundColor = UIColor.white.withAlphaComponent(0.10)
-        lightColor.translatesAutoresizingMaskIntoConstraints = false
         lightColor.layer.masksToBounds = true
         lightColor.widthAnchor.constraint(equalToConstant: 300).isActive = true
         lightColor.heightAnchor.constraint(equalToConstant: 300).isActive = true
         lightColor.layer.cornerRadius = 150
+        lightColor.translatesAutoresizingMaskIntoConstraints = false
         return lightColor
     }()
     
@@ -109,10 +110,11 @@ class productImageViews: UIView {
         productImageDesign.layer.cornerRadius = 25
         productImageDesign.layer.borderWidth = 1
         productImageDesign.layer.borderColor = UIColor.white.cgColor
-        productImageDesign.translatesAutoresizingMaskIntoConstraints = false
+        
         productImageDesign.widthAnchor.constraint(equalToConstant: 200).isActive = true
         productImageDesign.heightAnchor.constraint(equalToConstant: 200).isActive = true //125 also looks good
         print("Created Image for the product image in the details VC")
+        productImageDesign.translatesAutoresizingMaskIntoConstraints = false
         return productImageDesign
     }()
        
@@ -174,7 +176,11 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! pantryProductFirstCell
+        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! recommendedProductCells
+        
+        productCell.backgroundColor = UIColor.white
+        
+        
         return productCell
     }
     
@@ -215,17 +221,10 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         facts.setImage(image, for: .normal)
         facts.translatesAutoresizingMaskIntoConstraints = false
         facts.contentMode = .scaleAspectFit
-        facts.addTarget(self, action: #selector(handleFacts), for: .touchUpInside)
         return facts
     }()
     
-    //product Button
-    @objc func handleFacts() {
-        let signUpInfo = circleTest()
-        //self.present(signUpInfo, animated: true)
-        print("went to new page")
-    }
-    
+   
     private let pantryPageControl: UIPageControl = {
          let pc = UIPageControl()
           pc.currentPage = 0
@@ -237,30 +236,38 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
   
     var listProductCollectionView: UICollectionView!
+    //var productCollectionView = additonalProductCollectionView()
     
     let cellID = "cell"
-  //common func to init our view
-  private func setupView() {
+  
+    //common func to init our view
+    private func setupView() {
     
-    let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-    let pCollectionView: UICollectionView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        self.backgroundColor = UIColor.white
+        self.layer.cornerRadius = 10
+        
+        
+        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let pCollectionView: UICollectionView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        
+        layouts.itemSize = CGSize(width: 120, height: 120)
+        //listProductCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
+        
+        self.addSubview(pCollectionView)
+        self.addSubview(productDescription)
+        productDescription.translatesAutoresizingMaskIntoConstraints = false
+        
+        //collectionView
+        pCollectionView.dataSource = self
+        pCollectionView.delegate = self
+        pCollectionView.register(recommendedProductCells.self, forCellWithReuseIdentifier: cellID)
+        
+        pCollectionView.backgroundColor = UIColor.ademGreen
     
-    self.addSubview(pCollectionView)
-    self.addSubview(productDescription)
-    productDescription.translatesAutoresizingMaskIntoConstraints = false
-
-    self.backgroundColor = UIColor.white
-    self.layer.cornerRadius = 10
-    //collectionView
-    pCollectionView.dataSource = self
-    pCollectionView.delegate = self
-    pCollectionView.register(pantryProductFirstCell.self, forCellWithReuseIdentifier: cellID)
-    pCollectionView.backgroundColor = UIColor.ademGreen
-    
-    pCollectionView.translatesAutoresizingMaskIntoConstraints = false
-    pCollectionView.clipsToBounds = true
-    pCollectionView.layer.masksToBounds = true
-    pCollectionView.isScrollEnabled = true
+        pCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        pCollectionView.clipsToBounds = true
+        pCollectionView.layer.masksToBounds = true
+        pCollectionView.isScrollEnabled = true
     
     
     
@@ -280,7 +287,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     healthInfoStackView.backgroundColor = UIColor.white
     
     NSLayoutConstraint.activate([
-    //Product Image matting
+        //Product Image matting
         
         healthInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
         healthInfoStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),

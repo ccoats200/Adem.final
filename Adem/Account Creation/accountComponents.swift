@@ -102,7 +102,6 @@ class continuedInfo: UIView {
   
     let searchBar: UISearchBar = {
         let searchBars = UISearchBar()
-        //searchBars.barTintColor = UIColor.red
         searchBars.searchBarStyle = .minimal
         searchBars.layer.cornerRadius = 5
         return searchBars
@@ -112,16 +111,9 @@ class continuedInfo: UIView {
         let expand = UIButton()
         expand.backgroundColor = UIColor.blue
         expand.layer.cornerRadius = 5
-        expand.addTarget(self, action: #selector(expandAction), for: .touchUpInside)
         expand.translatesAutoresizingMaskIntoConstraints = false
         return expand
     }()
-    
-    //MARK: Expand button
-    @objc func expandAction() {
-        
-        print("User expanded their items")
-    }
        
   //common func to init our view
   private func setupView() {

@@ -13,17 +13,24 @@ import FirebaseFirestore
 
 class listProductVCLayout: UIViewController {
     
+    //MARK: View set up
+    var pInfo = productViews()
+    var imageV = productImageViews()
+    var infoView = productInfoViews()
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.ademBlue
         
+        setUpViews()
+        setUpProductButtons()
+        setupProductLayoutContstraints()
         
-        setupProductImageAttributes()
-        
-        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
-        self.view.addGestureRecognizer(panGestureRecognizer)
+        //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
+        //self.view.addGestureRecognizer(panGestureRecognizer)
         
         self.dismiss(animated: true, completion: nil)
     }
@@ -52,9 +59,11 @@ class listProductVCLayout: UIViewController {
     }
     
 
+    //MARK: Button engagement
     //product Button
     @objc func handleFacts() {
-        let signUpInfo = circleTest()
+        //let signUpInfo = circleTest()
+        let signUpInfo = Meals()
         self.present(signUpInfo, animated: true)
         print("went to new page")
     }
@@ -64,17 +73,24 @@ class listProductVCLayout: UIViewController {
         self.dismiss(animated: true, completion: nil)
         print("went back to previous page")
     }
-    
-    var pInfo = productViews()
-    var imageV = productImageViews()
-    var infoView = productInfoViews()
+        
+    @objc func handleCamera() {
+        if #available(iOS 13.0, *) {
+            let productScreen = camVC()
+            productScreen.hidesBottomBarWhenPushed = true
+            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+            self.present(productScreen, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        print("Camera button working")
+    }
 
     
-
-    func setupProductImageAttributes() {
-    
-        view.addSubview(imageV)
+    func setUpViews() {
         view.addSubview(pInfo)
+        view.addSubview(imageV)
         view.addSubview(infoView)
         
         imageV.translatesAutoresizingMaskIntoConstraints = false
@@ -82,6 +98,22 @@ class listProductVCLayout: UIViewController {
         infoView.translatesAutoresizingMaskIntoConstraints = false
         infoView.translatesAutoresizingMaskIntoConstraints = false
         pInfo.layer.cornerRadius = 20
+        
+        
+    }
+    
+    func setUpProductButtons() {
+        //MARK: how to add button interaction
+        
+        pInfo.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+        infoView.nutritionDetails.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
+        
+        pInfo.productNameAndBackButton.setTitle("reads", for: .normal)
+        
+    }
+    
+    func setupProductLayoutContstraints() {
+        
         
         
         //MARK: Constraints
@@ -104,3 +136,5 @@ class listProductVCLayout: UIViewController {
             
     }
 }
+
+
