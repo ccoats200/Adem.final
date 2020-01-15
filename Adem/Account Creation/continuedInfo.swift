@@ -355,7 +355,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         loginFieldView.addSubview(dietField)
         dietField.translatesAutoresizingMaskIntoConstraints = false
         dietField.searchBar.placeholder = "Allergies?"
-        dietField.layer.cornerRadius = 5
+        dietField.layer.cornerRadius = 15
         loginFieldView.addSubview(ageQ)
         loginFieldView.addSubview(ageInput)
         
