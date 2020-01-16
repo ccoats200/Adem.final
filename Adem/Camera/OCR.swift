@@ -24,6 +24,7 @@ class camVC: UIViewController {
         setupCamera()
         setupTapRecognizer()
         setupPhotoOutput()
+        setupCloseButton()
     }
     
     private func setupPhotoOutput() {
@@ -43,6 +44,28 @@ class camVC: UIViewController {
       if sender.state == .ended {
         capturePhoto()
       }
+    }
+    
+    private func setupCloseButton() {
+      let closeButton = UIButton()
+      view.addSubview(closeButton)
+
+      // Stylistic features.
+      closeButton.setTitle("✕", for: .normal)
+      closeButton.setTitleColor(UIColor.white, for: .normal)
+      closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 32)
+
+      // Add a target function when the button is tapped.
+      closeButton.addTarget(self, action: #selector(test), for: .touchDown)
+
+      // Constrain the button to be positioned in the top left corner (with some offset).
+      closeButton.translatesAutoresizingMaskIntoConstraints = false
+      closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20).isActive = true
+      closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+    }
+    
+    @objc func test() {
+        self.dismiss(animated: true, completion: nil)
     }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -70,6 +93,7 @@ class camVC: UIViewController {
     videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
     videoPreviewLayer.frame = view.layer.bounds
     view.layer.addSublayer(videoPreviewLayer)
+    
   }
 }
 
