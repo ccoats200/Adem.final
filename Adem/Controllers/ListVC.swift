@@ -94,7 +94,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         navigationItem.searchController = tableViewSearchController
         tableViewSearchController.searchBar.tintColor = UIColor.white
         tableViewSearchController.searchBar.delegate = self
-       
+        //tableViewSearchController.searchBar.showsBookmarkButton = true
+        //tableViewSearchController.searchBar.setImage(UIImage(named: "Vegan"), for: .bookmark, state: .normal)
+
+
         tableViewSearchController.searchBar.autocorrectionType = .default
         tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
         tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"

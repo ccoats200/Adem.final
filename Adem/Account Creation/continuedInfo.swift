@@ -12,7 +12,7 @@ import Firebase
 import FirebaseFirestore
 
 
-class moreInfo: UIViewController, UITextFieldDelegate {
+class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
     
     // Add a new document with a generated ID
     var handle: AuthStateDidChangeListenerHandle?
@@ -39,6 +39,8 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         
         searchFoodsQ.delegate = self
         nextButton.resignFirstResponder()
+        agePicker.datePickerMode = .date
+        self.agePicker.setValue(UIColor.ademBlue, forKeyPath: "textColor")
 
         //Backgound Color Start
         let gradient = CAGradientLayer()
@@ -223,7 +225,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         let allg = UILabel()
         allg.text = "Have any diet restrictions?"
         allg.textColor = UIColor.white
-        allg.layer.cornerRadius = 15
+        allg.layer.cornerRadius = 5
         allg.translatesAutoresizingMaskIntoConstraints = false
         
         return allg
@@ -242,15 +244,17 @@ class moreInfo: UIViewController, UITextFieldDelegate {
     
     let ageInput: UIView = {
         let ageText = UIView()
-        ageText.backgroundColor = UIColor.clear
-        ageText.translatesAutoresizingMaskIntoConstraints = false
+        ageText.backgroundColor = UIColor.white
         ageText.layer.cornerRadius = 5
+        ageText.translatesAutoresizingMaskIntoConstraints = false
         return ageText
     }()
     
     let agePicker: UIDatePicker = {
        let agePick = UIDatePicker()
         agePick.datePickerMode = UIDatePicker.Mode.date
+        agePick.backgroundColor = UIColor.clear
+        agePick.translatesAutoresizingMaskIntoConstraints = false
 
         return agePick
     }()
@@ -262,6 +266,9 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         day.backgroundColor = UIColor.white
         day.textAlignment = .center
         day.layer.cornerRadius = 5
+        day.keyboardType = .numberPad
+        day.returnKeyType = .continue
+        day.tag = 0
         day.translatesAutoresizingMaskIntoConstraints = false
         
         return day
@@ -274,6 +281,8 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         month.backgroundColor = UIColor.white
         month.textAlignment = .center
         month.layer.cornerRadius = 5
+        month.keyboardType = .numberPad
+        month.tag = 1
         month.translatesAutoresizingMaskIntoConstraints = false
         return month
     }()
@@ -284,7 +293,10 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         year.textColor = UIColor.black
         year.backgroundColor = UIColor.white
         year.textAlignment = .center
+        year.keyboardType = .numberPad
+        year.returnKeyType = .continue
         year.layer.cornerRadius = 5
+                
         year.translatesAutoresizingMaskIntoConstraints = false
         
         return year
@@ -334,6 +346,13 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         return ademImage
     }()
     
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x: 0, y: (textField.superview?.frame.origin.y)!), animated: true)
+    }
+
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+    }
     
     func setuploginFieldView() {
         
@@ -343,6 +362,8 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         scrollView.addSubview(loginFieldView)
         scrollView.addSubview(nextButton)
         scrollView.addSubview(laterButton)
+        ageInput.addSubview(agePicker)
+        agePicker.translatesAutoresizingMaskIntoConstraints = false
         
         
         //Subviews
@@ -359,7 +380,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         loginFieldView.addSubview(ageQ)
         loginFieldView.addSubview(ageInput)
         
-        
+        /*
         let ageStackView = UIStackView(arrangedSubviews: [ageDay, ageMonth, ageYear])
         ageInput.addSubview(ageStackView)
         
@@ -371,7 +392,7 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         ageStackView.layer.masksToBounds = true
         ageStackView.distribution = .fillEqually
         ageStackView.backgroundColor = UIColor.white
-        
+        */
        
         NSLayoutConstraint.activate([
             
@@ -421,24 +442,31 @@ class moreInfo: UIViewController, UITextFieldDelegate {
         ageQ.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         ageQ.heightAnchor.constraint(equalTo: loginFieldView.heightAnchor, multiplier: 1/6),
         
+        /*
         //Password separator
         ageInput.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
         ageInput.topAnchor.constraint(equalTo: ageQ.bottomAnchor),
         ageInput.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
         ageInput.heightAnchor.constraint(equalToConstant: 50),
 
-/*
-        agePicker.centerXAnchor.constraint(equalTo: ageInput.centerXAnchor),
-        agePicker.centerYAnchor.constraint(equalTo: ageInput.centerYAnchor),
-        agePicker.heightAnchor.constraint(equalTo: ageInput.heightAnchor),
-        agePicker.widthAnchor.constraint(equalTo: ageInput.widthAnchor),
-        */
-        
         ageStackView.centerXAnchor.constraint(equalTo: ageInput.centerXAnchor),
         ageStackView.centerYAnchor.constraint(equalTo: ageInput.centerYAnchor),
         ageStackView.heightAnchor.constraint(equalTo: ageInput.heightAnchor),
         ageStackView.widthAnchor.constraint(equalTo: ageInput.widthAnchor),
  
+        */
+            
+            
+        ageInput.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
+        ageInput.topAnchor.constraint(equalTo: ageQ.bottomAnchor),
+        ageInput.widthAnchor.constraint(equalTo: loginFieldView.widthAnchor, constant: -24),
+        ageInput.heightAnchor.constraint(equalToConstant: 50),
+            
+        agePicker.centerXAnchor.constraint(equalTo: ageInput.centerXAnchor),
+        agePicker.centerYAnchor.constraint(equalTo: ageInput.centerYAnchor),
+        agePicker.heightAnchor.constraint(equalTo: ageInput.heightAnchor),
+        agePicker.widthAnchor.constraint(equalTo: ageInput.widthAnchor),
+        
         
         nextButton.topAnchor.constraint(equalTo: loginFieldView.bottomAnchor, constant: 5),
         nextButton.centerXAnchor.constraint(equalTo: loginFieldView.centerXAnchor),
