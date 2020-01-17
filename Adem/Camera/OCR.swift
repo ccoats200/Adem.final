@@ -56,7 +56,7 @@ class camVC: UIViewController {
       closeButton.titleLabel?.font = UIFont.systemFont(ofSize: 32)
 
       // Add a target function when the button is tapped.
-      closeButton.addTarget(self, action: #selector(test), for: .touchDown)
+      closeButton.addTarget(self, action: #selector(cameraViewClose), for: .touchDown)
 
       // Constrain the button to be positioned in the top left corner (with some offset).
       closeButton.translatesAutoresizingMaskIntoConstraints = false
@@ -64,7 +64,7 @@ class camVC: UIViewController {
       closeButton.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
     }
     
-    @objc func test() {
+    @objc func cameraViewClose() {
         self.dismiss(animated: true, completion: nil)
     }
 
@@ -123,12 +123,15 @@ extension camVC : AVCapturePhotoCaptureDelegate {
     readyImage = image
     //createAccount.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
     
-    let signUpInfo = IVC()
+    let productImageCaptured = IVC()
     //self.navigationController?.pushViewController(signUpInfo, animated: true)
-    signUpInfo.image = readyImage
-    self.present(signUpInfo, animated: true, completion: nil)
-  }
-
+    productImageCaptured.image = readyImage
+    
+    productImageCaptured.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+    self.present(productImageCaptured, animated: true, completion: nil)
+    
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
       super.prepare(for: segue, sender: sender)
       if let imageViewController = segue.destination as? IVC {
