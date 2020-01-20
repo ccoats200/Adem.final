@@ -24,7 +24,7 @@ class camVC: UIViewController {
         setupCamera()
         setupTapRecognizer()
         setupPhotoOutput()
-        setupCloseButton()
+        
     }
     
     private func setupPhotoOutput() {
@@ -71,6 +71,7 @@ class camVC: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     captureSession.startRunning()
+    setupCloseButton()
   }
 
   override func viewWillDisappear(_ animated: Bool) {

@@ -69,6 +69,6 @@ class listTableView: UIView {
     priceLabel.heightAnchor.constraint(equalToConstant: 50),
         
     ])
-  }
+    }
 }
 
