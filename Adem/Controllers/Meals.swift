@@ -25,6 +25,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     //kaggle datasets download -d shuyangli94/food-com-recipes-and-user-interactions
     
     var mealsTableView: UITableView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //MARK: NavigationBar setup
@@ -50,18 +51,12 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         }
         
         
-        //tv
-        mealsTableView = UITableView(frame: self.view.bounds)
-        self.mealsTableView.delegate = self
-        self.mealsTableView.dataSource = self
-        self.view.addSubview(mealsTableView)
         
-        mealsTableView.register(mealsTableViewCell.self, forCellReuseIdentifier: mealsCellID)
-        mealsTableView.translatesAutoresizingMaskIntoConstraints = false
         
         setUpDifferentViews()
         setUpBarButtonItems()
     }
+    
     
     //Setting up bar buttons
     private func setUpBarButtonItems() {
@@ -71,14 +66,55 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         //self.navigationItem.rightBarButtonItem = searching
     }
     
+    let segmentContr: UISegmentedControl = {
+        let items = ["Breakfast", "Lunch", "Dinner"]
+        let segmentContr = UISegmentedControl(items: items)
+        segmentContr.tintColor = UIColor.white
+        segmentContr.selectedSegmentIndex = 0
+        //segmentContr.layer.cornerRadius = 5
+        segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.ademBlue], for: .selected)
+               
+        segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+
+        segmentContr.backgroundColor = UIColor.ademBlue
+               segmentContr.addTarget(self, action: #selector(switchSegViews), for: .valueChanged)
+        return segmentContr
+        
+    }()
+    
+    @objc fileprivate func switchSegViews() {
+        print("test")
+    }
     //Setting up views
     
     func setUpDifferentViews() {
 
-        //User interations
-//        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
-//        lpgr.minimumPressDuration = 0.35
-//        self.collectionView?.addGestureRecognizer(lpgr)
+        //tv
+        mealsTableView = UITableView(frame: self.view.bounds)
+        
+        self.view.addSubview(mealsTableView)
+        self.view.addSubview(segmentContr)
+        
+        mealsTableView.delegate = self
+        mealsTableView.dataSource = self
+        
+        mealsTableView.register(mealsTableViewCell.self, forCellReuseIdentifier: mealsCellID)
+        mealsTableView.translatesAutoresizingMaskIntoConstraints = false
+        segmentContr.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        
+        NSLayoutConstraint.activate([
+            segmentContr.topAnchor.constraint(equalTo: view.topAnchor),
+            segmentContr.heightAnchor.constraint(equalToConstant: 25),
+            segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor),
+            segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            mealsTableView.topAnchor.constraint(equalTo: segmentContr.bottomAnchor),
+            mealsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            mealsTableView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            mealsTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        ])
     }
     
     let mealsCellID = "meals"
@@ -124,50 +160,4 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         
         print("Settings Tab is active")
     }
-
-    
-    /*
-    
-    // MARK: - Delete Items
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-        
-        if self.isEditing {
-            self.navigationItem.rightBarButtonItem = nil
-            //self.mealsCollectionView.allowsMultipleSelection = true
-            self.tabBarController?.tabBar.isHidden = true
-            self.navigationItem.rightBarButtonItems = [added, trashed]
-            
-        } else {
-            
-            self.navigationItem.rightBarButtonItems = [searching]
-            self.tabBarController?.tabBar.isHidden = false
-            //self.mealsCollectionView.allowsMultipleSelection = false
-            
-        }
-        
-        if let indexPaths = mealsCollectionView?.indexPathsForVisibleItems {
-            for indexPath in indexPaths {
-                if let cell = mealsCollectionView?.cellForItem(at: indexPath) as? pantryCellLayout {
-                    cell.isEditing = editing
-                }
-            }
-        }
-    }
-    */
-    
-    
-//    @objc func addLongGestureRecognizer(_ gestureRecognizer: UILongPressGestureRecognizer) {
-//        if gestureRecognizer.state != .began { return }
-//        let p = gestureRecognizer.location(in: self.mealsCollectionView)
-//        if let indexPath = self.mealsCollectionView.indexPathForItem(at: p) {
-//            //let cell = self.collectionView.cellForItem(at: indexPath)
-//
-//            navigationController?.isEditing = true
-//
-//        } else {
-//            print("can't find")
-//        }
-//    }
-
 }

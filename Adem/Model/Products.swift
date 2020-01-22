@@ -42,8 +42,16 @@ class groceryItemCellContent: NSObject {
     var Pantry: Bool?
     
 }
-
-
+struct groceryItemCellContents {
+    
+    var itemImageName: String?
+    var listImageName: String?
+    var itemName: String?
+    var Quantity: String?
+    var List: Bool?
+    var Pantry: Bool?
+    
+}
 
 var productsGlobal: [groceryItemCellContent]? = {
     

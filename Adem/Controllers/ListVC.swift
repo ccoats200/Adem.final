@@ -35,7 +35,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
 
     
     //MARK: Navigation Bar Buttons - Start
-    lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
+    lazy var searching = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
     
     lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
     
@@ -94,13 +94,13 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         navigationItem.searchController = tableViewSearchController
         tableViewSearchController.searchBar.tintColor = UIColor.white
         tableViewSearchController.searchBar.delegate = self
-        //tableViewSearchController.searchBar.showsBookmarkButton = true
-        //tableViewSearchController.searchBar.setImage(UIImage(named: "Vegan"), for: .bookmark, state: .normal)
 
 
         tableViewSearchController.searchBar.autocorrectionType = .default
         tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
         tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"
+        //self.tableViewSearchController.searchBar.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24).isActive = true
+        //self.tableViewSearchController.searchBar.setPositionAdjustment(UIOffset(horizontal: 30, vertical: 0), for: .clear)
         
         
         //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -110,6 +110,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         self.navigationItem.leftBarButtonItem = editButtonItem
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
         self.navigationItem.rightBarButtonItem = searching
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.ademBlue
+
         
         toolBarSetUp()
         countingCollections()
@@ -230,29 +232,51 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     var listTableView: UITableView!
     func setUpListView() {
         
-        //SetUp views from own class
-        let displayWidth: CGFloat = self.view.frame.width
-        let displayHeight: CGFloat = self.view.frame.height
-    
-        listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
-        listTableView.backgroundColor = UIColor.white
+       
         
-        listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
-        //listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
-        listTableView.dataSource = self
-        listTableView.delegate = self
-        listTableView.translatesAutoresizingMaskIntoConstraints = false
-        listTableView.allowsMultipleSelection = true
+        switch productsGlobal?.isEmpty {
+        case true:
+            
+            let footerView = UIView()
+                footerView.backgroundColor = UIColor.ademBlue
+                        self.view.addSubview(footerView)
+            footerView.translatesAutoresizingMaskIntoConstraints = false
+            
+            //MARK: tableView constraints
+            NSLayoutConstraint.activate([
+                footerView.topAnchor.constraint(equalTo: view.topAnchor),
+                footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                ])
+        default:
+            //SetUp views from own class
+                   let displayWidth: CGFloat = self.view.frame.width
+                   let displayHeight: CGFloat = self.view.frame.height
+               
+                   listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+                   listTableView.backgroundColor = UIColor.white
+                   
+                   listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
+                   //listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
+                   listTableView.dataSource = self
+                   listTableView.delegate = self
+                   listTableView.translatesAutoresizingMaskIntoConstraints = false
+                   listTableView.allowsMultipleSelection = true
+                   
+            listTableView.backgroundColor = UIColor.white
+            self.view.addSubview(listTableView)
+            
+            //MARK: tableView constraints
+            NSLayoutConstraint.activate([
+                listTableView.topAnchor.constraint(equalTo: view.topAnchor),
+                listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                ])
+        }
         
-        self.view.addSubview(listTableView)
         
-        //MARK: tableView constraints
-        NSLayoutConstraint.activate([
-            listTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            ])
     }
     
     
@@ -292,16 +316,16 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        
 
-        /*
-        for i in productsGlobal! {
-            if i.List == true {
-                listProducts.append(i)
+        for productsInList in productsGlobal! {
+            if productsInList.List == true {
+                listProducts.append(productsInList)
             }
             //print("for loop is working and there are \(listProducts.count as Any) products")
         }
         print("\(productsGlobal?.count)")
-        */
         
         if tableViewSearchController.isActive && tableViewSearchController.searchBar.text != "" {
             return filteringproducts.count
@@ -324,14 +348,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         //let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
         let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         let Row = indexPath.row
-        
-        
-        //TODO: Custom Selected color
-        /*
-        let selectedView = UIView()
-        selectedView.backgroundColor = .ademGreen
-        productsListViewLayout.selectedBackgroundView = selectedView
- */
         
         //FIXME: Placeholder table view cells
         let lProducts: groceryProductsDatabase
@@ -358,18 +374,19 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             handleProductOptiontwo()
         } else {
             handleListProduct()
-    }
+            
+        }
 
         listTableView.deselectRow(at: indexPath, animated: false)
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return "What are you cooking today"
+        return "This should be a filter option"
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return 25
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -573,6 +590,16 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     //product Button
     @objc func handleSearch() {
 
+        if #available(iOS 13.0, *) {
+            let productScreen = camVC()
+            productScreen.hidesBottomBarWhenPushed = true
+            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+            self.present(productScreen, animated: true, completion: nil)
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        print("Camera button working")
     }
     
     //product Button
@@ -616,5 +643,4 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         self.present(alert, animated: true, completion: nil)
         
     }
-
 }

@@ -22,6 +22,7 @@
 		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
 		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
+		359E325C23D7F8D50049FA75 /* pantryFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E325B23D7F8D50049FA75 /* pantryFilter.swift */; };
 		35C3A35823C58E3500E12747 /* listViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35723C58E3500E12747 /* listViews.swift */; };
 		35C3A35A23C6075400E12747 /* loginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35923C6075400E12747 /* loginViews.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
@@ -117,6 +118,7 @@
 		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
 		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
+		359E325B23D7F8D50049FA75 /* pantryFilter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryFilter.swift; sourceTree = "<group>"; };
 		35C3A35723C58E3500E12747 /* listViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listViews.swift; sourceTree = "<group>"; };
 		35C3A35923C6075400E12747 /* loginViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginViews.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -377,6 +379,7 @@
 				353C123B230CD74B007DF3BB /* pantryProductScreen.swift */,
 				358C2C5423BFBAC10013EE64 /* ProductsView.swift */,
 				35C3A35723C58E3500E12747 /* listViews.swift */,
+				359E325B23D7F8D50049FA75 /* pantryFilter.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -739,6 +742,7 @@
 				35D6485D22ECBDC900015352 /* tabController.swift in Sources */,
 				351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */,
 				35D6487322ECBEB900015352 /* AcctElements.swift in Sources */,
+				359E325C23D7F8D50049FA75 /* pantryFilter.swift in Sources */,
 				357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
 				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,

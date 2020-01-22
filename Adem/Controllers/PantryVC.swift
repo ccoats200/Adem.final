@@ -239,6 +239,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     }
     
     
+    //MARK: CollectionView for Filtering
+    weak var filterCollectionView: UICollectionView!
     
     //MARK: Table View
     var listTableView: UITableView!
@@ -322,6 +324,12 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //let cellRow = indexPath.row
         handleProduct()
+    }
+    func printDate(string: String) {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss.SSSS"
+        print(string + formatter.string(from: date))
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {

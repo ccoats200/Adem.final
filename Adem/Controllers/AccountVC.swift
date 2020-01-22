@@ -54,7 +54,8 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         // [END setup]
         
         //setup all views
-        setUpAgain()
+        //setUpAgain()
+        setUptopViews()
         //setUpViews()
    
     }
@@ -78,6 +79,30 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     }()
     
     
+    func setUptopViews() {
+        self.view.addSubview(accountStuff)
+        self.view.addSubview(segmentContr)
+        
+        accountStuff.translatesAutoresizingMaskIntoConstraints = false
+        segmentContr.translatesAutoresizingMaskIntoConstraints = false
+
+
+        NSLayoutConstraint.activate([
+        
+        accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
+        accountStuff.widthAnchor.constraint(equalTo: view.widthAnchor),
+        accountStuff.heightAnchor.constraint(equalToConstant: 225),
+        accountStuff.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        
+        segmentContr.topAnchor.constraint(equalTo: accountStuff.bottomAnchor, constant: 15),
+        segmentContr.heightAnchor.constraint(equalToConstant: 25),
+        segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+        segmentContr.centerXAnchor.constraint(equalTo: accountStuff.centerXAnchor),
+        
+        ])
+        
+    }
+    
     func setUpAgain() {
         
      //SetUp views from own class
@@ -95,17 +120,15 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         accountTableView.delegate = self
         accountTableView.dataSource = self
         
-        self.view.addSubview(accountStuff)
+        
         self.view.addSubview(friendsAndFamily)
-        self.view.addSubview(segmentContr)
+        
         self.view.addSubview(accountTableView)
         self.view.addSubview(profileCollectionView)
         
         accountTableView.layer.cornerRadius = 5
         
         accountTableView.translatesAutoresizingMaskIntoConstraints = false
-        accountStuff.translatesAutoresizingMaskIntoConstraints = false
-        segmentContr.translatesAutoresizingMaskIntoConstraints = false
         friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
         profileCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -127,23 +150,13 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
      
      NSLayoutConstraint.activate([
         
-        accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
-        accountStuff.widthAnchor.constraint(equalTo: view.widthAnchor),
-        accountStuff.heightAnchor.constraint(equalToConstant: 225),
-        accountStuff.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        
-        segmentContr.topAnchor.constraint(equalTo: accountStuff.bottomAnchor, constant: 15),
-        segmentContr.heightAnchor.constraint(equalToConstant: 25),
-        segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        segmentContr.centerXAnchor.constraint(equalTo: accountStuff.centerXAnchor),
-        
         friendsAndFamily.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
         friendsAndFamily.heightAnchor.constraint(equalToConstant: 100),
         friendsAndFamily.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
         friendsAndFamily.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
         
         accountTableView.topAnchor.constraint(equalTo: friendsAndFamily.bottomAnchor, constant: 15),
-        accountTableView.heightAnchor.constraint(equalToConstant: 100),
+        accountTableView.heightAnchor.constraint(equalToConstant: 250),
         accountTableView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
         accountTableView.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
         
@@ -156,13 +169,8 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         self.collectionView = profileCollectionView
      }
     
-    @objc func switchSegViews() {
+    @objc fileprivate func switchSegViews() {
         
-        switch segmentContr.selectedSegmentIndex {
-        case 0:
-            print("test 0")
-        case 1:
-            
             self.view.addSubview(diet)
             diet.translatesAutoresizingMaskIntoConstraints = false
             
@@ -172,11 +180,6 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
             diet.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             diet.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
         ])
-            
-            print("test 1")
-        default:
-            print("test default")
-        }
     }
     
     @objc func addFriends() {
@@ -192,6 +195,13 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        setUpAgain()
+
+
+        if segmentContr.selectedSegmentIndex == 0 {
+            switchSegViews()
+        }
         
         //Nav bar is see through
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
@@ -247,6 +257,11 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        
+        if segmentContr.selectedSegmentIndex == 1 {
+            switchSegViews()
+        }
     }
     
     @objc func handelLogin() {
