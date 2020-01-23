@@ -15,7 +15,6 @@ import AVFoundation
 
 class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource {
 
-    
     //Cells Selected stuff
     enum Mode {
         case view

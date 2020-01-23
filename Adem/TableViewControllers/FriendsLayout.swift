@@ -188,37 +188,6 @@ class customTableViewCell: UITableViewCell {
         self.addSubview(friendsPicture)
         self.addSubview(friendsTitle)
         
-        /*
-         let friendsStackView = UIStackView(arrangedSubviews: [friendsName, friendsTitle])
-         friendsStackView.contentMode = .scaleAspectFit
-         friendsStackView.translatesAutoresizingMaskIntoConstraints = false
-         friendsStackView.distribution = .fillEqually
-         friendsStackView.layer.masksToBounds = true
-         friendsStackView.clipsToBounds = true
-         friendsStackView.axis = .vertical
-         
-         //self.addSubview(friendsName)
-         self.addSubview(friendsStackView)
-         self.addSubview(friendsPicture)
-         //self.addSubview(friendsTitle)
-         
-         
-         
-         
-         NSLayoutConstraint.activate([
-         
-         friendsPicture.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
-         friendsPicture.topAnchor.constraint(equalTo: self.topAnchor),
-         friendsPicture.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-         friendsPicture.widthAnchor.constraint(equalTo: self.heightAnchor),
-         friendsStackView.leftAnchor.constraint(equalTo: friendsPicture.rightAnchor, constant: 15),
-         friendsStackView.topAnchor.constraint(equalTo: self.topAnchor),
-         friendsStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-         friendsStackView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-         
-         ])
-         */
-        
         NSLayoutConstraint.activate([
             
             friendsPicture.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
