@@ -122,8 +122,8 @@ var productsGlobal: [groceryItemCellContent]? = {
     f.itemName = "Seltzer"
     f.itemImageName = "bread"
     f.Quantity = "1"
-    f.List = false
-    f.Pantry = true
+    f.List = true
+    f.Pantry = false
     
     var g = groceryItemCellContent()
     g.itemName = "Bread"

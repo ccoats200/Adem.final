@@ -121,6 +121,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        //handleSearch()
         setUpListView()
            
         let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
@@ -132,6 +133,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
     }
     
     func countingCollections() {
@@ -156,6 +158,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
 }
 
+    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         //self.searchController.isActive = false
@@ -317,27 +320,18 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        
 
         for productsInList in productsGlobal! {
             if productsInList.List == true {
                 listProducts.append(productsInList)
             }
-            //print("for loop is working and there are \(listProducts.count as Any) products")
         }
-        print("\(productsGlobal?.count)")
         
         if tableViewSearchController.isActive && tableViewSearchController.searchBar.text != "" {
             return filteringproducts.count
         }
-        
-        return allproductsInList.count
-        
-        //FIXME: Placeholder table view cells
-        //return settingsOptions.count
-        
-        //FIXME: Products list
         //return listProducts.count
+        return allproductsInList.count
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -351,10 +345,12 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         
         //FIXME: Placeholder table view cells
         let lProducts: groceryProductsDatabase
+        let lProd: groceryItemCellContents
         if tableViewSearchController.isActive && tableViewSearchController.searchBar.text != "" {
             lProducts = filteringproducts[Row]
         } else  {
             lProducts = allproductsInList[Row]
+            //lProd = productsGlobal?.count
         }
         
         productsListViewLayout.textLabel?.text = lProducts.groceryProductName
@@ -382,11 +378,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
-        return "This should be a filter option"
+        return "This needs to be filter options"
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 25
+        return 40
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {

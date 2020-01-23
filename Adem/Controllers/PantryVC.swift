@@ -240,12 +240,38 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     
     //MARK: CollectionView for Filtering
-    weak var filterCollectionView: UICollectionView!
-    
+    var filterCollectionView: UICollectionView!
+    let cfilter = "test"
     //MARK: Table View
     var listTableView: UITableView!
     //TODO: Does this need to be a weak var?
     func setUpListView() {
+        
+        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        filterCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
+        
+        //filterCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: cfilter)
+        filterCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
+        filterCollectionView.dataSource = self
+        filterCollectionView.delegate = self
+        
+        filterCollectionView.backgroundColor = UIColor.ademBlue
+        filterCollectionView.isUserInteractionEnabled = true
+        filterCollectionView.isScrollEnabled = true
+        filterCollectionView.isPrefetchingEnabled = true
+        
+        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
+        
+        
+        
+        //TODO: Need to understand
+        filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
+        filterCollectionView.showsVerticalScrollIndicator = true
+        
+        //FIXME: Size of cell
+        let cellHeight: CGFloat = 50
+        let cellWidth: CGFloat = 10
+        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
         
         //SetUp views from own class
         //let ss: CGRect = UIScreen.main.bounds
@@ -263,11 +289,18 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         self.view.addSubview(listTableView)
         listTableView.translatesAutoresizingMaskIntoConstraints = false
      
+        self.view.addSubview(filterCollectionView)
+        filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //View contstaints
         
         //TODO: Decide if I remove the other View
         NSLayoutConstraint.activate([
-            listTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            filterCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            filterCollectionView.heightAnchor.constraint(equalToConstant: 100),
+            filterCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filterCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            
+            listTableView.topAnchor.constraint(equalTo: filterCollectionView.bottomAnchor),
             listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -275,7 +308,38 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         //listTableView.isEditing = true
     }
     
+    //MARK: Head and Footer for tableView
   
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        
+        if section == 0 {
+            let test = "This needs to be filter options"
+            return test
+        }
+        return nil
+    }
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 40
+    }
+    
+    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+           footerView.backgroundColor = UIColor.ademBlue
+        
+        //let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
+        
+        //label.text = "Adem is further than it was this morning"
+        //footerView.addSubview(label)
+           return footerView
+    }
+    
+   
+    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteItem = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
             boolValue(true) // pass true if you want the handler to allow the action
@@ -332,20 +396,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         print(string + formatter.string(from: date))
     }
     
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-           footerView.backgroundColor = UIColor.ademBlue
-        
-        //let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
-        
-        //label.text = "Adem is further than it was this morning"
-        //footerView.addSubview(label)
-           return footerView
-    }
-    
-    
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
     
     
@@ -484,7 +536,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! itemCellLayout
-        
+        let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: cfilter, for: indexPath) as! filterCellLayout
+        filterCells.backgroundColor = UIColor.ademRed
         productCell.backgroundColor = UIColor.ademBlue
         
         //        for _ in (productsGlobal)! {
@@ -503,6 +556,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             productsInFilter = (listProducts[indexPath.item])
         }
         return productCell
+        //return filterCells
     }
     
     var groceryProductsSelected: [IndexPath] = []

@@ -27,6 +27,14 @@ class camVC: UIViewController {
         
     }
     
+    
+    override func viewDidAppear(_ animated: Bool) {
+      super.viewDidAppear(animated)
+    
+        captureSession.startRunning()
+        setupCloseButton()
+    }
+    
     private func setupPhotoOutput() {
       capturePhotoOutput = AVCapturePhotoOutput()
       capturePhotoOutput.isHighResolutionCaptureEnabled = true
@@ -68,32 +76,29 @@ class camVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
 
-  override func viewDidAppear(_ animated: Bool) {
-    super.viewDidAppear(animated)
-    captureSession.startRunning()
-    setupCloseButton()
-  }
+  
 
   override func viewWillDisappear(_ animated: Bool) {
     captureSession.stopRunning()
   }
 
-  private func setupCamera() {
-    let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
-    var input: AVCaptureDeviceInput
-    do {
-      input = try AVCaptureDeviceInput(device: captureDevice!)
-    } catch {
-      fatalError("Error configuring capture device: \(error)");
-    }
-    captureSession = AVCaptureSession()
-    captureSession.addInput(input)
+    private func setupCamera() {
+        let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
+        var input: AVCaptureDeviceInput
+        do {
+            input = try AVCaptureDeviceInput(device: captureDevice!)
+            
+        } catch {
+            fatalError("Error configuring capture device: \(error)")
+        }
+        captureSession = AVCaptureSession()
+        captureSession.addInput(input)
 
-    // Setup the preview view.
-    let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-    videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-    videoPreviewLayer.frame = view.layer.bounds
-    view.layer.addSublayer(videoPreviewLayer)
+        // Setup the preview view.
+        let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        videoPreviewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        videoPreviewLayer.frame = view.layer.bounds
+        view.layer.addSublayer(videoPreviewLayer)
     
   }
 }
