@@ -162,6 +162,7 @@ class filterCellLayout: UICollectionViewCell {
         name.textColor = UIColor.white
         name.font = UIFont(name:"HelveticaNeue", size: 15.0)
         name.numberOfLines = 1
+        name.text = "test scroll"
         name.translatesAutoresizingMaskIntoConstraints = false
         return name
     }()
@@ -177,7 +178,7 @@ class filterCellLayout: UICollectionViewCell {
             //Product Name
             productName.topAnchor.constraint(equalTo: self.bottomAnchor),
             productName.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            productName.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5),
+            productName.leadingAnchor.constraint(equalTo: self.leadingAnchor),
             productName.trailingAnchor.constraint(equalTo: self.trailingAnchor,constant: -5),
             productName.heightAnchor.constraint(equalTo: self.heightAnchor),
             

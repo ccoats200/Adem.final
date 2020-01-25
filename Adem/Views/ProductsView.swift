@@ -247,15 +247,13 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         self.layer.cornerRadius = 10
         
         
-        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        let layouts = UICollectionViewFlowLayout()
         let pCollectionView: UICollectionView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
         
         layouts.itemSize = CGSize(width: 120, height: 120)
         //listProductCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
         
-        self.addSubview(pCollectionView)
-        self.addSubview(productDescription)
-        productDescription.translatesAutoresizingMaskIntoConstraints = false
+        
         
         //collectionView
         pCollectionView.dataSource = self
@@ -264,11 +262,16 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         
         pCollectionView.backgroundColor = UIColor.ademGreen
     
-        pCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
         pCollectionView.clipsToBounds = true
         pCollectionView.layer.masksToBounds = true
         pCollectionView.isScrollEnabled = true
     
+        self.addSubview(productDescription)
+        self.addSubview(pCollectionView)
+        
+        pCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        productDescription.translatesAutoresizingMaskIntoConstraints = false
     
     
     let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy, listQuantity])

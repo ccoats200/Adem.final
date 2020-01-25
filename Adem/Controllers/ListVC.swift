@@ -74,6 +74,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         //navigationController?.navigationBar.isTranslucent = false
         //navigationController?.navigationBar.scrollEdgeAppearance
         
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -92,7 +93,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         tableViewSearchController.searchResultsUpdater = self
         tableViewSearchController.obscuresBackgroundDuringPresentation = false
         definesPresentationContext = true
-        navigationItem.searchController = tableViewSearchController
+        //navigationItem.searchController = tableViewSearchController
         tableViewSearchController.searchBar.tintColor = UIColor.white
         tableViewSearchController.searchBar.delegate = self
 
@@ -108,8 +109,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         //self.navigationItem.leftBarButtonItem = editButtonItem
         //self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
         self.navigationItem.rightBarButtonItem = searching
-        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.ademBlue
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
 
+        //self.edgesForExtendedLayout = UIRectEdge.bottom
         
         toolBarSetUp()
         countingCollections()
@@ -131,7 +133,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        self.navigationController?.view.layoutIfNeeded()
+        self.navigationController?.view.setNeedsLayout()
     }
     
     func countingCollections() {
@@ -243,50 +246,40 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             //layouts.scrollDirection = .horizontal
             filterCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
             
+            listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
+            layouts.itemSize = CGSize(width: 120, height: 120)
+            
             filterCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: cellID)
+            listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
+            
+//          MARK: DataSource and Delegate
             filterCollectionView.dataSource = self
             filterCollectionView.delegate = self
+            listTableView.dataSource = self
+            listTableView.delegate = self
             
+//          MARK: Background Color
+            listTableView.backgroundColor = UIColor.white
             filterCollectionView.backgroundColor = UIColor.ademBlue
+            
+//          MARK: User interaction
             filterCollectionView.isUserInteractionEnabled = true
             filterCollectionView.isScrollEnabled = true
             filterCollectionView.isPrefetchingEnabled = true
-            
-            //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
-            
-            //TODO: Need to understand
-            filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
-            
-            //FIXME: Size of cell
-            let cellHeight: CGFloat = 40
-            let cellWidth: CGFloat = 40
-            layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
-            //layouts.scrollDirection = .horizontal
-            
-            
-            //SetUp views from own class
-                   let displayWidth: CGFloat = self.view.frame.width
-                   let displayHeight: CGFloat = self.view.frame.height
-               
-                   listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
-                   listTableView.backgroundColor = UIColor.white
-                   
-                   listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
-                   //self.listTableView.register(listTableViewCells.self, forCellReuseIdentifier: tableViewCell)
-                   //listTableView.register(listTableViewCell.self, forCellReuseIdentifier: tableViewCell)
-                   listTableView.dataSource = self
-                   listTableView.delegate = self
-                   listTableView.translatesAutoresizingMaskIntoConstraints = false
-                   listTableView.allowsMultipleSelection = true
-                   
-            listTableView.backgroundColor = UIColor.white
+            listTableView.allowsMultipleSelection = true
+        
+        
+        
+            //filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
+
+//          MARK: Subviews
             self.view.addSubview(listTableView)
             listTableView.translatesAutoresizingMaskIntoConstraints = false
             
             self.view.addSubview(filterCollectionView)
             filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
             
-            //MARK: tableView constraints
+//            MARK: Constraints
             NSLayoutConstraint.activate([
                 
                 filterCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
@@ -632,6 +625,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
        
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            
+        
            if section == 1 {
                return 40
            }
@@ -640,7 +634,13 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
        }
        
        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-           return nil
+        
+        let view = UIView()
+        view.layer.cornerRadius = 25
+        view.backgroundColor = UIColor.ademGreen
+        
+        
+           return view
        }
     
        
