@@ -127,6 +127,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
         
         
+        
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
     }

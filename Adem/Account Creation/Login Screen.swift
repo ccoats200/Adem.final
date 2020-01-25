@@ -45,8 +45,11 @@ class login: UIViewController, UITextFieldDelegate {
         gradient.endPoint = CGPoint(x: 1, y: 1)
         view.layer.addSublayer(gradient)
         
-        //setupademImageHolder()
-        setuploginFieldView()
+        
+        //MARK: Setting up views
+        setUpSubviews()
+        setUpButtons()
+        setupconstraints()
         
     }
     //Authentication State listner
@@ -62,20 +65,11 @@ class login: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(animated)
         Auth.auth().removeStateDidChangeListener(handle!)
     }
-    
-    
-    func incorrectInformationAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Try again", style: .default, handler: {action in
-        }))
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
+
     @objc func handelLogin()
     {
         //Making sure that credentials are correct
-        guard let email = self.emailTextField.text, !email.isEmpty, let password = self.passwordTextField.text, !password.isEmpty else {
+        guard let email = userInfoCaptureElements.emailTextField.text, !email.isEmpty, let password = userInfoCaptureElements.passwordTextField.text, !password.isEmpty else {
             incorrectInformationAlert(title: "Login Failed", message: "It doesn't work like that...")
             return
         }
@@ -104,9 +98,17 @@ class login: UIViewController, UITextFieldDelegate {
  */
     }
     
+    func incorrectInformationAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Try again", style: .default, handler: {action in
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        emailTextField.resignFirstResponder()
-        passwordTextField.resignFirstResponder()
+        userInfoCaptureElements.emailTextField.resignFirstResponder()
+        userInfoCaptureElements.passwordTextField.resignFirstResponder()
         return true
     }
     
@@ -206,9 +208,7 @@ class login: UIViewController, UITextFieldDelegate {
     }()
     
     
-    
-    func setuploginFieldView() {
-        
+    private func setUpSubviews() {
         view.addSubview(ademImageHolder)
         view.addSubview(userInfoCaptureElements)
         view.addSubview(buttonsUsedToLogIn)
@@ -216,6 +216,9 @@ class login: UIViewController, UITextFieldDelegate {
         userInfoCaptureElements.translatesAutoresizingMaskIntoConstraints = false
         buttonsUsedToLogIn.translatesAutoresizingMaskIntoConstraints = false
         social.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    private func setUpButtons() {
         
         //MARK: Middle Buttons
         buttonsUsedToLogIn.signUpButton.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
@@ -224,12 +227,16 @@ class login: UIViewController, UITextFieldDelegate {
         //MARK: Bottom Buttons
         social.facebookLoginImage.addTarget(self, action: #selector(handelSocialsignUp), for: .touchUpInside)
         social.maybeLaterButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
-        
+     }
+    
+    
+    private func setupconstraints() {
+ 
         
         NSLayoutConstraint.activate([
             
+            ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
             ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
             ademImageHolder.heightAnchor.constraint(equalToConstant: 255),
         
@@ -246,7 +253,7 @@ class login: UIViewController, UITextFieldDelegate {
           
             social.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             social.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-            social.widthAnchor.constraint(equalTo: userInfoCaptureElements.widthAnchor),
+            social.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
             social.heightAnchor.constraint(equalToConstant: 120),
 
         ])

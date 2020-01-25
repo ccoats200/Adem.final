@@ -131,7 +131,7 @@ class loginButtonView: UIView {
     setupView()
   }
   
-    lazy var loginButton: UIButton = {
+    let loginButton: UIButton = {
         let login = UIButton(type: .system)
         login.backgroundColor = UIColor.white
         login.setTitle("Login", for: .normal)
@@ -144,12 +144,12 @@ class loginButtonView: UIView {
         return login
     }()
     
-    lazy var signUpButton: UIButton = {
+    let signUpButton: UIButton = {
         let signUp = UIButton()
-        signUp.setTitle("Sign up", for: .normal)
+        signUp.setTitle("Sign Up", for: .normal)
         signUp.setTitleColor(UIColor.white, for: .normal)
-        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 16)
-        signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 20)
+        signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         signUp.translatesAutoresizingMaskIntoConstraints = false
         return signUp
     }()
@@ -198,42 +198,45 @@ class socialButtonView: UIView {
     setupView()
   }
   
-    lazy var maybeLaterButton: UIButton = {
+    
+    let maybeLaterButton: UIButton = {
         let maybeLater = UIButton(type: .system)
         maybeLater.setTitle("Maybe Later", for: .normal)
-        maybeLater.translatesAutoresizingMaskIntoConstraints = false
         maybeLater.titleLabel?.font = UIFont(name: productFont, size: 12)
         maybeLater.setTitleColor(UIColor.white, for: .normal)
         return maybeLater
     }()
     
-    lazy var facebookLoginImage: UIButton = {
+    let facebookLoginImage: UIButton = {
         let facebookLogin = UIButton(type: .system)
         facebookLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        facebookLogin.translatesAutoresizingMaskIntoConstraints = false
         facebookLogin.layer.cornerRadius = 30
-        facebookLogin.layer.borderWidth = 1
+        facebookLogin.layer.borderWidth = 0.50
         facebookLogin.backgroundColor = UIColor.white
+        facebookLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        facebookLogin.translatesAutoresizingMaskIntoConstraints = false
         return facebookLogin
     }()
     
-    lazy var twitterLoginImage: UIButton = {
+    let twitterLoginImage: UIButton = {
         let twitterLogin = UIButton(type: .system)
         twitterLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        twitterLogin.translatesAutoresizingMaskIntoConstraints = false
         twitterLogin.layer.cornerRadius = 30
-        twitterLogin.layer.borderWidth = 1
+        twitterLogin.layer.borderWidth = 0.50
         twitterLogin.backgroundColor = UIColor.white
+        twitterLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        twitterLogin.translatesAutoresizingMaskIntoConstraints = false
         return twitterLogin
     }()
     
-    lazy var GoogleLoginImage: UIButton = {
+    let GoogleLoginImage: UIButton = {
         let googleLogin = UIButton(type: .system)
         googleLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        googleLogin.translatesAutoresizingMaskIntoConstraints = false
         googleLogin.layer.cornerRadius = 30
-        googleLogin.layer.borderWidth = 1
+        googleLogin.layer.borderWidth = 0.50
         googleLogin.backgroundColor = UIColor.white
+        googleLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        googleLogin.translatesAutoresizingMaskIntoConstraints = false
         return googleLogin
     }()
     
@@ -243,15 +246,13 @@ class socialButtonView: UIView {
     self.layer.masksToBounds = true
     
     self.addSubview(maybeLaterButton)
-    
     maybeLaterButton.translatesAutoresizingMaskIntoConstraints = false
     
     
     let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
     differentSignUpMethodsStackView.contentMode = .scaleAspectFit
-    differentSignUpMethodsStackView.spacing = 5
-    differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
-    differentSignUpMethodsStackView.distribution = .fillEqually
+    //differentSignUpMethodsStackView.spacing = 5
+    differentSignUpMethodsStackView.distribution = .equalSpacing
     
     
     self.addSubview(differentSignUpMethodsStackView)

@@ -13,6 +13,7 @@
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
 		353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C123B230CD74B007DF3BB /* pantryProductScreen.swift */; };
+		354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944123DCBF81003F2B1F /* accountCreationViews.swift */; };
 		357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35ED23A9CFC100223F51 /* continuedInfo.swift */; };
 		357B35F023A9DDEA00223F51 /* camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35EF23A9DDEA00223F51 /* camera.swift */; };
 		357B35F223A9DE7000223F51 /* camController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F123A9DE7000223F51 /* camController.swift */; };
@@ -106,6 +107,7 @@
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
 		353C12392305C20B007DF3BB /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
 		353C123B230CD74B007DF3BB /* pantryProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryProductScreen.swift; sourceTree = "<group>"; };
+		354E944123DCBF81003F2B1F /* accountCreationViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountCreationViews.swift; sourceTree = "<group>"; };
 		357B35ED23A9CFC100223F51 /* continuedInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = continuedInfo.swift; sourceTree = "<group>"; };
 		357B35EF23A9DDEA00223F51 /* camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camera.swift; sourceTree = "<group>"; };
 		357B35F123A9DE7000223F51 /* camController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camController.swift; sourceTree = "<group>"; };
@@ -326,6 +328,7 @@
 				357B35ED23A9CFC100223F51 /* continuedInfo.swift */,
 				358C2C5223BE68920013EE64 /* accountComponents.swift */,
 				35C3A35923C6075400E12747 /* loginViews.swift */,
+				354E944123DCBF81003F2B1F /* accountCreationViews.swift */,
 			);
 			path = "Account Creation";
 			sourceTree = "<group>";
@@ -702,6 +705,7 @@
 				35FDD16A23C4102200A85023 /* listProductinfo.swift in Sources */,
 				35D6487522ECBEC700015352 /* ItemLayout.swift in Sources */,
 				3591FBCF23BADA9100C410CF /* OCR.swift in Sources */,
+				354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */,
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
