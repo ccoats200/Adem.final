@@ -125,18 +125,16 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 //This breaks when you try to go to the next screen from any field other than the confirm field
                 
                 self.accountCreationViews.passwordTextField.resignFirstResponder()
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let moreController = moreInfo()
-                //let listController = tabBar()
                 
-                //listController.resignFirstResponder()
+                let moreController = addedFoodPreference()
                 moreController.resignFirstResponder()
-                //appDelegate.window?.rootViewController = listController
-                appDelegate.window?.rootViewController = moreController
-                appDelegate.window?.makeKeyAndVisible()
+                self.present(moreController, animated: true, completion: nil)
+                
                 print("Brought to next Screen")
             }
         }
+        
+        
         /*
         docRef.setData(dataToSave) { (error) in
             

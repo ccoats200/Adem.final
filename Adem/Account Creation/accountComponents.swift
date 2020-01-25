@@ -10,6 +10,15 @@ import Foundation
 import UIKit
 
 
+ //MARK: ItemCellLayout
+ /*
+//List Delete protocol
+protocol preferencesDelegate: class {
+    func delete(cell: itemCellLayout)
+    func addToList(cell: itemCellLayout)
+}
+*/
+
 //MARK: Continued info view
 class continuedInfo: UIView {
   
@@ -29,27 +38,33 @@ class continuedInfo: UIView {
     let questionPrompt: UILabel = {
         let prompt = UILabel()
         prompt.textColor = UIColor.white
-        prompt.layer.cornerRadius = 5
         prompt.translatesAutoresizingMaskIntoConstraints = false
         
         return prompt
     }()
-    let searchBar: UISearchBar = {
-        let searchBars = UISearchBar()
-        searchBars.searchBarStyle = .minimal
+    let addNowButton: UIButton = {
+        let searchBars = UIButton()
+        searchBars.backgroundColor = UIColor.ademBlue
         searchBars.layer.cornerRadius = 5
+        searchBars.setTitle("Add now!", for: .normal)
+        searchBars.setTitleColor(UIColor.white, for: .normal)
+        searchBars.translatesAutoresizingMaskIntoConstraints = false
         return searchBars
     }()
     
-    let expandButton: UIButton = {
+
+    
+    let addLaterButton: UIButton = {
         let expand = UIButton()
-        expand.backgroundColor = UIColor.blue
+        expand.backgroundColor = UIColor.ademBlue
         expand.layer.cornerRadius = 5
+        expand.setTitle("Maybe Later", for: .normal)
+        expand.setTitleColor(UIColor.white, for: .normal)
         expand.translatesAutoresizingMaskIntoConstraints = false
         return expand
     }()
        
-    let searchInteraction: UIView = {
+    let searchHolderView: UIView = {
         let find = UIView()
         find.backgroundColor = UIColor.white
         find.translatesAutoresizingMaskIntoConstraints = false
@@ -62,37 +77,41 @@ class continuedInfo: UIView {
     //self.backgroundColor = UIColor.white
     
     self.addSubview(questionPrompt)
-    self.addSubview(searchInteraction)
-    searchInteraction.addSubview(searchBar)
-    searchInteraction.addSubview(expandButton)
+    self.addSubview(searchHolderView)
     
-    searchInteraction.translatesAutoresizingMaskIntoConstraints = false
+    searchHolderView.translatesAutoresizingMaskIntoConstraints = false
     questionPrompt.translatesAutoresizingMaskIntoConstraints = false
-    searchBar.translatesAutoresizingMaskIntoConstraints = false
-    searchBar.clipsToBounds = true
+    
+    let ageStackView = UIStackView(arrangedSubviews: [addNowButton, addLaterButton])
+    searchHolderView.addSubview(ageStackView)
+    
+    
+    ageStackView.contentMode = .scaleAspectFit
+    ageStackView.spacing = 15
+    ageStackView.translatesAutoresizingMaskIntoConstraints = false
+    ageStackView.clipsToBounds = true
+    ageStackView.layer.masksToBounds = true
+    ageStackView.distribution = .fillEqually
+    ageStackView.backgroundColor = UIColor.white
     
     NSLayoutConstraint.activate([
         
-    questionPrompt.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
-    questionPrompt.heightAnchor.constraint(equalToConstant: 50),
+    questionPrompt.topAnchor.constraint(equalTo: self.topAnchor),
+    questionPrompt.heightAnchor.constraint(equalToConstant: 25),
     questionPrompt.centerXAnchor.constraint(equalTo: self.centerXAnchor),
     questionPrompt.widthAnchor.constraint(equalTo: self.widthAnchor),
     
-    searchInteraction.topAnchor.constraint(equalTo: questionPrompt.bottomAnchor, constant: 1),
-    searchInteraction.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
-    searchInteraction.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-    searchInteraction.widthAnchor.constraint(equalTo: self.widthAnchor),
+    searchHolderView.topAnchor.constraint(equalTo: questionPrompt.bottomAnchor, constant: 5),
+    searchHolderView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+    searchHolderView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+    searchHolderView.widthAnchor.constraint(equalTo: self.widthAnchor),
     
-    searchBar.topAnchor.constraint(equalTo: searchInteraction.topAnchor, constant: 1),
-    searchBar.bottomAnchor.constraint(equalTo: searchInteraction.bottomAnchor, constant: -1),
-    searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 1),
-    searchBar.widthAnchor.constraint(equalToConstant: 275),
+    ageStackView.centerYAnchor.constraint(equalTo: searchHolderView.centerYAnchor),
+    ageStackView.centerXAnchor.constraint(equalTo: searchHolderView.centerXAnchor),
+    ageStackView.widthAnchor.constraint(equalTo: searchHolderView.widthAnchor, constant: -25),
+    ageStackView.widthAnchor.constraint(equalTo: searchHolderView.widthAnchor, constant: -25),
+    ageStackView.heightAnchor.constraint(equalTo: searchHolderView.heightAnchor, constant: -25),
     
-    expandButton.topAnchor.constraint(equalTo: searchInteraction.topAnchor, constant: 1),
-    expandButton.bottomAnchor.constraint(equalTo: searchInteraction.bottomAnchor, constant: -1),
-    expandButton.leftAnchor.constraint(equalTo: searchBar.rightAnchor),
-    expandButton.rightAnchor.constraint(equalTo: searchInteraction.rightAnchor, constant: -1),
-        
     ])
   }
 }

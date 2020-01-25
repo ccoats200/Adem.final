@@ -50,6 +50,7 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
         //Backgound Color End
         
         setUpSubviews()
+        setUpButtons()
         setuploginFieldView()
         
     }
@@ -126,7 +127,7 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
         createAccount.translatesAutoresizingMaskIntoConstraints = false
         createAccount.layer.cornerRadius = 5
         createAccount.layer.masksToBounds = true
-        createAccount.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
+        createAccount.setTitleColor(UIColor.ademBlue, for: .normal)
         createAccount.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         createAccount.addTarget(self, action: #selector(handleNext), for: .touchUpInside)
         createAccount.resignFirstResponder()
@@ -143,7 +144,7 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
         finishAccountLater.translatesAutoresizingMaskIntoConstraints = false
         finishAccountLater.layer.cornerRadius = 5
         finishAccountLater.layer.masksToBounds = true
-        finishAccountLater.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
+        finishAccountLater.setTitleColor(UIColor.ademBlue, for: .normal)
         finishAccountLater.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
         //TODO: swap selector
         finishAccountLater.addTarget(self, action: #selector(finishLaterButton), for: .touchUpInside)
@@ -172,9 +173,9 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
     
     
     //MARK: Searchview
-    var searchView = continuedInfo()
-    var dietField = continuedInfo()
-    var ageQQ = ageInfoView()
+    var preferenceView = continuedInfo()
+    var dietView = continuedInfo()
+    var ageView = ageInfoView()
     
     
     private func setUpSubviews() {
@@ -184,24 +185,46 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
         view.addSubview(ademImageHolder)
         scrollView.addSubview(nextButton)
         scrollView.addSubview(laterButton)
-        scrollView.addSubview(searchView)
-        scrollView.addSubview(dietField)
-        scrollView.addSubview(ageQQ)
+        scrollView.addSubview(preferenceView)
+        scrollView.addSubview(dietView)
+        scrollView.addSubview(ageView)
         
         
-        searchView.questionPrompt.text = "What do you like?"
-        searchView.searchBar.placeholder = "Favorite foods"
-        searchView.layer.cornerRadius = 5
-        dietField.searchBar.placeholder = "Allergies?"
-        dietField.questionPrompt.text = "Have any allergies?"
-        dietField.layer.cornerRadius = 5
+        preferenceView.questionPrompt.text = "What do you like?"
+        preferenceView.layer.cornerRadius = 5
+        dietView.questionPrompt.text = "Have any allergies?"
+        dietView.layer.cornerRadius = 5
         
-        ageQQ.translatesAutoresizingMaskIntoConstraints = false
-        searchView.translatesAutoresizingMaskIntoConstraints = false
-        dietField.translatesAutoresizingMaskIntoConstraints = false
+        ageView.translatesAutoresizingMaskIntoConstraints = false
+        preferenceView.translatesAutoresizingMaskIntoConstraints = false
+        dietView.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    func setuploginFieldView() {
+    @objc func tryAgain() {
+        let alert = addedFoodPreference()
+        //alert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    @objc func changeColor() {
+        
+        if preferenceView.addLaterButton.backgroundColor == UIColor.ademBlue {
+            preferenceView.addLaterButton.backgroundColor = UIColor.ademGreen
+        } else if preferenceView.addLaterButton.backgroundColor == UIColor.ademGreen {
+            preferenceView.addLaterButton.backgroundColor = UIColor.ademBlue
+        }
+        
+        print("changed color")
+    }
+    
+    private func setUpButtons() {
+        preferenceView.addNowButton.addTarget(self, action: #selector(tryAgain), for: .touchUpInside)
+        preferenceView.addLaterButton.addTarget(self, action: #selector(changeColor), for: .touchUpInside)
+
+        
+    }
+    
+    private func setuploginFieldView() {
        
         NSLayoutConstraint.activate([
             
@@ -216,24 +239,24 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
         scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         
         //First name separator
-        searchView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-        searchView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-        searchView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
-        searchView.heightAnchor.constraint(equalToConstant: 100),
+            preferenceView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 20),
+            preferenceView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            preferenceView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
+            preferenceView.heightAnchor.constraint(equalToConstant: 100),
             
         //Name separator
-        dietField.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-        dietField.topAnchor.constraint(equalTo: searchView.bottomAnchor),
-        dietField.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
-        dietField.heightAnchor.constraint(equalToConstant: 100),
+            dietView.topAnchor.constraint(equalTo: preferenceView.bottomAnchor, constant: 20),
+            dietView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            dietView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
+            dietView.heightAnchor.constraint(equalToConstant: 100),
         
         //Password separator
-        ageQQ.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-        ageQQ.topAnchor.constraint(equalTo: dietField.bottomAnchor, constant: 5),
-        ageQQ.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
-        ageQQ.heightAnchor.constraint(equalToConstant: 100),
+            ageView.topAnchor.constraint(equalTo: dietView.bottomAnchor, constant: 20),
+            ageView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+            ageView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
+            ageView.heightAnchor.constraint(equalToConstant: 100),
         
-        nextButton.topAnchor.constraint(equalTo: ageQQ.bottomAnchor, constant: 50),
+        nextButton.topAnchor.constraint(equalTo: ageView.bottomAnchor, constant: 50),
         nextButton.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
         nextButton.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
         nextButton.heightAnchor.constraint(equalToConstant: 50),

@@ -14,6 +14,7 @@
 		353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12392305C20B007DF3BB /* ItemCellLayout.swift */; };
 		353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C123B230CD74B007DF3BB /* pantryProductScreen.swift */; };
 		354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944123DCBF81003F2B1F /* accountCreationViews.swift */; };
+		354E944623DCEE30003F2B1F /* customPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944523DCEE30003F2B1F /* customPreferences.swift */; };
 		357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35ED23A9CFC100223F51 /* continuedInfo.swift */; };
 		357B35F023A9DDEA00223F51 /* camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35EF23A9DDEA00223F51 /* camera.swift */; };
 		357B35F223A9DE7000223F51 /* camController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F123A9DE7000223F51 /* camController.swift */; };
@@ -108,6 +109,7 @@
 		353C12392305C20B007DF3BB /* ItemCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCellLayout.swift; sourceTree = "<group>"; };
 		353C123B230CD74B007DF3BB /* pantryProductScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryProductScreen.swift; sourceTree = "<group>"; };
 		354E944123DCBF81003F2B1F /* accountCreationViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountCreationViews.swift; sourceTree = "<group>"; };
+		354E944523DCEE30003F2B1F /* customPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customPreferences.swift; sourceTree = "<group>"; };
 		357B35ED23A9CFC100223F51 /* continuedInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = continuedInfo.swift; sourceTree = "<group>"; };
 		357B35EF23A9DDEA00223F51 /* camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camera.swift; sourceTree = "<group>"; };
 		357B35F123A9DE7000223F51 /* camController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camController.swift; sourceTree = "<group>"; };
@@ -329,6 +331,7 @@
 				358C2C5223BE68920013EE64 /* accountComponents.swift */,
 				35C3A35923C6075400E12747 /* loginViews.swift */,
 				354E944123DCBF81003F2B1F /* accountCreationViews.swift */,
+				354E944523DCEE30003F2B1F /* customPreferences.swift */,
 			);
 			path = "Account Creation";
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 				357B35F223A9DE7000223F51 /* camController.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
 				353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */,
+				354E944623DCEE30003F2B1F /* customPreferences.swift in Sources */,
 				351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */,
 				35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
