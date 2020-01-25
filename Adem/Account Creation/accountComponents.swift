@@ -10,81 +10,6 @@ import Foundation
 import UIKit
 
 
-class searchView: UIView {
-    
-        override init(frame: CGRect){
-            super.init(frame: frame)
-            setUpAddDismiss()
-        }
-        
-        
-        lazy var deleteItemFromPantryButton: UIButton = {
-            let login = UIButton(type: .system)
-            login.backgroundColor = UIColor.ademBlue
-            login.setTitle("Delete", for: .normal)
-            login.translatesAutoresizingMaskIntoConstraints = false
-            login.layer.masksToBounds = true
-            login.clipsToBounds = true
-            login.setTitleColor(UIColor.black, for: .normal)
-            login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-            login.addTarget(self, action: #selector(deleteProductFromPantry), for: .touchUpInside)
-            login.frame = CGRect(x: 0, y: 0, width: 50, height: 50)
-            return login
-            
-        }()
-        
-        
-        @objc func deleteProductFromPantry() {
-
-            print("User clicked delete button")
-        }
-
-        lazy var addProductToListButton: UIButton = {
-            let add = UIButton(type: .system)
-            add.backgroundColor = UIColor.ademBlue
-            add.setTitle("Add", for: .normal)
-            add.translatesAutoresizingMaskIntoConstraints = false
-            add.layer.masksToBounds = true
-            add.clipsToBounds = true
-            add.setTitleColor(UIColor.black, for: .normal)
-            add.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-            add.addTarget(self, action: #selector(addProductToListFromPantry), for: .touchUpInside)
-            
-            return add
-            
-        }()
-        
-        @objc func addProductToListFromPantry() {
-            
-            print("User clicked add items button. User moved products from their pantry to their list.")
-        }
-        
-        func setUpAddDismiss() {
-            
-            let alertStackView = UIStackView(arrangedSubviews: [addProductToListButton, deleteItemFromPantryButton])
-            alertStackView.contentMode = .scaleAspectFit
-            alertStackView.translatesAutoresizingMaskIntoConstraints = false
-            alertStackView.distribution = .fillEqually
-            alertStackView.layer.masksToBounds = true
-            alertStackView.clipsToBounds = true
-            
-            self.addSubview(alertStackView)
-            
-            alertStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
-            alertStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
-            alertStackView.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
-            alertStackView.heightAnchor.constraint(equalToConstant: 75).isActive = true
-        }
-        
-        override func updateConstraints() {
-            super.updateConstraints()
-        }
-        
-        required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
-        }
-}
-
 //MARK: Continued info view
 class continuedInfo: UIView {
   
@@ -100,6 +25,15 @@ class continuedInfo: UIView {
     setupView()
   }
   
+    //Email Section
+    let questionPrompt: UILabel = {
+        let prompt = UILabel()
+        prompt.textColor = UIColor.white
+        prompt.layer.cornerRadius = 5
+        prompt.translatesAutoresizingMaskIntoConstraints = false
+        
+        return prompt
+    }()
     let searchBar: UISearchBar = {
         let searchBars = UISearchBar()
         searchBars.searchBarStyle = .minimal
@@ -115,28 +49,158 @@ class continuedInfo: UIView {
         return expand
     }()
        
+    let searchInteraction: UIView = {
+        let find = UIView()
+        find.backgroundColor = UIColor.white
+        find.translatesAutoresizingMaskIntoConstraints = false
+        find.layer.cornerRadius = 5
+        find.layer.masksToBounds = true
+        return find
+    }()
   //common func to init our view
   private func setupView() {
-    self.backgroundColor = UIColor.white
-    self.addSubview(searchBar)
-    self.addSubview(expandButton)
+    //self.backgroundColor = UIColor.white
+    
+    self.addSubview(questionPrompt)
+    self.addSubview(searchInteraction)
+    searchInteraction.addSubview(searchBar)
+    searchInteraction.addSubview(expandButton)
+    
+    searchInteraction.translatesAutoresizingMaskIntoConstraints = false
+    questionPrompt.translatesAutoresizingMaskIntoConstraints = false
     searchBar.translatesAutoresizingMaskIntoConstraints = false
     searchBar.clipsToBounds = true
     
     NSLayoutConstraint.activate([
-    searchBar.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+        
+    questionPrompt.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
+    questionPrompt.heightAnchor.constraint(equalToConstant: 50),
+    questionPrompt.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+    questionPrompt.widthAnchor.constraint(equalTo: self.widthAnchor),
+    
+    searchInteraction.topAnchor.constraint(equalTo: questionPrompt.bottomAnchor, constant: 1),
+    searchInteraction.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+    searchInteraction.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+    searchInteraction.widthAnchor.constraint(equalTo: self.widthAnchor),
+    
+    searchBar.topAnchor.constraint(equalTo: searchInteraction.topAnchor, constant: 1),
+    searchBar.bottomAnchor.constraint(equalTo: searchInteraction.bottomAnchor, constant: -1),
     searchBar.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 1),
     searchBar.widthAnchor.constraint(equalToConstant: 275),
-    searchBar.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
     
-    expandButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+    expandButton.topAnchor.constraint(equalTo: searchInteraction.topAnchor, constant: 1),
+    expandButton.bottomAnchor.constraint(equalTo: searchInteraction.bottomAnchor, constant: -1),
     expandButton.leftAnchor.constraint(equalTo: searchBar.rightAnchor),
-    expandButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -1),
-    expandButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 1),
+    expandButton.rightAnchor.constraint(equalTo: searchInteraction.rightAnchor, constant: -1),
         
     ])
   }
 }
 
 
+//MARK: Continued info view
+class ageInfoView: UIView {
+  
+    //initWithFrame to init view from code
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    setupView()
+  }
+  
+  //initWithCode to init view from xib or storyboard
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    setupView()
+  }
+    
+    //Password Section
+       let ageQ: UILabel = {
+           let ageEntry = UILabel()
+           ageEntry.text = "Are you 21?"
+           ageEntry.translatesAutoresizingMaskIntoConstraints = false
+           ageEntry.tag = 3
+           ageEntry.textColor = UIColor.white
+           
+           return ageEntry
+       }()
+    
+  
+    let ageDay: UITextField = {
+        let day = UITextField()
+        day.attributedPlaceholder = NSAttributedString(string: "DD", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        day.textColor = UIColor.black
+        day.backgroundColor = UIColor.white
+        day.textAlignment = .center
+        day.layer.cornerRadius = 5
+        day.keyboardType = .numberPad
+        day.returnKeyType = .continue
+        day.tag = 0
+        day.translatesAutoresizingMaskIntoConstraints = false
+        
+        return day
+    }()
+    
+    let ageMonth: UITextField = {
+        let month = UITextField()
+        month.attributedPlaceholder = NSAttributedString(string: "MM", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        month.textColor = UIColor.black
+        month.backgroundColor = UIColor.white
+        month.textAlignment = .center
+        month.layer.cornerRadius = 5
+        month.keyboardType = .numberPad
+        month.tag = 1
+        month.translatesAutoresizingMaskIntoConstraints = false
+        return month
+    }()
+    
+    let ageYear: UITextField = {
+        let year = UITextField()
+        year.attributedPlaceholder = NSAttributedString(string: "YYYY", attributes: [NSAttributedString.Key.foregroundColor: UIColor.gray])
+        year.textColor = UIColor.black
+        year.backgroundColor = UIColor.white
+        year.textAlignment = .center
+        year.keyboardType = .numberPad
+        year.returnKeyType = .continue
+        year.layer.cornerRadius = 5
+                
+        year.translatesAutoresizingMaskIntoConstraints = false
+        
+        return year
+    }()
+    
+   
+    
+    
+  //common func to init our view
+  private func setupView() {
+    
+    self.addSubview(ageQ)
 
+    let ageStackView = UIStackView(arrangedSubviews: [ageDay, ageMonth, ageYear])
+    self.addSubview(ageStackView)
+    
+    
+    ageStackView.contentMode = .scaleAspectFit
+    ageStackView.spacing = 5
+    ageStackView.translatesAutoresizingMaskIntoConstraints = false
+    ageStackView.clipsToBounds = true
+    ageStackView.layer.masksToBounds = true
+    ageStackView.distribution = .fillEqually
+    ageStackView.backgroundColor = UIColor.white
+    
+    
+    NSLayoutConstraint.activate([
+        
+        //Password text
+        ageQ.leftAnchor.constraint(equalTo: self.leftAnchor),
+        ageQ.topAnchor.constraint(equalTo: self.topAnchor),
+        ageQ.widthAnchor.constraint(equalTo: self.widthAnchor),
+        ageQ.heightAnchor.constraint(equalToConstant: 20),
+        
+        ageStackView.topAnchor.constraint(equalTo: ageQ.bottomAnchor, constant: 12),
+        ageStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        ageStackView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        ageStackView.widthAnchor.constraint(equalTo: self.widthAnchor),
+    ])
+  }
+}
