@@ -582,21 +582,25 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let Row = indexPath.row
+        
         //let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
         let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
-        let Row = indexPath.row
+        
         
         //FIXME: Placeholder table view cells
         let lProducts: groceryProductsDatabase
         let lProd: groceryItemCellContents
+        
         if tableViewSearchController.isActive && tableViewSearchController.searchBar.text != "" {
             lProducts = filteringproducts[Row]
         } else  {
             lProducts = allproductsInList[Row]
-            //lProd = productsGlobal?.count
         }
         
+        //productsListViewLayout.textLabel?.text = fuckthis[Row]
         productsListViewLayout.textLabel?.text = lProducts.groceryProductName
+        //productViews().productNameAndBackButton.setTitle(fuckthis[Row], for: .normal)
         
         //FIXME: Products list
         //productsListViewLayout.textLabel!.text = listProducts[indexPath.row]
@@ -609,7 +613,10 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-           if indexPath.row == 0 {
+       
+
+        
+        if indexPath.row == 0 {
                handleProductOptiontwo()
            } else {
                handleListProduct()

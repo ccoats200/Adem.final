@@ -27,7 +27,11 @@ var allproductsInList = [
     groceryProductsDatabase(groceryProductName: "Chicken"),
     groceryProductsDatabase(groceryProductName: "Kale"),
     groceryProductsDatabase(groceryProductName: "Kraft Mac and cheese"),
-    groceryProductsDatabase(groceryProductName: "Milk")
+    groceryProductsDatabase(groceryProductName: "Milk"),
+    groceryProductsDatabase(groceryProductName: "Fuck")
+]
+var fuckthis = [
+    "fuck", "Eggs", "Bacon", "Waffels","Chicken","Kale","Kraft Mac and cheese","Milk","Fuck"
 ]
 
 

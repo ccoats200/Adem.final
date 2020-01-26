@@ -12,6 +12,9 @@ import Firebase
 import FirebaseFirestore
 
 
+
+//MARK: Might Delete... Probably Delete
+
 class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
     
     // Add a new document with a generated ID

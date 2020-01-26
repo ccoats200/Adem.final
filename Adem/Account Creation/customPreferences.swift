@@ -20,12 +20,15 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         let adtest = "privacy"
         let cellHeight = 60
 
-        
+        var preferencesTableView: UITableView!
+    
         override func viewDidLoad() {
             super.viewDidLoad()
             
             view.backgroundColor = UIColor.white
             setuploginFieldView()
+            
+            preferencesTableView.allowsMultipleSelection = true
         }
     
     let progressView: UIView = {
@@ -127,7 +130,7 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
     }
     
     
-    var preferencesTableView: UITableView!
+    
     
     private func setuploginFieldView() {
         

@@ -108,8 +108,9 @@ class listProductVCLayout: UIViewController {
         pInfo.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         infoView.nutritionDetails.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
         
-        pInfo.productNameAndBackButton.setTitle("reads", for: .normal)
-        
+        //pInfo.productNameAndBackButton.setTitle("reads", for: .normal)
+        //pInfo.productNameAndBackButton.setTitle(, for: .normal)
+
     }
     
     func setupProductLayoutContstraints() {
