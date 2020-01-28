@@ -1,38 +1,15 @@
 //
-//  customPreferences.swift
+//  dietPreferences.swift
 //  Adem
 //
-//  Created by Coleman Coats on 1/25/20.
+//  Created by Coleman Coats on 1/27/20.
 //  Copyright © 2020 Coleman Coats. All rights reserved.
 //
 
 import Foundation
 import UIKit
 
-
-struct MyStruct {
-    var myStructsIntProperty: Float = 0.25
-
-    mutating func myNotVeryThoughtThroughInoutFunction ( myInt: inout Float) {
-        myStructsIntProperty += 0.25
-        /* What happens here? 'myInt' inout parameter is passed to this
-           function by argument 'myStructsIntProperty' from _this_ instance
-           of the MyStruct structure. Hence, we're trying to increase the
-           value of the inout argument. Since the swift docs describe inout
-           as a "call by reference" type as well as a "copy-in-copy-out"
-           method, this behaviour is somewhat undefined (at least avoidable).
-
-           After the function has been called: will the value of
-           myStructsIntProperty have been increased by 1 or 2? (answer: 1) */
-        myInt += 0.25
-    }
-
-    func myInoutFunction ( myInt: inout Float) {
-        myInt += 0.25
-    }
-}
-
-class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class addedDietPreference: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         var data = [friendsListInfo]()
         var refreshControl = UIRefreshControl()
@@ -106,33 +83,19 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         return nextPage
         
     }()
-    
-    var firstPage = 0
-    var prog = 0.25
-    var incr = MyStruct()
-    
        @objc func handelNext() {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let skipAccountCreation = tabBar()
+        appDelegate.window?.rootViewController = skipAccountCreation
         
-        firstPage+=1
-        preferencesTableView.reloadData()
-        topView.pBar.setProgress(incr.myStructsIntProperty, animated: true)
-        //preferencesTableView.deselectRow(at: , animated: true)
-        print(incr.myStructsIntProperty)
-        
-        print(firstPage)
     }
-    
+        
         func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
     
     let tasteProfile = ["Salty","Sweet","Spicy","Biter","Fruity"]
-    let dietPreferences = ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None"]
-    let storePreferences = ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None"]
         
-    @objc func handleTap() {
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             
             return tasteProfile.count
@@ -154,18 +117,7 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         pref.tintColor = UIColor.ademGreen
         pref.clipsToBounds = true
         pref.textLabel?.textAlignment = .center
-        
-        //needs a guard let statment to protect against screen switching without the data reloading
-        switch firstPage {
-        case 0:
-            pref.textLabel!.text = tasteProfile[indexPath.row]
-        case 1:
-            pref.textLabel!.text = dietPreferences[indexPath.row]
-        case 2:
-            pref.textLabel!.text = storePreferences[indexPath.row]
-        default:
-            pref.textLabel!.text = tasteProfile[indexPath.row]
-        }
+        pref.textLabel!.text = tasteProfile[indexPath.row]
 
         return pref
     }
@@ -173,27 +125,21 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         
     }
     
-    
-    //var selectedFoodPreferencesCells = [IndexPath]()
     var selectedFoodPreferencesCells = [String]()
-    //var selectedFoodCells = [UITableViewCell]()
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 
         let currentCell = preferencesTableView.cellForRow(at: indexPath)
         currentCell?.selectionStyle = .none
         
-        //TODO: When the cells reload deselect the cells
         currentCell?.accessoryType = .checkmark
         //for taste in tasteProfile {
           //  if taste
         //}
         //selectedFoodPreferencesCells.append(currentCell?.textLabel!.text! ?? "empty")
         selectedFoodPreferencesCells.insert(currentCell?.textLabel!.text! ?? "empty", at: 0)
-        //selectedFoodPreferencesCells.insert(currentCell?[indexPath.row], at: 0)
 
-        //print(currentCell?.textLabel!.text)
-        print(selectedFoodPreferencesCells)
+        print(currentCell?.textLabel!.text)
         //preferencesTableView.deselectRow(at: indexPath, animated: false)
     }
     
@@ -203,20 +149,12 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         
         preferencesTableView.cellForRow(at: indexPath)?.accessoryType = .none
         selectedFoodPreferencesCells.remove(at: 0)
-     /*
-        for cell in selectedFoodPreferencesCells {
-            if firstPage != 0 {
-                cell.
-            }
-        }
- */
+        
         /*
         if let indexValue = selectedFoodPreferencesCells.index(of: "\(currentCell?.textLabel!.text)") {
             selectedFoodPreferencesCells.remove(at: indexValue)
         }
 */
-        
-        print(selectedFoodPreferencesCells)
     }
 
     
@@ -298,4 +236,5 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         ])
     }
 }
+
 

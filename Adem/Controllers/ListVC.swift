@@ -296,39 +296,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         }
     }
     
-    
-    //MARK: Swipe actions
-    func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
-        //If the product in not in the list and they are searching they can swipe to the left to add it to their list
-      // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
-        let checkedAsInBasket = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
-            boolValue(true) // pass true if you want the handler to allow the action
-            print("User has added the product to their basket in the store")
-        }
-        
-        let addToPantry = UIContextualAction(style: .normal, title: "Pantry") { (contextualAction, view, boolValue) in
-            boolValue(true) // pass true if you want the handler to allow the action
-            print("User is adding the product back to their pantry")
-        }
-        addToPantry.backgroundColor = UIColor.ademGreen
-        checkedAsInBasket.backgroundColor = UIColor.ademBlue
-        
-        let swipeActions = UISwipeActionsConfiguration(actions: [checkedAsInBasket])
-
-        return swipeActions
-    }
-    
-    
-    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        
-        let deleteItemFromListAndPanty = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
-            boolValue(true) // pass true if you want the handler to allow the action
-        }
-        deleteItemFromListAndPanty.backgroundColor = UIColor.ademRed
-        let swipeActions = UISwipeActionsConfiguration(actions: [deleteItemFromListAndPanty])
-        return swipeActions
-    }
-
+   
     var listProducts: [groceryItemCellContent] =  []
     
     //MARK: Table view cell properties - End
@@ -571,6 +539,46 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
         return allproductsInList.count
     }
     
+    //FIXME: Delete Cell
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+           if editingStyle == UITableViewCell.EditingStyle.delete {
+               fuckthis.remove(at: indexPath.row)
+            listTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+           }
+       }
+       
+       //MARK: Swipe actions
+       func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
+           //If the product in not in the list and they are searching they can swipe to the left to add it to their list
+         // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
+           let checkedAsInBasket = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
+               boolValue(true) // pass true if you want the handler to allow the action
+               print("User has added the product to their basket in the store")
+           }
+           
+           let addToPantry = UIContextualAction(style: .normal, title: "Pantry") { (contextualAction, view, boolValue) in
+               boolValue(true) // pass true if you want the handler to allow the action
+               print("User is adding the product back to their pantry")
+           }
+           addToPantry.backgroundColor = UIColor.ademGreen
+           checkedAsInBasket.backgroundColor = UIColor.ademBlue
+           
+           let swipeActions = UISwipeActionsConfiguration(actions: [checkedAsInBasket])
+
+           return swipeActions
+       }
+       
+       
+       func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+           
+           let deleteItemFromListAndPanty = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
+               boolValue(true) // pass true if you want the handler to allow the action
+           }
+           deleteItemFromListAndPanty.backgroundColor = UIColor.ademRed
+           let swipeActions = UISwipeActionsConfiguration(actions: [deleteItemFromListAndPanty])
+           return swipeActions
+       }
+
     func numberOfSections(in tableView: UITableView) -> Int {
         let swippedToInCart = false
         
