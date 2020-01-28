@@ -10,6 +10,27 @@ import Foundation
 import UIKit
 
 
+struct MyStruct {
+    var myStructsIntProperty: Float = 0.25
+
+    mutating func myNotVeryThoughtThroughInoutFunction ( myInt: inout Float) {
+        myStructsIntProperty += 0.25
+        /* What happens here? 'myInt' inout parameter is passed to this
+           function by argument 'myStructsIntProperty' from _this_ instance
+           of the MyStruct structure. Hence, we're trying to increase the
+           value of the inout argument. Since the swift docs describe inout
+           as a "call by reference" type as well as a "copy-in-copy-out"
+           method, this behaviour is somewhat undefined (at least avoidable).
+
+           After the function has been called: will the value of
+           myStructsIntProperty have been increased by 1 or 2? (answer: 1) */
+        myInt += 0.25
+    }
+
+    func myInoutFunction ( myInt: inout Float) {
+        myInt += 0.25
+    }
+}
 
 class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
@@ -27,7 +48,10 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
             
             view.backgroundColor = UIColor.white
             setuploginFieldView()
-            
+           
+            preferencesTableView.separatorStyle = .none
+            //preferencesTableView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+            //preferencesTableView.separatorInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
             preferencesTableView.allowsMultipleSelection = true
         }
     
@@ -38,6 +62,7 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         return progress
     }()
     
+ 
     let nextView: UIView = {
         let next = UIView()
         next.backgroundColor = UIColor.ademBlue
@@ -81,36 +106,106 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         return nextPage
         
     }()
+    
+    var firstPage = 0
+    var prog = 0.25
+    var incr = MyStruct()
+    
        @objc func handelNext() {
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let skipAccountCreation = tabBar()
-        appDelegate.window?.rootViewController = skipAccountCreation
         
+        firstPage+=1
+        preferencesTableView.reloadData()
+        topView.pBar.setProgress(incr.myStructsIntProperty, animated: true)
+        print(incr.myStructsIntProperty)
+        
+        print(firstPage)
     }
-        
+    
         func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
     
-    let testee = ["test","please"]
+    let tasteProfile = ["Salty","Sweet","Spicy","Biter","Fruity"]
+    let dietPreferences = ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None"]
+    let storePreferences = ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None"]
         
+    @objc func handleTap() {
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
             
-            return testee.count
+            return tasteProfile.count
         }
-        
     
         
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let pref = tableView.dequeueReusableCell(withIdentifier: self.adtest, for: indexPath)
+        pref.layer.cornerRadius = 10
+        //pref.layer.borderWidth = 1
+        //pref.layer.borderColor = UIColor.ademBlue.cgColor
+        //pref.layoutMargins = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
+        pref.layoutMargins = UIEdgeInsets.zero
+        pref.contentView.layoutMargins.top = 20
+        pref.contentView.layoutMargins.bottom = 20
         
-
-        pref.textLabel!.text = testee[indexPath.row]
-
+        //Change the checkmark color
+        pref.tintColor = UIColor.ademGreen
+        pref.clipsToBounds = true
+        pref.textLabel?.textAlignment = .center
         
+        //needs a guard let statment to protect against screen switching without the data reloading
+        switch firstPage {
+        case 0:
+            pref.textLabel!.text = tasteProfile[indexPath.row]
+        case 1:
+            pref.textLabel!.text = dietPreferences[indexPath.row]
+        case 2:
+            pref.textLabel!.text = storePreferences[indexPath.row]
+        default:
+            pref.textLabel!.text = tasteProfile[indexPath.row]
+        }
+
         return pref
     }
+    func testededed() {
+        
+    }
+    
+    var selectedFoodPreferencesCells = [String]()
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        let currentCell = preferencesTableView.cellForRow(at: indexPath)
+        currentCell?.selectionStyle = .none
+        
+        
+        //TODO: When the cells reload deselect the cells
+        currentCell?.accessoryType = .checkmark
+        //for taste in tasteProfile {
+          //  if taste
+        //}
+        //selectedFoodPreferencesCells.append(currentCell?.textLabel!.text! ?? "empty")
+        selectedFoodPreferencesCells.insert(currentCell?.textLabel!.text! ?? "empty", at: 0)
+
+        print(currentCell?.textLabel!.text)
+        //preferencesTableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        
+        let currentCell = preferencesTableView.cellForRow(at: indexPath)
+        
+        preferencesTableView.cellForRow(at: indexPath)?.accessoryType = .none
+        selectedFoodPreferencesCells.remove(at: 0)
+        
+        /*
+        if let indexValue = selectedFoodPreferencesCells.index(of: "\(currentCell?.textLabel!.text)") {
+            selectedFoodPreferencesCells.remove(at: indexValue)
+        }
+*/
+    }
+
     
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1
@@ -129,9 +224,7 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         return CGFloat(cellHeight)
     }
     
-    
-    
-    
+    var topView = preferenceProgressViews()
     private func setuploginFieldView() {
         
         preferencesTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
@@ -141,28 +234,30 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         preferencesTableView.dataSource = self
         preferencesTableView.delegate = self
         
-        view.addSubview(progressView)
+           
+        view.addSubview(topView)
         view.addSubview(welcomeLabel)
         view.addSubview(preferencesTableView)
         view.addSubview(textFieldSeparator)
         view.addSubview(nextView)
         nextView.addSubview(doneButton)
 
+        topView.translatesAutoresizingMaskIntoConstraints = false
         nextView.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
-        progressView.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesTableView.translatesAutoresizingMaskIntoConstraints = false
         
            NSLayoutConstraint.activate([
             
-            progressView.topAnchor.constraint(equalTo: view.topAnchor),
-            progressView.heightAnchor.constraint(equalToConstant: 50),
-            progressView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            progressView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topView.topAnchor.constraint(equalTo: view.topAnchor),
+            topView.heightAnchor.constraint(equalToConstant: 50),
+            topView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            topView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
             
-            welcomeLabel.topAnchor.constraint(equalTo: progressView.bottomAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: topView.bottomAnchor),
             welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),

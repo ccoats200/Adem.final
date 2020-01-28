@@ -275,3 +275,89 @@ class socialButtonView: UIView {
   }
 }
 
+
+//MARK: Login button view
+class preferenceProgressViews: UIView {
+  
+    //initWithFrame to init view from code
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  
+    setupView()
+  }
+  
+  //initWithCode to init view from xib or storyboard
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    setupView()
+  }
+  
+    let closePreferencesButton: UIButton = {
+        let login = UIButton(type: .system)
+        //login.backgroundColor = UIColor.ademBlue
+        login.setTitle("X", for: .normal)
+        login.translatesAutoresizingMaskIntoConstraints = false
+        //login.titleLabel?.font = UIFont(name: productFont, size: 20)
+        login.layer.cornerRadius = 5
+        login.layer.masksToBounds = true
+        login.setTitleColor(UIColor.white, for: .normal)
+        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        return login
+    }()
+    
+    let pBar: UIProgressView = {
+        let progressViewBar = UIProgressView(progressViewStyle: .default)
+        progressViewBar.setProgress(0.25, animated: true)
+        progressViewBar.trackTintColor = UIColor.ademGreen
+        progressViewBar.tintColor = UIColor.white
+        
+        
+        return progressViewBar
+    }()
+    
+    let ademImageButton: UIButton = {
+        let signUp = UIButton()
+        signUp.setTitle("->", for: .normal)
+        signUp.setTitleColor(UIColor.white, for: .normal)
+        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 20)
+        signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        signUp.translatesAutoresizingMaskIntoConstraints = false
+        return signUp
+    }()
+       
+  //common func to init our view
+  private func setupView() {
+
+    
+    self.layer.masksToBounds = true
+    self.backgroundColor = UIColor.ademBlue
+    
+    self.addSubview(closePreferencesButton)
+    self.addSubview(pBar)
+    self.addSubview(ademImageButton)
+    
+    closePreferencesButton.translatesAutoresizingMaskIntoConstraints = false
+    ademImageButton.translatesAutoresizingMaskIntoConstraints = false
+    pBar.translatesAutoresizingMaskIntoConstraints = false
+
+    NSLayoutConstraint.activate([
+        
+        closePreferencesButton.topAnchor.constraint(equalTo: self.topAnchor),
+        closePreferencesButton.leftAnchor.constraint(equalTo: self.leftAnchor),
+        closePreferencesButton.widthAnchor.constraint(equalToConstant: 50),
+        closePreferencesButton.heightAnchor.constraint(equalTo: self.heightAnchor),
+        
+        
+        pBar.leftAnchor.constraint(equalTo: closePreferencesButton.rightAnchor, constant: 25),
+
+        pBar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        pBar.rightAnchor.constraint(equalTo: ademImageButton.leftAnchor, constant: -25),
+
+        ademImageButton.topAnchor.constraint(equalTo: self.topAnchor),
+        ademImageButton.rightAnchor.constraint(equalTo: self.rightAnchor),
+        ademImageButton.widthAnchor.constraint(equalToConstant: 50),
+        ademImageButton.heightAnchor.constraint(equalTo: self.heightAnchor),
+    ])
+  }
+}

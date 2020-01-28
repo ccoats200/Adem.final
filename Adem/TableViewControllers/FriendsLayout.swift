@@ -38,7 +38,7 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        data = [friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family")]
+        data = [friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family"),friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family")]
         
         let setText = UILabel()
         setText.text = "Friends"
@@ -184,6 +184,8 @@ class customTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
+        self.layer.cornerRadius = 5
+        self.layer.borderWidth = 1
         self.addSubview(friendsName)
         self.addSubview(friendsPicture)
         self.addSubview(friendsTitle)

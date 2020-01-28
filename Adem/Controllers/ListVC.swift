@@ -598,8 +598,8 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
             lProducts = allproductsInList[Row]
         }
         
-        //productsListViewLayout.textLabel?.text = fuckthis[Row]
-        productsListViewLayout.textLabel?.text = lProducts.groceryProductName
+        productsListViewLayout.textLabel?.text = fuckthis[Row]
+        //productsListViewLayout.textLabel?.text = lProducts.groceryProductName
         //productViews().productNameAndBackButton.setTitle(fuckthis[Row], for: .normal)
         
         //FIXME: Products list
