@@ -9,51 +9,61 @@
 import Foundation
 import UIKit
 
-
-struct MyStruct {
-    var myStructsIntProperty: Float = 0.25
-
-    mutating func myNotVeryThoughtThroughInoutFunction ( myInt: inout Float) {
-        myStructsIntProperty += 0.25
-        /* What happens here? 'myInt' inout parameter is passed to this
-           function by argument 'myStructsIntProperty' from _this_ instance
-           of the MyStruct structure. Hence, we're trying to increase the
-           value of the inout argument. Since the swift docs describe inout
-           as a "call by reference" type as well as a "copy-in-copy-out"
-           method, this behaviour is somewhat undefined (at least avoidable).
-
-           After the function has been called: will the value of
-           myStructsIntProperty have been increased by 1 or 2? (answer: 1) */
-        myInt += 0.25
-    }
-
-    func myInoutFunction ( myInt: inout Float) {
-        myInt += 0.25
-    }
+struct Model {
+   var title: String
 }
 
-class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDataSource {
-        
-        var data = [friendsListInfo]()
-        var refreshControl = UIRefreshControl()
-        
-        //reuse ID's
-        let adtest = "privacy"
-        let cellHeight = 60
+class ViewModelItem {
+   private var item: Model
+   var isSelected = false
+   var title: String {
+      return item.title
+   }
+   init(item: Model) {
+      self.item = item
+   }
+}
 
-        var preferencesTableView: UITableView!
+let dataArray = [Model(title: "Salty"),
+Model(title: "Sweet"),
+Model(title: "Spicy"),
+Model(title: "Biter"),
+Model(title: "Fruity")]
+
+class addedFoodPreference: UIViewController {
+        
+    var items = [ViewModelItem]()
+//    init() {
+//        items = dataArray.map { ViewModelItem(item: $0) }
+//    }
     
-        override func viewDidLoad() {
-            super.viewDidLoad()
-            
-            view.backgroundColor = UIColor.white
-            setuploginFieldView()
-           
-            preferencesTableView.separatorStyle = .none
-            //preferencesTableView.layoutMargins = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-            //preferencesTableView.separatorInset = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
-            preferencesTableView.allowsMultipleSelection = true
-        }
+    
+    
+    
+    var data = [friendsListInfo]()
+    var refreshControl = UIRefreshControl()
+        
+    //reuse ID's
+    let adtest = "privacy"
+    let cellHeight = 60
+
+    //MARK: Element calls
+    var preferencesTableView: UITableView!
+    var topView = preferenceProgressViews()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        view.backgroundColor = UIColor.white
+        setUpSubviews()
+        setuplayoutConstraints()
+        
+        //MARK: Tableview attributes
+        preferencesTableView.dataSource = self
+        preferencesTableView.delegate = self
+        preferencesTableView.separatorStyle = .none
+        preferencesTableView.allowsMultipleSelection = true
+    }
     
     let progressView: UIView = {
         let progress = UIView()
@@ -107,19 +117,37 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         
     }()
     
-    var firstPage = 0
-    var prog = 0.25
-    var incr = MyStruct()
+    override func viewWillAppear(_ animated: Bool) {
+        //var pathTest = self.preferencesTableView.indexPathForSelectedRow
+        
+        if let index = self.preferencesTableView.indexPathForSelectedRow {
+            self.preferencesTableView.deselectRow(at: index, animated: true)
+        }
+    }
     
-       @objc func handelNext() {
+    var firstPage = 0
+    let lastPage = 4
+    //TODO: Should only be the number of arrays
+    let numberOfPages = 3
+    var prog: Float = 0.00
+    
+    @objc func handelNext() {
         
-        firstPage+=1
+        //FIXME: This may be better as a if
+        while firstPage < lastPage {
+            firstPage+=1
+            break
+        }
+        
+        if prog < Float(lastPage/lastPage) {
+            prog += (Float(lastPage/lastPage)/Float(numberOfPages))
+            print(prog)
+            topView.pBar.progress = prog
+        }
+        //topView.pBar.setProgress(Float(prog+0.25), animated: true)
         preferencesTableView.reloadData()
-        topView.pBar.setProgress(incr.myStructsIntProperty, animated: true)
-        //preferencesTableView.deselectRow(at: , animated: true)
-        print(incr.myStructsIntProperty)
-        
-        print(firstPage)
+        let indexPath = IndexPath(row: 0, section: 0)
+        preferencesTableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
     }
     
         func numberOfSections(in tableView: UITableView) -> Int {
@@ -127,127 +155,30 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         }
     
     let tasteProfile = ["Salty","Sweet","Spicy","Biter","Fruity"]
-    let dietPreferences = ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None"]
-    let storePreferences = ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None"]
-        
-    @objc func handleTap() {
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            
-            return tasteProfile.count
-        }
-    
-        
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let pref = tableView.dequeueReusableCell(withIdentifier: self.adtest, for: indexPath)
-        pref.layer.cornerRadius = 10
-        //pref.layer.borderWidth = 1
-        //pref.layer.borderColor = UIColor.ademBlue.cgColor
-        //pref.layoutMargins = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0)
-        pref.layoutMargins = UIEdgeInsets.zero
-        pref.contentView.layoutMargins.top = 20
-        pref.contentView.layoutMargins.bottom = 20
-        
-        //Change the checkmark color
-        pref.tintColor = UIColor.ademGreen
-        pref.clipsToBounds = true
-        pref.textLabel?.textAlignment = .center
-        
-        //needs a guard let statment to protect against screen switching without the data reloading
-        switch firstPage {
-        case 0:
-            pref.textLabel!.text = tasteProfile[indexPath.row]
-        case 1:
-            pref.textLabel!.text = dietPreferences[indexPath.row]
-        case 2:
-            pref.textLabel!.text = storePreferences[indexPath.row]
-        default:
-            pref.textLabel!.text = tasteProfile[indexPath.row]
-        }
+    let dietPreferences = ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"]
+    let storePreferences = ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "please","work"]
+    let thanks = ["Thanks"]
 
-        return pref
+    func deselectOnRefresh() {
+        if firstPage != 0 {
+            //preferencesTableView.indexPathForSelectedRow
+        }
     }
-    func testededed() {
-        
-    }
-    
-    
+
     //var selectedFoodPreferencesCells = [IndexPath]()
     var selectedFoodPreferencesCells = [String]()
+    //let allItems = [Items]()
+    //var selectedItems = [Items]()
     //var selectedFoodCells = [UITableViewCell]()
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        let currentCell = preferencesTableView.cellForRow(at: indexPath)
-        currentCell?.selectionStyle = .none
-        
-        //TODO: When the cells reload deselect the cells
-        currentCell?.accessoryType = .checkmark
-        //for taste in tasteProfile {
-          //  if taste
-        //}
-        //selectedFoodPreferencesCells.append(currentCell?.textLabel!.text! ?? "empty")
-        selectedFoodPreferencesCells.insert(currentCell?.textLabel!.text! ?? "empty", at: 0)
-        //selectedFoodPreferencesCells.insert(currentCell?[indexPath.row], at: 0)
-
-        //print(currentCell?.textLabel!.text)
-        print(selectedFoodPreferencesCells)
-        //preferencesTableView.deselectRow(at: indexPath, animated: false)
-    }
     
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
-        
-        let currentCell = preferencesTableView.cellForRow(at: indexPath)
-        
-        preferencesTableView.cellForRow(at: indexPath)?.accessoryType = .none
-        selectedFoodPreferencesCells.remove(at: 0)
-     /*
-        for cell in selectedFoodPreferencesCells {
-            if firstPage != 0 {
-                cell.
-            }
-        }
- */
-        /*
-        if let indexValue = selectedFoodPreferencesCells.index(of: "\(currentCell?.textLabel!.text)") {
-            selectedFoodPreferencesCells.remove(at: indexValue)
-        }
-*/
-        
-        print(selectedFoodPreferencesCells)
-    }
-
-    
-    func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
-    }
-    
-    
-    func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        
-        let footerView = UIView()
-        footerView.backgroundColor = UIColor.ademBlue
-    
-        return footerView
-    }
-        
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return CGFloat(cellHeight)
-    }
-    
-    var topView = preferenceProgressViews()
-    private func setuploginFieldView() {
+    private func setUpSubviews() {
         
         preferencesTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         
         preferencesTableView.register(UITableViewCell.self, forCellReuseIdentifier: adtest)
         
-        preferencesTableView.dataSource = self
-        preferencesTableView.delegate = self
-        
-           
+
         view.addSubview(topView)
         view.addSubview(welcomeLabel)
         view.addSubview(preferencesTableView)
@@ -261,6 +192,12 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesTableView.translatesAutoresizingMaskIntoConstraints = false
+        
+    }
+    
+    
+    private func setuplayoutConstraints() {
+        
         
            NSLayoutConstraint.activate([
             
@@ -299,3 +236,132 @@ class addedFoodPreference: UIViewController, UITableViewDelegate, UITableViewDat
     }
 }
 
+extension addedFoodPreference: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+            
+        //for page in firstPage...lastPage {
+            
+        //}
+        
+        
+        switch firstPage {
+        case 0:
+            return tasteProfile.count
+            //return items.count
+        case 1:
+            return dietPreferences.count
+        case 2:
+            return storePreferences.count
+        case 3:
+            return thanks.count
+        default:
+            return thanks.count
+        }
+    }
+  
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        //let prefereneces = tableView.dequeueReusableCell(withIdentifier: self.adtest, for: indexPath) as? preferencesCustomCell
+        
+        let pref = tableView.dequeueReusableCell(withIdentifier: self.adtest, for: indexPath)
+        
+
+        pref.layer.cornerRadius = 10
+        
+        pref.layoutMargins = UIEdgeInsets.zero
+        pref.contentView.layoutMargins.top = 20
+        pref.contentView.layoutMargins.bottom = 20
+        
+        //Change the checkmark color
+        pref.tintColor = UIColor.ademGreen
+        pref.clipsToBounds = true
+        pref.textLabel?.textAlignment = .center
+        
+//        if items[indexPath.row].isSelected {
+//                   tableView.selectRow(at: indexPath, animated: false, scrollPosition: .none) // (3)
+//                } else {
+//                   tableView.deselectRow(at: indexPath, animated: false) // (4)
+//                }
+        
+        
+        
+        //needs a guard let statment to protect against screen switching without the data reloading
+        switch firstPage {
+        case 0:
+            //pref.textLabel?.text = items[indexPath.row]
+            
+            pref.textLabel!.text = tasteProfile[indexPath.row]
+        case 1:
+            
+            pref.textLabel!.text = dietPreferences[indexPath.row]
+            //self.preferencesTableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+            //pref.isSelected = false
+        case 2:
+            pref.textLabel!.text = storePreferences[indexPath.row]
+        case 3:
+            pref.textLabel!.text = thanks[indexPath.row]
+        default:
+            pref.textLabel!.text = thanks[indexPath.row]
+        }
+
+        return pref
+    }
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+            let currentCell = preferencesTableView.cellForRow(at: indexPath)
+            currentCell?.selectionStyle = .none
+            
+            //TODO: When the cells reload deselect the cells
+            currentCell?.accessoryType = .checkmark
+            selectedFoodPreferencesCells.insert(currentCell?.textLabel!.text! ?? "empty", at: 0)
+            //selectedFoodPreferencesCells.insert(currentCell?[indexPath.row], at: 0)
+
+            //print(currentCell?.textLabel!.text)
+            print(selectedFoodPreferencesCells)
+            //preferencesTableView.deselectRow(at: indexPath, animated: false)
+        }
+    
+        func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+            
+            let currentCell = preferencesTableView.cellForRow(at: indexPath)
+            currentCell?.accessoryType = .none
+            selectedFoodPreferencesCells.remove(at: 0)
+            
+         /*
+            for cell in selectedFoodPreferencesCells {
+                if firstPage != 0 {
+                    cell.
+                }
+            }
+     */
+            /*
+            if let indexValue = selectedFoodPreferencesCells.index(of: "\(currentCell?.textLabel!.text)") {
+                selectedFoodPreferencesCells.remove(at: indexValue)
+            }
+    */
+            
+            print(selectedFoodPreferencesCells)
+        }
+
+        
+        func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+            return 1
+        }
+        
+        
+        func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+            
+            let footerView = UIView()
+            footerView.backgroundColor = UIColor.ademBlue
+        
+            return footerView
+        }
+            
+        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+            return CGFloat(cellHeight)
+        }
+    
+}

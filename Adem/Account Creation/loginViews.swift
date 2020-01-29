@@ -308,9 +308,9 @@ class preferenceProgressViews: UIView {
     
     let pBar: UIProgressView = {
         let progressViewBar = UIProgressView(progressViewStyle: .default)
-        progressViewBar.setProgress(0.25, animated: true)
-        progressViewBar.trackTintColor = UIColor.ademGreen
-        progressViewBar.tintColor = UIColor.white
+        progressViewBar.setProgress(0.00, animated: true)
+        progressViewBar.trackTintColor = UIColor.white
+        progressViewBar.tintColor = UIColor.ademGreen
         
         
         return progressViewBar

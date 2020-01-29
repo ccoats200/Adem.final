@@ -150,6 +150,9 @@ class addedDietPreference: UIViewController, UITableViewDelegate, UITableViewDat
         preferencesTableView.cellForRow(at: indexPath)?.accessoryType = .none
         selectedFoodPreferencesCells.remove(at: 0)
         
+        
+        
+        
         /*
         if let indexValue = selectedFoodPreferencesCells.index(of: "\(currentCell?.textLabel!.text)") {
             selectedFoodPreferencesCells.remove(at: indexValue)

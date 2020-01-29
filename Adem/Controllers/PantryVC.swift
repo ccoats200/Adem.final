@@ -379,7 +379,7 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         //productsListViewLayout.textLabel?.text = settingsOptions[row]
         //productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
         productsListViewLayout.imageView?.image = UIImage(named: "egg")
-        productsListViewLayout.textLabel!.text = settingsOptions[indexPath.row]
+        productsListViewLayout.textLabel!.text = fuckthis[indexPath.row]
         productsListViewLayout.accessoryType = .disclosureIndicator
         return productsListViewLayout
     }
