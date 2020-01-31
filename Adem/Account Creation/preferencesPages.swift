@@ -57,7 +57,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         
         self.dataSource = self
         self.delegate = self
-        let initialPage = 2
+        let initialPage = 0
         
         // add the individual viewControllers to the pageViewController
         self.pages.append(page1)

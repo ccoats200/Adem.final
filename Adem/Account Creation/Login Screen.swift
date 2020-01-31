@@ -133,7 +133,7 @@ class login: UIViewController, UITextFieldDelegate {
         
         //Check how this is transitioning and fix it for a navigation controller
      //let signUpInfo = addedFoodPreference()
-        let signUpInfo = PageViewController()
+        let signUpInfo = PageViewController.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: .none)
         //let signUpInfo = moreInfo()
      self.present(signUpInfo, animated: true, completion: nil)
      print("Sending user to sign up Flow")
