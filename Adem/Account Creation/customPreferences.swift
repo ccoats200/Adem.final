@@ -52,6 +52,7 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
     //var preferencesTableView: UITableView!
     var preferencesCollectionView: UICollectionView!
     var topView = preferenceProgressViews()
+    var bottomView = preferenceNextViews()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -118,24 +119,6 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
         return textSeparator
     }()
     
-    //Next Button
-    let nextButton: UIButton = {
-        
-        //This just refreshes the table view and the labels
-        let nextPage = UIButton(type: .system)
-        nextPage.backgroundColor = UIColor.ademBlue
-        nextPage.setTitle("Next", for: .normal)
-        nextPage.translatesAutoresizingMaskIntoConstraints = false
-        nextPage.layer.cornerRadius = 5
-        nextPage.layer.masksToBounds = true
-        nextPage.setTitleColor(UIColor.white, for: .normal)
-        nextPage.addTarget(self, action: #selector(handelNext), for: .touchDown)
-        nextPage.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        return nextPage
-        
-    }()
-    
     override func viewWillAppear(_ animated: Bool) {
         //var pathTest = self.preferencesTableView.indexPathForSelectedRow
         
@@ -198,13 +181,11 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
 
     //var selectedFoodPreferencesCells = [IndexPath]()
     var selectedFoodPreferencesCells = [String]()
- 
-    
+
     
     private func setUpSubviews() {
         
-        
-        
+
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/10, left: 0, bottom: 0, right: 0)
     
@@ -222,24 +203,20 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
         preferencesCollectionView.backgroundColor = .white
         preferencesCollectionView.isScrollEnabled = true
         preferencesCollectionView.allowsMultipleSelection = true
+        preferencesCollectionView.backgroundColor = UIColor.red
         
-        view.addSubview(topView)
         view.addSubview(welcomeLabel)
         view.addSubview(preferencesCollectionView)
         view.addSubview(textFieldSeparator)
-        view.addSubview(nextView)
-        nextView.addSubview(nextButton)
+        
 
-        topView.translatesAutoresizingMaskIntoConstraints = false
-        nextView.translatesAutoresizingMaskIntoConstraints = false
-        nextButton.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        
+
         
         topView.closePreferencesButton.addTarget(self, action: #selector(handelDismiss), for: .touchUpInside)
-        
+        bottomView.nextButton.addTarget(self, action: #selector(handelNext), for: .touchDown)
     }
     
     let cellID = "Test"
@@ -249,13 +226,7 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
         
            NSLayoutConstraint.activate([
             
-            topView.topAnchor.constraint(equalTo: view.topAnchor),
-            topView.heightAnchor.constraint(equalToConstant: 50),
-            topView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            topView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
-            
-            welcomeLabel.topAnchor.constraint(equalTo: topView.bottomAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
             welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -266,19 +237,9 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
             textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
             
             preferencesCollectionView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
-            preferencesCollectionView.bottomAnchor.constraint(equalTo: nextButton.topAnchor),
+            preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200),
             preferencesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            nextView.heightAnchor.constraint(equalToConstant: 100),
-            nextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            nextView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            nextView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            nextButton.heightAnchor.constraint(equalToConstant: 50),
-            nextButton.widthAnchor.constraint(equalTo: nextView.widthAnchor, constant: -50),
-            nextButton.centerYAnchor.constraint(equalTo: nextView.centerYAnchor),
-            nextButton.centerXAnchor.constraint(equalTo: nextView.centerXAnchor),
             
         ])
     }

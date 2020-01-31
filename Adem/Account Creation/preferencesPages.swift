@@ -12,6 +12,7 @@ import UIKit
 class PageViewController: UIPageViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     var pages = [UIViewController]()
+    //var views = [UIView]()
     let pageControl = UIPageControl()
     
     
@@ -43,49 +44,66 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         return nil
     }
     
-    let page1 = addedFoodPreference()
-    let page2 = addedFoodPreference()
-    let page3 = addedFoodPreference()
-    //MARK: that was close
+    let flavorPage = addedFoodPreference()
+    let dietPage = addedFoodPreference()
+    let storePage = addedFoodPreference()
+    let thankYouPage = addedFoodPreference()
 
 
+
+    var topView = preferenceProgressViews()
+    var bottomView = preferenceNextViews()
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        
+                
         self.dataSource = self
         self.delegate = self
         let initialPage = 0
         
         // add the individual viewControllers to the pageViewController
-        self.pages.append(page1)
-        self.pages.append(page2)
-        self.pages.append(page3)
+        self.pages.append(flavorPage)
+        self.pages.append(dietPage)
+        self.pages.append(storePage)
+        self.pages.append(thankYouPage)
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
         
         
-        // pageControl
-        self.pageControl.frame = CGRect()
-        self.pageControl.currentPageIndicatorTintColor = UIColor.black
-        self.pageControl.pageIndicatorTintColor = UIColor.lightGray
-        self.pageControl.numberOfPages = self.pages.count
-        self.pageControl.currentPage = initialPage
+//        // pageControl
+//        self.pageControl.frame = CGRect()
+//        self.pageControl.currentPageIndicatorTintColor = UIColor.ademBlue
+//        self.pageControl.pageIndicatorTintColor = UIColor.ademGreen
+//        self.pageControl.numberOfPages = pages.count
+//        self.pageControl.currentPage = initialPage
         
         
        setUpLayout()
     }
     
+    
+    
     func setUpLayout() {
+        //self.view.addSubview(topView)
+        self.view.addSubview(bottomView)
+        //self.view.addSubview(pages)
+        //self.view.addSubview(self.pageControl)
         
-        self.view.addSubview(self.pageControl)
+        //self.pageControl.translatesAutoresizingMaskIntoConstraints = false
+        //self.topView.translatesAutoresizingMaskIntoConstraints = false
+        self.bottomView.translatesAutoresizingMaskIntoConstraints = false
         
-        self.pageControl.translatesAutoresizingMaskIntoConstraints = false
-        self.pageControl.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -5).isActive = true
-        self.pageControl.widthAnchor.constraint(equalTo: self.view.widthAnchor, constant: -20).isActive = true
-        self.pageControl.heightAnchor.constraint(equalToConstant: 20).isActive = true
-        self.pageControl.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        NSLayoutConstraint.activate([
+//            self.topView.topAnchor.constraint(equalTo: self.view.topAnchor),
+//            self.topView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+//            self.topView.heightAnchor.constraint(equalToConstant: 50),
+//            self.topView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+
+            
+            self.bottomView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            self.bottomView.widthAnchor.constraint(equalTo: self.view.widthAnchor),
+            self.bottomView.heightAnchor.constraint(equalToConstant: 100),
+            self.bottomView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+    ])
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {

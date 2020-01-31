@@ -365,3 +365,90 @@ class preferenceProgressViews: UIView {
     ])
   }
 }
+
+//MARK: Login button view
+class preferenceNextViews: UIView {
+  
+    //initWithFrame to init view from code
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+  
+    self.layer.masksToBounds = true
+    self.backgroundColor = UIColor.ademGreen
+    
+    setupView()
+  }
+  
+  //initWithCode to init view from xib or storyboard
+  required init?(coder aDecoder: NSCoder) {
+    super.init(coder: aDecoder)
+    
+    setupView()
+  }
+  
+    let closePreferencesButton: UIButton = {
+        let login = UIButton(type: .system)
+        //login.backgroundColor = UIColor.ademBlue
+        login.setTitle("X", for: .normal)
+        login.translatesAutoresizingMaskIntoConstraints = false
+        //login.titleLabel?.font = UIFont(name: productFont, size: 20)
+        login.layer.cornerRadius = 5
+        login.layer.masksToBounds = true
+        login.setTitleColor(UIColor.white, for: .normal)
+        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        return login
+    }()
+    
+   //Next Button
+    let nextButton: UIButton = {
+        //This just refreshes the table view and the labels
+        let nextPage = UIButton(type: .system)
+        nextPage.backgroundColor = UIColor.ademBlue
+        nextPage.setTitle("Next", for: .normal)
+        nextPage.translatesAutoresizingMaskIntoConstraints = false
+        nextPage.layer.cornerRadius = 5
+        nextPage.layer.masksToBounds = true
+        nextPage.setTitleColor(UIColor.white, for: .normal)
+        nextPage.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        
+        return nextPage
+        
+    }()
+    
+    let pBar: UIProgressView = {
+        let progressViewBar = UIProgressView(progressViewStyle: .bar)
+            progressViewBar.setProgress(0.25, animated: true)
+            progressViewBar.trackTintColor = UIColor.white
+    //        progressViewBar.tintColor = UIColor.ademGreen
+            progressViewBar.tintColor = UIColor.ademGreen
+
+            
+            return progressViewBar
+        }()
+       
+  //common func to init our view
+  private func setupView() {
+
+    self.backgroundColor = UIColor.white
+    
+    self.addSubview(nextButton)
+    self.addSubview(pBar)
+    
+    nextButton.translatesAutoresizingMaskIntoConstraints = false
+    pBar.translatesAutoresizingMaskIntoConstraints = false
+
+    
+    NSLayoutConstraint.activate([
+    
+        pBar.heightAnchor.constraint(equalToConstant: 5),
+        pBar.widthAnchor.constraint(equalTo: self.widthAnchor),
+        pBar.topAnchor.constraint(equalTo: self.topAnchor),
+        pBar.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        
+        nextButton.heightAnchor.constraint(equalToConstant: 50),
+        nextButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
+        nextButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        nextButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+    ])
+  }
+}

@@ -110,18 +110,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         searchController.obscuresBackgroundDuringPresentation = true
         self.searchController.searchBar.placeholder = "What Can I Add For You?"
         
-        //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
-        
-        //Drag and Drop
-        //self.collectionView.dragDelegate = self
-        //self.collectionView.dropDelegate = self
-        //self.collectionView.dragInteractionEnabled = true
-        
-        
-        //MARK: Cirular transition
-        //navigationController?.delegate = transitionCoordinator as? UINavigationControllerDelegate
-
         setUpBarButtonItems()
         
        
@@ -141,7 +129,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //self.searchController.isActive = false
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
        }
@@ -168,10 +155,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         guard switchDefaults else {
             return setUpCollectionView()
         }
-        
-           //if switchDefaults != true {
-               
-           //}
        }
     
     //MARK: Setting up Collection View
@@ -329,11 +312,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
            footerView.backgroundColor = UIColor.ademBlue
-        
-        //let label = UILabel(frame: CGRect(x: 0, y: 0, width: 80, height: 40))
-        
-        //label.text = "Adem is further than it was this morning"
-        //footerView.addSubview(label)
            return footerView
     }
     
@@ -368,16 +346,11 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return allproductsInList.count
-        //return settingsOptions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! listTableViewCell
         let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
-        //let row = indexPath.row
-        
-        //productsListViewLayout.textLabel?.text = settingsOptions[row]
-        //productsListViewLayout.imageView?.image = UIImage(named: "nutritionFacts")
+   
         productsListViewLayout.imageView?.image = UIImage(named: "egg")
         productsListViewLayout.textLabel!.text = fuckthis[indexPath.row]
         productsListViewLayout.accessoryType = .disclosureIndicator
@@ -385,7 +358,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //let cellRow = indexPath.row
         handleProduct()
     }
     func printDate(string: String) {
@@ -466,7 +438,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         
         if self.isEditing {
             self.navigationItem.rightBarButtonItem = nil
-            //self.collectionView.allowsMultipleSelection = true
             self.listCollectionView.allowsMultipleSelection = true
             self.tabBarController?.tabBar.isHidden = true
             self.navigationItem.rightBarButtonItems = [added, trashed]
@@ -475,7 +446,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
             
             self.navigationItem.rightBarButtonItems = [searching]
             self.tabBarController?.tabBar.isHidden = false
-            //self.collectionView.allowsMultipleSelection = false
             self.listCollectionView.allowsMultipleSelection = false
         }
         
@@ -483,7 +453,6 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
         if let indexPaths = listCollectionView?.indexPathsForVisibleItems {
             for indexPath in indexPaths {
                 if let cell = listCollectionView?.cellForItem(at: indexPath) as? itemCellLayout {
-                //if let cell = collectionView?.cellForItem(at: indexPath) as? itemCellLayout {
                     cell.isEditing = editing
                 }
             }
@@ -690,16 +659,8 @@ class PantryVC: UIViewController, UICollectionViewDataSource, UICollectionViewDe
     
     //product Button
     @objc func handleProduct() {
-        
-        //transition testing
-        //let transitionCoordinator = TransitionCoordinator()
-        
-        //let cController = productVCLayout()
-        let productScreen = pantryProductVCLayout()
+        let productScreen = listProductVCLayout()
         productScreen.hidesBottomBarWhenPushed = true
-        //transition testing
-        //cController.transitioningDelegate = TransitionCoordinator.self as? UIViewControllerTransitioningDelegate
-        productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(productScreen, animated: true, completion: nil)
         
         print("Settings Tab is active")
