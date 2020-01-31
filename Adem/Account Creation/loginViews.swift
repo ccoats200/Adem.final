@@ -283,6 +283,9 @@ class preferenceProgressViews: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
   
+    self.layer.masksToBounds = true
+    self.backgroundColor = UIColor.ademGreen
+    
     setupView()
   }
   
@@ -310,15 +313,17 @@ class preferenceProgressViews: UIView {
         let progressViewBar = UIProgressView(progressViewStyle: .default)
         progressViewBar.setProgress(0.00, animated: true)
         progressViewBar.trackTintColor = UIColor.white
-        progressViewBar.tintColor = UIColor.ademGreen
-        
+//        progressViewBar.tintColor = UIColor.ademGreen
+        progressViewBar.tintColor = UIColor.ademBlue
+
         
         return progressViewBar
     }()
     
     let ademImageButton: UIButton = {
+        let infoImage = UIImage(named: "Info")
         let signUp = UIButton()
-        signUp.setTitle("->", for: .normal)
+        signUp.setImage(infoImage, for: .normal)
         signUp.setTitleColor(UIColor.white, for: .normal)
         signUp.titleLabel?.font = UIFont(name: buttonFont, size: 20)
         signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
@@ -330,8 +335,7 @@ class preferenceProgressViews: UIView {
   private func setupView() {
 
     
-    self.layer.masksToBounds = true
-    self.backgroundColor = UIColor.ademBlue
+    
     
     self.addSubview(closePreferencesButton)
     self.addSubview(pBar)

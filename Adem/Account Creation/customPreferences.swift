@@ -30,13 +30,14 @@ Model(title: "Spicy"),
 Model(title: "Biter"),
 Model(title: "Fruity")]
 
-class addedFoodPreference: UIViewController {
+class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout {
         
     var items = [ViewModelItem]()
-//    init() {
-//        items = dataArray.map { ViewModelItem(item: $0) }
-//    }
     
+    
+    var currentViewControllerIndex = 0
+    let viewControllerDataSource = ["\(preferenceProgressViews())"]
+
     
     
     
@@ -48,7 +49,8 @@ class addedFoodPreference: UIViewController {
     let cellHeight = 60
 
     //MARK: Element calls
-    var preferencesTableView: UITableView!
+    //var preferencesTableView: UITableView!
+    var preferencesCollectionView: UICollectionView!
     var topView = preferenceProgressViews()
     
     override func viewDidLoad() {
@@ -58,11 +60,7 @@ class addedFoodPreference: UIViewController {
         setUpSubviews()
         setuplayoutConstraints()
         
-        //MARK: Tableview attributes
-        preferencesTableView.dataSource = self
-        preferencesTableView.delegate = self
-        preferencesTableView.separatorStyle = .none
-        preferencesTableView.allowsMultipleSelection = true
+        
     }
     
     let progressView: UIView = {
@@ -72,17 +70,38 @@ class addedFoodPreference: UIViewController {
         return progress
     }()
     
+    
+    //MARK: Alert
+    @objc func handelDismiss() {
+        
+        incorrectInformationAlert(title: "Are you Sure", message: "You can finish setting everything up later")
+        //self.dismiss(animated: true, completion: nil)
+    }
+    
+    func incorrectInformationAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: .actionSheet) //might be better as an .alert
+        alertController.addAction(UIAlertAction(title: "Keep going", style: .default, handler: {action in
+        }))
+        alertController.addAction(UIAlertAction(title: "Finish Later", style: .destructive, handler: {action in
+        }))
+        
+        self.present(alertController, animated: true, completion: nil)
+        
+        
+    }
+    //MARK: End Alert
  
     let nextView: UIView = {
         let next = UIView()
-        next.backgroundColor = UIColor.ademBlue
+        next.backgroundColor = UIColor.white
         next.translatesAutoresizingMaskIntoConstraints = false
         return next
     }()
     
     //Name Section
     let welcomeLabel: UILabel = {
-        let welcome = UILabel()
+        var welcome = UILabel()
         welcome.text = "What flavors do you like?"
         welcome.textAlignment = .center
         welcome.textColor = UIColor.ademBlue
@@ -100,11 +119,11 @@ class addedFoodPreference: UIViewController {
     }()
     
     //Next Button
-    let doneButton: UIButton = {
+    let nextButton: UIButton = {
         
         //This just refreshes the table view and the labels
         let nextPage = UIButton(type: .system)
-        //nextPage.backgroundColor = UIColor.red
+        nextPage.backgroundColor = UIColor.ademBlue
         nextPage.setTitle("Next", for: .normal)
         nextPage.translatesAutoresizingMaskIntoConstraints = false
         nextPage.layer.cornerRadius = 5
@@ -120,81 +139,110 @@ class addedFoodPreference: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         //var pathTest = self.preferencesTableView.indexPathForSelectedRow
         
-        if let index = self.preferencesTableView.indexPathForSelectedRow {
-            self.preferencesTableView.deselectRow(at: index, animated: true)
-        }
+//        if let index = self.preferencesTableView.indexPathForSelectedRow {
+//            self.preferencesTableView.deselectRow(at: index, animated: true)
+//        }
     }
     
-    var firstPage = 0
-    let lastPage = 4
-    //TODO: Should only be the number of arrays
+    var currentPage = 0
     let numberOfPages = 3
     var prog: Float = 0.00
     
+    //MARK: Arrays
+    let promptArray = ["What flavors do you like?","Are you allergic?","Where do you shop?","We Know Just The Thing"]
+    
+    let preferencesDictionary = [0: ["Salty","Sweet","Spicy","Biter","Fruity"],
+    1: ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"],
+    2: ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "please","work"],
+    3: ["Thanks"]]
+    
+    
+    
     @objc func handelNext() {
+        //FIXME: What to do with this
+        print("there are \((preferencesDictionary.keys.count)-1) sets")
         
-        //FIXME: This may be better as a if
-        while firstPage < lastPage {
-            firstPage+=1
-            break
+        if currentPage < numberOfPages {
+            currentPage+=1
         }
         
-        if prog < Float(lastPage/lastPage) {
-            prog += (Float(lastPage/lastPage)/Float(numberOfPages))
+        if prog < Float(numberOfPages/numberOfPages) {
+            prog += (Float(numberOfPages/numberOfPages)/Float(numberOfPages))
             print(prog)
             topView.pBar.progress = prog
         }
-        //topView.pBar.setProgress(Float(prog+0.25), animated: true)
-        preferencesTableView.reloadData()
-        let indexPath = IndexPath(row: 0, section: 0)
-        preferencesTableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        //preferencesTableView.reloadRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
+        coverMeImReloading()
+    }
+    
+    func coverMeImReloading() {
+        preferencesCollectionView.reloadData()
+        
+        switch currentPage {
+        case currentPage:
+            welcomeLabel.text = promptArray[currentPage]
+        default:
+            welcomeLabel.text = "Something Went Wrong... Let me check the recipe"
+        }
     }
     
         func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
-    
-    let tasteProfile = ["Salty","Sweet","Spicy","Biter","Fruity"]
-    let dietPreferences = ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"]
-    let storePreferences = ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "please","work"]
-    let thanks = ["Thanks"]
 
     func deselectOnRefresh() {
-        if firstPage != 0 {
+        if currentPage != 0 {
             //preferencesTableView.indexPathForSelectedRow
         }
     }
 
     //var selectedFoodPreferencesCells = [IndexPath]()
     var selectedFoodPreferencesCells = [String]()
-    //let allItems = [Items]()
-    //var selectedItems = [Items]()
-    //var selectedFoodCells = [UITableViewCell]()
+ 
     
     
     private func setUpSubviews() {
         
-        preferencesTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
         
-        preferencesTableView.register(UITableViewCell.self, forCellReuseIdentifier: adtest)
         
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/10, left: 0, bottom: 0, right: 0)
+    
+        //layout.scrollDirection = .horizontal
+        preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
 
+        //preferencesTableView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+
+        layout.itemSize = CGSize(width: (view.frame.width)/2, height: 60)
+        preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
+
+        //MARK: CollectionView attributes
+        preferencesCollectionView.dataSource = self
+        preferencesCollectionView.delegate = self
+        preferencesCollectionView.backgroundColor = .white
+        preferencesCollectionView.isScrollEnabled = true
+        preferencesCollectionView.allowsMultipleSelection = true
+        
         view.addSubview(topView)
         view.addSubview(welcomeLabel)
-        view.addSubview(preferencesTableView)
+        view.addSubview(preferencesCollectionView)
         view.addSubview(textFieldSeparator)
         view.addSubview(nextView)
-        nextView.addSubview(doneButton)
+        nextView.addSubview(nextButton)
 
         topView.translatesAutoresizingMaskIntoConstraints = false
         nextView.translatesAutoresizingMaskIntoConstraints = false
-        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
-        preferencesTableView.translatesAutoresizingMaskIntoConstraints = false
+        preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        topView.closePreferencesButton.addTarget(self, action: #selector(handelDismiss), for: .touchUpInside)
         
     }
     
+    let cellID = "Test"
     
     private func setuplayoutConstraints() {
         
@@ -217,25 +265,76 @@ class addedFoodPreference: UIViewController {
             textFieldSeparator.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
             textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
             
-            preferencesTableView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
-            preferencesTableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
-            preferencesTableView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            preferencesTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            preferencesCollectionView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
+            preferencesCollectionView.bottomAnchor.constraint(equalTo: nextButton.topAnchor),
+            preferencesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
             nextView.heightAnchor.constraint(equalToConstant: 100),
-            nextView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            nextView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             nextView.widthAnchor.constraint(equalTo: view.widthAnchor),
             nextView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
-            doneButton.heightAnchor.constraint(equalToConstant: 50),
-            doneButton.widthAnchor.constraint(equalToConstant: 50),
-            doneButton.centerYAnchor.constraint(equalTo: nextView.centerYAnchor),
-            doneButton.centerXAnchor.constraint(equalTo: nextView.centerXAnchor),
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
+            nextButton.widthAnchor.constraint(equalTo: nextView.widthAnchor, constant: -50),
+            nextButton.centerYAnchor.constraint(equalTo: nextView.centerYAnchor),
+            nextButton.centerXAnchor.constraint(equalTo: nextView.centerXAnchor),
             
         ])
     }
+    
 }
 
+extension addedFoodPreference: UICollectionViewDelegate, UICollectionViewDataSource {
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+
+        switch currentPage {
+        case currentPage:
+            return preferencesDictionary[currentPage]!.count
+        default:
+            return preferencesDictionary[3]!.count
+        }
+    }
+    
+    //var emptyDict: [String: String] = [:]
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
+        preferencesCell.layer.cornerRadius = 5
+      
+        switch currentPage {
+        case currentPage:
+            for (number, options) in preferencesDictionary {
+            if number == currentPage {
+                preferencesCell.preferencesLabel.text = options[indexPath.row]
+            }
+        }
+        
+        default:
+            preferencesCell.preferencesLabel.text = "Something Went Wrong... Let me check the recipe"
+        }
+
+        return preferencesCell
+        
+        }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
+        //currentCell?.layer.borderColor = UIColor.ademGreen.cgColor
+        currentCell?.preferencesIcon.backgroundColor = UIColor.ademGreen
+        currentCell?.preferencesIcon.tintColor = UIColor.red
+        //currentCell?.layer.borderWidth = 2
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
+        //currentCell?.layer.borderColor = UIColor.ademGreen.cgColor
+        currentCell?.preferencesIcon.backgroundColor = nil
+    }
+    
+}
+/*
 extension addedFoodPreference: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -365,3 +464,4 @@ extension addedFoodPreference: UITableViewDelegate, UITableViewDataSource {
         }
     
 }
+*/

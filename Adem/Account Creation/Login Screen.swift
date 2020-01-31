@@ -132,7 +132,8 @@ class login: UIViewController, UITextFieldDelegate {
     @objc func handelSocialsignUp() {
         
         //Check how this is transitioning and fix it for a navigation controller
-     let signUpInfo = addedFoodPreference()
+     //let signUpInfo = addedFoodPreference()
+        let signUpInfo = PageViewController()
         //let signUpInfo = moreInfo()
      self.present(signUpInfo, animated: true, completion: nil)
      print("Sending user to sign up Flow")

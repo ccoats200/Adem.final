@@ -200,7 +200,8 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
 
 
         if segmentContr.selectedSegmentIndex == 0 {
-            switchSegViews()
+            //switchSegViews()
+            collectionView.isHidden = true
         }
         
         //Nav bar is see through
