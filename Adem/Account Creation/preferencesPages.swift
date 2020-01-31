@@ -46,6 +46,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
     let page1 = addedFoodPreference()
     let page2 = addedFoodPreference()
     let page3 = addedFoodPreference()
+    //MARK: that was close
 
 
     override func viewDidLoad() {
@@ -56,7 +57,7 @@ class PageViewController: UIPageViewController, UIPageViewControllerDataSource, 
         
         self.dataSource = self
         self.delegate = self
-        let initialPage = 0
+        let initialPage = 2
         
         // add the individual viewControllers to the pageViewController
         self.pages.append(page1)
