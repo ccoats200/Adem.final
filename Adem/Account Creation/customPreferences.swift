@@ -203,7 +203,7 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
         preferencesCollectionView.backgroundColor = .white
         preferencesCollectionView.isScrollEnabled = true
         preferencesCollectionView.allowsMultipleSelection = true
-        preferencesCollectionView.backgroundColor = UIColor.red
+        preferencesCollectionView.backgroundColor = UIColor.white
         
         view.addSubview(welcomeLabel)
         view.addSubview(preferencesCollectionView)
@@ -237,7 +237,7 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
             textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
             
             preferencesCollectionView.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
-            preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -200),
+            preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             preferencesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             

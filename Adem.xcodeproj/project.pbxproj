@@ -242,6 +242,7 @@
 				35D6484322ECBC9100015352 /* Extensions */,
 				35D6483922ECBC0800015352 /* Transition */,
 				35D6483522ECBBDD00015352 /* Alert */,
+				35E95CBF23E4F47400B6F960 /* Review for Delete */,
 				35D647F822ECBABA00015352 /* AppDelegate.swift */,
 				35D647FA22ECBABA00015352 /* ViewController.swift */,
 				35D6489922ECF8CC00015352 /* GoogleService-Info.plist */,
@@ -295,7 +296,6 @@
 			children = (
 				35D6485022ECBD4E00015352 /* Login Screen.swift */,
 				35D6484122ECBC8600015352 /* SignUpInfo.swift */,
-				357B35ED23A9CFC100223F51 /* continuedInfo.swift */,
 				358C2C5223BE68920013EE64 /* accountComponents.swift */,
 				35C3A35923C6075400E12747 /* loginViews.swift */,
 				354E944123DCBF81003F2B1F /* accountCreationViews.swift */,
@@ -391,6 +391,14 @@
 				351B8DF62343C215006CEAE1 /* ListTVC.swift */,
 			);
 			path = TableViewControllers;
+			sourceTree = "<group>";
+		};
+		35E95CBF23E4F47400B6F960 /* Review for Delete */ = {
+			isa = PBXGroup;
+			children = (
+				357B35ED23A9CFC100223F51 /* continuedInfo.swift */,
+			);
+			path = "Review for Delete";
 			sourceTree = "<group>";
 		};
 		CF1060BDE40AB13353C161FE /* Pods */ = {

@@ -11,7 +11,6 @@ import Foundation
 import Firebase
 import FirebaseFirestore
 
-
 class login: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
@@ -133,15 +132,15 @@ class login: UIViewController, UITextFieldDelegate {
         
         //Check how this is transitioning and fix it for a navigation controller
      //let signUpInfo = addedFoodPreference()
-        let signUpInfo = PageViewController.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: .none)
+        //let signUpInfo = PageViewController()
+        let signUpInfo = MyTestViewController()
         
         //signUpInfo.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         //let signUpInfo = moreInfo()
      self.present(signUpInfo, animated: true, completion: nil)
      print("Sending user to sign up Flow")
     }
-    
-    
+
     
     @objc func handelSignUp() {
         

@@ -12,7 +12,7 @@ import Firebase
 import FirebaseFirestore
 
 
-
+/*
 //MARK: Might Delete... Probably Delete
 
 class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
@@ -272,3 +272,4 @@ class moreInfo: UIViewController, UITextFieldDelegate, UIPickerViewDelegate {
         ])
     }
 }
+*/
