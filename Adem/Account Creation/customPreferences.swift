@@ -38,9 +38,7 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
     var currentViewControllerIndex = 0
     let viewControllerDataSource = ["\(preferenceProgressViews())"]
 
-    
-    
-    
+
     var data = [friendsListInfo]()
     var refreshControl = UIRefreshControl()
         
@@ -57,6 +55,8 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        self.title = "please"
         view.backgroundColor = UIColor.white
         setUpSubviews()
         setuplayoutConstraints()

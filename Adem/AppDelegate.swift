@@ -55,8 +55,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = login()
         //window?.rootViewController = tabBar()
         
-        //Current In solid green
-        UINavigationBar.appearance().barTintColor = UIColor.ademGreen
+        //MARK: THis is for all nav bars Current In solid green
+        //UINavigationBar.appearance().barTintColor = UIColor.ademGreen
         
         
         

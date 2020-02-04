@@ -375,6 +375,7 @@ class preferenceNextViews: UIView {
   
     self.layer.masksToBounds = true
     self.backgroundColor = UIColor.ademGreen
+    self.layer.cornerRadius = 5
     
     setupView()
   }
@@ -385,19 +386,6 @@ class preferenceNextViews: UIView {
     
     setupView()
   }
-  
-    let closePreferencesButton: UIButton = {
-        let login = UIButton(type: .system)
-        //login.backgroundColor = UIColor.ademBlue
-        login.setTitle("X", for: .normal)
-        login.translatesAutoresizingMaskIntoConstraints = false
-        //login.titleLabel?.font = UIFont(name: productFont, size: 20)
-        login.layer.cornerRadius = 5
-        login.layer.masksToBounds = true
-        login.setTitleColor(UIColor.white, for: .normal)
-        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return login
-    }()
     
    //Next Button
     let nextButton: UIButton = {
@@ -421,6 +409,8 @@ class preferenceNextViews: UIView {
             progressViewBar.trackTintColor = UIColor.white
     //        progressViewBar.tintColor = UIColor.ademGreen
             progressViewBar.tintColor = UIColor.ademGreen
+        //progressViewBar.layer.cornerRadius = 5
+        //progressViewBar.clipsToBounds = true
 
             
             return progressViewBar

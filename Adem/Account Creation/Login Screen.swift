@@ -128,16 +128,32 @@ class login: UIViewController, UITextFieldDelegate {
         return logintextfield
     }()
 
-    @objc func handelSocialsignUp() {
+    @objc func handelFacebooksignUp() {
+        let signUpInfo = MyTestViewController()
+
+        self.present(signUpInfo, animated: true, completion: nil)
+     print("Sending user to sign up Flow")
+    }
+    
+    @objc func handelGooglesignUp() {
+        let signUpInfos = userFlowViewControllerTwo()
+
+        self.present(signUpInfos, animated: true, completion: nil)
+     print("Sending user to sign up Flow")
+    }
+    
+    @objc func handelTwittersignUp() {
         
         //Check how this is transitioning and fix it for a navigation controller
      //let signUpInfo = addedFoodPreference()
-        //let signUpInfo = PageViewController()
         let signUpInfo = MyTestViewController()
         
         //signUpInfo.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        //let signUpInfo = moreInfo()
-     self.present(signUpInfo, animated: true, completion: nil)
+        let aObjNavi = UINavigationController(rootViewController: signUpInfo)
+        self.present(aObjNavi, animated: true, completion: nil)
+//        self.navigationController?.pushViewController(aObjNavi, animated: true)
+        
+        
      print("Sending user to sign up Flow")
     }
 
@@ -228,7 +244,9 @@ class login: UIViewController, UITextFieldDelegate {
         buttonsUsedToLogIn.loginButton.addTarget(self, action: #selector(handelLogin), for: .touchUpInside)
         
         //MARK: Bottom Buttons
-        social.facebookLoginImage.addTarget(self, action: #selector(handelSocialsignUp), for: .touchUpInside)
+        social.facebookLoginImage.addTarget(self, action: #selector(handelFacebooksignUp), for: .touchUpInside)
+        social.twitterLoginImage.addTarget(self, action: #selector(handelTwittersignUp), for: .touchUpInside)
+        social.GoogleLoginImage.addTarget(self, action: #selector(handelGooglesignUp), for: .touchUpInside)
         social.maybeLaterButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
      }
     
