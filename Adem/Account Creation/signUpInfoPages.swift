@@ -38,7 +38,6 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     @objc func handelDismiss() {
         
         incorrectInformationAlert(title: "Are you Sure", message: "You can finish setting everything up later")
-        //self.dismiss(animated: true, completion: nil)
     }
     
     func incorrectInformationAlert(title: String, message: String) {
@@ -55,15 +54,15 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     }
     //MARK: End Alert
     
-    
     //Name Section
     let welcomeLabel: UILabel = {
         var welcome = UILabel()
-        welcome.text = "this it the right view??"
+        welcome.text = "What flavors do you like?"
         welcome.textAlignment = .center
+        welcome.numberOfLines = 0
         welcome.textColor = UIColor.ademBlue
         welcome.backgroundColor = UIColor.white
-        welcome.font = UIFont(name:"HelveticaNeue", size: 20.0)
+        welcome.font = UIFont(name: helNeu, size: 20.0)
         welcome.translatesAutoresizingMaskIntoConstraints = false
         return welcome
     }()
@@ -73,6 +72,19 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         textSeparator.backgroundColor = UIColor.ademBlue
         textSeparator.translatesAutoresizingMaskIntoConstraints = false
         return textSeparator
+    }()
+    
+    //Name Section
+    let infoLabel: UILabel = {
+        var reason = UILabel()
+        reason.text = "This helps us recommend new foods and meals that you might enjoy."
+        reason.textAlignment = .center
+        reason.numberOfLines = 0
+        reason.textColor = UIColor.ademBlue
+        reason.backgroundColor = UIColor.white
+        reason.font = UIFont(name: helNeu, size: 15.0)
+        reason.translatesAutoresizingMaskIntoConstraints = false
+        return reason
     }()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -86,7 +98,7 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     //MARK: Arrays
     let promptArray = ["What flavors do you like?","Are you allergic?","Where do you shop?","We Know Just The Thing"]
     
-    let preferencesDictionary = [0: ["Salty","Sweet","Spicy","Biter","Fruity"],
+    let preferencesDictionary = [0: ["Salty","Sour","Sweet","Biter","Savory","Spicy","Fruity","Skip"],
     1: ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"],
     2: ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "please","work"],
     3: ["Thanks"]]
@@ -106,6 +118,22 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
             
         }
         coverMeImReloading()
+    }
+    
+    private func sendingPreferencesToCloud() {
+        
+        
+        
+//        guard let flavorPreferences = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else { return }
+//
+//        let dataToSave: [String: Any] = [
+//                   "FirstName": flavorPreferences
+//               ]
+//
+//       //MARK: this needs to be a collection
+//        db.collection("Users").document().collection("private").document("UsersPrivateInfo").setData(dataToSave) { (error) in
+//
+//        }
     }
     
     func coverMeImReloading() {
@@ -130,12 +158,11 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         
 
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/5, left: (self.view.frame.width)/5, bottom: (self.view.frame.width)/5, right: (self.view.frame.height)/5)
+        //layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/5, left: (self.view.frame.width)/5, bottom: (self.view.frame.width)/5, right: (self.view.frame.height)/5)
     
         //layout.scrollDirection = .horizontal
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
 
-        layout.itemSize = CGSize(width: (view.frame.width)/2, height: 60)
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
 
         //MARK: CollectionView attributes
@@ -147,13 +174,24 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         
         //MARK: subviews
         view.addSubview(welcomeLabel)
-        view.addSubview(preferencesCollectionView)
         view.addSubview(textFieldSeparator)
+        view.addSubview(infoLabel)
+        view.addSubview(preferencesCollectionView)
         
-        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        let padding: CGFloat =  50
+        
+        let collectionViewSize = collectionView.frame.size.width - padding
+
+        return CGSize(width: collectionViewSize/2, height: 60)
     }
     
     let cellID = "Test"
@@ -162,19 +200,24 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         
            NSLayoutConstraint.activate([
             
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
-            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            welcomeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             
             textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
             textFieldSeparator.centerXAnchor.constraint(equalTo: welcomeLabel.centerXAnchor),
-            textFieldSeparator.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+            textFieldSeparator.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
             
-            preferencesCollectionView.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor),
+            infoLabel.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 20),
+            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor, constant: -5),
+            infoLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            preferencesCollectionView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
             preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            preferencesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            preferencesCollectionView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
         ])
@@ -198,7 +241,8 @@ extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewData
         
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
         preferencesCell.layer.cornerRadius = 5
-        preferencesCell.backgroundColor = UIColor.red
+        //preferencesCell.layer.borderWidth = 1
+        //preferencesCell.backgroundColor = UIColor.red
       
         //signInFlowViewControllerTwo().dataSource = self as! UIPageViewControllerDataSource
         
@@ -230,7 +274,6 @@ extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewData
     }
     
 }
-
 
 class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLayout {
 
@@ -281,11 +324,11 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     //Name Section
     let welcomeLabel: UILabel = {
         var welcome = UILabel()
-        welcome.text = "Are you allergic?"
+        welcome.text = "Any Foods You Don't Eat?"
         welcome.textAlignment = .center
         welcome.textColor = UIColor.ademBlue
         welcome.backgroundColor = UIColor.white
-        welcome.font = UIFont(name:"HelveticaNeue", size: 20.0)
+        welcome.font = UIFont(name: helNeu, size: 20.0)
         welcome.translatesAutoresizingMaskIntoConstraints = false
         return welcome
     }()
@@ -296,6 +339,20 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         textSeparator.translatesAutoresizingMaskIntoConstraints = false
         return textSeparator
     }()
+    
+    //Name Section
+    let infoLabel: UILabel = {
+        var reason = UILabel()
+        reason.text = "This helps us not recommend new foods and meals that you might not enjoy."
+        reason.textAlignment = .center
+        reason.numberOfLines = 0
+        reason.textColor = UIColor.ademBlue
+        reason.backgroundColor = UIColor.white
+        reason.font = UIFont(name: helNeu, size: 15.0)
+        reason.translatesAutoresizingMaskIntoConstraints = false
+        return reason
+    }()
+    
     
     override func viewWillAppear(_ animated: Bool) {
 
@@ -315,12 +372,10 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         
 
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/10, left: 0, bottom: 0, right: 0)
     
         //layout.scrollDirection = .horizontal
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
 
-        layout.itemSize = CGSize(width: (view.frame.width)/2, height: 60)
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
 
         //MARK: CollectionView attributes
@@ -333,14 +388,25 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         //MARK: subviews
         view.addSubview(welcomeLabel)
         view.addSubview(textFieldSeparator)
+        view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
-
         
-        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+           
+           let padding: CGFloat =  50
+           
+           let collectionViewSize = collectionView.frame.size.width - padding
+
+           return CGSize(width: collectionViewSize/2, height: 60)
+       }
     
     let cellID = "Test"
     
@@ -348,19 +414,24 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         
            NSLayoutConstraint.activate([
             
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
-            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            welcomeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             
             textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
             textFieldSeparator.centerXAnchor.constraint(equalTo: welcomeLabel.centerXAnchor),
-            textFieldSeparator.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            textFieldSeparator.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
             
-            preferencesCollectionView.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor),
+            infoLabel.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 20),
+            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor, constant: -5),
+            infoLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            preferencesCollectionView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
             preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            preferencesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            preferencesCollectionView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
         ])
@@ -425,9 +496,7 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         view.backgroundColor = UIColor.white
         setUpSubviews()
         setuplayoutConstraints()
-        
     }
-    
     
     //MARK: Alert
     @objc func handelDismiss() {
@@ -458,7 +527,7 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         welcome.textAlignment = .center
         welcome.textColor = UIColor.ademBlue
         welcome.backgroundColor = UIColor.white
-        welcome.font = UIFont(name:"HelveticaNeue", size: 20.0)
+        welcome.font = UIFont(name: helNeu, size: 20.0)
         welcome.translatesAutoresizingMaskIntoConstraints = false
         return welcome
     }()
@@ -468,6 +537,18 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         textSeparator.backgroundColor = UIColor.ademBlue
         textSeparator.translatesAutoresizingMaskIntoConstraints = false
         return textSeparator
+    }()
+    
+    let infoLabel: UILabel = {
+        var reason = UILabel()
+        reason.text = "You can sync all or none of your loyalty accounts to get better insights into your habits."
+        reason.textAlignment = .center
+        reason.numberOfLines = 0
+        reason.textColor = UIColor.ademBlue
+        reason.backgroundColor = UIColor.white
+        reason.font = UIFont(name: helNeu, size: 15.0)
+        reason.translatesAutoresizingMaskIntoConstraints = false
+        return reason
     }()
     
     override func viewWillAppear(_ animated: Bool) {
@@ -488,7 +569,6 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         
 
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/10, left: 0, bottom: 0, right: 0)
     
         //layout.scrollDirection = .horizontal
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
@@ -506,11 +586,12 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         //MARK: subviews
         view.addSubview(welcomeLabel)
         view.addSubview(textFieldSeparator)
+        view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
 
-        
-        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+        infoLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
     }
@@ -521,19 +602,24 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         
            NSLayoutConstraint.activate([
             
-            welcomeLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
             welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
-            welcomeLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            welcomeLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            welcomeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
             
             textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
             textFieldSeparator.centerXAnchor.constraint(equalTo: welcomeLabel.centerXAnchor),
-            textFieldSeparator.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            textFieldSeparator.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
             
-            preferencesCollectionView.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor),
+            infoLabel.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 20),
+            infoLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            infoLabel.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor, constant: -5),
+            infoLabel.heightAnchor.constraint(equalToConstant: 50),
+            
+            preferencesCollectionView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
             preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            preferencesCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            preferencesCollectionView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
         ])
@@ -573,6 +659,121 @@ extension addedStorePreferencesTwo: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
         currentCell?.preferencesIcon.backgroundColor = nil
+    }
+    
+}
+
+class thankYouPreferences: UIViewController {
+
+    var currentViewControllerIndex = 0
+
+    //MARK: Element calls
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        view.backgroundColor = UIColor.white
+        
+        setUpSubviews()
+        setuplayoutConstraints()
+    }
+    
+    
+    
+    //Name Section
+    let welcomeLabel: UILabel = {
+        var welcome = UILabel()
+        welcome.text = "Welcome to Adem!"
+        welcome.textAlignment = .center
+        welcome.numberOfLines = 0
+        welcome.textColor = UIColor.ademBlue
+        welcome.font = UIFont(name: helNeu, size: 20.0)
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        
+        return welcome
+    }()
+    
+    let textFieldSeparator: UIView = {
+        let textSeparator = UIView()
+        textSeparator.backgroundColor = UIColor.ademBlue
+        textSeparator.translatesAutoresizingMaskIntoConstraints = false
+        return textSeparator
+    }()
+    
+    let ademImageHolder: UIImageView = {
+        let ademImage = UIImageView()
+        ademImage.image = UIImage(named: "Adem Logo")
+        ademImage.backgroundColor = UIColor.red
+        ademImage.contentMode = .scaleAspectFit
+        
+        return ademImage
+    }()
+    
+    //Name Section
+    let subText: UILabel = {
+        var subtext = UILabel()
+        subtext.text = "We're adding your preferences so that we can give you the best experience!"
+        subtext.textAlignment = .center
+        subtext.numberOfLines = 0
+        subtext.textColor = UIColor.ademBlue
+        subtext.font = UIFont(name: helNeu, size: 20.0)
+        subtext.translatesAutoresizingMaskIntoConstraints = false
+        
+        return subtext
+    }()
+
+    
+    override func viewWillAppear(_ animated: Bool) {
+
+    }
+
+    private func setUpSubviews() {
+        
+        //MARK: subviews
+        view.addSubview(welcomeLabel)
+        view.addSubview(textFieldSeparator)
+        view.addSubview(ademImageHolder)
+        view.addSubview(subText)
+        
+
+        //TODO: this should be a loading or animation to indicate saving
+//        welcomeLabel.layer.borderWidth = 2
+//        welcomeLabel.layer.borderColor = UIColor.ademGreen.cgColor
+//        welcomeLabel.layer.cornerRadius = 75
+        
+        
+        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+        ademImageHolder.translatesAutoresizingMaskIntoConstraints = false
+        subText.translatesAutoresizingMaskIntoConstraints = false
+
+    }
+    
+    private func setuplayoutConstraints() {
+        
+           NSLayoutConstraint.activate([
+            
+            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
+            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            welcomeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            
+            textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
+            textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
+            textFieldSeparator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textFieldSeparator.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            
+            ademImageHolder.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 50),
+            ademImageHolder.heightAnchor.constraint(equalToConstant: 150),
+            ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            
+            subText.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor),
+            subText.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+            subText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subText.widthAnchor.constraint(equalTo: view.widthAnchor, constant:  -25),
+            
+        ])
     }
     
 }

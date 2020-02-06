@@ -16,6 +16,9 @@ class preferenceContent: NSObject {
     var preferencesLabelText: String?
 }
 
+
+
+
 class signUpCellDesign: UICollectionViewCell {
     
     override init(frame: CGRect) {

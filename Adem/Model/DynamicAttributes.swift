@@ -114,12 +114,12 @@ class profileContent: NSObject {
     var privacyImage: String?
 }
 
-struct thrownOutAlert: alertInformation {
-    
-    var alertProductName: String?
-    var alertProductImageName: String?
-    
-}
+//struct thrownOutAlert: alertInformation {
+//    
+//    var alertProductName: String?
+//    var alertProductImageName: String?
+//    
+//}
 
 
 //Alert Elements

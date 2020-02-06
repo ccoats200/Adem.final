@@ -375,7 +375,7 @@ class preferenceNextViews: UIView {
   
     self.layer.masksToBounds = true
     self.backgroundColor = UIColor.ademGreen
-    self.layer.cornerRadius = 5
+    //self.layer.cornerRadius = 5
     
     setupView()
   }
@@ -430,7 +430,7 @@ class preferenceNextViews: UIView {
     
     NSLayoutConstraint.activate([
     
-        pBar.heightAnchor.constraint(equalToConstant: 5),
+        pBar.heightAnchor.constraint(equalToConstant: 8),
         pBar.widthAnchor.constraint(equalTo: self.widthAnchor),
         pBar.topAnchor.constraint(equalTo: self.topAnchor),
         pBar.centerXAnchor.constraint(equalTo: self.centerXAnchor),

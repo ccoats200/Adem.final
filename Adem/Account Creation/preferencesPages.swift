@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import Firebase
+import FirebaseAnalytics
 
 class signInFlowViewController: UIPageViewController {
     
@@ -289,6 +291,8 @@ class signInFlowViewControllerTwo: UIPageViewController {
     let flavorPage = addedFlavorPreferences()
     let dietPage = addedDietPreferencesTwo()
     let storePage = addedStorePreferencesTwo()
+    let thankYouPage = thankYouPreferences()
+    //let thankYouPage = circleTest()
 
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -301,12 +305,13 @@ class signInFlowViewControllerTwo: UIPageViewController {
     
     let colors: [UIColor] = [
         .purple,
-        .green
+        .green,
+        .blue
     ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationItem.title = "please2"
+        //self.navigationController?.navigationItem.title = "please2"
           
         //MARK: Remove data source to stop scroll
 //        self.dataSource = self
@@ -314,21 +319,11 @@ class signInFlowViewControllerTwo: UIPageViewController {
         self.delegate = nil
         
         let initialPage = 0
-        
-        
-        // add the individual viewControllers to the pageViewController
-//        self.pages.append(flavorPage)
-//        self.pages.append(dietPage)
-//        self.pages.append(storePage)
-//        self.pages.append(thankYouPage)
-        
-        for i in 0..<colors.count {
-            flavorPage.view.backgroundColor = colors[i]
-          
             pages.append(flavorPage)
             pages.append(dietPage)
             pages.append(storePage)
-        }
+            pages.append(thankYouPage)
+        
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
     }
     
@@ -406,8 +401,8 @@ class userFlowViewControllerTwo: UIViewController {
 
     let myContainerView: UIView = {
         let v = UIView()
+        
         v.translatesAutoresizingMaskIntoConstraints = false
-        v.backgroundColor = .gray
         return v
     }()
 
@@ -437,11 +432,15 @@ class userFlowViewControllerTwo: UIViewController {
         // add the page VC's view to our container view
         myContainerView.addSubview(signInFlow.view)
         //myContainerView.addSubview(bottomView)
+        
+        
 
         setUpSignConstraint()
        
         signInFlow.didMove(toParent: self)
         
+        //FIXME: needs to be include the first count
+        bottomView.pBar.progress = prog
         //MARK: Buttons
         setUpButton()
     }
@@ -450,28 +449,61 @@ class userFlowViewControllerTwo: UIViewController {
     
     private func setUpButton() {
         bottomView.nextButton.addTarget(self, action: #selector(sendUserToNextScreen), for: .touchUpInside)
+        
+        
+        let gradient = CAGradientLayer()
+               gradient.frame = view.bounds
+               gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
+               //Top left
+               gradient.startPoint = CGPoint(x: 0, y: 0)
+               //Top right
+               gradient.endPoint = CGPoint(x: 1, y: 1)
+               //bottomView.nextButton.layer.addSublayer(gradient)
+               
     }
     
 
     var currentPage = 0
     var prog: Float = 0.00
     
-    @objc func sendUserToNextScreen() {
-        //This needs to be the next page button
-        //I need to remove the scroll function so that they cant scroll back
-        
-        if currentPage < ((signInFlow.pages.count)-1) {
-        currentPage+=1
-        
-        signInFlow.setViewControllers([signInFlow.pages[currentPage]], direction: .forward, animated: true, completion: nil)
+    func sendForward() {
+            currentPage+=1
+            signInFlow.setViewControllers([signInFlow.pages[currentPage]], direction: .forward, animated: true, completion: nil)
             
             if prog < Float((signInFlow.pages.count-1)/(signInFlow.pages.count-1)) {
                 prog += (Float((signInFlow.pages.count-1)/(signInFlow.pages.count-1))/Float((signInFlow.pages.count-1)))
                 print(prog)
                 bottomView.pBar.progress = prog
             }
+            
+            //MARK: Capture the time of the tap
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm:ss"
+            let time = dateFormatter.string(from: Date())
+            print(time)
+            
             print("The button is working on page \(currentPage)")
-        } else { print("There are no more pages \(currentPage)") }
+    }
+    
+    @objc func sendUserToNextScreen() {
+
+        if currentPage < ((signInFlow.pages.count)-1) {
+            sendForward()
+        } else {
+            sendToHomeScreen()
+        }
+    }
+    
+        
+    func sendToHomeScreen() {
+        
+        let listController = tabBar()
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.window?.rootViewController = listController
+        appDelegate.window?.makeKeyAndVisible()
+        //self.dismiss(animated: true, completion: nil)
+        print("There are no more pages \(currentPage)")
+        
     }
     
     @objc func testReverse() {

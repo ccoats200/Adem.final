@@ -66,6 +66,7 @@
 		35D6489422ECC01400015352 /* SettingTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6489322ECC01400015352 /* SettingTVC.swift */; };
 		35D6489A22ECF8CC00015352 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 35D6489922ECF8CC00015352 /* GoogleService-Info.plist */; };
 		35DE93B4234AC37A000B2BE8 /* circularProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35DE93B3234AC37A000B2BE8 /* circularProgressBar.swift */; };
+		35E95CC323EA69AB00B6F960 /* fonts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35E95CC223EA69AB00B6F960 /* fonts.swift */; };
 		35FDD16A23C4102200A85023 /* listProductinfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35FDD16923C4102200A85023 /* listProductinfo.swift */; };
 		5E2C21DEDCB99D8ACB64F84C /* Pods_Adem.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 552FA8DCCC99612FFFFF0E7C /* Pods_Adem.framework */; };
 		723B0AC4CAA30209E8DE6F04 /* Pods_AdemUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE9B64C42DC6A7F3895662EC /* Pods_AdemUITests.framework */; };
@@ -159,6 +160,7 @@
 		35D6489322ECC01400015352 /* SettingTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTVC.swift; sourceTree = "<group>"; };
 		35D6489922ECF8CC00015352 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		35DE93B3234AC37A000B2BE8 /* circularProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = circularProgressBar.swift; sourceTree = "<group>"; };
+		35E95CC223EA69AB00B6F960 /* fonts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fonts.swift; sourceTree = "<group>"; };
 		35FDD16923C4102200A85023 /* listProductinfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listProductinfo.swift; sourceTree = "<group>"; };
 		552FA8DCCC99612FFFFF0E7C /* Pods_Adem.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Adem.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		641E0606A6B657153B72FDF6 /* Pods-AdemUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemUITests.debug.xcconfig"; path = "Target Support Files/Pods-AdemUITests/Pods-AdemUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -312,6 +314,7 @@
 			children = (
 				35D6484622ECBCBA00015352 /* Design.Elements.swift */,
 				35D6484D22ECBD1300015352 /* toolBar.swift */,
+				35E95CC223EA69AB00B6F960 /* fonts.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -689,6 +692,7 @@
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
 				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
 				3540826C23E25DBD00137476 /* signUpCell.swift in Sources */,
+				35E95CC323EA69AB00B6F960 /* fonts.swift in Sources */,
 				35D6487B22ECBEFE00015352 /* ItemVCLayout.swift in Sources */,
 				358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */,
 				35D6484E22ECBD1300015352 /* toolBar.swift in Sources */,

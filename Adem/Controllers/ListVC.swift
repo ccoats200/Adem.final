@@ -280,6 +280,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             self.view.addSubview(filterCollectionView)
             filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
             
+
 //            MARK: Constraints
             NSLayoutConstraint.activate([
                 
@@ -292,6 +293,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
                 listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
                 listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+                
+                
                 ])
         }
     }
@@ -623,15 +626,19 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
 
+        switch indexPath.row {
+        case 0:
+            handleProductOptiontwo()
+        case 1:
+            handleListProduct()
+        case 2:
+            handleAlert()
+        default:
+            handleProductOptiontwo()
+        }
         
-        if indexPath.row == 0 {
-               handleProductOptiontwo()
-           } else {
-               handleListProduct()
-               
-           }
-
-           listTableView.deselectRow(at: indexPath, animated: false)
+        listTableView.deselectRow(at: indexPath, animated: false)
+        
        }
        
        func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -712,4 +719,31 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
         }
     }
 
+
+extension listViewController: UNUserNotificationCenterDelegate {
+
+    //for displaying notification when app is in foreground
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+
+        //If you don't want to show notification when app is open, do something here else and make a return here.
+        //Even you you don't implement this delegate method, you will not see the notification on the specified controller. So, you have to implement this delegate and make sure the below line execute. i.e. completionHandler.
+
+        completionHandler([.alert, .badge, .sound])
+    }
+
+    // For handling tap and user actions
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+
+        switch response.actionIdentifier {
+        case "action1":
+            print("Action First Tapped")
+        case "action2":
+            print("Action Second Tapped")
+        default:
+            break
+        }
+        completionHandler()
+    }
+
+}
 
