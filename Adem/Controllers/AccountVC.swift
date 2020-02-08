@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreBluetooth
 import Firebase
-import FirebaseFirestore
+//import FirebaseFirestore
 
 class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate {
     

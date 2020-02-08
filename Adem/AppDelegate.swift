@@ -9,12 +9,15 @@
 import Firebase
 import UIKit
 import CoreData
-import FirebaseFirestore
+//import FirebaseFirestore
 
 
+//MARK: Check pod file and uncomment use_frameworks! when building the final https://stackoverflow.com/questions/59864782/dyld-library-not-loaded-rpath-fblpromises-framework-fblpromises
 //MARK: Important
 /*
  Remember to ignore Firebase and private info. see https://help.github.com/articles/ignoring-files/
+ 
+ https://medium.com/app-makers/how-to-remove-cocoapods-from-xcode-project-5166c19152
  */
 
 

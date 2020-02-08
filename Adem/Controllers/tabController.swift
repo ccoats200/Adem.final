@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 import Firebase
-import FirebaseFirestore
+//import FirebaseFirestore
 import AVFoundation
 
 class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate {

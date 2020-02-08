@@ -7,7 +7,7 @@
 //
 import UIKit
 import Firebase
-import FirebaseFirestore
+//import FirebaseFirestore
 
 //ADD new product Cell
 class addProductCell: CellBasics {

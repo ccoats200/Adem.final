@@ -7,7 +7,7 @@
 //
 
 import Firebase
-import FirebaseFirestore
+//import FirebaseFirestore
 
 //MARK: ALL table View images need to be 22 px By 22 px
 

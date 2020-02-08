@@ -88,7 +88,7 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     }()
     
     override func viewWillAppear(_ animated: Bool) {
-
+        
     }
     
     var currentPage = 0
@@ -98,9 +98,15 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     //MARK: Arrays
     let promptArray = ["What flavors do you like?","Are you allergic?","Where do you shop?","We Know Just The Thing"]
     
-    let preferencesDictionary = [0: ["Salty","Sour","Sweet","Biter","Savory","Spicy","Fruity","Skip"],
-    1: ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"],
-    2: ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "please","work"],
+    //not sure what katie wants for this. I choose for them
+    //Make the prompt explain the weighted scale
+    //Making it based on a meal or picture
+    //5 tiles click the flavor profile
+    //Conjoint analysis in back end
+    let preferencesDictionary = [
+    0: ["Salty","Sour","Sweet","Biter","Savory","Spicy","Fruity","Skip"],
+    1: ["Pescaterian","Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"],
+    2: ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "Please","Work"],
     3: ["Thanks"]]
     
     
@@ -115,15 +121,12 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         if prog < Float(numberOfPages/numberOfPages) {
             prog += (Float(numberOfPages/numberOfPages)/Float(numberOfPages))
             print(prog)
-            
         }
         coverMeImReloading()
     }
     
     private func sendingPreferencesToCloud() {
-        
-        
-        
+                
 //        guard let flavorPreferences = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else { return }
 //
 //        let dataToSave: [String: Any] = [
@@ -137,6 +140,7 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     func coverMeImReloading() {
+        
         preferencesCollectionView.reloadData()
         
         switch currentPage {
@@ -160,7 +164,6 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         //layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/5, left: (self.view.frame.width)/5, bottom: (self.view.frame.width)/5, right: (self.view.frame.height)/5)
     
-        //layout.scrollDirection = .horizontal
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
 
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
@@ -172,7 +175,7 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         preferencesCollectionView.isScrollEnabled = true
         preferencesCollectionView.allowsMultipleSelection = true
         
-        //MARK: subviews
+        //MARK: Subviews
         view.addSubview(welcomeLabel)
         view.addSubview(textFieldSeparator)
         view.addSubview(infoLabel)
@@ -182,13 +185,11 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
-
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
-        let padding: CGFloat =  50
-        
+        let padding: CGFloat =  10
         let collectionViewSize = collectionView.frame.size.width - padding
 
         return CGSize(width: collectionViewSize/2, height: 60)
@@ -242,7 +243,7 @@ extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewData
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
         preferencesCell.layer.cornerRadius = 5
         //preferencesCell.layer.borderWidth = 1
-        //preferencesCell.backgroundColor = UIColor.red
+        //preferencesCell.backgroundColor = UIColor.green
       
         //signInFlowViewControllerTwo().dataSource = self as! UIPageViewControllerDataSource
         
@@ -258,21 +259,24 @@ extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewData
         default:
             preferencesCell.preferencesLabel.text = "Something Went Wrong... Let me check the recipe"
         }
-        return preferencesCell
         
+        return preferencesCell
         }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        currentCell?.preferencesIcon.backgroundColor = UIColor.ademGreen
-        currentCell?.preferencesIcon.tintColor = UIColor.red
+        currentCell?.preferencesIcon.image = UIImage(named: "salt")
+        //currentCell?.preferencesIcon.backgroundColor = UIColor.ademGreen
+        //currentCell?.preferencesIcon.tintColor = UIColor.red
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
+        currentCell?.preferencesIcon.image = UIImage(named: "salt_unselected")
         currentCell?.preferencesIcon.backgroundColor = nil
     }
-    
 }
 
 class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLayout {
@@ -290,7 +294,6 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     var preferencesCollectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         
         view.backgroundColor = UIColor.white
         setUpSubviews()
@@ -358,7 +361,7 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
 
     }
     //MARK: Arrays
-    let preferencesDictionary = [0: ["Vegetarian","Vegan","Nuts","Lactose","Not on here", "None", "please"]]
+    let preferencesDictionary = [0: ["Pescaterian","Vegetarian","Vegan","Nuts","Lactose","Other", "None", "please"]]
 
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -554,8 +557,9 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
     override func viewWillAppear(_ animated: Bool) {
 
     }
+    
     //MARK: Arrays
-    let preferencesDictionary = [0: ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "please","work"]]
+    let preferencesDictionary = [0: ["Vegetarian","Vegan","Nuts","Lactose","Everything","Not on here", "None",]]
 
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -703,7 +707,9 @@ class thankYouPreferences: UIViewController {
     let ademImageHolder: UIImageView = {
         let ademImage = UIImageView()
         ademImage.image = UIImage(named: "Adem Logo")
+        //ademImage.image = UIImage(named: "ademSignUp")
         ademImage.backgroundColor = UIColor.red
+        ademImage.layer.cornerRadius = 10
         ademImage.contentMode = .scaleAspectFit
         
         return ademImage

@@ -319,10 +319,10 @@ class signInFlowViewControllerTwo: UIPageViewController {
         self.delegate = nil
         
         let initialPage = 0
-            pages.append(flavorPage)
-            pages.append(dietPage)
-            pages.append(storePage)
-            pages.append(thankYouPage)
+        pages.append(dietPage)
+        pages.append(flavorPage)
+        pages.append(storePage)
+        pages.append(thankYouPage)
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
     }

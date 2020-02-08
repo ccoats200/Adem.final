@@ -39,11 +39,10 @@ class signUpCellDesign: UICollectionViewCell {
         }
     }
     
-            
-
     let preferencesIcon: UIImageView = {
         let prefIcon = UIImageView()
-        prefIcon.image = UIImage(named: "Info")
+        //prefIcon.image = UIImage(named: "Info")
+        prefIcon.image = UIImage(named: "salt_unselected")
         prefIcon.contentMode = .scaleAspectFit
         prefIcon.clipsToBounds = true
         prefIcon.layer.masksToBounds = true
@@ -55,10 +54,10 @@ class signUpCellDesign: UICollectionViewCell {
     let preferencesLabel: UILabel = {
         let prefLabel = UILabel()
         prefLabel.textAlignment = .left
-        prefLabel.text = "set"
+        prefLabel.text = "Opps"
         prefLabel.textColor = UIColor.ademBlue
-        prefLabel.font = UIFont(name: productFont, size: 40)
-        //prefLabel.font = UIFont.boldSystemFont(ofSize: 20)
+        //prefLabel.backgroundColor = UIColor.red
+        prefLabel.font = UIFont(name: productFont, size: 20)
         prefLabel.clipsToBounds = true
         prefLabel.layer.masksToBounds = true
         prefLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -67,19 +66,20 @@ class signUpCellDesign: UICollectionViewCell {
     
 
     func setupViews() {
+        
         addSubview(preferencesIcon)
         addSubview(preferencesLabel)
-        preferencesIcon.layer.cornerRadius = 25
+        //preferencesIcon.layer.cornerRadius = 25
         
         
-        preferencesIcon.leftAnchor.constraint(equalTo: self.leftAnchor).isActive = true
+        preferencesIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
         preferencesIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
         preferencesIcon.widthAnchor.constraint(equalToConstant: 50).isActive = true
         preferencesIcon.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
-        preferencesLabel.leftAnchor.constraint(equalTo: preferencesIcon.rightAnchor, constant: 10).isActive = true
+        preferencesLabel.leadingAnchor.constraint(equalTo: preferencesIcon.trailingAnchor, constant: 5).isActive = true
         preferencesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        preferencesLabel.widthAnchor.constraint(equalTo: self.widthAnchor).isActive = true
+        preferencesLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
     }
 }
 

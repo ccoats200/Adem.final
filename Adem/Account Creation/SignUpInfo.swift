@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
-import FirebaseFirestore
+//import FirebaseFirestore
 
 
 class UserInfo: UIViewController, UITextFieldDelegate {
@@ -126,7 +126,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 
                 self.accountCreationViews.passwordTextField.resignFirstResponder()
                 
-                let moreController = addedFoodPreference()
+                //let moreController = addedFoodPreference()
+                let moreController = userFlowViewControllerTwo()
                 moreController.resignFirstResponder()
                 self.present(moreController, animated: true, completion: nil)
                 

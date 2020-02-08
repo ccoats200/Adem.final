@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
-import FirebaseFirestore
+//import FirebaseFirestore
 
 //Account and Privacy Image Product Cell layout
 class accountPrivacyCellDesign: UICollectionViewCell {
