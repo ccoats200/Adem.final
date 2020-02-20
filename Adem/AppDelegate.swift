@@ -47,21 +47,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let db = Firestore.firestore()
         let storage = Storage.storage()
         let storageRef = storage.reference()
-        
-        
-        //let settings = db.settings
-        //settings.areTimestampsInSnapshotsEnabled = true
-        //db.settings = settings
-        
+    
         
         //MARK: RootController
         window?.rootViewController = login()
         //window?.rootViewController = tabBar()
         
         //MARK: THis is for all nav bars Current In solid green
-        //UINavigationBar.appearance().barTintColor = UIColor.ademGreen
-        
-        
+
         
         //Removes the shadow under the Nav bar
         UINavigationBar.appearance().shadowImage = UIImage()

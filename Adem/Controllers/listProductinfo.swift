@@ -97,9 +97,17 @@ class listProductVCLayout: UIViewController {
         pInfo.translatesAutoresizingMaskIntoConstraints = false
         infoView.translatesAutoresizingMaskIntoConstraints = false
         infoView.translatesAutoresizingMaskIntoConstraints = false
+        
+        infoView.listQuantityButon.addTarget(self, action: #selector(plz), for: .touchDown)
+        
         pInfo.layer.cornerRadius = 20
         
         
+    }
+    
+    @objc func plz() {
+        
+        print("???")
     }
     
     func setUpProductButtons() {

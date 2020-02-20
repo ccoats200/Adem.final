@@ -9,35 +9,7 @@
 import UIKit
 
 
-class additonalProductCollectionView: UICollectionView {
-   
-    
-    /*
-    //initWithFrame to init view from code
-    init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-     }
-     
-     //initWithCode to init view from xib or storyboard
-     required init?(coder aDecoder: NSCoder) {
-       super.init(coder: aDecoder)
-       setupView()
-     }
-     
-    private func setupView() {
-    }
- */
-}
 
-class ProductCell: UICollectionViewCell {
-    
-    @IBOutlet weak var itemImage: UIImageView!
-    @IBOutlet weak var productName: UILabel!
-    @IBOutlet weak var productPrice: UILabel!
-    @IBOutlet weak var calCount: UILabel!
-    
-}
 
 //List Delete protocol
 protocol recItemDelegate: class {

@@ -60,8 +60,6 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         tableView.backgroundColor = UIColor.white
         self.tableView.register(customTableViewCell.self, forCellReuseIdentifier: privacy)
         
-        //tableView?(<#T##tableView: UITableView##UITableView#>, leadingSwipeActionsConfigurationForRowAt: <#T##IndexPath#>)
-        //self.tableView.separatorStyle = .none
         
         self.tableView.dataSource = self
         self.tableView.delegate = self
@@ -96,9 +94,6 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     //product Button
     @objc func inspectingFriend() {
-        
-        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
-        self.navigationController?.pushViewController(cController, animated: true)
         
         print("Settings Tab is active")
     }
@@ -228,4 +223,3 @@ class customTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
-

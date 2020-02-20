@@ -81,3 +81,35 @@ extension UITextField {
     }
 }
 
+
+//MARK: Gesture
+
+class gesture {
+    
+    func gestSave() {
+    //User interations
+    let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(addLongGestureRecognizer))
+    lpgr.minimumPressDuration = 0.35
+//    self.listCollectionView.addGestureRecognizer(lpgr)
+        
+    }
+    
+    @objc func addLongGestureRecognizer(_ gestureRecognizer: UILongPressGestureRecognizer) {
+        
+        /*
+        
+        if gestureRecognizer.state != .began { return }
+        //let p = gestureRecognizer.location(in: self.collectionView)
+        let p = gestureRecognizer.location(in: self.listCollectionView)
+        //if let indexPath = self.collectionView.indexPathForItem(at: p) {
+        if let indexPath = self.listCollectionView.indexPathForItem(at: p) {
+            //let cell = self.collectionView.cellForItem(at: indexPath)
+            
+            navigationController?.isEditing = true
+            
+        } else {
+            print("can't find")
+        }
+        */
+    }
+}

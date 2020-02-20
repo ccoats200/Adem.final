@@ -9,7 +9,6 @@
 import Foundation
 import UIKit
 import Firebase
-//import FirebaseFirestore
 import AVFoundation
 
 
@@ -85,6 +84,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     @objc fileprivate func switchSegViews() {
         print("test")
     }
+    
     //Setting up views
     
     func setUpDifferentViews() {
@@ -135,6 +135,16 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return tableViewCategories.count
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let view: UIView = {
+           let view = UIView()
+            view.backgroundColor = UIColor.white
+            return view
+        }()
+        
+        return view
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

@@ -10,14 +10,14 @@ import Foundation
 import UIKit
 
 //MARK: Login text fields view
-class loginInfoView: UIView, UITextFieldDelegate {
+class loginInfoView: UIView {
   
     //initWithFrame to init view from code
   override init(frame: CGRect) {
     super.init(frame: frame)
    
-    emailTextField.delegate = self
-    passwordTextField.delegate = self
+    //emailTextField.delegate = self
+    //passwordTextField.delegate = self
     setupView()
   }
   
@@ -40,11 +40,11 @@ class loginInfoView: UIView, UITextFieldDelegate {
         return email
        }()
        
-       let textFieldSeparator: UIView = {
-           let textSeparator = UIView()
-           textSeparator.backgroundColor = UIColor.ademBlue
-           textSeparator.translatesAutoresizingMaskIntoConstraints = false
-           return textSeparator
+    let textFieldSeparator: UIView = {
+        let textSeparator = UIView()
+        textSeparator.backgroundColor = UIColor.ademBlue
+        textSeparator.translatesAutoresizingMaskIntoConstraints = false
+        return textSeparator
        }()
        
     let passwordTextField: UITextField = {
@@ -57,22 +57,7 @@ class loginInfoView: UIView, UITextFieldDelegate {
         
         return password
        }()
-    
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Try to find next responder
-        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
-            nextField.becomeFirstResponder()
-        } else {
-            // Not found, so remove keyboard.
-            textField.resignFirstResponder()
-        }
-        // Do not add a line break
-        print(textField.tag)
-        return false
-    }
-    
-       
+
   //common func to init our view
   private func setupView() {
     
@@ -88,10 +73,6 @@ class loginInfoView: UIView, UITextFieldDelegate {
     emailTextField.translatesAutoresizingMaskIntoConstraints = false
     textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
     passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-
-    //self.clipsToBounds = true
-    //self.layer.cornerRadius = 20
-    
     
     NSLayoutConstraint.activate([
         
@@ -131,32 +112,31 @@ class loginButtonView: UIView {
     setupView()
   }
   
-    let loginButton: UIButton = {
-        let login = UIButton(type: .system)
-        login.backgroundColor = UIColor.white
-        login.setTitle("Login", for: .normal)
-        login.translatesAutoresizingMaskIntoConstraints = false
-        login.titleLabel?.font = UIFont(name: headerFont, size: 20)
-        login.layer.cornerRadius = 5
-        login.layer.masksToBounds = true
-        login.setTitleColor(UIColor.ademBlue, for: .normal)
-        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return login
-    }()
     
-    let signUpButton: UIButton = {
-        let signUp = UIButton()
-        signUp.setTitle("Sign Up", for: .normal)
-        signUp.setTitleColor(UIColor.white, for: .normal)
-        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 20)
-        signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        signUp.translatesAutoresizingMaskIntoConstraints = false
-        return signUp
-    }()
+    var loginButton = navigationButton()
+    var signUpButton = navigationButton()
+    
+    private func setUpButtons() {
+        //MARK: login button
+        loginButton.largeNextButton.backgroundColor = UIColor.white
+        loginButton.largeNextButton.setTitle("Login", for: .normal)
+        loginButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        loginButton.largeNextButton.layer.masksToBounds = true
+        loginButton.largeNextButton.setTitleColor(UIColor.ademBlue, for: .normal)
+        
+        //MARK: Sign up button
+        signUpButton.largeNextButton.setTitle("Sign Up", for: .normal)
+        signUpButton.largeNextButton.backgroundColor = UIColor.clear
+        signUpButton.largeNextButton.setTitleColor(UIColor.white, for: .normal)
+        signUpButton.largeNextButton.titleLabel?.font = UIFont(name: buttonFont, size: 20)
+        signUpButton.largeNextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        signUpButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+    }
        
   //common func to init our view
   private func setupView() {
 
+    setUpButtons()
     self.layer.masksToBounds = true
     
     self.addSubview(loginButton)
@@ -182,7 +162,7 @@ class loginButtonView: UIView {
 }
 
 //MARK: Social button view
-class socialButtonView: UIView {
+class roundButtonView: UIView {
   
     //initWithFrame to init view from code
   override init(frame: CGRect) {
@@ -197,80 +177,33 @@ class socialButtonView: UIView {
     
     setupView()
   }
-  
     
-    let maybeLaterButton: UIButton = {
-        let maybeLater = UIButton(type: .system)
-        maybeLater.setTitle("Maybe Later", for: .normal)
-        maybeLater.titleLabel?.font = UIFont(name: productFont, size: 12)
-        maybeLater.setTitleColor(UIColor.white, for: .normal)
-        return maybeLater
-    }()
-    
-    let facebookLoginImage: UIButton = {
-        let facebookLogin = UIButton(type: .system)
-        facebookLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        facebookLogin.layer.cornerRadius = 30
-        facebookLogin.layer.borderWidth = 0.50
-        facebookLogin.backgroundColor = UIColor.white
-        facebookLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        facebookLogin.translatesAutoresizingMaskIntoConstraints = false
-        return facebookLogin
-    }()
-    
-    let twitterLoginImage: UIButton = {
-        let twitterLogin = UIButton(type: .system)
-        twitterLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        twitterLogin.layer.cornerRadius = 30
-        twitterLogin.layer.borderWidth = 0.50
-        twitterLogin.backgroundColor = UIColor.white
-        twitterLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        twitterLogin.translatesAutoresizingMaskIntoConstraints = false
-        return twitterLogin
-    }()
-    
-    let GoogleLoginImage: UIButton = {
-        let googleLogin = UIButton(type: .system)
-        googleLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        googleLogin.layer.cornerRadius = 30
-        googleLogin.layer.borderWidth = 0.50
-        googleLogin.backgroundColor = UIColor.white
-        googleLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
-        googleLogin.translatesAutoresizingMaskIntoConstraints = false
-        return googleLogin
+    let roundLoginImage: UIButton = {
+        let socialLogin = UIButton(type: .system)
+//        socialLogin.setImage(UIImage.init(named: "Home"), for: .normal)
+        socialLogin.layer.cornerRadius = 30
+        socialLogin.layer.borderWidth = 0.50
+        socialLogin.backgroundColor = UIColor.white
+        socialLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        socialLogin.translatesAutoresizingMaskIntoConstraints = false
+        return socialLogin
     }()
     
   //common func to init our view
   private func setupView() {
 
     self.layer.masksToBounds = true
-    
-    self.addSubview(maybeLaterButton)
-    maybeLaterButton.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-    let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
-    differentSignUpMethodsStackView.contentMode = .scaleAspectFit
-    //differentSignUpMethodsStackView.spacing = 5
-    differentSignUpMethodsStackView.distribution = .equalSpacing
-    
-    
-    self.addSubview(differentSignUpMethodsStackView)
-    differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
+
+    self.addSubview(roundLoginImage)
+    roundLoginImage.translatesAutoresizingMaskIntoConstraints = false
     
     
     NSLayoutConstraint.activate([
         
-        differentSignUpMethodsStackView.topAnchor.constraint(equalTo: self.topAnchor),
-        differentSignUpMethodsStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        differentSignUpMethodsStackView.widthAnchor.constraint(equalTo: self.widthAnchor),
-        differentSignUpMethodsStackView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
-        
-
-        maybeLaterButton.topAnchor.constraint(equalTo: differentSignUpMethodsStackView.bottomAnchor),
-        maybeLaterButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        maybeLaterButton.widthAnchor.constraint(equalTo: self.widthAnchor),
-        maybeLaterButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
+        roundLoginImage.topAnchor.constraint(equalTo: self.topAnchor),
+        roundLoginImage.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        roundLoginImage.widthAnchor.constraint(equalTo: self.widthAnchor),
+        roundLoginImage.heightAnchor.constraint(equalTo: self.heightAnchor),
     ])
   }
 }
@@ -385,23 +318,11 @@ class preferenceNextViews: UIView {
     super.init(coder: aDecoder)
     
     setupView()
+    
   }
     
-   //Next Button
-    let nextButton: UIButton = {
-        //This just refreshes the table view and the labels
-        let nextPage = UIButton(type: .system)
-        nextPage.backgroundColor = UIColor.ademBlue
-        nextPage.setTitle("Next", for: .normal)
-        nextPage.translatesAutoresizingMaskIntoConstraints = false
-        nextPage.layer.cornerRadius = 5
-        nextPage.layer.masksToBounds = true
-        nextPage.setTitleColor(UIColor.white, for: .normal)
-        nextPage.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        
-        return nextPage
-        
-    }()
+    
+    var nextButton = navigationButton()
     
     let pBar: UIProgressView = {
         let progressViewBar = UIProgressView(progressViewStyle: .bar)
@@ -415,9 +336,15 @@ class preferenceNextViews: UIView {
             
             return progressViewBar
         }()
+ 
+    private func setupButton() {
+        nextButton.largeNextButton.setTitle("Next", for: .normal)
+    }
        
+    
   //common func to init our view
   private func setupView() {
+    setupButton()
 
     self.backgroundColor = UIColor.white
     

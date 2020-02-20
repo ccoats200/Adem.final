@@ -19,7 +19,8 @@ class login: UIViewController, UITextFieldDelegate {
     //MARK: Login Views
     var userInfoCaptureElements = loginInfoView()
     var buttonsUsedToLogIn = loginButtonView()
-    var social = socialButtonView()
+    
+    var maybeButton = navigationButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,8 +32,8 @@ class login: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         
-        emailTextField.delegate = self
-        passwordTextField.delegate = self
+        userInfoCaptureElements.emailTextField.delegate = self
+        userInfoCaptureElements.passwordTextField.delegate = self
         
         
         let gradient = CAGradientLayer()
@@ -97,6 +98,7 @@ class login: UIViewController, UITextFieldDelegate {
  */
     }
     
+
     func incorrectInformationAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message:
             message, preferredStyle: .alert)
@@ -106,9 +108,15 @@ class login: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        userInfoCaptureElements.emailTextField.resignFirstResponder()
-        userInfoCaptureElements.passwordTextField.resignFirstResponder()
-        return true
+        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+            nextField.becomeFirstResponder()
+        } else {
+            // Not found, so remove keyboard.
+            textField.resignFirstResponder()
+        }
+        //userInfoCaptureElements.emailTextField.resignFirstResponder()
+        //userInfoCaptureElements.passwordTextField.resignFirstResponder()
+        return false
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -129,10 +137,7 @@ class login: UIViewController, UITextFieldDelegate {
     }()
 
     @objc func handelFacebooksignUp() {
-        let signUpInfo = MyTestViewController()
 
-        self.present(signUpInfo, animated: true, completion: nil)
-     print("Sending user to sign up Flow")
     }
     
     @objc func handelGooglesignUp() {
@@ -143,16 +148,6 @@ class login: UIViewController, UITextFieldDelegate {
     }
     
     @objc func handelTwittersignUp() {
-        
-        //Check how this is transitioning and fix it for a navigation controller
-     //let signUpInfo = addedFoodPreference()
-        let signUpInfo = MyTestViewController()
-        
-        //signUpInfo.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-        let aObjNavi = UINavigationController(rootViewController: signUpInfo)
-        self.present(aObjNavi, animated: true, completion: nil)
-//        self.navigationController?.pushViewController(aObjNavi, animated: true)
-        
         
      print("Sending user to sign up Flow")
     }
@@ -175,47 +170,6 @@ class login: UIViewController, UITextFieldDelegate {
         appDelegate.window?.rootViewController = skipAccountCreation
         print("Allowing user to skip the login or sign up flow")
     }
-
-    let userNameTextField: UITextField = {
-        let name = UITextField()
-        name.placeholder = "User Name"
-        name.translatesAutoresizingMaskIntoConstraints = false
-        
-        return name
-    }()
-    
-    let emailTextField: UITextField = {
-        let email = UITextField()
-        email.placeholder = "Email"
-        email.translatesAutoresizingMaskIntoConstraints = false
-        email.autocapitalizationType = .none
-        email.textColor = UIColor.black
-        return email
-    }()
-    
-    let emailTextSeparator: UIView = {
-        let textSeparator = UIView()
-        textSeparator.backgroundColor = UIColor.lightGray
-        textSeparator.translatesAutoresizingMaskIntoConstraints = false
-        return textSeparator
-    }()
-    
-    let passwordTextField: UITextField = {
-        let password = UITextField()
-        password.placeholder = "Password"
-        password.isSecureTextEntry = true
-        password.translatesAutoresizingMaskIntoConstraints = false
-        
-        return password
-    }()
-    
-    let passwordTextSeparator: UIView = {
-        let passwordSeparator = UIView()
-        passwordSeparator.backgroundColor = UIColor.lightGray
-        passwordSeparator.translatesAutoresizingMaskIntoConstraints = false
-        
-        return passwordSeparator
-    }()
     
     let ademImageHolder: UIImageView = {
         let ademImage = UIImageView()
@@ -231,28 +185,64 @@ class login: UIViewController, UITextFieldDelegate {
         view.addSubview(ademImageHolder)
         view.addSubview(userInfoCaptureElements)
         view.addSubview(buttonsUsedToLogIn)
-        view.addSubview(social)
+        view.addSubview(maybeButton)
+        
+        
+        maybeButton.translatesAutoresizingMaskIntoConstraints = false
         userInfoCaptureElements.translatesAutoresizingMaskIntoConstraints = false
         buttonsUsedToLogIn.translatesAutoresizingMaskIntoConstraints = false
-        social.translatesAutoresizingMaskIntoConstraints = false
     }
     
     private func setUpButtons() {
         
         //MARK: Middle Buttons
-        buttonsUsedToLogIn.signUpButton.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
-        buttonsUsedToLogIn.loginButton.addTarget(self, action: #selector(handelLogin), for: .touchUpInside)
+        buttonsUsedToLogIn.signUpButton.largeNextButton.addTarget(self, action: #selector(handelSignUp), for: .touchUpInside)
+        buttonsUsedToLogIn.loginButton.largeNextButton.addTarget(self, action: #selector(handelLogin), for: .touchUpInside)
         
         //MARK: Bottom Buttons
-        social.facebookLoginImage.addTarget(self, action: #selector(handelFacebooksignUp), for: .touchUpInside)
-        social.twitterLoginImage.addTarget(self, action: #selector(handelTwittersignUp), for: .touchUpInside)
-        social.GoogleLoginImage.addTarget(self, action: #selector(handelGooglesignUp), for: .touchUpInside)
-        social.maybeLaterButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
+        facebookLoginImage.roundLoginImage.addTarget(self, action: #selector(handelFacebooksignUp), for: .touchUpInside)
+        //facebookLoginImage.roundLoginImage.layer.cornerRadius = 30
+        twitterLoginImage.roundLoginImage.addTarget(self, action: #selector(handelTwittersignUp), for: .touchUpInside)
+        GoogleLoginImage.roundLoginImage.addTarget(self, action: #selector(handelGooglesignUp), for: .touchUpInside)
+        maybeButton.largeNextButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
+        
+        maybeButtonAttributes()
      }
+    
+    private func maybeButtonAttributes() {
+        maybeButton.largeNextButton.setTitle("Maybe Later", for: .normal)
+        maybeButton.largeNextButton.titleLabel?.font = UIFont(name: productFont, size: 12)
+        maybeButton.largeNextButton.setTitleColor(UIColor.white, for: .normal)
+        maybeButton.largeNextButton.backgroundColor = UIColor.clear
+    }
+    
+    var facebookLoginImage = roundButtonView()
+    var twitterLoginImage = roundButtonView()
+    var GoogleLoginImage = roundButtonView()
+    
+    private func setUpStackView() {
+        
+        let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
+        differentSignUpMethodsStackView.contentMode = .scaleAspectFit
+        //differentSignUpMethodsStackView.spacing = 5
+        differentSignUpMethodsStackView.distribution = .equalSpacing
+        
+        
+        view.addSubview(differentSignUpMethodsStackView)
+        differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
+    }
     
     
     private func setupconstraints() {
  
+        let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
+        differentSignUpMethodsStackView.contentMode = .scaleAspectFit
+        //differentSignUpMethodsStackView.spacing = 5
+        differentSignUpMethodsStackView.distribution = .equalSpacing
+        
+        
+        view.addSubview(differentSignUpMethodsStackView)
+        differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
@@ -272,10 +262,16 @@ class login: UIViewController, UITextFieldDelegate {
             buttonsUsedToLogIn.widthAnchor.constraint(equalTo: userInfoCaptureElements.widthAnchor),
             buttonsUsedToLogIn.heightAnchor.constraint(equalToConstant: 100),
           
-            social.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            social.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
-            social.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
-            social.heightAnchor.constraint(equalToConstant: 120),
+            differentSignUpMethodsStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            differentSignUpMethodsStackView.bottomAnchor.constraint(equalTo: maybeButton.topAnchor),
+            differentSignUpMethodsStackView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -100),
+            differentSignUpMethodsStackView.heightAnchor.constraint(equalToConstant: 60),
+            
+            maybeButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            maybeButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
+            maybeButton.widthAnchor.constraint(equalTo: differentSignUpMethodsStackView.widthAnchor, constant: -100),
+            maybeButton.heightAnchor.constraint(equalToConstant: 60),
+            
 
         ])
         

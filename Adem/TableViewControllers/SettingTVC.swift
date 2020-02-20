@@ -62,8 +62,8 @@ class SettingTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //product Button
     @objc func handleProduct() {
         
-        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
-        self.navigationController?.pushViewController(cController, animated: true)
+//        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
+//        self.navigationController?.pushViewController(cController, animated: true)
         
         print("Settings Tab is active")
     }

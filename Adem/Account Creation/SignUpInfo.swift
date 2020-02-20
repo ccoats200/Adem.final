@@ -23,6 +23,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     //MARK: setUpViews
     var accountCreationViews = userCreationInfo()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -201,22 +202,18 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return welcome
     }()
     
-    //Next Button
-    lazy var nextButton: UIButton = {
-        let createAccount = UIButton(type: .system)
-        createAccount.backgroundColor = UIColor.white
-        createAccount.setTitle("Next", for: .normal)
-        createAccount.translatesAutoresizingMaskIntoConstraints = false
-        createAccount.layer.cornerRadius = 5
-        createAccount.layer.masksToBounds = true
-        createAccount.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
-        createAccount.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        createAccount.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
-        createAccount.resignFirstResponder()
+    var nextButton = navigationButton()
+    
+    private func setUpButtons() {
         
-        return createAccount
-        
-    }()
+        nextButton.largeNextButton.backgroundColor = UIColor.white
+        nextButton.largeNextButton.setTitle("Next", for: .normal)
+        nextButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.largeNextButton.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
+        nextButton.largeNextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
+        nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
+        nextButton.largeNextButton.resignFirstResponder()
+    }
     
     let ademImageHolder: UIImageView = {
         let ademImage = UIImageView()
@@ -228,12 +225,14 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     
     private func setUpSubviews() {
         
+        setUpButtons()
         view.addSubview(scrollView)
         view.addSubview(ademImageHolder)
         view.addSubview(welcomeLabel)
         scrollView.addSubview(accountCreationViews)
         scrollView.addSubview(nextButton)
         
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         ademImageHolder.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false

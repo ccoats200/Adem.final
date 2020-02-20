@@ -216,7 +216,7 @@ class addedFoodPreference: UIViewController, UICollectionViewDelegateFlowLayout 
 
         
         topView.closePreferencesButton.addTarget(self, action: #selector(handelDismiss), for: .touchUpInside)
-        bottomView.nextButton.addTarget(self, action: #selector(handelNext), for: .touchDown)
+        bottomView.nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchDown)
     }
     
     let cellID = "Test"

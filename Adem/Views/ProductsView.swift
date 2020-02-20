@@ -205,19 +205,42 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return faveProduct
     }()
     
-    let listQuantity: UIButton = {
+    let itemQuant: UIView = {
+        let quant = UIView()
+        quant.backgroundColor = UIColor.ademBlue
+        quant.layer.cornerRadius = 5
+        
+        return quant
+    }()
+    
+    let listQuantityButon: UIButton = {
         let lQuant = UIButton()
-        let lQuantImg = UIImage(named: nutritionFacts)
-        lQuant.setImage(lQuantImg, for: .normal)
         lQuant.translatesAutoresizingMaskIntoConstraints = false
         lQuant.contentMode = .scaleAspectFit
-        //notify.backgroundColor = UIColor.blue
         return lQuant
+    }()
+    
+    let listQuantity: UILabel = {
+        let lQuant = UILabel()
+        var theMeaningOfLife = 42
+        lQuant.textColor = UIColor.white
+        lQuant.text = "Qty: \(theMeaningOfLife)"
+        lQuant.translatesAutoresizingMaskIntoConstraints = false
+        lQuant.contentMode = .scaleAspectFit
+        return lQuant
+    }()
+    
+    let qImage: UIImageView = {
+        let qimg = UIImageView()
+        qimg.image = UIImage(named: "vegan_selected")
+        qimg.translatesAutoresizingMaskIntoConstraints = false
+        qimg.contentMode = .scaleAspectFit
+        return qimg
     }()
 
     lazy var nutritionDetails: UIButton = {
         let facts = UIButton()
-        let image = UIImage(named: "Vegan")
+        let image = UIImage(named: "vegan_selected")
         //facts.backgroundImage(for: .normal)
         facts.setImage(image, for: .normal)
         facts.translatesAutoresizingMaskIntoConstraints = false
@@ -275,15 +298,26 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         productDescription.translatesAutoresizingMaskIntoConstraints = false
     
     
-    let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy, listQuantity])
-    self.addSubview(healthInfoStackView)
-    self.addSubview(pantryPageControl)
+    let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
+
+        addSubview(healthInfoStackView)
+    addSubview(pantryPageControl)
     pantryPageControl.translatesAutoresizingMaskIntoConstraints = false
+        
+    
+        addSubview(itemQuant)
+        itemQuant.addSubview(listQuantity)
+        itemQuant.addSubview(listQuantityButon)
+        itemQuant.addSubview(qImage)
+
+        listQuantityButon.translatesAutoresizingMaskIntoConstraints = false
+        qImage.translatesAutoresizingMaskIntoConstraints = false
+        listQuantity.translatesAutoresizingMaskIntoConstraints = false
+        itemQuant.translatesAutoresizingMaskIntoConstraints = false
     
     
     healthInfoStackView.contentMode = .scaleAspectFit
     healthInfoStackView.spacing = 5
-    healthInfoStackView.setCustomSpacing(40, after: whereToBuy)
     healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
     healthInfoStackView.clipsToBounds = true
     healthInfoStackView.layer.masksToBounds = true
@@ -294,9 +328,30 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         //Product Image matting
         
         healthInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-        healthInfoStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        healthInfoStackView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+        healthInfoStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
+        healthInfoStackView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
         healthInfoStackView.heightAnchor.constraint(equalToConstant: 25),
+        
+        
+        itemQuant.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+        itemQuant.widthAnchor.constraint(equalToConstant: 100),
+        itemQuant.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+        itemQuant.heightAnchor.constraint(equalToConstant: 25),
+        
+        listQuantityButon.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+        listQuantityButon.widthAnchor.constraint(equalTo: itemQuant.widthAnchor),
+        listQuantityButon.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+        
+        listQuantity.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+        listQuantity.leftAnchor.constraint(equalTo: itemQuant.leftAnchor,constant: 5),
+        listQuantity.rightAnchor.constraint(equalTo: qImage.leftAnchor),
+        listQuantity.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+        
+        qImage.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+        qImage.widthAnchor.constraint(equalToConstant: 25),
+        qImage.rightAnchor.constraint(equalTo: itemQuant.rightAnchor, constant: -5),
+        qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+        
         
         productDescription.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 5),
         productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),

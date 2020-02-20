@@ -8,11 +8,9 @@
 
 import Foundation
 import UIKit
-import CoreBluetooth
 import Firebase
-//import FirebaseFirestore
 
-class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UITableViewDataSource, UITableViewDelegate {
+class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
    
@@ -27,17 +25,16 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     let cellId3 = "cell2"
     let cellID = "cell3"
     let headerID = "test"
-    let tv = "test"
+    let listOfSettingsOptions = "test"
     
     //MARK: Views to set up
     var accountStuff = ProfileView()
     var friendsAndFamily = fAndFView()
     var diet = fAndFView()
-    var collectionView: UICollectionView!
+    var statsCollectionView: UICollectionView!
     var accountTableView: UITableView!
-    //var accountTableView = listTableView()
-    
-    
+
+    var accountStats = statsElements()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -51,19 +48,14 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         
         let settings = FirestoreSettings()
         db.settings = settings
-        // [END setup]
-        
-        //setup all views
-        //setUpAgain()
+
         setUptopViews()
-        //setUpViews()
-   
     }
     
     
     
     let segmentContr: UISegmentedControl = {
-        let items = ["Stats", "Home", "Account"]
+        let items = ["Stats", "Home"]
         let segmentContr = UISegmentedControl(items: items)
         segmentContr.tintColor = UIColor.white
         segmentContr.selectedSegmentIndex = 1
@@ -73,7 +65,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
 
         segmentContr.backgroundColor = UIColor.ademBlue
-               segmentContr.addTarget(self, action: #selector(switchSegViews), for: .valueChanged)
+               segmentContr.addTarget(self, action: #selector(switchAccountViews), for: .valueChanged)
         return segmentContr
         
     }()
@@ -109,43 +101,31 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         //accountStuff = ProfileView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 225))
         
         let displayWidth: CGFloat = self.view.frame.width
-            let displayHeight: CGFloat = self.view.frame.height
+        let displayHeight: CGFloat = self.view.frame.height
         
-            accountTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        accountTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         
-        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        let profileCollectionView: UICollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-        
-        accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: tv)
+        accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
         accountTableView.delegate = self
         accountTableView.dataSource = self
         
         
         self.view.addSubview(friendsAndFamily)
-        
         self.view.addSubview(accountTableView)
-        self.view.addSubview(profileCollectionView)
         
         accountTableView.layer.cornerRadius = 5
         
         accountTableView.translatesAutoresizingMaskIntoConstraints = false
         friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
-        profileCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        profileCollectionView.delegate = self
-        profileCollectionView.dataSource = self
-        profileCollectionView.layer.cornerRadius = 5
         
        
         
-        diet.addButton.addTarget(self, action: #selector(addFriends), for: .touchDown)
+        diet.addButton.addTarget(self, action: #selector(updateDiet), for: .touchDown)
         friendsAndFamily.addButton.addTarget(self, action: #selector(handleFriends), for: .touchDown)
         friendsAndFamily.nameofUser.text = "Kitchen Staff"
         diet.nameofUser.text = "Dietary"
 
-        profileCollectionView.backgroundColor = UIColor.ademGreen
-
-        profileCollectionView.register(accountPrivacyCellDesign.self, forCellWithReuseIdentifier: cellID)
         
      
      NSLayoutConstraint.activate([
@@ -160,29 +140,37 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         accountTableView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
         accountTableView.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
         
-        profileCollectionView.topAnchor.constraint(equalTo: accountTableView.bottomAnchor, constant: 10),
-        profileCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -10),
-        profileCollectionView.centerXAnchor.constraint(equalTo:  view.centerXAnchor),
-        profileCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -90)
-        
      ])
-        self.collectionView = profileCollectionView
      }
     
-    @objc fileprivate func switchSegViews() {
+    @objc fileprivate func switchStatsViews() {
+        
+            self.view.addSubview(accountStats)
+            accountStats.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                accountStats.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+            accountStats.heightAnchor.constraint(equalToConstant: 100),
+            accountStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            accountStats.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
+        ])
+    }
+    
+    
+    @objc fileprivate func switchAccountViews() {
         
             self.view.addSubview(diet)
             diet.translatesAutoresizingMaskIntoConstraints = false
             
             NSLayoutConstraint.activate([
-            diet.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 5),
+                diet.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
             diet.heightAnchor.constraint(equalToConstant: 100),
             diet.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             diet.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
         ])
     }
     
-    @objc func addFriends() {
+    @objc func updateDiet() {
         
         let alert = addedItemAlert()
         alert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
@@ -201,7 +189,8 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
 
         if segmentContr.selectedSegmentIndex == 0 {
             //switchSegViews()
-            collectionView.isHidden = true
+            switchStatsViews()
+//            accountStats.isHidden = true
         }
         
         //Nav bar is see through
@@ -261,7 +250,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         
         
         if segmentContr.selectedSegmentIndex == 1 {
-            switchSegViews()
+            switchAccountViews()
         }
     }
     
@@ -283,8 +272,10 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         
         return [acctImage, privacyImage]
     }()
+    
     var acctOptions = ["Account","Invite Friends","Rate Us","Apps","Settings","Log out"]
     //MARK: TableView
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return acctOptions.count
@@ -292,7 +283,7 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let friends = tableView.dequeueReusableCell(withIdentifier: self.tv, for: indexPath)
+        let friends = tableView.dequeueReusableCell(withIdentifier: self.listOfSettingsOptions, for: indexPath)
         friends.backgroundColor = UIColor.ademBlue
         friends.textLabel!.textColor = UIColor.white
         friends.textLabel!.text = acctOptions[indexPath.row]
@@ -304,83 +295,22 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
         return 1
     }
     
-    
-    //deque cell
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-    
-        switch indexPath.section {
-            
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.row {
         case 0:
-            if indexPath.item == 0 {
-                let friends = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                friends.accountPrivacyImages.image = UIImage(named: "lock")
-                friends.accountPrivacyLabels.text = "Friends"
-                friends.backgroundColor = UIColor.ademBlue
-                friends.layer.cornerRadius = 5
-                
-                
-                return friends
-            } else {
-                let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                devices.accountPrivacyImages.image = UIImage(named: "lock")
-                devices.accountPrivacyLabels.text = "Devices"
-                devices.backgroundColor = UIColor.ademBlue
-                devices.layer.cornerRadius = 5
-                
-                return devices
-            }
-            
+            handleFriends()
         case 1:
-            switch indexPath.item {
-            case 0:
-                let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                devices.accountPrivacyImages.image = UIImage(named: "Settings")
-                devices.accountPrivacyLabels.text = "Settings"
-                devices.backgroundColor = UIColor.white
-                devices.layer.cornerRadius = 5
-                
-                return devices
-            case 1:
-                let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                devices.accountPrivacyImages.image = UIImage(named: "lock")
-                devices.accountPrivacyLabels.text = "Health"
-                devices.backgroundColor = UIColor.ademBlue
-                devices.layer.cornerRadius = 5
-                
-                return devices
-            case 2:
-                let devices = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                devices.accountPrivacyImages.image = UIImage(named: "lock")
-                devices.accountPrivacyLabels.text = "Apps"
-                devices.backgroundColor = UIColor.ademBlue
-                devices.layer.cornerRadius = 5
-                
-                return devices
-            default:
-                let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-                settings.accountPrivacyLabels.text = "Settings"
-                settings.backgroundColor = UIColor.ademBlue
-                settings.layer.cornerRadius = 5
-                return settings
-            }
-            
+            handleSettings()
         case 2:
-            let recipes = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-            recipes.accountPrivacyLabels.text = "Recipes"
-            recipes.accountPrivacyImages.image = UIImage(named: "lock")
-            recipes.backgroundColor = UIColor.ademBlue
-            recipes.layer.cornerRadius = 5
-            return recipes
-            
+            handleFriends()
+        case 3:
+            handleDevices()
         default:
-            let settings = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! accountPrivacyCellDesign
-            settings.accountPrivacyLabels.text = "Settings"
-            settings.backgroundColor = UIColor.ademBlue
-            settings.layer.cornerRadius = 15
-            
-            return settings
+            handleLogout()
         }
     }
+    
+
     
     
     //Button Action - Start
@@ -413,97 +343,13 @@ class AccountVC: UIViewController, UICollectionViewDelegate, UICollectionViewDat
     }
     
     @objc func handleHealth() {
-        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
-        self.navigationController?.pushViewController(cController, animated: true)
+//        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
+//        self.navigationController?.pushViewController(cController, animated: true)
         print("Settings Tab is active")
     }
     //Button actions - End
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
-        switch indexPath.section {
-        case 0:
-            switch indexPath.item {
-            case 0:
-                handleFriends()
-            case 1:
-                handleSettings()
-            default:
-                handleHealth()
-            }
-        case 1:
-            switch indexPath.item {
-            case 0:
-                handleDevices()
-            case 1:
-                handleDevices()
-            case 2:
-                handleHealth()
-            default:
-                handleHealth()
-            }
-        case 2:
-            handleLogout()
-        default:
-            handleLogout()
-        }
-    }
-    
-    // number of cells
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        switch section {
-        case 0:
-            return 2
-        case 1:
-            return 3
-        case 2:
-            return 1
-        default:
-            return 6
-        }
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 3
-    }
-    
-    //inset allocation
-    let sectionInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-    
-    //trying to get spacing betweenc cells
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        //Distance Between Cells
-        return sectionInsets.bottom
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        
-        return sectionInsets
-    }
-    
-    
-    //size of each CollecionViewCell
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        switch indexPath.section {
-        case 0:
-            let section1 = CGSize(width: (view.frame.width/2 - 20), height: 100)
-            return section1
-        case 1:
-            let section2 = CGSize(width: (view.frame.width/3 - 20), height: 100)
-            return section2
-        case 2:
-            
-            //Recipes button is acting weird
-            let section3 = CGSize(width: (view.frame.width - 30), height: 75)//50)
-            return section3
-        default:
-            let noSection = CGSize(width: view.frame.width, height: 50)
-            return noSection
-        }
-    }
-    
+ 
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

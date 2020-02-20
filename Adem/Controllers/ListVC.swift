@@ -65,15 +65,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         
 //        MARK: NavigationBar setup
         navigationItem.title = "List"
-//        MARK: might be for ios 12
-        //let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
-        //navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
-        //navigationController?.navigationBar.barTintColor = UIColor.ademGreen
-        //navigationController?.navigationBar.titleTextAttributes = textAttributes
-        //navigationController?.navigationBar.prefersLargeTitles = true
-        //navigationController?.navigationBar.isTranslucent = false
-        //navigationController?.navigationBar.scrollEdgeAppearance
-        
+
         
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -110,23 +102,21 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         //self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
         self.navigationItem.rightBarButtonItem = searching
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-
-        //self.edgesForExtendedLayout = UIRectEdge.bottom
         
+//        self.edgesForExtendedLayout = UIRectEdge.bottom
         toolBarSetUp()
         countingCollections()
+        
+        setUpFilterView()
     }
     
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        //handleSearch()
         setUpListView()
            
         let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
-        
-        
         
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
@@ -163,7 +153,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        //self.searchController.isActive = false
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
        
@@ -221,7 +210,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
 //    MARK: Table View
     var listTableView: UITableView!
 //    MARK: CollectionView for Filtering
-    var filterCollectionView: UICollectionView!
+//    var filterListCollectionView: UICollectionView!
     let cfilter = "test"
     func setUpListView() {
         
@@ -241,75 +230,70 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
                 footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
                 footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
                 ])
+            
         default:
             
-            let layouts = UICollectionViewFlowLayout()
-            //layouts.scrollDirection = .horizontal
-            filterCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
+//            let layouts = UICollectionViewFlowLayout()
+//            layouts.itemSize = CGSize(width: 120, height: 120)
+//            filterListCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
             
-            listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height))
-            layouts.itemSize = CGSize(width: 120, height: 120)
+            listTableView = UITableView(frame: self.view.bounds)
             
-            filterCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: cellID)
-            listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
-            
-//          MARK: DataSource and Delegate
-            filterCollectionView.dataSource = self
-            filterCollectionView.delegate = self
-            listTableView.dataSource = self
-            listTableView.delegate = self
-            
-//          MARK: Background Color
-            listTableView.backgroundColor = UIColor.white
-            filterCollectionView.backgroundColor = UIColor.ademBlue
-            
-//          MARK: User interaction
-            filterCollectionView.isUserInteractionEnabled = true
-            filterCollectionView.isScrollEnabled = true
-            filterCollectionView.isPrefetchingEnabled = true
-            listTableView.allowsMultipleSelection = true
-        
-        
-        
-            //filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
-
 //          MARK: Subviews
             self.view.addSubview(listTableView)
+//            self.view.addSubview(filterListCollectionView)
+            
+            collecAndTableFeatures()
+            
             listTableView.translatesAutoresizingMaskIntoConstraints = false
-            
-            self.view.addSubview(filterCollectionView)
-            filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
-            
+//            filterListCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
-//            MARK: Constraints
-            NSLayoutConstraint.activate([
-                
-                filterCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
-                filterCollectionView.heightAnchor.constraint(equalToConstant: 100),
-                filterCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                filterCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor),
-                
-                listTableView.topAnchor.constraint(equalTo: filterCollectionView.bottomAnchor),
-                listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                
-                
-                ])
+//            filterListCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: cellID)
+            listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
+
+            createLayout()
+        
+            //filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
         }
+    }
+    
+    private func collecAndTableFeatures() {
+//          MARK: DataSource and Delegate
+//        filterListCollectionView.dataSource = self
+//        filterListCollectionView.delegate = self
+        listTableView.dataSource = self
+        listTableView.delegate = self
+        
+//          MARK: Background Color
+        listTableView.backgroundColor = UIColor.white
+//        filterListCollectionView.backgroundColor = UIColor.ademBlue
+                    
+//          MARK: User interaction
+//        filterListCollectionView.isUserInteractionEnabled = true
+//        filterListCollectionView.isScrollEnabled = true
+//        filterListCollectionView.isPrefetchingEnabled = true
+        listTableView.allowsMultipleSelection = true
+        
+    }
+    
+    private func createLayout() {
+//            MARK: Constraints
+        NSLayoutConstraint.activate([
+
+            listTableView.topAnchor.constraint(equalTo: view.topAnchor),
+            listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
+            
+            ])
     }
     
    
     var listProducts: [groceryItemCellContent] =  []
-    
     //MARK: Table view cell properties - End
     
     //MARK: Search bar stuff - start
-    
-    //TODO: what do these do?
-    //var selectedGroceryItems = [groceryItemCellContent]()
-    //var groceriesSelected = [String]()
-    
     var filteringproducts = [groceryProductsDatabase]()
     
     func searchBarIsEmpty() -> Bool {
@@ -394,7 +378,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     //MARK: Button Functions - Start
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
     var groceryProductsSelected: [IndexPath] = []
-    //var selectedGroceryProducts = [groceryItemCellContent]()
     
     @objc func handleBatchDelete() {
        
@@ -521,11 +504,12 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         self.present(alert, animated: true, completion: nil)
         
     }
+    var filterListCollectionView: UICollectionView!
 }
 
 
 //MARK: tableView extension
-extension listViewController: UITableViewDataSource, UITableViewDelegate {
+extension listViewController: UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
     
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -566,7 +550,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
                print("User is adding the product back to their pantry")
            }
            addToPantry.backgroundColor = UIColor.ademGreen
-           checkedAsInBasket.backgroundColor = UIColor.ademBlue
+           checkedAsInBasket.backgroundColor = UIColor.ademGreen
            
            let swipeActions = UISwipeActionsConfiguration(actions: [checkedAsInBasket])
 
@@ -612,12 +596,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
         }
         
         productsListViewLayout.textLabel?.text = fuckthis[Row]
-        //productsListViewLayout.textLabel?.text = lProducts.groceryProductName
-        //productViews().productNameAndBackButton.setTitle(fuckthis[Row], for: .normal)
-        
-        //FIXME: Products list
-        //productsListViewLayout.textLabel!.text = listProducts[indexPath.row]
-        
+
         //Default tableview cell attributes
         productsListViewLayout.imageView?.image = UIImage(named: "egg")
         productsListViewLayout.accessoryType = .disclosureIndicator
@@ -649,24 +628,54 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
        }
        
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-           
-        
-           if section == 1 {
-               return 40
-           }
-           
-           return 0
+
+           return 60
        }
-       
+    
+    func setUpFilterView() {
+        
+        let layouts = UICollectionViewFlowLayout()
+        layouts.itemSize = CGSize(width: 75, height: self.view.frame.height)
+        filterListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layouts)
+        filterListCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: "test")
+
+        layouts.scrollDirection = .horizontal
+        filterListCollectionView.showsHorizontalScrollIndicator = false
+        
+        filterListCollectionView.backgroundColor = UIColor.white
+        
+        filterListCollectionView.dataSource = self
+        filterListCollectionView.delegate = self
+        
+        filterListCollectionView.isUserInteractionEnabled = true
+        filterListCollectionView.isScrollEnabled = true
+        
+        
+    }
        func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         
-        let view = UIView()
-        view.layer.cornerRadius = 25
-        view.backgroundColor = UIColor.ademGreen
+        
+        //Works
+        let headerView = UIView()
+        headerView.backgroundColor = UIColor.white
         
         
-           return view
-       }
+        
+        headerView.addSubview(filterListCollectionView)
+        filterListCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+
+        filterListCollectionView.topAnchor.constraint(equalTo: headerView.topAnchor),
+        filterListCollectionView.bottomAnchor.constraint(equalTo: headerView.bottomAnchor),
+        filterListCollectionView.widthAnchor.constraint(equalTo: headerView.widthAnchor),
+        filterListCollectionView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+        
+        
+        ])
+        
+        
+        return headerView
+    }
     
        
        func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
@@ -677,7 +686,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
        func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
            
            let footerView = UIView()
-           footerView.backgroundColor = UIColor.ademBlue
+           footerView.backgroundColor = UIColor.white
        
            return footerView
        }
@@ -699,28 +708,22 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
            setEditing(true, animated: true)
        }
     
-}
-
-//MARK: CollectionView Extenssion
-extension listViewController: UICollectionViewDataSource, UICollectionViewDelegate{
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return allproductsInList.count
-        //return listProducts.count
+        return 5
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         
-            let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: cfilter, for: indexPath) as! filterCellLayout
-            filterCells.backgroundColor = UIColor.ademRed
+        let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
+        filterCells.backgroundColor = UIColor.ademBlue
+        filterCells.layer.cornerRadius = 5
+        filterCells.productName.text = "Dairy"
         
-            
-            return filterCells
+        return filterCells
         }
-    }
-
+}
 
 extension listViewController: UNUserNotificationCenterDelegate {
 

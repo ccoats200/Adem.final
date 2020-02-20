@@ -73,7 +73,7 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }()
     
     @objc func switchForListDesign(sender: UISwitch) {
-        userDefinedSettings.set(sender.isOn, forKey: "SwitchKey")
+//        userDefinedSettings.set(sender.isOn, forKey: "SwitchKey")
     }
     
       //MARK: Settings Sections - Start
@@ -173,8 +173,8 @@ class settings: UIViewController, UITableViewDelegate, UITableViewDataSource {
     //MARK: Settings Row button handlers
     @objc func settingsRowOne() {
         
-        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
-        self.navigationController?.pushViewController(cController, animated: true)
+//        let cController = ProductVC(collectionViewLayout: UICollectionViewFlowLayout())
+//        self.navigationController?.pushViewController(cController, animated: true)
         
         print("Settings Tab is active")
     }

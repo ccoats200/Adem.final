@@ -66,6 +66,7 @@ var productsGlobal: [groceryItemCellContent]? = {
     eggs.List = true
     eggs.Pantry = false
     
+    /*
     var bb = groceryItemCellContent()
     bb.itemName = "BlueBerry"
     bb.itemImageName = "blueBerry"
@@ -135,6 +136,8 @@ var productsGlobal: [groceryItemCellContent]? = {
     g.Quantity = "1"
     g.List = false
     g.Pantry = true
+    */
     
-    return [eggs, bb, bre,tea,a,b,c,d,e,f,g]
+//    return [eggs, bb, bre,tea,a,b,c,d,e,f,g]
+    return [eggs]
 }()

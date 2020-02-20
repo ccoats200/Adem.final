@@ -53,7 +53,7 @@ class signUpCellDesign: UICollectionViewCell {
     
     let preferencesLabel: UILabel = {
         let prefLabel = UILabel()
-        prefLabel.textAlignment = .left
+        prefLabel.textAlignment = .center
         prefLabel.text = "Opps"
         prefLabel.textColor = UIColor.ademBlue
         //prefLabel.backgroundColor = UIColor.red
@@ -72,14 +72,93 @@ class signUpCellDesign: UICollectionViewCell {
         //preferencesIcon.layer.cornerRadius = 25
         
         
-        preferencesIcon.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5).isActive = true
-        preferencesIcon.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        preferencesIcon.widthAnchor.constraint(equalToConstant: 50).isActive = true
-        preferencesIcon.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        NSLayoutConstraint.activate([
+            preferencesIcon.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            preferencesIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+        preferencesIcon.widthAnchor.constraint(equalToConstant: 50),
+        preferencesIcon.heightAnchor.constraint(equalToConstant: 50),
         
-        preferencesLabel.leadingAnchor.constraint(equalTo: preferencesIcon.trailingAnchor, constant: 5).isActive = true
-        preferencesLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        preferencesLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -5).isActive = true
+        preferencesLabel.topAnchor.constraint(equalTo: preferencesIcon.bottomAnchor, constant: 5),
+        preferencesLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        preferencesLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        preferencesLabel.widthAnchor.constraint(equalTo: self.widthAnchor),
+        
+        ])
     }
 }
 
+
+//Profile attributes
+class storeContent: NSObject {
+
+    var preferenceImage: String?
+    var preferencesLabelText: String?
+}
+
+
+class storeCellDesign: UICollectionViewCell {
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var accountImage: storeContent? {
+        didSet {
+            preferencesIcon.image = UIImage(named: (accountImage?.preferenceImage)!)
+            preferencesLabel.text = accountImage?.preferencesLabelText
+            
+            print("The Account and Privacy celll layout and UI elements are set")
+        }
+    }
+    
+    let preferencesIcon: UIImageView = {
+        let prefIcon = UIImageView()
+        //prefIcon.image = UIImage(named: "Info")
+        prefIcon.image = UIImage(named: "salt_unselected")
+        prefIcon.contentMode = .scaleAspectFit
+        prefIcon.clipsToBounds = true
+        prefIcon.layer.masksToBounds = true
+        prefIcon.translatesAutoresizingMaskIntoConstraints = false
+        
+        return prefIcon
+    }()
+    
+    let preferencesLabel: UILabel = {
+        let prefLabel = UILabel()
+        prefLabel.textAlignment = .center
+        prefLabel.text = "Opps"
+        prefLabel.textColor = UIColor.ademBlue
+        //prefLabel.backgroundColor = UIColor.red
+        prefLabel.font = UIFont(name: productFont, size: 20)
+        prefLabel.clipsToBounds = true
+        prefLabel.layer.masksToBounds = true
+        prefLabel.translatesAutoresizingMaskIntoConstraints = false
+        return prefLabel
+    }()
+    
+
+    func setupViews() {
+        
+        addSubview(preferencesIcon)
+        addSubview(preferencesLabel)
+        //preferencesIcon.layer.cornerRadius = 25
+        
+        NSLayoutConstraint.activate([
+            preferencesIcon.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            preferencesIcon.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+        preferencesIcon.widthAnchor.constraint(equalToConstant: 50),
+        preferencesIcon.heightAnchor.constraint(equalToConstant: 50),
+        
+        preferencesLabel.topAnchor.constraint(equalTo: preferencesIcon.bottomAnchor, constant: 5),
+        preferencesLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        preferencesLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        preferencesLabel.widthAnchor.constraint(equalTo: self.widthAnchor),
+        
+        ])
+    }
+}
