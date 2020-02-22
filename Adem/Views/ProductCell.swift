@@ -43,7 +43,7 @@ class recommendedProductCells: UICollectionViewCell {
         image.layer.masksToBounds = true
         image.layer.cornerRadius = 5
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.backgroundColor = UIColor.red
+        image.backgroundColor = UIColor.ademBlue
         return image
     }()
     

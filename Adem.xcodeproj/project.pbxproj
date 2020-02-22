@@ -23,6 +23,9 @@
 		356FFEF323F3A1C000DF67AD /* buttons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEF223F3A1C000DF67AD /* buttons.swift */; };
 		356FFEF623FC590700DF67AD /* pantryTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEF523FC590700DF67AD /* pantryTVC.swift */; };
 		356FFEF823FDADA500DF67AD /* accountStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEF723FDADA500DF67AD /* accountStats.swift */; };
+		356FFEFA23FF79FF00DF67AD /* recPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEF923FF79FF00DF67AD /* recPages.swift */; };
+		356FFEFC24004FFB00DF67AD /* statsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEFB24004FFB00DF67AD /* statsView.swift */; };
+		356FFEFF2401962D00DF67AD /* segmentViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEFE2401962C00DF67AD /* segmentViews.swift */; };
 		357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35ED23A9CFC100223F51 /* continuedInfo.swift */; };
 		357B35F023A9DDEA00223F51 /* camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35EF23A9DDEA00223F51 /* camera.swift */; };
 		357B35F223A9DE7000223F51 /* camController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F123A9DE7000223F51 /* camController.swift */; };
@@ -50,7 +53,6 @@
 		35D6484E22ECBD1300015352 /* toolBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6484D22ECBD1300015352 /* toolBar.swift */; };
 		35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485022ECBD4E00015352 /* Login Screen.swift */; };
 		35D6485322ECBD5D00015352 /* ListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485222ECBD5D00015352 /* ListVC.swift */; };
-		35D6485522ECBD7400015352 /* ItemVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485422ECBD7400015352 /* ItemVC.swift */; };
 		35D6485722ECBD8700015352 /* PantryVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485622ECBD8700015352 /* PantryVC.swift */; };
 		35D6485922ECBDA300015352 /* Meals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485822ECBDA300015352 /* Meals.swift */; };
 		35D6485B22ECBDBA00015352 /* AccountVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D6485A22ECBDBA00015352 /* AccountVC.swift */; };
@@ -117,6 +119,9 @@
 		356FFEF223F3A1C000DF67AD /* buttons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = buttons.swift; sourceTree = "<group>"; };
 		356FFEF523FC590700DF67AD /* pantryTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantryTVC.swift; sourceTree = "<group>"; };
 		356FFEF723FDADA500DF67AD /* accountStats.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountStats.swift; sourceTree = "<group>"; };
+		356FFEF923FF79FF00DF67AD /* recPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recPages.swift; sourceTree = "<group>"; };
+		356FFEFB24004FFB00DF67AD /* statsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = statsView.swift; sourceTree = "<group>"; };
+		356FFEFE2401962C00DF67AD /* segmentViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = segmentViews.swift; sourceTree = "<group>"; };
 		357B35ED23A9CFC100223F51 /* continuedInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = continuedInfo.swift; sourceTree = "<group>"; };
 		357B35EF23A9DDEA00223F51 /* camera.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camera.swift; sourceTree = "<group>"; };
 		357B35F123A9DE7000223F51 /* camController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camController.swift; sourceTree = "<group>"; };
@@ -150,7 +155,6 @@
 		35D6484D22ECBD1300015352 /* toolBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = toolBar.swift; sourceTree = "<group>"; };
 		35D6485022ECBD4E00015352 /* Login Screen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Login Screen.swift"; sourceTree = "<group>"; };
 		35D6485222ECBD5D00015352 /* ListVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListVC.swift; sourceTree = "<group>"; };
-		35D6485422ECBD7400015352 /* ItemVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemVC.swift; sourceTree = "<group>"; };
 		35D6485622ECBD8700015352 /* PantryVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PantryVC.swift; sourceTree = "<group>"; };
 		35D6485822ECBDA300015352 /* Meals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Meals.swift; sourceTree = "<group>"; };
 		35D6485A22ECBDBA00015352 /* AccountVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountVC.swift; sourceTree = "<group>"; };
@@ -219,6 +223,16 @@
 			path = UIElements;
 			sourceTree = "<group>";
 		};
+		356FFEFD240195CD00DF67AD /* productScreens */ = {
+			isa = PBXGroup;
+			children = (
+				358C2C5423BFBAC10013EE64 /* ProductsView.swift */,
+				35FDD16923C4102200A85023 /* listProductinfo.swift */,
+				356FFEFE2401962C00DF67AD /* segmentViews.swift */,
+			);
+			path = productScreens;
+			sourceTree = "<group>";
+		};
 		35D647EC22ECBABA00015352 = {
 			isa = PBXGroup;
 			children = (
@@ -251,6 +265,7 @@
 				35D6488A22ECBF9300015352 /* Camera */,
 				35D6488322ECBF5800015352 /* Model */,
 				35D6487E22ECBF2300015352 /* Services */,
+				356FFEFD240195CD00DF67AD /* productScreens */,
 				35D6486822ECBE4600015352 /* Views */,
 				35D6484F22ECBD3900015352 /* Controllers */,
 				35D6484322ECBC9100015352 /* Extensions */,
@@ -337,12 +352,10 @@
 			isa = PBXGroup;
 			children = (
 				35D6485222ECBD5D00015352 /* ListVC.swift */,
-				35D6485422ECBD7400015352 /* ItemVC.swift */,
 				35D6485622ECBD8700015352 /* PantryVC.swift */,
 				35D6485822ECBDA300015352 /* Meals.swift */,
 				35D6485A22ECBDBA00015352 /* AccountVC.swift */,
 				35D6485C22ECBDC900015352 /* tabController.swift */,
-				35FDD16923C4102200A85023 /* listProductinfo.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -358,10 +371,11 @@
 				353C12372301D0E3007DF3BB /* mealsCellLayout.swift */,
 				353C12392305C20B007DF3BB /* ItemCellLayout.swift */,
 				353C123B230CD74B007DF3BB /* pantryProductScreen.swift */,
-				358C2C5423BFBAC10013EE64 /* ProductsView.swift */,
 				35C3A35723C58E3500E12747 /* listViews.swift */,
 				359E325B23D7F8D50049FA75 /* filterSetUp.swift */,
 				356FFEF723FDADA500DF67AD /* accountStats.swift */,
+				356FFEF923FF79FF00DF67AD /* recPages.swift */,
+				356FFEFB24004FFB00DF67AD /* statsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -698,6 +712,7 @@
 				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
 				35D6486122ECBDEF00015352 /* settingVC.swift in Sources */,
 				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
+				356FFEFA23FF79FF00DF67AD /* recPages.swift in Sources */,
 				353C123A2305C20B007DF3BB /* ItemCellLayout.swift in Sources */,
 				357B35F223A9DE7000223F51 /* camController.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,
@@ -718,6 +733,7 @@
 				35FDD16A23C4102200A85023 /* listProductinfo.swift in Sources */,
 				35D6487522ECBEC700015352 /* ItemLayout.swift in Sources */,
 				3591FBCF23BADA9100C410CF /* OCR.swift in Sources */,
+				356FFEFF2401962D00DF67AD /* segmentViews.swift in Sources */,
 				354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				353C123C230CD74B007DF3BB /* pantryProductScreen.swift in Sources */,
@@ -741,6 +757,7 @@
 				35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */,
 				35D6485322ECBD5D00015352 /* ListVC.swift in Sources */,
 				357B35F023A9DDEA00223F51 /* camera.swift in Sources */,
+				356FFEFC24004FFB00DF67AD /* statsView.swift in Sources */,
 				356FFEF623FC590700DF67AD /* pantryTVC.swift in Sources */,
 				356FFEF323F3A1C000DF67AD /* buttons.swift in Sources */,
 				35D6485D22ECBDC900015352 /* tabController.swift in Sources */,
@@ -748,7 +765,6 @@
 				359E325C23D7F8D50049FA75 /* filterSetUp.swift in Sources */,
 				357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */,
 				35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */,
-				35D6485522ECBD7400015352 /* ItemVC.swift in Sources */,
 				358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */,
 				35D6485122ECBD4E00015352 /* Login Screen.swift in Sources */,
 			);

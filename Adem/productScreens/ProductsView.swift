@@ -176,6 +176,12 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return 3
     }
     
+    
+    //Space between rows
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! recommendedProductCells
         
@@ -248,64 +254,61 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return facts
     }()
     
-   
-    private let pantryPageControl: UIPageControl = {
-         let pc = UIPageControl()
-          pc.currentPage = 0
-          pc.numberOfPages = 3
-          pc.currentPageIndicatorTintColor = UIColor.ademGreen
-          pc.pageIndicatorTintColor = UIColor.ademBlue
-          return pc
-      }()
+    let segmentLabel: UILabel = {
+        let meal = UILabel()
+        meal.textColor = UIColor.ademBlue
+        meal.text = "similar"
+        meal.backgroundColor = UIColor.lightGray
+        meal.layer.cornerRadius = 5
+        meal.translatesAutoresizingMaskIntoConstraints = false
+        return meal
+    }()
     
-  
     var listProductCollectionView: UICollectionView!
-    //var productCollectionView = additonalProductCollectionView()
     
     let cellID = "cell"
+    
+    
+    
+    private func setUPCollection() {
+        
+        let layouts = UICollectionViewFlowLayout()
+        layouts.itemSize = CGSize(width: 100, height: 100)
+          
+        listProductCollectionView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        listProductCollectionView.isScrollEnabled = false
+        listProductCollectionView.dataSource = self
+        listProductCollectionView.delegate = self
+        listProductCollectionView.register(recommendedProductCells.self, forCellWithReuseIdentifier: cellID)
+        listProductCollectionView.backgroundColor = UIColor.white
+               
+        listProductCollectionView.clipsToBounds = true
+        listProductCollectionView.layer.masksToBounds = true
+        listProductCollectionView.isScrollEnabled = true
+        
+    }
   
     //common func to init our view
     private func setupView() {
     
         self.backgroundColor = UIColor.white
-        self.layer.cornerRadius = 10
-        
-        
-        let layouts = UICollectionViewFlowLayout()
-        let pCollectionView: UICollectionView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
-        
-        layouts.itemSize = CGSize(width: 120, height: 120)
-        //listProductCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
-        
-        
-        
-        //collectionView
-        pCollectionView.dataSource = self
-        pCollectionView.delegate = self
-        pCollectionView.register(recommendedProductCells.self, forCellWithReuseIdentifier: cellID)
-        
-        pCollectionView.backgroundColor = UIColor.ademGreen
-    
-        
-        pCollectionView.clipsToBounds = true
-        pCollectionView.layer.masksToBounds = true
-        pCollectionView.isScrollEnabled = true
+        setUPCollection()
+       
     
         self.addSubview(productDescription)
-        self.addSubview(pCollectionView)
+        self.addSubview(listProductCollectionView)
+        self.addSubview(segmentLabel)
         
-        pCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        segmentLabel.translatesAutoresizingMaskIntoConstraints = false
+        listProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
         productDescription.translatesAutoresizingMaskIntoConstraints = false
     
-    
-    let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
+        let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
 
-        addSubview(healthInfoStackView)
-    addSubview(pantryPageControl)
-    pantryPageControl.translatesAutoresizingMaskIntoConstraints = false
+        self.addSubview(healthInfoStackView)
         
     
-        addSubview(itemQuant)
+        self.addSubview(itemQuant)
         itemQuant.addSubview(listQuantity)
         itemQuant.addSubview(listQuantityButon)
         itemQuant.addSubview(qImage)
@@ -316,61 +319,56 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         itemQuant.translatesAutoresizingMaskIntoConstraints = false
     
     
-    healthInfoStackView.contentMode = .scaleAspectFit
-    healthInfoStackView.spacing = 5
-    healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
-    healthInfoStackView.clipsToBounds = true
-    healthInfoStackView.layer.masksToBounds = true
-    healthInfoStackView.distribution = .fillEqually
-    healthInfoStackView.backgroundColor = UIColor.white
-    
-    NSLayoutConstraint.activate([
-        //Product Image matting
-        
-        healthInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-        healthInfoStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
-        healthInfoStackView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
-        healthInfoStackView.heightAnchor.constraint(equalToConstant: 25),
-        
-        
-        itemQuant.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-        itemQuant.widthAnchor.constraint(equalToConstant: 100),
-        itemQuant.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-        itemQuant.heightAnchor.constraint(equalToConstant: 25),
-        
-        listQuantityButon.topAnchor.constraint(equalTo: itemQuant.topAnchor),
-        listQuantityButon.widthAnchor.constraint(equalTo: itemQuant.widthAnchor),
-        listQuantityButon.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
-        
-        listQuantity.topAnchor.constraint(equalTo: itemQuant.topAnchor),
-        listQuantity.leftAnchor.constraint(equalTo: itemQuant.leftAnchor,constant: 5),
-        listQuantity.rightAnchor.constraint(equalTo: qImage.leftAnchor),
-        listQuantity.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
-        
-        qImage.topAnchor.constraint(equalTo: itemQuant.topAnchor),
-        qImage.widthAnchor.constraint(equalToConstant: 25),
-        qImage.rightAnchor.constraint(equalTo: itemQuant.rightAnchor, constant: -5),
-        qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
-        
-        
-        productDescription.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 5),
-        productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        productDescription.heightAnchor.constraint(equalToConstant: 50),
-        productDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
-        
-        
-        pCollectionView.topAnchor.constraint(equalTo: productDescription.bottomAnchor, constant: 5),
-        pCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        pCollectionView.bottomAnchor.constraint(equalTo: pantryPageControl.topAnchor),
-        pCollectionView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
-        
-        pantryPageControl.topAnchor.constraint(equalTo: pCollectionView.bottomAnchor),
-        pantryPageControl.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        pantryPageControl.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        pantryPageControl.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
-        pantryPageControl.heightAnchor.constraint(equalToConstant: 25),
+        healthInfoStackView.contentMode = .scaleAspectFit
+        healthInfoStackView.spacing = 5
+        healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
+        healthInfoStackView.clipsToBounds = true
+        healthInfoStackView.layer.masksToBounds = true
+        healthInfoStackView.distribution = .fillEqually
+        healthInfoStackView.backgroundColor = UIColor.white
     
         
+        NSLayoutConstraint.activate([
+        
+            healthInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            healthInfoStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
+            healthInfoStackView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
+            healthInfoStackView.heightAnchor.constraint(equalToConstant: 25),
+            
+            itemQuant.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+            itemQuant.widthAnchor.constraint(equalToConstant: 100),
+            itemQuant.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+            itemQuant.heightAnchor.constraint(equalToConstant: 25),
+            
+            listQuantityButon.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+            listQuantityButon.widthAnchor.constraint(equalTo: itemQuant.widthAnchor),
+            listQuantityButon.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+            
+            listQuantity.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+            listQuantity.leftAnchor.constraint(equalTo: itemQuant.leftAnchor,constant: 5),
+            listQuantity.rightAnchor.constraint(equalTo: qImage.leftAnchor),
+            listQuantity.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+            
+            qImage.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+            qImage.widthAnchor.constraint(equalToConstant: 25),
+            qImage.rightAnchor.constraint(equalTo: itemQuant.rightAnchor, constant: -5),
+            qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+            
+            productDescription.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 5),
+            productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            productDescription.heightAnchor.constraint(equalToConstant: 50),
+            productDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+            
+            segmentLabel.topAnchor.constraint(equalTo: productDescription.bottomAnchor, constant: 5),
+            segmentLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            segmentLabel.heightAnchor.constraint(equalToConstant: 30),
+            segmentLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+            
+            listProductCollectionView.topAnchor.constraint(equalTo: segmentLabel.bottomAnchor, constant: 5),
+            listProductCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            listProductCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
+            listProductCollectionView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+
     ])
   }
 }

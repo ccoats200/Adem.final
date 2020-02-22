@@ -14,32 +14,7 @@ import AVFoundation
 
 //MARK: This needs to be a collection view
 class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
-
-    /*
-    //Cells Selected stuff
-    enum Mode {
-        case view
-        case selected
-    }
     
-    var mMode: Mode = .view {
-        didSet {
-            switch mMode {
-            case .view:
-                edit.title = "Edit"
-                //collectionView.allowsSelection = false
-                listCollectionView.allowsSelection = false
-                print("User is in view mode")
-            case .selected:
-                edit.title = "Done"
-                //collectionView.allowsSelection = true
-                listCollectionView.allowsSelection = true
-                print("User is in edit mode")
-            }
-        }
-    }
-
-    */
     //MARK: Navigation Bar Buttons - Start
     lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
@@ -152,39 +127,14 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
 
 
     //MARK: CollectionView for Filtering
-    var filterCollectionView: UICollectionView!
     let cfilter = "test"
     //MARK: Table View
     var listTableView: UITableView!
     //TODO: Does this need to be a weak var?
     func setUpListView() {
-        
-      
-        let layouts: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        filterCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-        
-        //filterCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: cfilter)
-        filterCollectionView.register(itemCellLayout.self, forCellWithReuseIdentifier: cellID)
-        filterCollectionView.dataSource = self
-        filterCollectionView.delegate = self
-        
-        filterCollectionView.backgroundColor = UIColor.ademBlue
-        filterCollectionView.isUserInteractionEnabled = true
-        filterCollectionView.isScrollEnabled = true
-        filterCollectionView.isPrefetchingEnabled = true
-        
+    
         //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
-        
-        
-        
-        //TODO: Need to understand
-//        filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
-        
-        //FIXME: Size of cell
-        let cellHeight: CGFloat = 50
-        let cellWidth: CGFloat = 10
-        layouts.itemSize = CGSize(width: cellWidth, height: cellHeight)
-        
+
         //SetUp views from own class
         //let ss: CGRect = UIScreen.main.bounds
         let displayWidth: CGFloat = self.view.frame.width
@@ -193,7 +143,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         listTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         listTableView.backgroundColor = UIColor.white
         
-        //listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
         listTableView.register(pantryTableViewCell.self, forCellReuseIdentifier: tableViewCell)
         listTableView.dataSource = self
         listTableView.delegate = self
@@ -201,22 +150,15 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         self.view.addSubview(listTableView)
         listTableView.translatesAutoresizingMaskIntoConstraints = false
      
-        self.view.addSubview(filterCollectionView)
-        filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //View contstaints
         
         //TODO: Decide if I remove the other View
         NSLayoutConstraint.activate([
-        
-            filterCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
-            filterCollectionView.heightAnchor.constraint(equalToConstant: 100),
-            filterCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            filterCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            
-            listTableView.topAnchor.constraint(equalTo: filterCollectionView.bottomAnchor),
+    
+            listTableView.topAnchor.constraint(equalTo: view.topAnchor),
             listTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            listTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            listTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            listTableView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            listTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
     }
     
@@ -277,7 +219,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         
         if self.isEditing {
             self.navigationItem.rightBarButtonItem = nil
-//            self.listCollectionView.allowsMultipleSelection = true
             self.tabBarController?.tabBar.isHidden = true
             self.navigationItem.rightBarButtonItems = [added, trashed]
             
@@ -287,16 +228,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             self.tabBarController?.tabBar.isHidden = false
 //            self.listCollectionView.allowsMultipleSelection = false
         }
-        /*
-        //if let indexPaths = collectionView?.indexPathsForVisibleItems {
-        if let indexPaths = listCollectionView?.indexPathsForVisibleItems {
-            for indexPath in indexPaths {
-                if let cell = listCollectionView?.cellForItem(at: indexPath) as? itemCellLayout {
-                    cell.isEditing = editing
-                }
-            }
-        }
-        */
     }
 
     
@@ -324,23 +255,13 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
             listProducts.remove(at: i.item)
         }
-        //collectionView.deleteItems(at: groceryProductsSelected)
-//        listCollectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
     }
     
+    
     //Edit Button
     @objc func handleEditButtonClicked() {
-        /*
-        if mMode == .view {
-            setEditing(true, animated: false)
-        } else {
-            setEditing(false, animated: false)
-        }
-        //setEditing(true, animated: false)
-        mMode = mMode == .view ? .selected : .view
-        */
         print("Edit button was clicked")
     }
     
@@ -366,12 +287,10 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         let nada = "nada"
         for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
             
-            
             print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and add it to their list")
             listProducts.remove(at: i.item)
             
         }
-//        listCollectionView.deleteItems(at: groceryProductsSelected)
         selectedProductsIndexPath.removeAll()
         setEditing(false, animated: false)
         
@@ -487,7 +406,7 @@ extension PantryVC: UICollectionViewDataSource, UICollectionViewDelegate {
     }
     
     
-    //Initiating cell
+    //MARK: Collect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! itemCellLayout
@@ -521,7 +440,6 @@ extension PantryVC: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
 
     }
-    
     
     //Space between rows
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

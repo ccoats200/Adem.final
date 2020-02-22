@@ -48,10 +48,6 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
             
         }
-        
-        
-        
-        
         setUpDifferentViews()
         setUpBarButtonItems()
     }
@@ -65,22 +61,6 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         //self.navigationItem.rightBarButtonItem = searching
     }
     
-    let segmentContr: UISegmentedControl = {
-        let items = ["Breakfast", "Lunch", "Dinner"]
-        let segmentContr = UISegmentedControl(items: items)
-        segmentContr.tintColor = UIColor.white
-        segmentContr.selectedSegmentIndex = 0
-        //segmentContr.layer.cornerRadius = 5
-        segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.ademBlue], for: .selected)
-               
-        segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
-
-        segmentContr.backgroundColor = UIColor.ademBlue
-               segmentContr.addTarget(self, action: #selector(switchSegViews), for: .valueChanged)
-        return segmentContr
-        
-    }()
-    
     @objc fileprivate func switchSegViews() {
         print("test")
     }
@@ -93,24 +73,18 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         mealsTableView = UITableView(frame: self.view.bounds)
         
         self.view.addSubview(mealsTableView)
-        self.view.addSubview(segmentContr)
         
         mealsTableView.delegate = self
         mealsTableView.dataSource = self
         
         mealsTableView.register(mealsTableViewCell.self, forCellReuseIdentifier: mealsCellID)
         mealsTableView.translatesAutoresizingMaskIntoConstraints = false
-        segmentContr.translatesAutoresizingMaskIntoConstraints = false
         
         
         
         NSLayoutConstraint.activate([
-            segmentContr.topAnchor.constraint(equalTo: view.topAnchor),
-            segmentContr.heightAnchor.constraint(equalToConstant: 25),
-            segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor),
-            segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
-            mealsTableView.topAnchor.constraint(equalTo: segmentContr.bottomAnchor),
+
+            mealsTableView.topAnchor.constraint(equalTo: view.topAnchor),
             mealsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             mealsTableView.widthAnchor.constraint(equalTo: view.widthAnchor),
             mealsTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -137,14 +111,17 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         return tableViewCategories.count
     }
     
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view: UIView = {
-           let view = UIView()
-            view.backgroundColor = UIColor.white
-            return view
-        }()
-        
-        return view
+//    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+//
+//        let view = UIView()
+//        view.backgroundColor = UIColor.clear
+//
+//
+//        return view
+//    }
+//
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 50
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

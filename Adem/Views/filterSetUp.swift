@@ -50,6 +50,7 @@ class filterCellLayout: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
                 
+        self.layer.cornerRadius = 5
         setupViews()
     }
 
@@ -60,7 +61,6 @@ class filterCellLayout: UICollectionViewCell {
         name.textColor = UIColor.white
         name.font = UIFont(name: helNeu, size: 15.0)
         name.numberOfLines = 0
-//        name.backgroundColor = UIColor.red
         name.translatesAutoresizingMaskIntoConstraints = false
         return name
     }()

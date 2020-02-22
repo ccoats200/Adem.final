@@ -88,22 +88,61 @@ class listProductVCLayout: UIViewController {
     }
 
     
+
+    let segmentContr: UISegmentedControl = {
+        let items = ["Description", "Meals", "Stats"]
+        let segmentContr = UISegmentedControl(items: items)
+        segmentContr.tintColor = UIColor.white
+        segmentContr.selectedSegmentIndex = 0
+        segmentContr.layer.cornerRadius = 5
+        segmentContr.layer.borderWidth = 1
+        segmentContr.layer.borderColor = UIColor.white.cgColor
+        
+        segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.ademBlue], for: .selected)
+        segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
+
+        segmentContr.addTarget(self, action: #selector(switchViewAction), for: .valueChanged)
+        
+        segmentContr.backgroundColor = UIColor.ademBlue
+        return segmentContr
+  
+    }()
+    
+    
+    @objc func switchViewAction(_ segmentContr: UISegmentedControl) {
+        self.view.bringSubviewToFront(segmentViews[segmentContr.selectedSegmentIndex])
+    }
+    
+    let mealsPage = mealsSegment()
+    let statsPage = statsSegment()
+    var segmentViews: [UIView]!
+    
     func setUpViews() {
+        
+        segmentViews = [UIView]()
+        segmentViews.append(infoView)
+        segmentViews.append(mealsPage)
+        segmentViews.append(statsPage)
         view.addSubview(pInfo)
         view.addSubview(imageV)
-        view.addSubview(infoView)
+        
+        
+        for v in segmentViews {
+            view.addSubview(v)
+            v.layer.cornerRadius = 10
+            v.translatesAutoresizingMaskIntoConstraints = false
+        }
+        view.bringSubviewToFront(segmentViews[0])
+        
+        view.addSubview(segmentContr)
         
         imageV.translatesAutoresizingMaskIntoConstraints = false
         pInfo.translatesAutoresizingMaskIntoConstraints = false
-        infoView.translatesAutoresizingMaskIntoConstraints = false
-        infoView.translatesAutoresizingMaskIntoConstraints = false
+        segmentContr.translatesAutoresizingMaskIntoConstraints = false
         
         infoView.listQuantityButon.addTarget(self, action: #selector(plz), for: .touchDown)
-        
-        pInfo.layer.cornerRadius = 20
-        
-        
     }
+
     
     @objc func plz() {
         
@@ -115,21 +154,14 @@ class listProductVCLayout: UIViewController {
         
         pInfo.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         infoView.nutritionDetails.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
-        
-        //pInfo.productNameAndBackButton.setTitle("reads", for: .normal)
-        //pInfo.productNameAndBackButton.setTitle(, for: .normal)
-
     }
     
     func setupProductLayoutContstraints() {
-        
-        
-        
+
         //MARK: Constraints
-        
         NSLayoutConstraint.activate([
             
-        pInfo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+        pInfo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
         pInfo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         pInfo.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
         pInfo.heightAnchor.constraint(equalToConstant: 50),
@@ -137,10 +169,26 @@ class listProductVCLayout: UIViewController {
         imageV.topAnchor.constraint(equalTo: pInfo.bottomAnchor, constant: 10),
         imageV.centerXAnchor.constraint(equalTo: pInfo.centerXAnchor),
         
-        infoView.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 15),
+        segmentContr.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 10),
+        segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        segmentContr.widthAnchor.constraint(equalTo: infoView.widthAnchor),
+        segmentContr.heightAnchor.constraint(equalToConstant: 25),
+        
+        infoView.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 5),
         infoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        infoView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-        infoView.heightAnchor.constraint(equalToConstant: 325),
+        infoView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+        infoView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        
+        mealsPage.topAnchor.constraint(equalTo: infoView.topAnchor),
+        mealsPage.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
+        mealsPage.widthAnchor.constraint(equalTo: infoView.widthAnchor),
+        mealsPage.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
+        
+        statsPage.topAnchor.constraint(equalTo: infoView.topAnchor),
+        statsPage.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
+        statsPage.widthAnchor.constraint(equalTo: infoView.widthAnchor),
+        statsPage.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
+        
         ])
             
     }

@@ -210,7 +210,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
 //    MARK: Table View
     var listTableView: UITableView!
 //    MARK: CollectionView for Filtering
-//    var filterListCollectionView: UICollectionView!
     let cfilter = "test"
     func setUpListView() {
         
@@ -233,45 +232,35 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             
         default:
             
-//            let layouts = UICollectionViewFlowLayout()
-//            layouts.itemSize = CGSize(width: 120, height: 120)
-//            filterListCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layouts)
-            
             listTableView = UITableView(frame: self.view.bounds)
             
 //          MARK: Subviews
             self.view.addSubview(listTableView)
-//            self.view.addSubview(filterListCollectionView)
-            
+
             collecAndTableFeatures()
             
             listTableView.translatesAutoresizingMaskIntoConstraints = false
-//            filterListCollectionView.translatesAutoresizingMaskIntoConstraints = false
 
-//            filterListCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: cellID)
             listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
 
             createLayout()
         
-            //filterCollectionView.contentInset = UIEdgeInsets.init(top: 10, left: 5, bottom: 1, right: 5)
+            
         }
     }
     
     private func collecAndTableFeatures() {
 //          MARK: DataSource and Delegate
-//        filterListCollectionView.dataSource = self
-//        filterListCollectionView.delegate = self
+
         listTableView.dataSource = self
         listTableView.delegate = self
         
 //          MARK: Background Color
         listTableView.backgroundColor = UIColor.white
-//        filterListCollectionView.backgroundColor = UIColor.ademBlue
+
                     
 //          MARK: User interaction
-//        filterListCollectionView.isUserInteractionEnabled = true
-//        filterListCollectionView.isScrollEnabled = true
-//        filterListCollectionView.isPrefetchingEnabled = true
+
         listTableView.allowsMultipleSelection = true
         
     }
@@ -379,28 +368,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     var selectedProductsIndexPath: [IndexPath: Bool] = [:]
     var groceryProductsSelected: [IndexPath] = []
     
-    @objc func handleBatchDelete() {
-       
-        for (key, value) in selectedProductsIndexPath {
-            if value {
-                groceryProductsSelected.append(key)
-            }
-        }
-        
-        for i in listProducts {
-            if i.Pantry == true {
-                i.Pantry = false
-            }
-        }
-        let nada = "nada"
-        for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
-            listProducts.remove(at: i.item)
-        }
-        selectedProductsIndexPath.removeAll()
-        setEditing(false, animated: false)
-    }
-    
+   
     //Edit Button
     @objc func handleEditButtonClicked() {
         if mMode == .view {
@@ -413,41 +381,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         print("Edit button was clicked")
     }
     
-    //Add item back
-    @objc func handleBatchAdd() {
-        
-        for (key, value) in selectedProductsIndexPath {
-            if value {
-                groceryProductsSelected.append(key)
-            }
-        }
-        
-        //watch out for nil val in future
-        for i in listProducts {
-            print("there were \(listProducts.count as Any) products")
-            
-            if i.List == true {
-                i.List = false
-                i.Pantry = true
-            }
-        }
-        
-        let nada = "nada"
-        for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
-            
-            
-            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and add it to their list")
-            listProducts.remove(at: i.item)
-            
-        }
-        selectedProductsIndexPath.removeAll()
-        setEditing(false, animated: false)
-        
-        //listCollectionView().collectionView.reloadData()
-        groceryProductsSelected = []
-    }
-
-    
+   
     //product Button
     @objc func handleSearch() {
 
@@ -505,11 +439,12 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         
     }
     var filterListCollectionView: UICollectionView!
+    let filters = ["All","Dairy", "Meat", "Veggies","Fruit","Frozen"]
 }
 
 
 //MARK: tableView extension
-extension listViewController: UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate {
+extension listViewController: UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -525,7 +460,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
             return filteringproducts.count
         }
         //return listProducts.count
-        return allproductsInList.count
+        return fuckthis.count
     }
     
     //FIXME: Delete Cell
@@ -710,7 +645,13 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return 5
+        return filters.count
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("needs to be the name of the cell")
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -719,10 +660,17 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
         let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
         filterCells.backgroundColor = UIColor.ademBlue
         filterCells.layer.cornerRadius = 5
-        filterCells.productName.text = "Dairy"
+        
+        
+        filterCells.productName.text = filters[indexPath.item]
+        
         
         return filterCells
         }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1
+    }
 }
 
 extension listViewController: UNUserNotificationCenterDelegate {

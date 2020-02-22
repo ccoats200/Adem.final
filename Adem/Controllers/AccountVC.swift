@@ -46,26 +46,23 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = UIColor.white
         
-        let settings = FirestoreSettings()
-        db.settings = settings
-
         setUptopViews()
     }
     
     
     
     let segmentContr: UISegmentedControl = {
-        let items = ["Stats", "Home"]
+        let items = ["Home", "Stats"]
         let segmentContr = UISegmentedControl(items: items)
         segmentContr.tintColor = UIColor.white
-        segmentContr.selectedSegmentIndex = 1
+        segmentContr.selectedSegmentIndex = 0
         segmentContr.layer.cornerRadius = 5
         segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.ademBlue], for: .selected)
                
         segmentContr.setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor.white], for: .normal)
 
         segmentContr.backgroundColor = UIColor.ademBlue
-               segmentContr.addTarget(self, action: #selector(switchAccountViews), for: .valueChanged)
+               segmentContr.addTarget(self, action: #selector(switchStatsViews), for: .valueChanged)
         return segmentContr
         
     }()
@@ -95,6 +92,9 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    var accountViewToSwitch: [UIView]!
+    var personalStats = statViews()
+    
     func setUpAgain() {
         
      //SetUp views from own class
@@ -109,17 +109,37 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         accountTableView.delegate = self
         accountTableView.dataSource = self
         
+        accountTableView.estimatedRowHeight = UITableView.automaticDimension
         
-        self.view.addSubview(friendsAndFamily)
-        self.view.addSubview(accountTableView)
+        accountViewToSwitch = [UIView]()
+        
+        let backgroundView = UIView()
+        
+        accountViewToSwitch.append(backgroundView)
+        accountViewToSwitch.append(personalStats)
+        
+        for v in accountViewToSwitch {
+            view.addSubview(v)
+        }
+        view.bringSubviewToFront(accountViewToSwitch[0])
+        
+        backgroundView.addSubview(friendsAndFamily)
+        backgroundView.addSubview(accountTableView)
+        //backgroundView.addSubview(diet)
         
         accountTableView.layer.cornerRadius = 5
+        backgroundView.layer.cornerRadius = 5
+        accountTableView.isScrollEnabled = false
+        accountTableView.backgroundColor = UIColor.red
+        backgroundView.backgroundColor = UIColor.white
         
+        
+        personalStats.translatesAutoresizingMaskIntoConstraints = false
+        backgroundView.translatesAutoresizingMaskIntoConstraints = false
         accountTableView.translatesAutoresizingMaskIntoConstraints = false
         friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
-        
-        
-       
+        //diet.translatesAutoresizingMaskIntoConstraints = false
+
         
         diet.addButton.addTarget(self, action: #selector(updateDiet), for: .touchDown)
         friendsAndFamily.addButton.addTarget(self, action: #selector(handleFriends), for: .touchDown)
@@ -130,44 +150,41 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
      
      NSLayoutConstraint.activate([
         
-        friendsAndFamily.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
+        backgroundView.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
+        backgroundView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
+        backgroundView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+        backgroundView.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
+        
+        personalStats.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
+        personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
+        personalStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+        personalStats.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
+        
+        
+        friendsAndFamily.topAnchor.constraint(equalTo: backgroundView.topAnchor),
         friendsAndFamily.heightAnchor.constraint(equalToConstant: 100),
-        friendsAndFamily.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        friendsAndFamily.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
+        friendsAndFamily.widthAnchor.constraint(equalTo: backgroundView.widthAnchor),
+        friendsAndFamily.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor),
         
         accountTableView.topAnchor.constraint(equalTo: friendsAndFamily.bottomAnchor, constant: 15),
-        accountTableView.heightAnchor.constraint(equalToConstant: 250),
-        accountTableView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        accountTableView.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
-        
+        accountTableView.bottomAnchor.constraint(equalTo: backgroundView.bottomAnchor),
+        accountTableView.widthAnchor.constraint(equalTo: backgroundView.widthAnchor),
+        accountTableView.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor),
+ 
      ])
      }
     
+    
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+         return UITableView.automaticDimension
+    }
+  
+    
+    
     @objc fileprivate func switchStatsViews() {
         
-            self.view.addSubview(accountStats)
-            accountStats.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                accountStats.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
-            accountStats.heightAnchor.constraint(equalToConstant: 100),
-            accountStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            accountStats.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
-        ])
-    }
-    
-    
-    @objc fileprivate func switchAccountViews() {
-        
-            self.view.addSubview(diet)
-            diet.translatesAutoresizingMaskIntoConstraints = false
-            
-            NSLayoutConstraint.activate([
-                diet.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
-            diet.heightAnchor.constraint(equalToConstant: 100),
-            diet.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            diet.centerXAnchor.constraint(equalTo: friendsAndFamily.centerXAnchor),
-        ])
+            self.view.bringSubviewToFront(accountViewToSwitch[segmentContr.selectedSegmentIndex])
     }
     
     @objc func updateDiet() {
@@ -193,12 +210,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 //            accountStats.isHidden = true
         }
         
-        //Nav bar is see through
+        //MARK: Nav bar is see through
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
-        //Nav bar is see through
+        //MARK: Nav bar is see through
         
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
@@ -247,11 +264,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        
-        if segmentContr.selectedSegmentIndex == 1 {
-            switchAccountViews()
-        }
+
     }
     
     @objc func handelLogin() {
@@ -296,6 +309,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        
         switch indexPath.row {
         case 0:
             handleFriends()
