@@ -120,22 +120,20 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         for v in accountViewToSwitch {
             view.addSubview(v)
-        }
+            v.layer.cornerRadius = 5
+            v.translatesAutoresizingMaskIntoConstraints = false
+                    }
         view.bringSubviewToFront(accountViewToSwitch[0])
         
         backgroundView.addSubview(friendsAndFamily)
         backgroundView.addSubview(accountTableView)
         //backgroundView.addSubview(diet)
         
-        accountTableView.layer.cornerRadius = 5
-        backgroundView.layer.cornerRadius = 5
         accountTableView.isScrollEnabled = false
         accountTableView.backgroundColor = UIColor.red
         backgroundView.backgroundColor = UIColor.white
         
-        
-        personalStats.translatesAutoresizingMaskIntoConstraints = false
-        backgroundView.translatesAutoresizingMaskIntoConstraints = false
+        personalStats.backgroundColor = UIColor.white
         accountTableView.translatesAutoresizingMaskIntoConstraints = false
         friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
         //diet.translatesAutoresizingMaskIntoConstraints = false
@@ -155,10 +153,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         backgroundView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
         backgroundView.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
         
-        personalStats.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
-        personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -70),
-        personalStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        personalStats.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
+        personalStats.topAnchor.constraint(equalTo: backgroundView.topAnchor),
+        personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
+        personalStats.widthAnchor.constraint(equalTo: backgroundView.widthAnchor),
+        personalStats.centerXAnchor.constraint(equalTo: backgroundView.centerXAnchor),
         
         
         friendsAndFamily.topAnchor.constraint(equalTo: backgroundView.topAnchor),

@@ -12,6 +12,9 @@ import Firebase
 //import FirebaseFirestore
 import AVFoundation
 
+
+
+
 //MARK: This needs to be a collection view
 class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
@@ -368,6 +371,7 @@ extension PantryVC: UITableViewDelegate, UITableViewDataSource {
         func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
             
             let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! pantryTableViewCell
+            productsListViewLayout.cellDelegate = self
             
             return productsListViewLayout
         }
@@ -382,6 +386,15 @@ extension PantryVC: UITableViewDelegate, UITableViewDataSource {
         }
         
         //MARK: Table view cell properties - End
+}
+
+extension PantryVC: CustomCollectionCellDelegate {
+    func collectionView(collectioncell: pantryCell?, didTappedInTableview TableCell: pantryTableViewCell) {
+        //https://slicode.com/collectionview-inside-tableview-cell-part-3/
+        let productScreen = listProductVCLayout()
+        productScreen.hidesBottomBarWhenPushed = true
+        self.present(productScreen, animated: true, completion: nil)
+    }
 }
 
 extension PantryVC: UICollectionViewDataSource, UICollectionViewDelegate {

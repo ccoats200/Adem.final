@@ -14,9 +14,9 @@ import Firebase
 class listProductVCLayout: UIViewController {
     
     //MARK: View set up
-    var pInfo = productViews()
-    var imageV = productImageViews()
-    var infoView = productInfoViews()
+    var productNameSection = productViews()
+    var productImageSection = productImageViews()
+    var relatedProductInfoSection = productInfoViews()
     
     
     override func viewDidLoad() {
@@ -74,15 +74,10 @@ class listProductVCLayout: UIViewController {
         print("went back to previous page")
     }
         
-    @objc func handleCamera() {
-        if #available(iOS 13.0, *) {
-            let productScreen = camVC()
-            productScreen.hidesBottomBarWhenPushed = true
-            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            self.present(productScreen, animated: true, completion: nil)
-        } else {
-            // Fallback on earlier versions
-        }
+    @objc func handleNutritionLabel() {
+        let productScreen = nutritionLabelVC()
+        productScreen.hidesBottomBarWhenPushed = true
+        self.present(productScreen, animated: true, completion: nil)
         
         print("Camera button working")
     }
@@ -120,11 +115,11 @@ class listProductVCLayout: UIViewController {
     func setUpViews() {
         
         segmentViews = [UIView]()
-        segmentViews.append(infoView)
+        segmentViews.append(relatedProductInfoSection)
         segmentViews.append(mealsPage)
         segmentViews.append(statsPage)
-        view.addSubview(pInfo)
-        view.addSubview(imageV)
+        view.addSubview(productNameSection)
+        view.addSubview(productImageSection)
         
         
         for v in segmentViews {
@@ -136,24 +131,55 @@ class listProductVCLayout: UIViewController {
         
         view.addSubview(segmentContr)
         
-        imageV.translatesAutoresizingMaskIntoConstraints = false
-        pInfo.translatesAutoresizingMaskIntoConstraints = false
+        productImageSection.translatesAutoresizingMaskIntoConstraints = false
+        productNameSection.translatesAutoresizingMaskIntoConstraints = false
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
         
-        infoView.listQuantityButon.addTarget(self, action: #selector(plz), for: .touchDown)
+        relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(plz), for: .touchDown)
     }
 
     
     @objc func plz() {
+       
+        incorrectInformationAlert(title: "Login Failed", message: "It doesn't work like that...")
+//        let updateQuantity = quantityAlert()
+//        updateQuantity.modalPresentationStyle = UIModalPresentationStyle.formSheet
+//        self.present(updateQuantity, animated: true, completion: nil)
+
         
-        print("???")
+    }
+    
+    //MARK: Quantity
+    let actionTest = [1: "1",2: "2",3: "3",4 :"4",5: "5"]
+    
+    
+    
+    func incorrectInformationAlert(title: String, message: String) {
+        
+        let sorted = actionTest.sorted {$0.key > $1.key}
+        
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
+        
+        for actions in sorted {
+            
+            let quantity: UIAlertAction = UIAlertAction(title: actions.value, style: .default) { action -> Void in
+                self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
+                print(actions.value)
+            }
+            actionSheetController.addAction(quantity)
+        }
+        
+        actionSheetController.addAction(cancelAction)
+        self.present(actionSheetController, animated: true, completion: nil)
     }
     
     func setUpProductButtons() {
         //MARK: how to add button interaction
         
-        pInfo.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        infoView.nutritionDetails.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
+        productNameSection.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
+        relatedProductInfoSection.whereToBuy.addTarget(self, action: #selector(handleNutritionLabel), for: .touchUpInside)
     }
     
     func setupProductLayoutContstraints() {
@@ -161,33 +187,33 @@ class listProductVCLayout: UIViewController {
         //MARK: Constraints
         NSLayoutConstraint.activate([
             
-        pInfo.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-        pInfo.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        pInfo.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-        pInfo.heightAnchor.constraint(equalToConstant: 50),
+        productNameSection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+        productNameSection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        productNameSection.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+        productNameSection.heightAnchor.constraint(equalToConstant: 50),
 
-        imageV.topAnchor.constraint(equalTo: pInfo.bottomAnchor, constant: 10),
-        imageV.centerXAnchor.constraint(equalTo: pInfo.centerXAnchor),
+        productImageSection.topAnchor.constraint(equalTo: productNameSection.bottomAnchor, constant: 10),
+        productImageSection.centerXAnchor.constraint(equalTo: productNameSection.centerXAnchor),
         
-        segmentContr.topAnchor.constraint(equalTo: imageV.bottomAnchor, constant: 10),
+        segmentContr.topAnchor.constraint(equalTo: productImageSection.bottomAnchor, constant: 10),
         segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        segmentContr.widthAnchor.constraint(equalTo: infoView.widthAnchor),
+        segmentContr.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
         segmentContr.heightAnchor.constraint(equalToConstant: 25),
         
-        infoView.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 5),
-        infoView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        infoView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        infoView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+        relatedProductInfoSection.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 5),
+        relatedProductInfoSection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+        relatedProductInfoSection.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+        relatedProductInfoSection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         
-        mealsPage.topAnchor.constraint(equalTo: infoView.topAnchor),
-        mealsPage.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
-        mealsPage.widthAnchor.constraint(equalTo: infoView.widthAnchor),
-        mealsPage.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
+        mealsPage.topAnchor.constraint(equalTo: relatedProductInfoSection.topAnchor),
+        mealsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
+        mealsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
+        mealsPage.bottomAnchor.constraint(equalTo: relatedProductInfoSection.bottomAnchor),
         
-        statsPage.topAnchor.constraint(equalTo: infoView.topAnchor),
-        statsPage.centerXAnchor.constraint(equalTo: infoView.centerXAnchor),
-        statsPage.widthAnchor.constraint(equalTo: infoView.widthAnchor),
-        statsPage.bottomAnchor.constraint(equalTo: infoView.bottomAnchor),
+        statsPage.topAnchor.constraint(equalTo: relatedProductInfoSection.topAnchor),
+        statsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
+        statsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
+        statsPage.bottomAnchor.constraint(equalTo: relatedProductInfoSection.bottomAnchor),
         
         ])
             

@@ -162,11 +162,13 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     setupView()
   }
     
-    let productDescription: UILabel = {
+
+    let productDescription: UITextView = {
         let desc = "This is a test of the label"
-        let description = UILabel()
+        let description = UITextView()
         description.layer.masksToBounds = true
         description.text = "\(desc)"
+        description.isEditable = false
         description.textColor = UIColor.ademBlue
         description.font = UIFont.boldSystemFont(ofSize: 16)
         return description
@@ -174,12 +176,6 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
-    }
-    
-    
-    //Space between rows
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -201,15 +197,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return notify
     }()
     
-    let favoriteProduct: UIButton = {
-        let faveProduct = UIButton()
-        let faveImage = UIImage(named: heartImage)
-        faveProduct.setImage(faveImage, for: .normal)
-        faveProduct.translatesAutoresizingMaskIntoConstraints = false
-        faveProduct.contentMode = .scaleAspectFit
-        faveProduct.backgroundColor = UIColor.blue
-        return faveProduct
-    }()
+   
     
     let itemQuant: UIView = {
         let quant = UIView()
@@ -228,8 +216,9 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     let listQuantity: UILabel = {
         let lQuant = UILabel()
-        var theMeaningOfLife = 42
+        var theMeaningOfLife = 1
         lQuant.textColor = UIColor.white
+        lQuant.font = UIFont(name: hNBold, size: 17)
         lQuant.text = "Qty: \(theMeaningOfLife)"
         lQuant.translatesAutoresizingMaskIntoConstraints = false
         lQuant.contentMode = .scaleAspectFit
@@ -238,37 +227,29 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     let qImage: UIImageView = {
         let qimg = UIImageView()
-        qimg.image = UIImage(named: "vegan_selected")
-        qimg.translatesAutoresizingMaskIntoConstraints = false
+        qimg.image = UIImage(named: "arrow")
         qimg.contentMode = .scaleAspectFit
+        qimg.translatesAutoresizingMaskIntoConstraints = false
         return qimg
     }()
 
-    lazy var nutritionDetails: UIButton = {
-        let facts = UIButton()
-        let image = UIImage(named: "vegan_selected")
-        //facts.backgroundImage(for: .normal)
-        facts.setImage(image, for: .normal)
-        facts.translatesAutoresizingMaskIntoConstraints = false
-        facts.contentMode = .scaleAspectFit
-        return facts
-    }()
     
     let segmentLabel: UILabel = {
         let meal = UILabel()
         meal.textColor = UIColor.ademBlue
-        meal.text = "similar"
-        meal.backgroundColor = UIColor.lightGray
+        meal.text = "You May Also Like"
+        meal.font = UIFont(name: hNBold, size: 18)
+        meal.textAlignment = .center
         meal.layer.cornerRadius = 5
         meal.translatesAutoresizingMaskIntoConstraints = false
         return meal
     }()
     
+    
     var listProductCollectionView: UICollectionView!
     
     let cellID = "cell"
-    
-    
+
     
     private func setUPCollection() {
         
@@ -295,17 +276,23 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         setUPCollection()
        
     
+        //MARK: Text line
+        let textFieldSeparator = UIView()
+        textFieldSeparator.backgroundColor = UIColor.ademBlue
+        
         self.addSubview(productDescription)
         self.addSubview(listProductCollectionView)
         self.addSubview(segmentLabel)
+        self.addSubview(textFieldSeparator)
         
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         segmentLabel.translatesAutoresizingMaskIntoConstraints = false
         listProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
         productDescription.translatesAutoresizingMaskIntoConstraints = false
     
-        let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
+        
 
-        self.addSubview(healthInfoStackView)
+        self.addSubview(whereToBuy)
         
     
         self.addSubview(itemQuant)
@@ -318,27 +305,17 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         listQuantity.translatesAutoresizingMaskIntoConstraints = false
         itemQuant.translatesAutoresizingMaskIntoConstraints = false
     
-    
-        healthInfoStackView.contentMode = .scaleAspectFit
-        healthInfoStackView.spacing = 5
-        healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
-        healthInfoStackView.clipsToBounds = true
-        healthInfoStackView.layer.masksToBounds = true
-        healthInfoStackView.distribution = .fillEqually
-        healthInfoStackView.backgroundColor = UIColor.white
-    
-        
         NSLayoutConstraint.activate([
         
-            healthInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            healthInfoStackView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
-            healthInfoStackView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
-            healthInfoStackView.heightAnchor.constraint(equalToConstant: 25),
+            whereToBuy.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            whereToBuy.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
+            whereToBuy.widthAnchor.constraint(equalToConstant: 30),
+            whereToBuy.heightAnchor.constraint(equalToConstant: 30),
             
-            itemQuant.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
-            itemQuant.widthAnchor.constraint(equalToConstant: 100),
+            itemQuant.centerYAnchor.constraint(equalTo: whereToBuy.centerYAnchor),
+            itemQuant.widthAnchor.constraint(equalToConstant: 90),
             itemQuant.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-            itemQuant.heightAnchor.constraint(equalToConstant: 25),
+            itemQuant.heightAnchor.constraint(equalTo: whereToBuy.heightAnchor),
             
             listQuantityButon.topAnchor.constraint(equalTo: itemQuant.topAnchor),
             listQuantityButon.widthAnchor.constraint(equalTo: itemQuant.widthAnchor),
@@ -349,25 +326,30 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             listQuantity.rightAnchor.constraint(equalTo: qImage.leftAnchor),
             listQuantity.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
             
-            qImage.topAnchor.constraint(equalTo: itemQuant.topAnchor),
+            qImage.centerYAnchor.constraint(equalTo: itemQuant.centerYAnchor),
             qImage.widthAnchor.constraint(equalToConstant: 25),
             qImage.rightAnchor.constraint(equalTo: itemQuant.rightAnchor, constant: -5),
-            qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor),
+            qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor, multiplier: 1/2),
             
-            productDescription.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 5),
+            productDescription.topAnchor.constraint(equalTo: whereToBuy.bottomAnchor, constant: 5),
             productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            productDescription.heightAnchor.constraint(equalToConstant: 50),
+            productDescription.bottomAnchor.constraint(equalTo: segmentLabel.topAnchor, constant: -5),
             productDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
             
-            segmentLabel.topAnchor.constraint(equalTo: productDescription.bottomAnchor, constant: 5),
+            segmentLabel.bottomAnchor.constraint(equalTo: textFieldSeparator.topAnchor, constant: -3),
             segmentLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             segmentLabel.heightAnchor.constraint(equalToConstant: 30),
-            segmentLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+            segmentLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
             
-            listProductCollectionView.topAnchor.constraint(equalTo: segmentLabel.bottomAnchor, constant: 5),
+            textFieldSeparator.bottomAnchor.constraint(equalTo: listProductCollectionView.topAnchor, constant: -10),
+            textFieldSeparator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
+            textFieldSeparator.widthAnchor.constraint(equalTo: segmentLabel.widthAnchor),
+            
+            listProductCollectionView.heightAnchor.constraint(equalToConstant: 120),
             listProductCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             listProductCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
-            listProductCollectionView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+            listProductCollectionView.widthAnchor.constraint(equalTo: productDescription.widthAnchor),
 
     ])
   }

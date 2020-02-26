@@ -10,15 +10,34 @@ import Foundation
 import UIKit
 
 //MARK: Login text fields view
-class statViews: UIView {
-  
+class statViews: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+ 
+    let topAndBottomCelllID = "mealsCells"
+    let middleCellID = "Middle"
+    var mealrecos: UICollectionView!
     //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  
+    override init(frame: CGRect) {
    
-    //emailTextField.delegate = self
-    //passwordTextField.delegate = self
-    setupView()
+        super.init(frame: frame)
+    
+    
+        let layouts = UICollectionViewFlowLayout()
+        mealrecos = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        mealrecos.isScrollEnabled = false
+        mealrecos.dataSource = self
+        mealrecos.delegate = self
+        layouts.sectionInset = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
+        mealrecos.register(accountStatsProductCells.self, forCellWithReuseIdentifier: topAndBottomCelllID)
+        //    mealrecos.register(accountStatsMiddleCells.self, forCellWithReuseIdentifier: middleCellID)
+        mealrecos.backgroundColor = UIColor.white
+        mealrecos.layer.cornerRadius = 5
+        
+        mealrecos.clipsToBounds = true
+        mealrecos.layer.masksToBounds = true
+        mealrecos.isScrollEnabled = false
+        
+        setupView()
   }
   
   //initWithCode to init view from xib or storyboard
@@ -27,70 +46,70 @@ class statViews: UIView {
     
     setupView()
   }
-  
-    let emailTextField: UITextField = {
-        let email = UITextField()
-        email.placeholder = "Email"
-        email.returnKeyType = .continue
-        email.autocapitalizationType = .none
-        email.textColor = UIColor.black
-        email.tag = 0
-        email.translatesAutoresizingMaskIntoConstraints = false
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return email
-       }()
-       
-    let textFieldSeparator: UIView = {
-        let textSeparator = UIView()
-        textSeparator.backgroundColor = UIColor.ademBlue
-        textSeparator.translatesAutoresizingMaskIntoConstraints = false
-        return textSeparator
-       }()
-       
-    let passwordTextField: UITextField = {
-        let password = UITextField()
-        password.placeholder = "Password"
-        password.isSecureTextEntry = true
-        password.returnKeyType = .done
-        password.translatesAutoresizingMaskIntoConstraints = false
-        password.tag = 1
         
-        return password
-       }()
+        switch section {
+        case 0:
+            return 3
+        case 1:
+            return 2
+        case 2:
+            return 3
+        default:
+            return 3
+        }
+    }
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        return 3
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
+        switch indexPath.section {
+        case 0,2:
+            return CGSize(width: 100, height: 100)
+        case 1:
+            return CGSize(width: 160, height: 130)
+        default:
+            return CGSize(width: 100, height: 100)
+        }
+    }
+    
+   
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+
+        let mealRecCell = collectionView.dequeueReusableCell(withReuseIdentifier: topAndBottomCelllID, for: indexPath) as! accountStatsProductCells
+
+    
+        
+        switch indexPath.section {
+        case 0,2:
+            mealRecCell.tileLabel.text = "test"
+        case 1:
+            mealRecCell.tileLabel.text = "middle"
+        default:
+            mealRecCell.tileLabel.text = "opps"
+        }
+            return mealRecCell
+    }
+    
   //common func to init our view
   private func setupView() {
-    
-    self.backgroundColor = UIColor.white
-    self.layer.cornerRadius = 5
-    self.layer.borderColor = UIColor.gray.cgColor
-    self.layer.borderWidth = 1
-    self.layer.masksToBounds = true
-    
-    self.addSubview(emailTextField)
-    self.addSubview(textFieldSeparator)
-    self.addSubview(passwordTextField)
-    emailTextField.translatesAutoresizingMaskIntoConstraints = false
-    textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
-    passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-    
-    NSLayoutConstraint.activate([
-        
-        emailTextField.topAnchor.constraint(equalTo: self.topAnchor),
-        emailTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        emailTextField.widthAnchor.constraint(equalTo: self.widthAnchor, constant:  -24),
-        emailTextField.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: (1/2)),
-        
-        textFieldSeparator.topAnchor.constraint(equalTo: emailTextField.bottomAnchor),
-        textFieldSeparator.centerXAnchor.constraint(equalTo: emailTextField.centerXAnchor),
-        textFieldSeparator.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -24),
-        textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
-        
 
-        passwordTextField.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor),
-        passwordTextField.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        passwordTextField.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -24),
-        passwordTextField.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: (1/2)),
+    self.addSubview(mealrecos)
+    mealrecos.translatesAutoresizingMaskIntoConstraints = false
+    
+     NSLayoutConstraint.activate([
+        
+        mealrecos.topAnchor.constraint(equalTo: self.topAnchor),
+        mealrecos.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        mealrecos.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+        mealrecos.widthAnchor.constraint(equalTo: self.widthAnchor),
     ])
   }
 }

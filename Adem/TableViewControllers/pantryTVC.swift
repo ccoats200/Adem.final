@@ -16,10 +16,12 @@ protocol pantryDelegate: class {
     func addToList(cell: pantryCell)
 }
 
+
 //MARK: Pantry Product Cell layout Final
 class pantryCell: UICollectionViewCell {
     
     weak var delegate: pantryDelegate?
+    
     var eachCell: UIViewController?
 
     override init(frame: CGRect) {
@@ -57,7 +59,7 @@ class pantryCell: UICollectionViewCell {
         name.numberOfLines = 0
         name.textAlignment = .left
         name.numberOfLines = 1
-        name.backgroundColor = UIColor.blue
+//        name.backgroundColor = UIColor.blue
         name.translatesAutoresizingMaskIntoConstraints = false
         return name
     }()
@@ -68,7 +70,7 @@ class pantryCell: UICollectionViewCell {
         quant.textAlignment = .left
         quant.text = "Q: \(n)"
         quant.numberOfLines = 1
-        quant.backgroundColor = UIColor.green
+//        quant.backgroundColor = UIColor.green
         quant.adjustsFontSizeToFitWidth = true
         quant.translatesAutoresizingMaskIntoConstraints = false
         return quant
@@ -80,7 +82,7 @@ class pantryCell: UICollectionViewCell {
         expire.text = "5 days"
         expire.numberOfLines = 1
         expire.adjustsFontSizeToFitWidth = true
-        expire.backgroundColor = UIColor.red
+//        expire.backgroundColor = UIColor.red
         expire.translatesAutoresizingMaskIntoConstraints = false
         return expire
     }()
@@ -151,6 +153,11 @@ class pantryCell: UICollectionViewCell {
 }
 
 
+protocol CustomCollectionCellDelegate:class {
+    func collectionView(collectioncell: pantryCell?, didTappedInTableview TableCell: pantryTableViewCell)
+    //other delegate methods that you can define to perform action in viewcontroller
+}
+
 //MARK: Pantry TableView Cell 
 class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -164,6 +171,8 @@ class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     var pantryCollectionView: UICollectionView!
     let mealsCellID = "meals"
     let mealsCCellID = "Cmeals"
+    
+    weak var cellDelegate: CustomCollectionCellDelegate?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -219,7 +228,7 @@ class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         
         let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! pantryCell
 
-        pantryItemsCell.backgroundColor = UIColor.green
+//        pantryItemsCell.backgroundColor = UIColor.green
         
         pantryItemsCell.gItem = listProducts[indexPath.item]
         pantryItemsCell.layer.cornerRadius = 5
@@ -249,6 +258,8 @@ class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? pantryCell
+        self.cellDelegate?.collectionView(collectioncell: cell, didTappedInTableview: self)
         handleMeal()
     }
     

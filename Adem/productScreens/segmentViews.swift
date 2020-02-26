@@ -30,27 +30,32 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
     }
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let mealRecCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCelllID, for: indexPath) as! recommendedProductCells
-        
-        
-        
+
         return mealRecCell
     }
     
     
-
+    let segmentLabel: UILabel = {
+        let meal = UILabel()
+        meal.textColor = UIColor.ademBlue
+        meal.text = "You Can Make"
+        meal.font = UIFont(name: hNBold, size: 18)
+        meal.textAlignment = .center
+        meal.layer.cornerRadius = 5
+        meal.translatesAutoresizingMaskIntoConstraints = false
+        return meal
+    }()
+    
     
     private func setupCollectionView() {
         
         
         let layouts = UICollectionViewFlowLayout()
-        layouts.scrollDirection = .horizontal
-        layouts.itemSize = CGSize(width: 120, height: 120)
+        layouts.itemSize = CGSize(width: 100, height: 100)
         mealrecos = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
         mealrecos.isScrollEnabled = false
         mealrecos.dataSource = self
@@ -65,15 +70,22 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
        
   //common func to init our view
   private func setupView() {
-    self.backgroundColor = UIColor.red
     setupCollectionView()
+    self.backgroundColor = UIColor.white
     
     self.addSubview(mealrecos)
+    self.addSubview(segmentLabel)
     mealrecos.translatesAutoresizingMaskIntoConstraints = false
+    segmentLabel.translatesAutoresizingMaskIntoConstraints = false
     
      NSLayoutConstraint.activate([
         
-        mealrecos.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+        segmentLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 5),
+        segmentLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        segmentLabel.heightAnchor.constraint(equalToConstant: 30),
+        segmentLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
+        
+        mealrecos.topAnchor.constraint(equalTo: segmentLabel.bottomAnchor, constant: 5),
         mealrecos.centerXAnchor.constraint(equalTo: self.centerXAnchor),
         mealrecos.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
         mealrecos.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
