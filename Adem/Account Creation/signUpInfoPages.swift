@@ -223,59 +223,39 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
             
         ])
     }
+    var flavorsCount = flavorsAttributes
+    var flavorStuff: [flavorsContent] = []
 }
 
 extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        switch currentPage {
-        case currentPage:
-            return preferencesDictionary[currentPage]!.count
-        default:
-            return preferencesDictionary[3]!.count
-        }
+        for i in flavorsCount {
+            flavorStuff.append(i)
+         }
+        
+         return flavorStuff.count
     }
     
-    //var emptyDict: [String: String] = [:]
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
-        
-        preferencesCell.layer.cornerRadius = 5
-        //preferencesCell.layer.borderWidth = 1
-        //preferencesCell.backgroundColor = UIColor.green
-      
-        //signInFlowViewControllerTwo().dataSource = self as! UIPageViewControllerDataSource
-        
-        
-        switch currentPage {
-        case currentPage:
-            for (number, options) in preferencesDictionary {
-            if number == currentPage {
-                preferencesCell.preferencesLabel.text = options[indexPath.row]
-            }
-        }
-        
-        default:
-            preferencesCell.preferencesLabel.text = "Something Went Wrong... Let me check the recipe"
-        }
+        preferencesCell.flavorsElements = flavorStuff[indexPath.row]
         
         return preferencesCell
         }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        currentCell?.preferencesIcon.image = UIImage(named: "salt")
-        //currentCell?.preferencesIcon.backgroundColor = UIColor.ademGreen
-        //currentCell?.preferencesIcon.tintColor = UIColor.red
+        guard let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign else { return }
+
+        currentCell.flavorsElements = flavorStuff[indexPath.row]
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
-        let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        currentCell?.preferencesIcon.image = UIImage(named: "salt_unselected")
-        currentCell?.preferencesIcon.backgroundColor = nil
+        guard let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign else { return }
+        currentCell.flavorsElements = flavorStuff[indexPath.row]
     }
 }

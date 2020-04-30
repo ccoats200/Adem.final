@@ -11,8 +11,7 @@ import UIKit
 import Firebase
 import FirebaseAnalytics
 
-//MARK: Second attempt at flow
-class signInFlowViewControllerTwo: UIPageViewController {
+class signUpUserFlow: UIPageViewController {
     
     var pages = [UIViewController]()
 
@@ -20,7 +19,6 @@ class signInFlowViewControllerTwo: UIPageViewController {
     let dietPage = addedDietPreferencesTwo()
     let storePage = addedStorePreferencesTwo()
     let thankYouPage = thankYouPreferences()
-    //let thankYouPage = circleTest()
 
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey : Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -68,7 +66,7 @@ class signInFlowViewControllerTwo: UIPageViewController {
 
 }
 
-extension signInFlowViewControllerTwo: UIPageViewControllerDataSource {
+extension signUpUserFlow: UIPageViewControllerDataSource {
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         
@@ -100,7 +98,7 @@ extension signInFlowViewControllerTwo: UIPageViewControllerDataSource {
 }
 
 
-extension signInFlowViewControllerTwo: UIPageViewControllerDelegate {
+extension signUpUserFlow: UIPageViewControllerDelegate {
 
     //MARK: if you do NOT want the built-in PageControl (the "dots"), comment-out these funcs
     //FIXME: get the next button working here?
@@ -134,7 +132,7 @@ class userFlowViewControllerTwo: UIViewController {
         return v
     }()
 
-    var signInFlow = signInFlowViewControllerTwo()
+    var signInFlow = signUpUserFlow()
     var bottomView = preferenceNextViews()
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -151,7 +149,7 @@ class userFlowViewControllerTwo: UIViewController {
         setUpConstraint()
 
         // instantiate MyPageViewController and add it as a Child View Controller
-        signInFlow = signInFlowViewControllerTwo()
+        signInFlow = signUpUserFlow()
         addChild(signInFlow)
 
         // we need to re-size the page view controller's view to fit our container view

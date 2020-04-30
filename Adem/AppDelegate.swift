@@ -60,7 +60,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default)
         
-        print("Navigation bar color created and shadow was removed")
         
         // to set the below watch https://www.youtube.com/watch?v=APQVltARKF8&list=PL0dzCUj1L5JGKdVUtA5xds1zcyzsz7HLj&index=2 at time 20:00
         
@@ -77,8 +76,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             statusBarBackgroundColor.backgroundColor = UIColor.ademGreen
             
             window?.addSubview(statusBarBackgroundColor)
-            window?.addConstraintsWithFormats(format: "H:|[v0]|", views: statusBarBackgroundColor)
-            window?.addConstraintsWithFormats(format: "V:|[v0(20)]|", views: statusBarBackgroundColor)
+            window?.widthAnchor.constraint(equalTo: statusBarBackgroundColor.widthAnchor).isActive = true
+//            window?.addConstraintsWithFormats(format: "H:|[v0]|", views: statusBarBackgroundColor)
+            window?.topAnchor.constraint(equalTo: statusBarBackgroundColor.topAnchor).isActive = true
+            window?.heightAnchor.constraint(equalToConstant: 20).isActive = true
+//            window?.addConstraintsWithFormats(format: "V:|[v0(20)]|", views: statusBarBackgroundColor)
             
         } else {
             

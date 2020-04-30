@@ -9,15 +9,20 @@
 import Foundation
 import UIKit
 import Firebase
-//import FirebaseFirestore
 
+
+enum signUpErrors: Error {
+    case passwordInvalid
+    case emailInvalid
+    case empty
+}
 
 class UserInfo: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
     var handle: AuthStateDidChangeListenerHandle?
     let user = Auth.auth().currentUser
-    let minimuPasswordCount = 6
+    let minimuPasswordLength = 6
     
 
     //MARK: setUpViews
@@ -30,14 +35,18 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         
         //UserLoginInfo
         colRef = Firestore.firestore().collection("User")
-        docRef = Firestore.firestore().document("\(usersInfo)")
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         
-        nextButton.resignFirstResponder()
+        //MARK: textfield nav
+        accountCreationViews.firstNameTextField.delegate = self
+        accountCreationViews.lastNameTextField.delegate = self
+        accountCreationViews.emailTextField.delegate = self
+        accountCreationViews.passwordTextField.delegate = self
+        
 
         //Backgound Color Start
         let gradient = CAGradientLayer()
@@ -51,9 +60,12 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         //Backgound Color End
         
         
+        
         //MARK: function Calls for views
         setUpSubviews()
         setuploginFieldView()
+
+
         
     }
 
@@ -61,123 +73,105 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     //Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        handle = Auth.auth().addStateDidChangeListener { (auth, User) in
-            
-            if let user = self.user {
-                let name = user.displayName
-                let photoURL = user.photoURL
-                let uid = user.uid
-            }
-        }
+
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Auth.auth().removeStateDidChangeListener(handle!)
     }
     
 
     
     
-    @objc func handelNext()
-    {
-        print("New user tapped signUp button")
-        guard let firstName = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else { return }
-        guard let lastName = accountCreationViews.lastNameTextField.text, !lastName.isEmpty else { return }
-        guard let email = accountCreationViews.emailTextField.text, !email.isEmpty || !email.contains(".com") else { return }
-        guard let password = accountCreationViews.passwordTextField.text, !password.isEmpty else { return }
-    
+    @objc func handelNext() {
+        guard let firstName = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else {
+            self.showMessagePrompt(title: "You forgot something", message: "What should we call you", button: "Retry")
+            return
+        }
         
+        guard let lastName = accountCreationViews.lastNameTextField.text, !lastName.isEmpty else {
+            self.showMessagePrompt(title: "You forgot something \(firstName)", message: "Last name or initial", button: "Retry")
+            return
+        }
         
-        print(firstName)
-        print(lastName)
-        print(email)
-        print(password)
+        guard let email = accountCreationViews.emailTextField.text, (!email.isEmpty && email.contains(".com")) else {
+            self.showMessagePrompt(title: "Email Invalid", message: "Must be a valid email address", button: "Retry")
+            return
+        }
         
-        let dataToSave: [String: Any] = [
-            "FirstName": firstName,
-            "LastName": lastName,
-            "Email": email,
-            "Password": password
-        ]
+        guard let password = accountCreationViews.passwordTextField.text, (!password.isEmpty && password.count > 6) else {
+            
+            self.showMessagePrompt(title: "Password Invalid", message: "Must be a valid password. Must include a special character and number", button: "Retry")
+            return
+        }
+        
+
+        //MARK: Should only be on list
         
         Auth.auth().createUser(withEmail: accountCreationViews.emailTextField.text!, password: accountCreationViews.passwordTextField.text!) { authResult, error in
+            
+            
+            //MARK: Private data
+            db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                "FirstName": firstName,
+                "LastName": lastName,
+                "Email": email,
+                "Password": password,
+                "uid": authResult!.user.uid,
+                "isAnonymous": authResult!.user.isAnonymous
+                
+            ]) { (error) in
+
+
+                if let error = error {
+                    print("Error creating documents: \(error.localizedDescription)")
+                }
+            }
+            //MARK: - Not for production
+            db.collection("groceryProducts").getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                 if let snapshot = querySnapshot {
+                     for document in snapshot.documents {
+                        var data = document.data()
+                        db.collection("Users").document((authResult?.user.uid)!).collection("public").document("products").collection("List").addDocument(data: data)
+                        
+                     }
+                    
+                    
+                    
+                    
+                 }
+
+                }
+            }
+            
+        }
+        
+        let moreController = userFlowViewControllerTwo()
+        moreController.resignFirstResponder()
+        self.present(moreController, animated: true, completion: nil)
+    }
     
-            //print(currentUser?.uid as Any)
-            
-        }
-        //Need to create a private and public collection when they sign up. one for sensitive info one for sharing food interests.
-        
-        //This gets the current users uid and creates the document in the users collection with the udi as the doc number. This is promising for linking users to accounds but may need a better way.
-        //db.collection("Users").document(currentUser!.uid).collection("private").document("UsersPrivateInfo").setData(dataToSave)
-        db.collection("Users").document().collection("private").document("UsersPrivateInfo").setData(dataToSave) { (error) in
-            
-            if let error = error {
-                print("Error creating documents: \(error.localizedDescription)")
-            } else if self.accountCreationViews.passwordTextField.text!.count < self.minimuPasswordCount {
-                
-                let alert = UIAlertController(title: "Email in use", message: "This email is alread in use. ", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                
-                self.present(alert, animated: true, completion: nil)
-            } else if self.accountCreationViews.passwordTextField.text!.count > self.minimuPasswordCount {
-                
-                print("Data has been Saved")
-                //This breaks when you try to go to the next screen from any field other than the confirm field
-                
-                self.accountCreationViews.passwordTextField.resignFirstResponder()
-                
-                //let moreController = addedFoodPreference()
-                let moreController = userFlowViewControllerTwo()
-                moreController.resignFirstResponder()
-                self.present(moreController, animated: true, completion: nil)
-                
-                print("Brought to next Screen")
-            }
-        }
-        
-        
-        /*
-        docRef.setData(dataToSave) { (error) in
-            
-            if let error = error {
-                print("Error creating documents: \(error.localizedDescription)")
-            } else if self.passwordTextField.text != self.confirmPasswordTextField.text {
-                
-                let alert = UIAlertController(title: "Email in use", message: "This email is alread in use. ", preferredStyle: UIAlertController.Style.alert)
-                alert.addAction(UIAlertAction(title: "OK", style: UIAlertAction.Style.default, handler: nil))
-                
-                self.present(alert, animated: true, completion: nil)
-            } else if self.passwordTextField.text == self.confirmPasswordTextField.text {
-                
-                print("Data has been Saved")
-                //This breaks when you try to go to the next screen from any field other than the confirm field
-                
-                self.confirmPasswordTextField.resignFirstResponder()
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                let listController = tabBar()
-                
-                listController.resignFirstResponder()
-                appDelegate.window?.rootViewController = listController
-                appDelegate.window?.makeKeyAndVisible()
-                print("Brought to next Screen")
-            }
-        }
- */
+    func showMessagePrompt(title: String, message: String, button: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
+        alert.addAction(UIAlertAction(title: button, style: UIAlertAction.Style.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Try to find next responder
-        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+        if let nextField = self.view.viewWithTag(textField.tag + 1) as? UITextField {
             nextField.becomeFirstResponder()
         } else {
             // Not found, so remove keyboard.
             textField.resignFirstResponder()
-            nextButton.resignFirstResponder()
         }
-        // Do not add a line break
-        print(textField.tag)
         return false
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
     }
     
     let scrollView: UIScrollView = {
@@ -214,6 +208,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
         nextButton.largeNextButton.resignFirstResponder()
     }
+    
+    
     
     let ademImageHolder: UIImageView = {
         let ademImage = UIImageView()
@@ -264,7 +260,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         accountCreationViews.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 5),
         accountCreationViews.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -24),
         accountCreationViews.heightAnchor.constraint(equalToConstant: 265),
-        
         
         nextButton.topAnchor.constraint(equalTo: accountCreationViews.bottomAnchor, constant: 5),
         nextButton.centerXAnchor.constraint(equalTo: accountCreationViews.centerXAnchor),

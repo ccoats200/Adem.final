@@ -10,17 +10,12 @@ import Foundation
 import UIKit
 
 //MARK: Login text fields view
-class userCreationInfo: UIView, UITextFieldDelegate {
+class userCreationInfo: UIView {
   
     //initWithFrame to init view from code
   override init(frame: CGRect) {
     super.init(frame: frame)
    
-    firstNameTextField.delegate = self
-    lastNameTextField.delegate = self
-    emailTextField.delegate = self
-    passwordTextField.delegate = self
-    
     
     setUpSubviews()
     setupView()
@@ -34,28 +29,15 @@ class userCreationInfo: UIView, UITextFieldDelegate {
     setupView()
   }
   
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        // Try to find next responder
-        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
-            nextField.becomeFirstResponder()
-        } else {
-            // Not found, so remove keyboard.
-            textField.resignFirstResponder()
-        }
-        // Do not add a line break
-        print(textField.tag)
-        return false
-    }
-    
     //Name Section
     let firstNameTextField: UITextField = {
         let firstName = UITextField()
+        firstName.tag = 0
         firstName.attributedPlaceholder = NSAttributedString(string: "First Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         firstName.translatesAutoresizingMaskIntoConstraints = false
         firstName.textColor = UIColor.white
         firstName.returnKeyType = .continue
-        firstName.tag = 0
+        
         return firstName
     }()
     
@@ -68,20 +50,25 @@ class userCreationInfo: UIView, UITextFieldDelegate {
     
     let lastNameTextField: UITextField = {
         let lastName = UITextField()
-        lastName.attributedPlaceholder = NSAttributedString(string: "Last Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        lastName.translatesAutoresizingMaskIntoConstraints = false
-        lastName.textColor = UIColor.white
         lastName.tag = 1
+        lastName.attributedPlaceholder = NSAttributedString(string: "Last Name", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        lastName.textColor = UIColor.white
+        
+        lastName.returnKeyType = .continue
+        lastName.translatesAutoresizingMaskIntoConstraints = false
+
         return lastName
     }()
     
     //Email Section
     let emailTextField: UITextField = {
         let email = UITextField()
-        email.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
-        email.translatesAutoresizingMaskIntoConstraints = false
-        email.textColor = UIColor.white
         email.tag = 2
+        email.attributedPlaceholder = NSAttributedString(string: "Email", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
+        email.textColor = UIColor.white
+        email.returnKeyType = .continue
+        email.translatesAutoresizingMaskIntoConstraints = false
+
         return email
     }()
     
@@ -95,11 +82,13 @@ class userCreationInfo: UIView, UITextFieldDelegate {
     //Password Section
     let passwordTextField: UITextField = {
         let password = UITextField()
+        password.tag = 3
         password.attributedPlaceholder = NSAttributedString(string: "Password", attributes: [NSAttributedString.Key.foregroundColor: UIColor.white])
         password.isSecureTextEntry = true
-        password.translatesAutoresizingMaskIntoConstraints = false
-        password.tag = 3
+        password.returnKeyType = .continue
         password.textColor = UIColor.white
+        password.translatesAutoresizingMaskIntoConstraints = false
+
         
         return password
     }()
@@ -122,6 +111,11 @@ class userCreationInfo: UIView, UITextFieldDelegate {
         self.addSubview(emailTextSeparator)
         self.addSubview(passwordTextField)
         self.addSubview(passwordTextSeparator)
+        
+        firstNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        lastNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        passwordTextField.translatesAutoresizingMaskIntoConstraints = false
     }
        
   //common func to init our view

@@ -16,8 +16,6 @@ class loginInfoView: UIView {
   override init(frame: CGRect) {
     super.init(frame: frame)
    
-    //emailTextField.delegate = self
-    //passwordTextField.delegate = self
     setupView()
   }
   
@@ -179,10 +177,13 @@ class roundButtonView: UIView {
   }
     
     let roundLoginImage: UIButton = {
+//        https://www.iconfinder.com/icons/1298745/google_icon
         let socialLogin = UIButton(type: .system)
-//        socialLogin.setImage(UIImage.init(named: "Home"), for: .normal)
-        socialLogin.layer.cornerRadius = 30
-        socialLogin.layer.borderWidth = 0.50
+        socialLogin.setImage(UIImage.init(named: "twitterIcon"), for: .normal)
+        socialLogin.contentMode = .scaleAspectFit
+        socialLogin.contentMode = .center
+        socialLogin.layer.cornerRadius = 5
+        
         socialLogin.backgroundColor = UIColor.white
         socialLogin.widthAnchor.constraint(equalToConstant: 60).isActive = true
         socialLogin.translatesAutoresizingMaskIntoConstraints = false

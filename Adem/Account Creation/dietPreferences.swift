@@ -169,15 +169,19 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
             
         ])
     }
-    
+    var preferencesStuff: [preferenceContent] = []
+    var preferencesCount = preferencesAttributes
 }
 
 extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
+        
+        for i in preferencesCount {
+                preferencesStuff.append(i)
+        }
        
-        return preferencesDictionary[0]!.count
+        return preferencesStuff.count
     }
     
     //var emptyDict: [String: String] = [:]
@@ -185,63 +189,22 @@ extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDat
         
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
         
-        for _ in preferencesDictionary[0]! {
-            if indexPath.row == 0 {
-                preferencesCell.preferencesIcon.image = UIImage(named: "fish")
-            } else if indexPath.row == 1 {
-                preferencesCell.preferencesIcon.image = UIImage(named: "veg")
-            } else if indexPath.row == 2 {
-                preferencesCell.preferencesIcon.image = UIImage(named: "vegan")
-            } else if indexPath.row == 3 {
-                preferencesCell.preferencesIcon.image = UIImage(named: "nut")
-            } else {
-                preferencesCell.preferencesIcon.image = UIImage(named: "dairy")
-            }
-        }
-      
-        //signInFlowViewControllerTwo().dataSource = self as! UIPageViewControllerDataSource
-    
-            for (number, options) in preferencesDictionary {
-                preferencesCell.preferencesLabel.text = options[indexPath.row]
-            }
+        preferencesCell.preferencesElements = preferencesStuff[indexPath.row]
+
         return preferencesCell
         
         }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        
-        for _ in preferencesDictionary[0]! {
-            if indexPath.row == 0 {
-                currentCell?.preferencesIcon.image = UIImage(named: "fish_selected")
-            } else if indexPath.row == 1 {
-                currentCell?.preferencesIcon.image = UIImage(named: "veg_selected")
-            } else if indexPath.row == 2 {
-                currentCell?.preferencesIcon.image = UIImage(named: "vegan_selected")
-            } else if indexPath.row == 3 {
-                currentCell?.preferencesIcon.image = UIImage(named: "nut_selected")
-            } else {
-                currentCell?.preferencesIcon.image = UIImage(named: "dairy_selected")
-            }
-        }
+        currentCell?.preferencesElements = preferencesStuff[indexPath.row]
+
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        
-        for _ in preferencesDictionary[0]! {
-            if indexPath.row == 0 {
-                currentCell?.preferencesIcon.image = UIImage(named: "fish")
-            } else if indexPath.row == 1 {
-                currentCell?.preferencesIcon.image = UIImage(named: "veg")
-            } else if indexPath.row == 2 {
-            currentCell?.preferencesIcon.image = UIImage(named: "vegan")
-            } else if indexPath.row == 3 {
-                currentCell?.preferencesIcon.image = UIImage(named: "nut")
-            } else {
-                currentCell?.preferencesIcon.image = UIImage(named: "dairy")
-            }
-        }
+        currentCell?.preferencesElements = preferencesStuff[indexPath.row]
+
     }
     
 }

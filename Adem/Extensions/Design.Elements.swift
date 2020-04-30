@@ -27,18 +27,18 @@ extension UIColor {
     static let ademRed = UIColor.rgb(red: 216, green: 15, blue: 4)
 }
 
-//Constraints Extension
-extension UIView {
-    func addConstraintsWithFormats(format: String, views: UIView...) {
-        var viewsDictionary = [String: UIView]()
-        for (index, view) in views.enumerated() {
-            let key = "v\(index)"
-            view.translatesAutoresizingMaskIntoConstraints = false
-            viewsDictionary[key] = view
-        }
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
-    }
-}
+////Constraints Extension
+//extension UIView {
+//    func addConstraintsWithFormats(format: String, views: UIView...) {
+//        var viewsDictionary = [String: UIView]()
+//        for (index, view) in views.enumerated() {
+//            let key = "v\(index)"
+//            view.translatesAutoresizingMaskIntoConstraints = false
+//            viewsDictionary[key] = view
+//        }
+//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
+//    }
+//}
 
 //SuperClass Collection View Cell
 class CellBasics: UICollectionViewCell {

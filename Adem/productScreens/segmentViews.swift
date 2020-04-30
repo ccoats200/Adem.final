@@ -26,15 +26,23 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     super.init(coder: aDecoder)
     setupView()
   }
-
+    var myMeals: [meals] = []
+    var makableMeals = mealsMaster
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        for i in makableMeals {
+                myMeals.append(i)
+        }
+        return myMeals.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let mealRecCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCelllID, for: indexPath) as! recommendedProductCells
-
+        let mealRecCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCelllID, for: indexPath) as! recMealsCellLayout
+        for i in makableMeals {
+                myMeals.append(i)
+            mealRecCell.mealItem = myMeals[indexPath.item]
+            }
         return mealRecCell
     }
     
@@ -60,7 +68,7 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         mealrecos.isScrollEnabled = false
         mealrecos.dataSource = self
         mealrecos.delegate = self
-        mealrecos.register(recommendedProductCells.self, forCellWithReuseIdentifier: mealsCelllID)
+        mealrecos.register(recMealsCellLayout.self, forCellWithReuseIdentifier: mealsCelllID)
         mealrecos.backgroundColor = UIColor.white
         
         mealrecos.clipsToBounds = true
@@ -95,39 +103,120 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
 
 
 //MARK: Product name view
-class statsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
-  
-    let statsCellID = "stats"
+class statsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+ 
+    let statsCelllID = "statsCells"
+    var mealrecos: UICollectionView!
     //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setupView()
+  
+    override init(frame: CGRect) {
+   
+        super.init(frame: frame)
+    
+    
+        let layouts = UICollectionViewFlowLayout()
+        mealrecos = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        mealrecos.isScrollEnabled = false
+        mealrecos.dataSource = self
+        mealrecos.delegate = self
+        layouts.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+        mealrecos.register(accountStatsProductCells.self, forCellWithReuseIdentifier: statsCelllID)
+        mealrecos.backgroundColor = UIColor.white
+        
+        mealrecos.layer.cornerRadius = 10
+        mealrecos.clipsToBounds = true
+        mealrecos.layer.masksToBounds = true
+        mealrecos.isScrollEnabled = false
+        
+        setupView()
   }
   
   //initWithCode to init view from xib or storyboard
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+    
     setupView()
   }
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        
+        
+        switch section {
+        case 0:
+            return 2
+        case 1:
+            return 2
+        default:
+            return 1
+        }
     }
     
-
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        
+        return 2
+    }
     
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        let heights = (self.frame.height - 20)/2
+        let width = (self.frame.width - 20)/2
+        
+        return CGSize(width: width, height: heights)
+    }
+    
+   
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: statsCellID, for: indexPath) as! recommendedProductCells
         
-        productCell.backgroundColor = UIColor.white
-        
-        
-        return productCell
-    }
+        let cellSection = indexPath.section
+        let cellItem = indexPath.item
 
-       
+        let mealRecCell = collectionView.dequeueReusableCell(withReuseIdentifier: statsCelllID, for: indexPath) as! accountStatsProductCells
+
+        
+        switch cellSection {
+        case 0:
+            switch cellItem {
+            case 0:
+                mealRecCell.statLabel.text = "5"
+                mealRecCell.tileLabel.text = "Days left"
+            case 1:
+                mealRecCell.statLabel.text = "$3"
+                mealRecCell.tileLabel.text = "Avg. Cost"
+            default:
+                mealRecCell.tileLabel.text = "ops"
+            }
+            
+        case 1:
+            switch cellItem {
+            case 0:
+                mealRecCell.statLabel.text = "129"
+                mealRecCell.tileLabel.text = "Calories eaten"
+            case 1:
+                mealRecCell.statLabel.text = "10%"
+                mealRecCell.tileLabel.text = "Avg. waste"
+            default:
+                mealRecCell.statLabel.text = "Set up"
+            }
+            
+        default:
+            mealRecCell.tileLabel.text = "opps"
+        }
+            return mealRecCell
+    }
+    
   //common func to init our view
   private func setupView() {
-    self.backgroundColor = UIColor.red
+
+    self.addSubview(mealrecos)
+    mealrecos.translatesAutoresizingMaskIntoConstraints = false
+    
+     NSLayoutConstraint.activate([
+        
+        mealrecos.topAnchor.constraint(equalTo: self.topAnchor),
+        mealrecos.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        mealrecos.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        mealrecos.widthAnchor.constraint(equalTo: self.widthAnchor),
+    ])
   }
 }

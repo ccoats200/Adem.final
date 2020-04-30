@@ -49,7 +49,6 @@ class thankYouPreferences: UIViewController {
     let ademImageHolder: UIImageView = {
         let ademImage = UIImageView()
         ademImage.image = UIImage(named: "Adem Logo")
-        //ademImage.image = UIImage(named: "ademSignUp")
         ademImage.backgroundColor = UIColor.red
         ademImage.layer.cornerRadius = 10
         ademImage.contentMode = .scaleAspectFit
@@ -80,7 +79,7 @@ class thankYouPreferences: UIViewController {
         //MARK: subviews
         view.addSubview(welcomeLabel)
         view.addSubview(textFieldSeparator)
-        view.addSubview(ademImageHolder)
+//        view.addSubview(ademImageHolder)
         view.addSubview(subText)
         
 
@@ -111,14 +110,14 @@ class thankYouPreferences: UIViewController {
             textFieldSeparator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             textFieldSeparator.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             
-            ademImageHolder.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 50),
-            ademImageHolder.heightAnchor.constraint(equalToConstant: 150),
-            ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+//            ademImageHolder.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 50),
+//            ademImageHolder.heightAnchor.constraint(equalToConstant: 150),
+//            ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             
-            subText.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor),
-            subText.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
             subText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            subText.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+            subText.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             subText.widthAnchor.constraint(equalTo: view.widthAnchor, constant:  -25),
             
         ])

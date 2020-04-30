@@ -88,8 +88,6 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
 
     }
     
-    //MARK: Arrays
-    let preferencesDictionary = [0: ["Walmart","Wegmans","Vons","Stater Bros","Other", "None"]]
 
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -158,41 +156,40 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
             
         ])
     }
-    
+    var preferencesStuff: [storeContent] = []
+    var preferencesCount = stores
 }
 
 extension addedStorePreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
+        for i in preferencesCount {
+            preferencesStuff.append(i)
+        }
        
-        return preferencesDictionary[0]!.count
+        return preferencesStuff.count
     }
     
-    //var emptyDict: [String: String] = [:]
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let storeCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! storeCellDesign
         storeCell.layer.cornerRadius = 5
-    
-            for (number, options) in preferencesDictionary {
-                storeCell.preferencesLabel.text = options[indexPath.row]
-            }
+        
+        storeCell.accountImage = preferencesStuff[indexPath.row]
         return storeCell
         
-        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? storeCellDesign
-        //currentCell?.preferencesIcon.backgroundColor = UIColor.ademGreen
-        //currentCell?.preferencesIcon.tintColor = UIColor.red
-        currentCell?.preferencesIcon.image = UIImage(named: "salt")
+        
+        currentCell?.accountImage = preferencesStuff[indexPath.row]
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? storeCellDesign
-        //currentCell?.preferencesIcon.backgroundColor = nil
-        currentCell?.preferencesIcon.image = UIImage(named: "salt_unselected")
+        currentCell?.accountImage = preferencesStuff[indexPath.row]
     }
     
 }

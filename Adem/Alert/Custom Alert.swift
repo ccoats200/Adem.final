@@ -75,3 +75,68 @@ class addedItemAlert: UIViewController {
         ])
     }
 }
+
+class removeDataCapture: UIViewController {
+    
+    // Anywhere there is a server call we need to have the the function return a tuple to show the server status incase the server fails. see the section in the swift book on tuples
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        
+        view.addSubview(addedItem)
+        
+        setUpAddDismiss()
+    }
+    
+    let addedItem: UIView = {
+        
+        let addedNotification = UIView()
+        addedNotification.backgroundColor = UIColor.white
+        addedNotification.layer.cornerRadius = 5
+        addedNotification.layer.masksToBounds = true
+        addedNotification.layer.borderColor = UIColor.white.cgColor
+        
+        return addedNotification
+    }()
+    
+    let outNumberCount: UIButton = {
+        
+        let out = UIButton()
+        out.layer.cornerRadius = 5
+        out.setTitle("50%", for: .normal)
+        out.backgroundColor = UIColor.ademBlue
+        out.tintColor = UIColor.white
+        out.addTarget(self, action: #selector(handelLogin), for: .touchUpInside)
+        out.layer.masksToBounds = true
+
+        return out
+    }()
+    
+    @objc func handelLogin() {
+        
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    
+    func setUpAddDismiss() {
+        view.addSubview(addedItem)
+        addedItem.addSubview(outNumberCount)
+        addedItem.translatesAutoresizingMaskIntoConstraints = false
+        outNumberCount.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            addedItem.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            addedItem.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            addedItem.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 8/10),
+            addedItem.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 4/10),
+        
+            outNumberCount.centerXAnchor.constraint(equalTo: addedItem.centerXAnchor),
+            outNumberCount.centerYAnchor.constraint(equalTo: addedItem.centerYAnchor),
+            outNumberCount.widthAnchor.constraint(equalToConstant: 110),
+            outNumberCount.heightAnchor.constraint(equalToConstant: 60),
+    
+        ])
+    }
+}

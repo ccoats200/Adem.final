@@ -9,6 +9,11 @@
 import Foundation
 import UIKit
 
+
+protocol dynamicNameDelegate: class {
+    func setNameForProduct(productName: String?, productPrice: String?)
+}
+
 //MARK: Product name view
 class productViews: UIView {
   
@@ -23,10 +28,10 @@ class productViews: UIView {
     super.init(coder: aDecoder)
     setupView()
   }
-  
+
     
-    let priceLabel: UILabel = {
-        let cost = 2.99
+    var priceLabel: UILabel = {
+        let cost = 3.99
         let price = UILabel()
         price.layer.cornerRadius = 5
         price.layer.masksToBounds = true
@@ -38,8 +43,7 @@ class productViews: UIView {
     
      var productNameAndBackButton: UIButton = {
         let back = UIButton(type: .system)
-        back.setTitle("Bread", for: .normal)
-        
+        back.setTitle("Bacon", for: .normal)
         back.setTitleColor(UIColor.white, for: .normal)
         back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
@@ -67,8 +71,8 @@ class productViews: UIView {
     productNameAndBackButton.heightAnchor.constraint(equalToConstant: 50),
     
     priceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-    priceLabel.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 15),
-    priceLabel.widthAnchor.constraint(equalToConstant: 50),
+    priceLabel.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 10),
+    priceLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
     priceLabel.heightAnchor.constraint(equalToConstant: 50),
         
     ])
@@ -103,7 +107,7 @@ class productImageViews: UIView {
     
     let productImage: UIImageView = {
         let productImageDesign = UIImageView()
-        productImageDesign.image = UIImage(named: "bread")
+        productImageDesign.image = UIImage(named: "bacon")
         productImageDesign.contentMode = .center
         productImageDesign.contentMode = .scaleAspectFill
         productImageDesign.clipsToBounds = true
@@ -114,7 +118,6 @@ class productImageViews: UIView {
         
         productImageDesign.widthAnchor.constraint(equalToConstant: 200).isActive = true
         productImageDesign.heightAnchor.constraint(equalToConstant: 200).isActive = true //125 also looks good
-        print("Created Image for the product image in the details VC")
         productImageDesign.translatesAutoresizingMaskIntoConstraints = false
         return productImageDesign
     }()
@@ -161,10 +164,11 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     super.init(coder: aDecoder)
     setupView()
   }
-    
+    var listProducts = recCell
+    var myStuff: [recomend] = []
 
     let productDescription: UITextView = {
-        let desc = "This is a test of the label"
+        let desc = "This goes great at breakfast. Don't miss the best meal of the day"
         let description = UITextView()
         description.layer.masksToBounds = true
         description.text = "\(desc)"
@@ -175,19 +179,24 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }()
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        
+        for i in listProducts {
+                myStuff.append(i)
+        }
+        
+        return myStuff.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! recommendedProductCells
-        
+        productCell.recItem = listProducts[indexPath.item]
         productCell.backgroundColor = UIColor.white
         
         
         return productCell
     }
     
-    let whereToBuy: UIButton = {
+    let nutritionLabel: UIButton = {
         let notify = UIButton()
         let notifyImage = UIImage(named: infoImage)
         notify.setImage(notifyImage, for: .normal)
@@ -292,7 +301,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
         
 
-        self.addSubview(whereToBuy)
+        self.addSubview(nutritionLabel)
         
     
         self.addSubview(itemQuant)
@@ -307,15 +316,15 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
         NSLayoutConstraint.activate([
         
-            whereToBuy.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            whereToBuy.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
-            whereToBuy.widthAnchor.constraint(equalToConstant: 30),
-            whereToBuy.heightAnchor.constraint(equalToConstant: 30),
+            nutritionLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            nutritionLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
+            nutritionLabel.widthAnchor.constraint(equalToConstant: 30),
+            nutritionLabel.heightAnchor.constraint(equalToConstant: 30),
             
-            itemQuant.centerYAnchor.constraint(equalTo: whereToBuy.centerYAnchor),
+            itemQuant.centerYAnchor.constraint(equalTo: nutritionLabel.centerYAnchor),
             itemQuant.widthAnchor.constraint(equalToConstant: 90),
             itemQuant.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-            itemQuant.heightAnchor.constraint(equalTo: whereToBuy.heightAnchor),
+            itemQuant.heightAnchor.constraint(equalTo: nutritionLabel.heightAnchor),
             
             listQuantityButon.topAnchor.constraint(equalTo: itemQuant.topAnchor),
             listQuantityButon.widthAnchor.constraint(equalTo: itemQuant.widthAnchor),
@@ -331,7 +340,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             qImage.rightAnchor.constraint(equalTo: itemQuant.rightAnchor, constant: -5),
             qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor, multiplier: 1/2),
             
-            productDescription.topAnchor.constraint(equalTo: whereToBuy.bottomAnchor, constant: 5),
+            productDescription.topAnchor.constraint(equalTo: nutritionLabel.bottomAnchor, constant: 5),
             productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             productDescription.bottomAnchor.constraint(equalTo: segmentLabel.topAnchor, constant: -5),
             productDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),

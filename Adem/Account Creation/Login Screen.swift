@@ -32,6 +32,7 @@ class login: UIViewController, UITextFieldDelegate {
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         
+        //MARK: textfield nav
         userInfoCaptureElements.emailTextField.delegate = self
         userInfoCaptureElements.passwordTextField.delegate = self
         
@@ -74,9 +75,6 @@ class login: UIViewController, UITextFieldDelegate {
             return
         }
         
-        print(email)
-        print(password)
-        
         //User: Signed in with email
         firebaseAuth.signIn(withEmail: email, password: password) { [weak self] user, error in
             guard let strongSelf = self else { return }
@@ -85,8 +83,8 @@ class login: UIViewController, UITextFieldDelegate {
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window?.rootViewController = listController
             appDelegate.window?.makeKeyAndVisible()
-            print("Logging in \(email)")
         }
+        print("Successfully logged in")
         
         //Question: Why does this only need on click when in the signIn method but 2 outside it?
         /*
@@ -108,14 +106,12 @@ class login: UIViewController, UITextFieldDelegate {
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if let nextField = textField.superview?.viewWithTag(textField.tag + 1) as? UITextField {
+        if let nextField = self.view.viewWithTag(textField.tag + 1) as? UITextField
+        {
             nextField.becomeFirstResponder()
         } else {
-            // Not found, so remove keyboard.
             textField.resignFirstResponder()
         }
-        //userInfoCaptureElements.emailTextField.resignFirstResponder()
-        //userInfoCaptureElements.passwordTextField.resignFirstResponder()
         return false
     }
     
@@ -165,10 +161,26 @@ class login: UIViewController, UITextFieldDelegate {
     
     @objc func handleSkip() {
         
+        Auth.auth().signInAnonymously() { (authResult, error) in
+          guard let user = authResult?.user else { return }
+          let isAnonymous = user.isAnonymous  // true
+          let uid = user.uid
+        db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+            "isAnonymous": isAnonymous,
+            "uid": uid
+            
+        ]) { (error) in
+
+
+            if let error = error {
+                print("Error creating documents: \(error.localizedDescription)")
+            }
+        }
+        }
+        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let skipAccountCreation = tabBar()
         appDelegate.window?.rootViewController = skipAccountCreation
-        print("Allowing user to skip the login or sign up flow")
     }
     
     let ademImageHolder: UIImageView = {
@@ -201,7 +213,9 @@ class login: UIViewController, UITextFieldDelegate {
         
         //MARK: Bottom Buttons
         facebookLoginImage.roundLoginImage.addTarget(self, action: #selector(handelFacebooksignUp), for: .touchUpInside)
-        //facebookLoginImage.roundLoginImage.layer.cornerRadius = 30
+        facebookLoginImage.roundLoginImage.setImage(UIImage.init(named: "facebookIcon"), for: .normal)        //facebookLoginImage.roundLoginImage.layer.cornerRadius = 30
+        twitterLoginImage.roundLoginImage.setImage(UIImage.init(named: "appleIcon"), for: .normal)
+
         twitterLoginImage.roundLoginImage.addTarget(self, action: #selector(handelTwittersignUp), for: .touchUpInside)
         GoogleLoginImage.roundLoginImage.addTarget(self, action: #selector(handelGooglesignUp), for: .touchUpInside)
         maybeButton.largeNextButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
@@ -248,14 +262,15 @@ class login: UIViewController, UITextFieldDelegate {
             
             ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
             ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-            ademImageHolder.heightAnchor.constraint(equalToConstant: 255),
+            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+//            ademImageHolder.heightAnchor.constraint(equalToConstant: 255),
+            ademImageHolder.bottomAnchor.constraint(equalTo: userInfoCaptureElements.topAnchor, constant: -55),
         
             userInfoCaptureElements.topAnchor.constraint(equalTo: ademImageHolder.bottomAnchor, constant: 55),
             userInfoCaptureElements.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             userInfoCaptureElements.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            userInfoCaptureElements.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-            userInfoCaptureElements.heightAnchor.constraint(equalToConstant: 95), //125 also looks good
+            userInfoCaptureElements.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            userInfoCaptureElements.heightAnchor.constraint(equalToConstant: 95),
             
             buttonsUsedToLogIn.topAnchor.constraint(equalTo: userInfoCaptureElements.bottomAnchor, constant: 12),
             buttonsUsedToLogIn.centerXAnchor.constraint(equalTo: userInfoCaptureElements.centerXAnchor),

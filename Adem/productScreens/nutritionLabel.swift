@@ -15,7 +15,7 @@ class nutritionLabelVC: UIViewController {
         super.viewDidLoad()
         
         view.layer.cornerRadius = 15
-        view.backgroundColor = UIColor.ademBlue
+        view.backgroundColor = UIColor.white
         
         setUpProductButtons()
         setupProductLayoutContstraints()
@@ -92,18 +92,16 @@ class nutritionLabelVC: UIViewController {
     
     let whereToBuy: UIButton = {
         let notify = UIButton()
-        let notifyImage = UIImage(named: infoImage)
+        let notifyImage = UIImage(named: heartImage)
         notify.setImage(notifyImage, for: .normal)
         notify.translatesAutoresizingMaskIntoConstraints = false
         notify.contentMode = .scaleAspectFit
-        //notify.backgroundColor = UIColor.blue
         return notify
     }()
     
     lazy var nutritionDetails: UIButton = {
         let facts = UIButton()
-        let image = UIImage(named: "vegan_selected")
-        //facts.backgroundImage(for: .normal)
+        let image = UIImage(named: fishImage)
         facts.setImage(image, for: .normal)
         facts.translatesAutoresizingMaskIntoConstraints = false
         facts.contentMode = .scaleAspectFit
@@ -112,11 +110,10 @@ class nutritionLabelVC: UIViewController {
     
     let favoriteProduct: UIButton = {
         let faveProduct = UIButton()
-        let faveImage = UIImage(named: heartImage)
+        let faveImage = UIImage(named: nutImage)
         faveProduct.setImage(faveImage, for: .normal)
         faveProduct.translatesAutoresizingMaskIntoConstraints = false
         faveProduct.contentMode = .scaleAspectFit
-        faveProduct.backgroundColor = UIColor.blue
         return faveProduct
     }()
 
