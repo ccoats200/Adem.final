@@ -32,9 +32,11 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         setupProductLayoutContstraints()
 
         self.dismiss(animated: true, completion: nil)
+        
+        
     }
     
-    
+        
 
     //MARK: Button engagement
     @objc func handleFacts() {

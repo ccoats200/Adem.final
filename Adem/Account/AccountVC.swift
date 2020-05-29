@@ -181,6 +181,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                             self.accountStuff.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
                             self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                             self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log Out", for: .normal)
+                            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+                            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
                         }
                     }
                 }

@@ -8,7 +8,10 @@
 
 import Foundation
 import UIKit
+import Firebase
 
+//might be able to remove because useing snapshots
+//import FirebaseFirestoreSwift
 
 struct friendFamily {
     var friendImage: String?
@@ -55,67 +58,67 @@ var mealsMaster = [
 var productsMaster = [
 
 
-    productSKU(productSKU: nil, productName: "Butter", productImage: "butter", productNutritionLabel: "nutrition", productIngrediants: ["flour": "f"], productDescription: "Butter is needed for eggs", productList: false, productPantry: true, productExpirDate: "3", productPrice: 5.99, productQuantity: 2),
+    productSKU(productSKU: nil, productName: "Butter", productImage: "butter", productNutritionLabel: "nutrition", productIngrediants: ["flour": "f"], productDescription: "Butter is needed for eggs", productList: false, productPantry: true, productExpirDate: "3", productPrice: 5.99, productQuantity: 2, recomemnded: ["eggs","bacon"]),
 
 
 
 ]
-
-struct userProducts: Decodable {
-    
-    var productSKU: String?
-    var productName: String?
-    //https://stackoverflow.com/questions/40173137/array-of-structs-with-this-dictionary-in-swift
-    
-    init(productSKU: String, productName: String) {
-        self.productSKU = productSKU
-        self.productName = productName
-    }
-    
-//    init?(data: [String: Any]) {
-//    guard let productSKU = data["productSKU"] as? String,
-//        let productName = data["productName"] as? String else {
-//            return nil
-//        }
-//        self.productSKU = productSKU
-//        self.productName = productName
-//    }
-}
-
-//Pulling everything into a dictionary that can be updated
-var fireArray: [userProducts] = []
-var arrayDictTest: [String: [userProducts]] = [:]
-var arrayDicKeytest: [String: [[String: Any]]] = [:]
-var dictKeysArray = Array(arrayDictTest.keys)
 
 
 struct productSKU {
     
     var productSKU: String?
     var productName: String?
+    
+    //reference
     var productImage: String?
     var productNutritionLabel: String?
+    
+    //map
     var productIngrediants: [String: Any]?
+    
+    var diet: [String]?
+    //for filters
+    var productCategory: [String]?
+    
+    
     var productDescription: String?
     var productList: Bool?
     var productPantry: Bool?
+    //date
     var productExpirDate: String?
     var productPrice: Double?
     var productQuantity: Int?
-    var dateTimeAdded: Int?
-    var dateTimeRemoved: Int?
-    var dateTimeEngaged: [String: Any]?
+    
+    //map or reference
+    var meals: [String: Any]?
+    
+    //calculation (net weight/estiamat used)
+    var waste: Double?
+    
+
+    //Map
+    var recomemnded: [String]?
 
 }
+struct filters {
+    var filter: String
+    
+    //probably need protocol / extension
+    
+    init?(data: [String: Any]) {
 
-//productmaster type
-var firebaseDocuments = [String: String]()
+    guard let filter = data["category"] as? String
+         else {
+            return nil
+    }
+        self.filter = filter
+    }
+}
 
-var keysArray = Array(firebaseDocuments.keys)
+var arrayofFilter = [filters]()
 
-var fbd = [String: Any]()
 
-var arrayDict: [Dictionary<String, String>] = []
 
 
 //MARK: - Delete
@@ -157,5 +160,12 @@ var productsGlobal: [groceryItemCellContent]? = {
     eggs.List = true
     eggs.Pantry = false
     
-    return [eggs]
+    var bacon = groceryItemCellContent()
+    bacon.itemName = "bacon"
+    bacon.itemImageName = "bacon"
+    bacon.Quantity = "2"
+    bacon.List = true
+    bacon.Pantry = false
+    
+    return [eggs, bacon]
 }()

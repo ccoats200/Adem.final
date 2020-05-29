@@ -10,28 +10,29 @@ import UIKit
 import Firebase
 import AVFoundation
 import CoreData
+import FirebaseFirestoreSwift
 
 class listViewController: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
     
     //Cells Selected stuff
-    enum Mode {
-        case view
-        case selected
-    }
-    
-    var mMode: Mode = .view {
-        didSet {
-            switch mMode {
-            case .view:
-                //edit.title = "Edit"
-                print("User is in view mode")
-            case .selected:
-                //edit.title = "Done"
-                print("User is in edit mode")
-            }
-        }
-    }
+//    enum Mode {
+//        case view
+//        case selected
+//    }
+//
+//    var mMode: Mode = .view {
+//        didSet {
+//            switch mMode {
+//            case .view:
+//                //edit.title = "Edit"
+//                print("User is in view mode")
+//            case .selected:
+//                //edit.title = "Done"
+//                print("User is in edit mode")
+//            }
+//        }
+//    }
 
     
 //    MARK: Navigation Bar Buttons - Start
@@ -81,8 +82,14 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         }
         setupSearch()
         setUpListView()
-        //refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        //refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
+        
+        
+        listTableView.dataSource = self
+        listTableView.delegate = self
+        
+        listTableView.backgroundColor = UIColor.white
+        listTableView.allowsMultipleSelection = true
+        
        
 //        MARK: Setting up NAV bar buttons
         //self.navigationItem.leftBarButtonItem = editButtonItem
@@ -93,23 +100,27 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         
         toolBarSetUp()
         setUpFilterView()
-        //fetchProducts()
-        //fetch()
+
         
         //Firebase working below
-        firebasePleaseWork()
+        firebaseDataFetch()
+        getFilters()
     }
     
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpLayouts()
+//        structform()
+        
         
         let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
+        self.listTableView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
         setUpLayouts()
     }
     
@@ -119,10 +130,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     private func setupSearch() {
-//        self.navigationController?.view.layoutIfNeeded()
-//        self.navigationController?.view.setNeedsLayout()
         //        MARK: Search bar
         self.tableViewSearchController.searchBar.delegate = self
+        
         self.definesPresentationContext = true
         self.navigationItem.searchController = tableViewSearchController
         self.tableViewSearchController.isActive = true
@@ -139,6 +149,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             // Fallback on earlier versions
         }
         tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"
+        
 
     }
     
@@ -187,6 +198,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         task.resume()
     }
 
+    
+//https://www.raywenderlich.com/3244963-urlsession-tutorial-getting-started
+    
+    //MARK: - Api end
+
 //    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
 //        let keywords = searchBar.text
 //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
@@ -224,21 +240,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             
 //          MARK: Subviews
             self.view.addSubview(listTableView)
-            collecAndTableFeatures()
             listTableView.translatesAutoresizingMaskIntoConstraints = false
             listTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
             createLayout()
   
         }
-    }
-    
-    private func collecAndTableFeatures() {
-        listTableView.dataSource = self
-        listTableView.delegate = self
-        listTableView.backgroundColor = UIColor.white
-        listTableView.allowsMultipleSelection = true
-        
-        
     }
     
     private func createLayout() {
@@ -335,21 +341,20 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     //MARK: Button Functions - Start
-    var selectedProductsIndexPath: [IndexPath: Bool] = [:]
-    var groceryProductsSelected: [IndexPath] = []
+
     
    
     //Edit Button
-    @objc func handleEditButtonClicked() {
-        if mMode == .view {
-            setEditing(true, animated: false)
-        } else {
-            setEditing(false, animated: false)
-        }
-        //setEditing(true, animated: false)
-        mMode = mMode == .view ? .selected : .view
-        print("Edit button was clicked")
-    }
+//    @objc func handleEditButtonClicked() {
+//        if mMode == .view {
+//            setEditing(true, animated: false)
+//        } else {
+//            setEditing(false, animated: false)
+//        }
+//        //setEditing(true, animated: false)
+//        mMode = mMode == .view ? .selected : .view
+//        print("Edit button was clicked")
+//    }
     
    
     //product Button
@@ -364,10 +369,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             // Fallback on earlier versions
         }
         
-        print("Camera button working")
     }
-    
-    //product Button
+    /*
+    //might Delete
     @objc func handleProduct() {
         
         let productScreen = pantryProductVCLayout()
@@ -375,10 +379,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(productScreen, animated: true, completion: nil)
         
-        print("Settings Tab is active")
     }
     
-    
+    */
     //product Button
     @objc func handleListProduct() {
         
@@ -387,7 +390,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(productScreen, animated: true, completion: nil)
         
-        print("Settings Tab is active")
     }
     //Button Functions - End
     
@@ -399,95 +401,76 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         self.present(alert, animated: true, completion: nil)
         
     }
+    //MARK: - Filter
     var filterListCollectionView: UICollectionView!
     
     //MARK: - need a collection of types of food
-    let filters = ["All","Dairy", "Meat", "Veggies","Fruit","Frozen"]
   
     //MARK: - Firebase lists should the app delegate
-    func structform() {
-        userfirebaseProducts.addSnapshotListener { documentSnapshot, error in
-        
-         guard let document = documentSnapshot?.documents else {
-             print("Error fetching document: \(error!)")
-                 return
+
+    func firebaseDataFetch() {
+        userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+           guard let documents = querySnapshot?.documents else {
+             print("No documents")
+             return
+           }
+            
+            arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataStruct? in
+                print(arrayofProducts)
+                return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
+                
+            
+           }
+            
+            print("this is the new function maybe \(arrayofProducts)")
+            self.listTableView.reloadData()
+            
          }
-            document.forEach { (item) in
-                let data = item.data()
-            //TODO: first and store or only on further inspection
-                let productName = data["productName"] as? String
-                let dId = item.documentID
-                
-
-//                fireArray.append(ptest(productSKU: dId, productName: productName))
-
-                //Working dict
-                arrayDictTest.updateValue([userProducts.init(productSKU: item.documentID, productName: (item.data()["productName"] as! String))], forKey: item.documentID)
-//
-                
-//                arrayDictTest.updateValue([ptest.init(with: ["productSKU": item.documentID])], forKey: item.documentID)
-//                print("heordl \(fireArray)")
-//                print(arrayDictTest)
-            }
-    }
+        
     }
     
-    func firebasePleaseWork() {
-        //if logged out can't log back in due to current user id being diff
-        //does this below only listen at docs with true or all and only pulls when the value is true
-        userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { documentSnapshot, error in
-           
-            guard let document = documentSnapshot?.documents else {
-                print("Error fetching document: \(error!)")
-                    return
-            }
+    func getFilters() {
+
+        for i in arrayofProducts {
+            productCategories.append(i.category ?? "test")
         
-            //This worked
-           document.forEach { (item) in
-                //TODO: first and store or only on further inspection
-                //var data = item.data()
-                let data = item
-                
-                firebaseDocuments.updateValue((data["productName"] as? String)!, forKey: (item.documentID))
-                
-                
-                self.listTableView.reloadData()
-                
-                print("did this work for time \(data["new"] as? Any)")
-                print("did this work \(data["productName"] as? String), \(item.documentID)")
-             
-            }
-        }
-        
-        structform()
+        print("categories \(productCategories)")
+    }
+        self.filterListCollectionView.reloadData()
     }
     
-    func addTimeStamp(action: String) {
+    //kinda
+    func addCategory(id: String) {
+        userfirebaseProducts.document(id).setData([
+            "category" : "Extract"], merge: true)
         
+    }
+    
+    func addTimeStamp(id: String, action: String) {
         //https://firebase.google.com/docs/firestore/solutions/aggregation
 
-        //Added time stamp
-        //db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List").document("v2LKjxQgnY1MOADONdH6").updateData(["new" : Firebase.Timestamp()])
-        
-        
+
+            userfirebaseProducts.document(id).collection("listDate").addDocument(data: [
+                "date" : Firebase.Timestamp(),
+                "action" : action,
+                //every 7 days push to collection
+            ])
         let add = "a"
         let remove = "r"
         let engaged = "e"
         //us .updateData for adding a new listDate, pantryDate, etc.
-        //Added time stamp
-        
-       userfirebaseProducts.document("v2LKjxQgnY1MOADONdH6").collection("listDate").addDocument(data: [
-            "date" : Firebase.Timestamp(),
-            "action" : action,
-            //every 7 days push to collection
-        ])
-    }
 
-//class end
+    }
+    
+
+    //filter
+    var filter = [fireStoreDataStruct]()
+    var productFilter = [fireStoreDataStruct]()
+//MARK: - class end
 }
 
 
-//MARK: tableView extension
+//MARK: - tableView extension
 extension listViewController: UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     
@@ -503,11 +486,18 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
        func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
            //If the product in not in the list and they are searching they can swipe to the left to add it to their list
          // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
+        let item = arrayofProducts[indexPath.row].id!
         let checkedAsInBasket = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
 
 
-            self.updateProductLocationValues(indexPath: indexPath, pantry: true, list: false)
-            self.addTimeStamp(action: "a")
+            self.updateProductLocationValues(indexPath: item, pantry: true, list: false)
+            self.addTimeStamp(id: item, action: "a")
+            
+//
+//            if let index = arrayofIds.index(of: arrayofIds[indexPath.row].productName) {
+//                arrayofIds.remove(at: index)
+//            }
+//            arrayofIds.remove(at: <#T##Int#>)
             
             
             boolValue(true) // pass true if you want the handler to allow the action
@@ -515,18 +505,18 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
             print("User has added the product to their basket in the store")
            }
            checkedAsInBasket.backgroundColor = UIColor.ademGreen
-           
+//           self.listTableView.reloadData()
         let swipeActions = UISwipeActionsConfiguration(actions: [checkedAsInBasket])
         return swipeActions
        }
     
-    func updateProductLocationValues(indexPath: IndexPath, pantry: Bool, list: Bool){
+    func updateProductLocationValues(indexPath: String, pantry: Bool, list: Bool){
          
         // Or more likely change something related to this cell specifically.
-        let cell = listTableView.cellForRow(at: indexPath)
-        for i in firebaseDocuments where i.value == cell?.textLabel?.text {
+//        let cell = listTableView.cellForRow(at: indexPath)
+//        for i in arrayofProducts {//where i.productName == cell?.textLabel?.text {
             
-            userfirebaseProducts.document("\(i.key)").updateData([
+            userfirebaseProducts.document("\(indexPath)").updateData([
                 "productPantry": pantry,
                 "productList": list
             ]) { err in
@@ -537,84 +527,54 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
                 }
             }
             //TimeStamp
-            self.listTableView.reloadData()
-            print("hello \(i)")
-        }
-    }
-  
-    
-    func updateTableView() {
+            
+//        }
+        
         self.listTableView.reloadData()
     }
     
        
        func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-           
+           let item = arrayofProducts[indexPath.row].id!
            let deleteItemFromListAndPanty = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
             
-            self.updateProductLocationValues(indexPath: indexPath, pantry: false, list: false)
-            self.addTimeStamp(action: "r")
+            self.updateProductLocationValues(indexPath: item, pantry: false, list: false)
+            self.addTimeStamp(id: item, action: "r")
                
             boolValue(true) // pass true if you want the handler to allow the action
            }
+        
            deleteItemFromListAndPanty.backgroundColor = UIColor.ademRed
            let swipeActions = UISwipeActionsConfiguration(actions: [deleteItemFromListAndPanty])
            return swipeActions
        }
-
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        let swippedToInCart = false
-//
-//        if swippedToInCart == true {
-//            return 2
-//        }
-//        return 1
-//    }
-//
     
     
     
     //MARK: Table view cell properties - Start
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
  
-//            return fireArray.count
-            return firebaseDocuments.keys.count
+            return arrayofProducts.count
+        //        works for population
+//        return productsGlobal!.count
+
         }
-    
-   
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        let productsListCell = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
+        let productsListCell = listTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
+        let product = arrayofProducts[indexPath.row]
 
-//            let dictionary = document.map { $0["productName"] as? String }
-//            print("plsnsnsns \(dictionary)")
-//            for docs in dictionary {
-//                docs!.forEach { (item) in
-//
-//
-//                productsListViewLayout.textLabel?.text = docs
-//                }
-//
-//            productsListViewLayout.textLabel?.text = dictionary[]
     
-        //https://stackoverflow.com/questions/51127212/how-to-fill-uitableview-with-a-data-from-dictionary-swift
-//        let ditest = dictKeysArray
-//        let tryagainKey = dictKeysArray[indexPath.row]
-//        let tempagain = arrayDictTest[tryagainKey]
-//        productsListCell.textLabel?.text = tempagain.map { $0.productName as? String }
-//        productsListCell.textLabel?.text = ditest[indexPath.row].
+//        works for population
+//        let product = productsGlobal![indexPath.row]
+
         
-//        let fi = fireArray[indexPath.row]
-        let currentKey = keysArray[indexPath.row]
-        let tempProduct = firebaseDocuments[currentKey]
-//        print("herro\(fi.productName!)")
-//        productsListCell.textLabel?.text = fi.productName
-        productsListCell.textLabel?.text = tempProduct
-
-
-//        let test = ptest.init(with: arrayDictTest)
-        print("Phew \(arrayDictTest)")
+//        productsListCell.deleg
+        productsListCell.textLabel?.text = product.productName
+        
+        //delegate should be here something like this
+        //productsListCell.delegate? = product.delegate
         
         //MARK: - sets the last instance for all rows
         productsListCell.accessoryType = .disclosureIndicator
@@ -624,24 +584,45 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
-        let cell = listProductVCLayout()
+        print("this is the index path row \(indexPath.row)")
+        print("this is the index path row \(listTableView.indexPathForSelectedRow?.row)")
+        //FireStore data collection
+        addTimeStamp(id: arrayofProducts[indexPath.row].id!, action: "e")
+//        addCategory(id: arrayofIds[indexPath.row].id)
 
-        addTimeStamp(action: "e")
-       
-//        cell.gItem = firebaseDocuments[indexPath.row]
-        self.present(cell, animated: true, completion: nil)
-    
-        listTableView.deselectRow(at: indexPath, animated: false)
         
+        let cell = listProductVCLayout()
+        let product = arrayofProducts[indexPath.row]
+//        cell.productVariableElements = product
+        
+//        works for population
+//        let product = productsGlobal![indexPath.row]
+//        cell.elements = product
+        
+        let storageRef = Storage.storage().reference(withPath: "groceryProducts/almondExtract.jpeg")
+            storageRef.getData(maxSize: (4 * 1024 * 1024)) { [weak self] (data, error ) in
+                if let error = error {
+                    print("got error \(error.localizedDescription)")
+                    return
+                }
+                if let image = data {
+                    cell.productImageSection.productImage.image = UIImage(data: image)
+                }
+            }
+        
+        print("show all \(arrayofProducts)")
+
+        self.present(cell, animated: true, completion: nil)
+        listTableView.deselectRow(at: indexPath, animated: false)
        }
     
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-
            return 60
+        
        }
     
     func setUpFilterView() {
-        
+        //move to viewdidload?
         let layouts = UICollectionViewFlowLayout()
         let collectionLayout = UICollectionViewLayout()
         layouts.itemSize = CGSize(width: 75, height: (self.view.frame.height)-1)
@@ -667,7 +648,6 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     }
        
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
         //Works
         let headerView = UIView()
         headerView.backgroundColor = UIColor.white
@@ -720,22 +700,27 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
        }
     
     
-    func getFilters() {
-         
-        //This needs category data point added
-        let filters = ["All","Dairy", "Meat", "Veggies","Fruit","Frozen"]
-        
-    }
+    
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return filters.count
+        return productCategories.count
     }
     
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("needs to be the name of the cell")
+        let item = productCategories[indexPath.row]
+        
+        //MARK: Filter tap working
+        
+        arrayofProducts = arrayofProducts.filter { ($0.category == item) }
+        
+        self.listTableView.reloadData()
+        
+        print("Trying to filter for \(productCategories[indexPath.row])")
     }
+    
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -744,7 +729,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
         let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
         filterCells.backgroundColor = UIColor.ademBlue
         
-        filterCells.productName.text = filters[indexPath.item]
+        filterCells.productName.text = productCategories[indexPath.row]
         
         
         return filterCells

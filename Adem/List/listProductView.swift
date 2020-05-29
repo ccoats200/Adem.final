@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 //import FirebaseFirestore
-
+/*
 class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     override func viewDidLoad() {
@@ -260,3 +260,4 @@ class pantryProductVCLayout: UIViewController, UICollectionViewDelegate, UIColle
 
     }
 }
+*/

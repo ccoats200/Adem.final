@@ -9,14 +9,21 @@
 import Foundation
 import UIKit
 import Firebase
+import FirebaseFirestoreSwift
+
+protocol ItemTableViewCellDelegate {
+    func itemCell(cellTapped: IndexPath)
+}
 
 class listProductVCLayout: UIViewController {
+    
+    //Delegate to pass data
+    var delegate: ItemTableViewCellDelegate?
     
     //MARK: View set up
     var productNameSection = productViews()
     var productImageSection = productImageViews()
     var relatedProductInfoSection = productInfoViews()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,15 +31,17 @@ class listProductVCLayout: UIViewController {
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.ademBlue
         
+        
         setUpViews()
         setUpProductButtons()
         setupProductLayoutContstraints()
         
         //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
         //self.view.addGestureRecognizer(panGestureRecognizer)
-        handleitems()
         
         self.dismiss(animated: true, completion: nil)
+        
+        //print(testing)
     }
     
     var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
@@ -56,59 +65,38 @@ class listProductVCLayout: UIViewController {
             }
         }
         print(gesture)
+        
     }
 
-//    let c = db.collection("groceryProducts").getDocuments() { (snapshot, err) in
-//        if let err = err {
-//            print("Error getting documents: \(err)")
-//        } else {
-//            for document in snapshot!.documents {
-//                let productName = document.get("productName")
-//                let docId = document.documentID
-//                for (key, value) in self.firebaseDocuments {
-//                    productsListViewLayout.textLabel?.text = key
-//                }
+    
+   
+    //Does Did set need to be used? I think for speed, the url delays
+
+//    let jsonData = try? JSONSerialization.data(withJSONObject: arrayofProducts, options: [])
+//    var productVariableElements = try JSONDecoder().decode(fireStoreDataStruct.self, from: arrayofProducts) {
+//        didSet {
+//            productNameSection.productNameAndBackButton.setTitle("\(productVariableElements?.productName)", for: .normal)
+//            productNameSection.priceLabel.text = "$\(productVariableElements?.productPrice ?? nil)"
 //            }
+//        }
+    
+//    var productVariableElements = try? fireStoreDataStruct(from: arrayofProducts as! Decoder) {
+//           didSet {
+//               productNameSection.productNameAndBackButton.setTitle("\(productVariableElements?.productName)", for: .normal)
+//               productNameSection.priceLabel.text = "$\(productVariableElements?.productPrice ?? nil)"
+//               }
+//           }
+    
+    //Works for population
+//    var elements = groceryItemCellContent() {
+//
+//        didSet {
+//            productNameSection.productNameAndBackButton.setTitle("\(elements.itemName)", for: .normal)
+//            productNameSection.priceLabel.text = elements.Quantity
 //        }
 //    }
-//
     
-    func handleitems() {
-    var handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-                          
-        let known = db.collection("Users").document(user!.uid).collection("public").document("products").collection("List")
-        known.whereField("productList", isEqualTo: true).getDocuments { (snapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                        for document in snapshot!.documents {
-    
-                            var gItem = document {
-                                didSet {
-                                    self.productNameSection.productNameAndBackButton.setTitle((gItem.get("productName") as! String), for: .normal)
-                                    self.productNameSection.priceLabel.text = "$\(gItem.get("productPrice") ?? nil)"
-                                    self.productImageSection.productImage.image = UIImage(named: (gItem.get("productImage"))! as! String)
-                                    self.relatedProductInfoSection.productDescription.text = gItem.get("productDescription") as! String
-                                    self.relatedProductInfoSection.listQuantity.text = "Qty: \(gItem.get("productQuantity") ?? 1)"
-                                          print("set")
-                            }
-                            }
-                        }
-                    }
-                }
-    }
-    }
-//    var productVariableElements = productsMaster {
-//            didSet {
-//                productNameSection.productNameAndBackButton.setTitle((gItem.getDocuments()), for: .normal)
-//                productNameSection.priceLabel.text = "$\(gItem.productPrice ?? nil)"
-//                productImageSection.productImage.image = UIImage(named: (gItem.productImage)!)
-//                relatedProductInfoSection.productDescription.text = gItem.productDescription
-//                relatedProductInfoSection.listQuantity.text = "Qty: \(gItem.productQuantity ?? 1)"
-//                print("set")
-//            }
-//        }
-    
+
     //MARK: Button engagement
     //product Button
     @objc func handleFacts() {
@@ -130,8 +118,6 @@ class listProductVCLayout: UIViewController {
         
         print("Camera button working")
     }
-
-    
 
     let segmentContr: UISegmentedControl = {
         let items = ["Description", "Meals", "Stats"]
@@ -197,7 +183,7 @@ class listProductVCLayout: UIViewController {
     }
     
     //MARK: Quantity
-    let actionTest = [1: "1",2: "2",3: "3",4 :"4",5: "5"]
+    let actionTest = [1: 1,2: 2,3: 3,4 :4,5: 5]
     
     
     
@@ -211,15 +197,52 @@ class listProductVCLayout: UIViewController {
         
         for actions in sorted {
             
-            let quantity: UIAlertAction = UIAlertAction(title: actions.value, style: .default) { action -> Void in
-                self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
-                print(actions.value)
+            let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+                
+                //kinda works don't trust that much
+                for i in arrayofProducts where i.id == self.productNameSection.idlabel.text {
+                    //below was outside of for statement
+                    self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
+                    self.updateProductQuantityValue(id: i.id!, quantity: actions.value)
+                }
             }
             actionSheetController.addAction(quantity)
         }
         
         actionSheetController.addAction(cancelAction)
         self.present(actionSheetController, animated: true, completion: nil)
+    }
+    
+    
+//    func addBook(book: fireStoreDataStruct, quantity: Int) {
+//
+//      do {
+////        let _ = try userfirebaseProducts.document(book.id!).updateData(quantity)
+////        let _ = try userfirebaseProducts.document(book.id!).updateData(book)
+//      }
+//      catch {
+//        print(error)
+//      }
+//    }
+
+    func updateProductQuantityValue(id: String, quantity: Int) {
+         
+        // Or more likely change something related to this cell specifically.
+        for i in arrayofProducts where i.id == id {
+            
+            userfirebaseProducts.document("\(i.id!)").updateData([
+                "productQuantity": quantity,
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+            //TimeStamp
+            
+            print("hello \(i)")
+        }
     }
     
     func setUpProductButtons() {
@@ -268,4 +291,12 @@ class listProductVCLayout: UIViewController {
     }
 }
 
+
+extension listProductVCLayout: ItemTableViewCellDelegate {
+    func itemCell(cellTapped: IndexPath) {
+        let cellTap = arrayofProducts[cellTapped.row]
+    }
+    
+    
+}
 

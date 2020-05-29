@@ -16,11 +16,12 @@ protocol dynamicNameDelegate: class {
 
 //MARK: Product name view
 class productViews: UIView {
-  
+   
     //initWithFrame to init view from code
   override init(frame: CGRect) {
     super.init(frame: frame)
     setupView()
+    
   }
   
   //initWithCode to init view from xib or storyboard
@@ -29,16 +30,31 @@ class productViews: UIView {
     setupView()
   }
 
-    
+//    var productVariableElements = fireStoreDataStruct() {
+//    didSet {
+//        productNameAndBackButton.setTitle("\(productVariableElements?.productName)", for: .normal)
+//        priceLabel.text = "$\(productVariableElements?.productPrice ?? nil)"
+//        }
+//    }
+   
+
+    //make button later
     var priceLabel: UILabel = {
-        let cost = 3.99
         let price = UILabel()
         price.layer.cornerRadius = 5
         price.layer.masksToBounds = true
-        price.text = "$\(cost)"
+        price.text = "$"
         price.textColor = UIColor.white
         price.font = UIFont.boldSystemFont(ofSize: 16)
         return price
+    }()
+    
+    //Might not be right but works
+    var idlabel: UILabel = {
+        let id = UILabel()
+        id.textColor = UIColor.clear
+        id.font = UIFont.boldSystemFont(ofSize: 1)
+        return id
     }()
     
      var productNameAndBackButton: UIButton = {
@@ -124,7 +140,6 @@ class productImageViews: UIView {
        
   //common func to init our view
   private func setupView() {
-    //self.backgroundColor = UIColor.white.withAlphaComponent(0.10)
     self.addSubview(imageMatting)
     self.addSubview(productImage)
     imageMatting.translatesAutoresizingMaskIntoConstraints = false
@@ -225,10 +240,10 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     let listQuantity: UILabel = {
         let lQuant = UILabel()
-        var theMeaningOfLife = 1
+        
         lQuant.textColor = UIColor.white
         lQuant.font = UIFont(name: hNBold, size: 17)
-        lQuant.text = "Qty: \(theMeaningOfLife)"
+        lQuant.text = "Qty:"
         lQuant.translatesAutoresizingMaskIntoConstraints = false
         lQuant.contentMode = .scaleAspectFit
         return lQuant
@@ -256,10 +271,8 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     
     var listProductCollectionView: UICollectionView!
-    
     let cellID = "cell"
 
-    
     private func setUPCollection() {
         
         let layouts = UICollectionViewFlowLayout()

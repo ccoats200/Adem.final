@@ -27,7 +27,6 @@
 		35669AE3240AEDAF00C95DFB /* ffCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE2240AEDAF00C95DFB /* ffCells.swift */; };
 		35669AE52410B3FF00C95DFB /* enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE42410B3FF00C95DFB /* enum.swift */; };
 		35669AE724185D6400C95DFB /* recomendedMeals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE624185D6400C95DFB /* recomendedMeals.swift */; };
-		35669AE924254A9500C95DFB /* masterProductList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE824254A9300C95DFB /* masterProductList.swift */; };
 		356FFEEC23F1CEED00DF67AD /* dietPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEEB23F1CEED00DF67AD /* dietPreferences.swift */; };
 		356FFEEE23F1CF1C00DF67AD /* storePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEED23F1CF1C00DF67AD /* storePreferences.swift */; };
 		356FFEF023F1CF4B00DF67AD /* thankYouPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEEF23F1CF4B00DF67AD /* thankYouPreferences.swift */; };
@@ -40,6 +39,8 @@
 		357B35F223A9DE7000223F51 /* camController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F123A9DE7000223F51 /* camController.swift */; };
 		357B35F423A9DE8E00223F51 /* photoCaptureDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */; };
 		3583AEC52401AECE00A5C4F9 /* quantityAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583AEC42401AECE00A5C4F9 /* quantityAlert.swift */; };
+		3583B08224660BA600879559 /* fireStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583B08124660BA600879559 /* fireStoreProtocol.swift */; };
+		3583B08424660F7C00879559 /* fireStoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583B08324660F7C00879559 /* fireStoreData.swift */; };
 		358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5023BB00110013EE64 /* imageVCRecipt.swift */; };
 		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
@@ -127,7 +128,6 @@
 		35669AE2240AEDAF00C95DFB /* ffCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ffCells.swift; sourceTree = "<group>"; };
 		35669AE42410B3FF00C95DFB /* enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enum.swift; sourceTree = "<group>"; };
 		35669AE624185D6400C95DFB /* recomendedMeals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recomendedMeals.swift; sourceTree = "<group>"; };
-		35669AE824254A9300C95DFB /* masterProductList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = masterProductList.swift; sourceTree = "<group>"; };
 		356FFEEB23F1CEED00DF67AD /* dietPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dietPreferences.swift; sourceTree = "<group>"; };
 		356FFEED23F1CF1C00DF67AD /* storePreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storePreferences.swift; sourceTree = "<group>"; };
 		356FFEEF23F1CF4B00DF67AD /* thankYouPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thankYouPreferences.swift; sourceTree = "<group>"; };
@@ -140,6 +140,8 @@
 		357B35F123A9DE7000223F51 /* camController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camController.swift; sourceTree = "<group>"; };
 		357B35F323A9DE8E00223F51 /* photoCaptureDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = photoCaptureDelegate.swift; sourceTree = "<group>"; };
 		3583AEC42401AECE00A5C4F9 /* quantityAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quantityAlert.swift; sourceTree = "<group>"; };
+		3583B08124660BA600879559 /* fireStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fireStoreProtocol.swift; sourceTree = "<group>"; };
+		3583B08324660F7C00879559 /* fireStoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fireStoreData.swift; sourceTree = "<group>"; };
 		358C2C5023BB00110013EE64 /* imageVCRecipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageVCRecipt.swift; sourceTree = "<group>"; };
 		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
@@ -456,7 +458,8 @@
 				35D6488622ECBF7300015352 /* Products.swift */,
 				35D6488822ECBF8600015352 /* PantryDataModel.swift */,
 				35669AE42410B3FF00C95DFB /* enum.swift */,
-				35669AE824254A9300C95DFB /* masterProductList.swift */,
+				3583B08124660BA600879559 /* fireStoreProtocol.swift */,
+				3583B08324660F7C00879559 /* fireStoreData.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -838,8 +841,8 @@
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
 				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
 				35669AE1240AD8C900C95DFB /* accountHomeView.swift in Sources */,
+				3583B08424660F7C00879559 /* fireStoreData.swift in Sources */,
 				35669ADB2408B78E00C95DFB /* accountStatsCells.swift in Sources */,
-				35669AE924254A9500C95DFB /* masterProductList.swift in Sources */,
 				3540826C23E25DBD00137476 /* signUpCell.swift in Sources */,
 				35E95CC323EA69AB00B6F960 /* fonts.swift in Sources */,
 				35669AE3240AEDAF00C95DFB /* ffCells.swift in Sources */,
@@ -859,6 +862,7 @@
 				35669AD524083C6900C95DFB /* meals save.swift in Sources */,
 				35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */,
 				35D6485322ECBD5D00015352 /* ListVC.swift in Sources */,
+				3583B08224660BA600879559 /* fireStoreProtocol.swift in Sources */,
 				357B35F023A9DDEA00223F51 /* camera.swift in Sources */,
 				356FFEFC24004FFB00DF67AD /* statsView.swift in Sources */,
 				356FFEF623FC590700DF67AD /* pantryTVC.swift in Sources */,

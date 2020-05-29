@@ -35,6 +35,8 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         setUpNavigationBar()
         setUpSearchBar()
         setUpDifferentViews()
+        
+        refressss()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +44,23 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
 //        mealsSearchController.searchBar.becomeFirstResponder()
 
     }
+    
+    //MARK: Pull to refresh
+    var refreshControl = UIRefreshControl()
+    func refressss() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        mealsTableView.addSubview(refreshControl)
+    }
+    
+    @objc func refresh(_ sender: AnyObject) {
+       // Code to refresh table view
+        //https://stackoverflow.com/questions/24475792/how-to-use-pull-to-refresh-in-swift
+
+        //need delay
+        refreshControl.endRefreshing()
+    }
+
     
     func setUpNavigationBar() {
         
