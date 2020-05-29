@@ -31,7 +31,7 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 var arrayofProducts = [fireStoreDataStruct]()
 //Should be static promote if none in filter
 var productCategories = ["All", "Dairy","Fruits","Veggies", "Frozen","Meats","Other"]
-var personalProductCategories = ["All"]
+var personalProductCategories = ["All","d"]
 
 
 struct fireStoreDataStruct: Identifiable, Codable {
