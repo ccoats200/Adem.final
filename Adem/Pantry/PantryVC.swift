@@ -372,6 +372,8 @@ extension PantryVC: UITableViewDelegate, UITableViewDataSource {
             let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! pantryTableViewCell
             productsListViewLayout.cellDelegate = self
             let pt = productsListViewLayout.pantryCollectionView.cellForItem(at: indexPath) as? pantryCell
+            //Needs to be the fire bas info
+            
             pt?.addBackButton.addTarget(self, action: #selector(handleAlert), for: .touchDown)
             
             return productsListViewLayout

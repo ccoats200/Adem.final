@@ -422,6 +422,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             
            }
             
+            
             print("this is the new function maybe \(arrayofProducts)")
             self.listTableView.reloadData()
             
@@ -563,22 +564,11 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let productsListCell = listTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
-        let product = arrayofProducts[indexPath.row]
-
-    
-//        works for population
-//        let product = productsGlobal![indexPath.row]
-
-        
-//        productsListCell.deleg
-        productsListCell.textLabel?.text = product.productName
-        
-        //delegate should be here something like this
-        //productsListCell.delegate? = product.delegate
-        
-        //MARK: - sets the last instance for all rows
         productsListCell.accessoryType = .disclosureIndicator
-        
+        let product = arrayofProducts[indexPath.row]
+//        works for population on didset
+//        let product = productsGlobal![indexPath.row]
+        productsListCell.textLabel?.text = product.productName
         return productsListCell
     }
     
@@ -710,15 +700,25 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let item = productCategories[indexPath.row]
+        let item = productCategories[indexPath.item]
+        filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
         
-        //MARK: Filter tap working
-        
-        arrayofProducts = arrayofProducts.filter { ($0.category == item) }
-        
-        self.listTableView.reloadData()
-        
+        let dairy = arrayofProducts.filter { ($0.category == item) }
+        if item == "All" {
+            firebaseDataFetch()
+            filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademBlue
+        } else {
+            filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
+            arrayofProducts = arrayofProducts.filter { ($0.category == item) }
+            
+            self.listTableView.reloadData()
+        }
         print("Trying to filter for \(productCategories[indexPath.row])")
+    }
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+         let cell = filterListCollectionView.cellForItem(at: indexPath)!
+        cell.backgroundColor = UIColor.ademBlue
+
     }
     
     
@@ -728,6 +728,8 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
         
         let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
         filterCells.backgroundColor = UIColor.ademBlue
+        
+        
         
         filterCells.productName.text = productCategories[indexPath.row]
         

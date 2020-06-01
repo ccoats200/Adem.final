@@ -29,10 +29,12 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 */
 
 var arrayofProducts = [fireStoreDataStruct]()
-//Should be static promote if none in filter
-var productCategories = ["All", "Dairy","Fruits","Veggies", "Frozen","Meats","Other"]
-var personalProductCategories = ["All","d"]
-
+var backUp = [fireStoreDataStruct]()
+var backUp2 = [fireStoreDataStruct]()
+var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
+//Should be static add promote if none in filter
+var productCategories = ["All", "Dairy","Fruits","Veggies", "Frozen","Meats","Other", "Extract"]
+var personalProductCategories = ["All",]
 
 struct fireStoreDataStruct: Identifiable, Codable {
     //Grabs the doc Id for me!
@@ -57,10 +59,6 @@ struct fireStoreDataStruct: Identifiable, Codable {
  
  
 //MARK: - struct end
-
-
-//var arrayofProducts = [fireStoreDataStruct]()
-//Product attributes
 
 class tryagain: NSObject {
     
