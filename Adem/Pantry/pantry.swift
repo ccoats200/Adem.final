@@ -1,9 +1,9 @@
 //
-//  PantryVC.swift
+//  pantry.swift
 //  Adem
 //
-//  Created by Coleman Coats on 7/27/19.
-//  Copyright © 2019 Coleman Coats. All rights reserved.
+//  Created by Coleman Coats on 6/2/20.
+//  Copyright © 2020 Coleman Coats. All rights reserved.
 //
 
 import UIKit
@@ -11,6 +11,7 @@ import Foundation
 import Firebase
 import AVFoundation
 
+/*
 //MARK: This needs to be a collection view
 class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
     
@@ -20,9 +21,11 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     lazy var searching = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
  
     
+    lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
     
     lazy var edit = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAlert))
     
+    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //MARK: - Navigation buttons - End
     
     
@@ -35,6 +38,8 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     let headerID = "collectionViewHeader"
     
     //Populate List
+    var settingsOptions = ["List view","Account","About","Privacy","Security","Help","Log out"]
+    //Populate colllection
     var listProducts: [groceryItemCellContent] =  []
     
     //TODO: what do these do?
@@ -50,6 +55,14 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         
         //MARK: NavigationBar setup
         navigationItem.title = "Pantry"
+        //MARK: might be for ios 12
+        //let textAttributes = [NSAttributedString.Key.foregroundColor:UIColor.ademBlue]
+        //navigationController?.navigationBar.largeTitleTextAttributes = textAttributes
+        //navigationController?.navigationBar.barTintColor = UIColor.ademGreen
+        //navigationController?.navigationBar.titleTextAttributes = textAttributes
+        //navigationController?.navigationBar.prefersLargeTitles = true
+        //navigationController?.navigationBar.isTranslucent = false
+        //navigationController?.navigationBar.scrollEdgeAppearance
         
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
@@ -81,7 +94,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         } else {
             // Fallback on earlier versions
         }
-        setUpListViews()
+        setUpListView()
         setUpBarButtonItems()
         
        firebaseDataFetch()
@@ -104,7 +117,11 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
        }
        
     
-
+//    MARK: TableView Refresh
+    var refreshControl = UIRefreshControl()
+    @objc func refresh(sender: AnyObject) {
+        //TODO: Code to refresh table view
+    }
     
 //    MARK: Setting up NAV bar buttons
     private func setUpBarButtonItems() {
@@ -116,47 +133,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     }
 
 
+
+
 //    MARK: - Table View
-    
-    var pantryCollectionView: UICollectionView!
-    let mealsCellID = "meals"
-    let mealsCCellID = "Cmeals"
-    func setUpListViews() {
-        
-        let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
-            mealsCollectionViewlayouts.scrollDirection = .vertical
-            
-            
-            
-        self.pantryCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
-            
-            
-        
-            pantryCollectionView.showsHorizontalScrollIndicator = false
-            self.pantryCollectionView.dataSource = self
-            self.pantryCollectionView.delegate = self
-            self.pantryCollectionView.register(pantryCell.self, forCellWithReuseIdentifier: mealsCCellID)
-            if #available(iOS 13.0, *) {
-                self.pantryCollectionView.backgroundColor = UIColor.systemGray6
-            } else {
-                // Fallback on earlier versions
-            }
-            self.pantryCollectionView.isUserInteractionEnabled = true
-            self.pantryCollectionView.isScrollEnabled = true
-            pantryCollectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
-            
-            self.pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
-            //adding subviews to the view controller
-        self.view.addSubview(pantryCollectionView)
-            
-            NSLayoutConstraint.activate([
-                pantryCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
-                pantryCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                pantryCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                pantryCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                ])
-    }
-    /*
     var pantryTableView: UITableView!
     //    MARK: CollectionView for Filtering
     let cfilter = "test"
@@ -191,7 +170,13 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             pantryTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             ])
     }
- */
+    
+    func printDate(string: String) {
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss.SSSS"
+        print(string + formatter.string(from: date))
+    }
     
     // MARK: - Private instance methods
     func searchBarIsEmpty() -> Bool {
@@ -242,13 +227,80 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
         if self.isEditing {
             self.navigationItem.rightBarButtonItem = nil
             self.tabBarController?.tabBar.isHidden = true
+            self.navigationItem.rightBarButtonItems = [added, trashed]
             
         } else {
             
             self.navigationItem.rightBarButtonItems = [searching]
             self.tabBarController?.tabBar.isHidden = false
+//            self.listCollectionView.allowsMultipleSelection = false
         }
     }
+
+    
+    var groceryProductsSelected: [IndexPath] = []
+    var selectedGroceryProducts = [groceryItemCellContent]()
+    
+    //Button Functions - Start
+    var selectedProductsIndexPath: [IndexPath: Bool] = [:]
+    
+    @objc func handleBatchDelete() {
+        
+        for (key, value) in selectedProductsIndexPath {
+            if value {
+                groceryProductsSelected.append(key)
+            }
+        }
+        
+        for i in listProducts {
+            if i.Pantry == true {
+                i.Pantry = false
+            }
+        }
+        let nada = "nada"
+        for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
+            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and delete it from their list and pantry")
+            listProducts.remove(at: i.item)
+        }
+        selectedProductsIndexPath.removeAll()
+        setEditing(false, animated: false)
+    }
+    
+    
+    
+    
+    //Add item back
+    @objc func handleBatchAdd() {
+        
+        for (key, value) in selectedProductsIndexPath {
+            if value {
+                groceryProductsSelected.append(key)
+            }
+        }
+        
+        //watch out for nil val in future
+        for i in listProducts {
+            print("there were \(listProducts.count as Any) products")
+            
+            if i.List == true {
+                i.List = false
+                i.Pantry = true
+            }
+        }
+        
+        let nada = "nada"
+        for i in groceryProductsSelected.sorted(by: { $0.item > $1.item }) {
+            
+            print("User is about to remove \(listProducts[i.item].itemName ?? nada) from their pantry and add it to their list")
+            listProducts.remove(at: i.item)
+            
+        }
+        selectedProductsIndexPath.removeAll()
+        setEditing(false, animated: false)
+        
+        groceryProductsSelected = []
+    }
+
     
     //MARK: Alert product Button
     @objc func handleSearch() {
@@ -298,7 +350,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             
             
             print("this is the new function maybe \(arrayofPantry)")
-            self.pantryCollectionView.reloadData()
+            //self.listTableView.reloadData()
             
          }
         
@@ -306,52 +358,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     
 }
 
-extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        print(arrayofPantry.count)
-        return arrayofPantry.count
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! pantryCell
-        pantryItemsCell.backgroundColor = UIColor.white
-        
-        pantryItemsCell.pantryItemName.text = arrayofPantry[indexPath.item].productName
-        pantryItemsCell.quantity.text = "Q: \(arrayofPantry[indexPath.item].productQuantity)"
-        pantryItemsCell.pantryItemImageView.image = UIImage(named: "almondExtract")
-        //Use this for the Date
-        pantryItemsCell.expiryDate.text = " \(arrayofPantry[indexPath.item].productExpir.interval(ofComponent: .day, fromDate: Date())) Days"
-        
-        if arrayofPantry[indexPath.item].productExpir.interval(ofComponent: .day, fromDate: Date()) <= 0 {
-            pantryItemsCell.backgroundColor = UIColor.ademRed
-            pantryItemsCell.pantryItemName.textColor = UIColor.white
-            pantryItemsCell.quantity.textColor = UIColor.white
-            pantryItemsCell.expiryDate.textColor = UIColor.white
-        }
-        
-        
-        pantryItemsCell.layer.cornerRadius = 5
-        return pantryItemsCell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-        //MARK: Changes the size of the image in pantry
-        return CGSize(width: 112.5, height: 125)
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 15
-    }
-}
-
-
-/*
 //MARK: Cell Setup For products
 extension PantryVC: UITableViewDelegate, UITableViewDataSource {
     

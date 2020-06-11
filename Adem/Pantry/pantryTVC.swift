@@ -35,8 +35,6 @@ class pantryCell: UICollectionViewCell {
             pantryItemName.text = gItem.productName
             quantity.text = "Q: \(gItem.productQuantity ?? 1)"
             expiryDate.text = "\(gItem.productExpirDate ?? "2") Days"
-            
-            print("set")
         }
     }
     
@@ -60,8 +58,8 @@ class pantryCell: UICollectionViewCell {
         let name = UILabel()
         name.numberOfLines = 0
         name.textAlignment = .left
-        name.numberOfLines = 1
-//        name.backgroundColor = UIColor.blue
+        name.font = name.font.withSize(15)
+        name.textColor = UIColor.ademBlue
         name.translatesAutoresizingMaskIntoConstraints = false
         return name
     }()
@@ -71,38 +69,44 @@ class pantryCell: UICollectionViewCell {
         let n = 1
         quant.textAlignment = .left
         quant.text = "Q: \(n)"
+        quant.font = quant.font.withSize(12)
+        quant.textColor = UIColor.ademBlue
         quant.numberOfLines = 1
         quant.adjustsFontSizeToFitWidth = true
         quant.translatesAutoresizingMaskIntoConstraints = false
         return quant
     }()
     
+    
     let expiryDate: UILabel = {
+        let date = Date()
         let expire = UILabel()
         expire.textAlignment = .right
         expire.text = "5 days"
+        expire.font = expire.font.withSize(15)
+        expire.textColor = UIColor.ademBlue
         expire.numberOfLines = 1
         expire.adjustsFontSizeToFitWidth = true
         expire.translatesAutoresizingMaskIntoConstraints = false
         return expire
     }()
 
-    //Delete now editing button
-    let addBackButton: UIButton = {
-        let fave = UIButton()
-        fave.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
-        fave.clipsToBounds = true
-        fave.layer.masksToBounds = true
-        fave.translatesAutoresizingMaskIntoConstraints = false
-        return fave
-    }()
+//    //Delete now editing button
+//    let addBackButton: UIButton = {
+//        let fave = UIButton()
+//        fave.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+//        fave.clipsToBounds = true
+//        fave.layer.masksToBounds = true
+//        fave.translatesAutoresizingMaskIntoConstraints = false
+//        return fave
+//    }()
     
     
     private func addSubs() {
         
         addSubview(pantryItemImageView)
         addSubview(pantryItemName)
-        addSubview(addBackButton)
+//        addSubview(addBackButton)
         addSubview(expiryDate)
         addSubview(quantity)
         
@@ -117,10 +121,10 @@ class pantryCell: UICollectionViewCell {
             pantryItemImageView.rightAnchor.constraint(equalTo: self.rightAnchor),
             pantryItemImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 6.5/10),
             
-            addBackButton.topAnchor.constraint(equalTo: pantryItemImageView.topAnchor),
-            addBackButton.rightAnchor.constraint(equalTo: pantryItemImageView.rightAnchor),
-            addBackButton.widthAnchor.constraint(equalToConstant: 30),
-            addBackButton.heightAnchor.constraint(equalToConstant: 30),
+//            addBackButton.topAnchor.constraint(equalTo: pantryItemImageView.topAnchor),
+//            addBackButton.rightAnchor.constraint(equalTo: pantryItemImageView.rightAnchor),
+//            addBackButton.widthAnchor.constraint(equalToConstant: 30),
+//            addBackButton.heightAnchor.constraint(equalToConstant: 30),
             
             pantryItemName.topAnchor.constraint(equalTo: pantryItemImageView.bottomAnchor),
             pantryItemName.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -5),
@@ -215,11 +219,7 @@ class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
             pantryCollectionView.leftAnchor.constraint(equalTo: self.leftAnchor),
             pantryCollectionView.rightAnchor.constraint(equalTo: self.rightAnchor),
             ])
-        
     }
-    
-
-    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -237,7 +237,7 @@ class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         
         let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! pantryCell
         
-        self.buttonDelegate?.buttonTapped(collectioncell: pantryItemsCell, button: pantryItemsCell.addBackButton)
+//        self.buttonDelegate?.buttonTapped(collectioncell: pantryItemsCell, button: pantryItemsCell.addBackButton)
 
         pantryItemsCell.backgroundColor = UIColor.white
 //        pantryItemsCell.addBackButton.addTarget(self, action: #selector(handleMeal), for: .touchDown)

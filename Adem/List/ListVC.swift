@@ -36,7 +36,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
 
     
 //    MARK: Navigation Bar Buttons - Start
-    lazy var searching = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
+  
     
 //    lazy var added = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleBatchAdd))
     
@@ -76,11 +76,30 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            
+            tableViewSearchController.searchBar.searchTextField.textColor = UIColor.white
+
+            self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
+            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
 //            MARK: Opt out of dark mode
             overrideUserInterfaceStyle = .light
         }
-        setupSearch()
+        
+        //MARK: - Search bar
+        self.tableViewSearchController.searchBar.delegate = self
+        self.definesPresentationContext = true
+        self.navigationItem.searchController = tableViewSearchController
+        self.tableViewSearchController.isActive = true
+        tableViewSearchController.searchResultsUpdater = self
+        tableViewSearchController.searchBar.autocorrectionType = .default
+        tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
+        tableViewSearchController.obscuresBackgroundDuringPresentation = true
+        tableViewSearchController.hidesNavigationBarDuringPresentation = false
+        tableViewSearchController.searchBar.sizeToFit()
+        tableViewSearchController.searchBar.tintColor = UIColor.white
+        tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"
+         
+            //MARK: Search bar
+        
         setUpListView()
         
         
@@ -88,24 +107,39 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         listTableView.delegate = self
         
         listTableView.backgroundColor = UIColor.white
-        listTableView.allowsMultipleSelection = true
+        listTableView.allowsMultipleSelectionDuringEditing = true
+        listTableView.allowsSelectionDuringEditing = true
+
         
        
 //        MARK: Setting up NAV bar buttons
         //self.navigationItem.leftBarButtonItem = editButtonItem
         //self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
-        self.navigationItem.rightBarButtonItem = searching
-        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
-        
         
         toolBarSetUp()
         setUpFilterView()
-
+        
+        let panGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
+        self.listTableView.addGestureRecognizer(panGestureRecognizer)
         
         //Firebase working below
         firebaseDataFetch()
         getFilters()
     }
+    
+    @objc func panGestureRecognizerAction(_ gesture: UILongPressGestureRecognizer) {
+        gesture.minimumPressDuration = 0.50
+        
+        if gesture.state == .began {
+            self.becomeFirstResponder()
+            self.view = gesture.view
+            self.listTableView.isEditing = true
+            self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleEditButtonClicked))
+            
+            
+        }
+    }
+
     
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
@@ -129,29 +163,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         self.navigationController?.view.setNeedsLayout()
     }
     
-    private func setupSearch() {
-        //        MARK: Search bar
-        self.tableViewSearchController.searchBar.delegate = self
-        
-        self.definesPresentationContext = true
-        self.navigationItem.searchController = tableViewSearchController
-        self.tableViewSearchController.isActive = true
-        tableViewSearchController.searchResultsUpdater = self
-        tableViewSearchController.searchBar.autocorrectionType = .default
-        tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
-        tableViewSearchController.obscuresBackgroundDuringPresentation = true
-        
-        tableViewSearchController.hidesNavigationBarDuringPresentation = false
-        tableViewSearchController.searchBar.tintColor = UIColor.white
-        if #available(iOS 13.0, *) {
-            tableViewSearchController.searchBar.searchTextField.textColor = UIColor.white
-        } else {
-            // Fallback on earlier versions
-        }
-        tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"
-        
-
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -203,14 +214,60 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     //MARK: - Api end
 
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        let keywords = searchBar.text
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let keywords = searchBar.text
 //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
-//
+
 //           searchUrl = "https://api.spotify.com/v1/search?q=\(finalKeywords!)&type=track"
 //           callAlamo(url: searchUrl)
-//           self.view.endEditing(true)
-//    }
+        
+           self.view.endEditing(true)
+    }
+    
+    //MARK: - Search bar start
+    var filteringproducts = arrayofProducts
+//    var filteringproducts: [String]?
+        
+        
+    func searchBarIsEmpty() -> Bool {
+        // Returns true if the text is empty or nil
+        return tableViewSearchController.searchBar.text?.isEmpty ?? true
+    }
+        
+       
+    func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
+        //self.mySearchBar.endEditing(true)
+    }
+    func filterProductsSearchText(for searchText: String) {
+        filteringproducts = arrayofProducts.filter { fireStoreDataStruct in
+              return
+            fireStoreDataStruct.productName.lowercased().contains(searchText.lowercased())
+            }
+            
+            listTableView.reloadData()
+        }
+        
+        func searchBarisFiltering() -> Bool {
+            return tableViewSearchController.isActive && !searchBarIsEmpty()
+        }
+        
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            self.dismiss(animated: true, completion: nil)
+        }
+        
+        
+        func updateSearchResults(for searchController: UISearchController) {
+            
+            guard let searchText = tableViewSearchController.searchBar.text else { return }
+            filterProductsSearchText(for: searchController.searchBar.text ?? "")
+            
+            // Strip out all the leading and trailing spaces.
+            let whitespaceCharacterSet = CharacterSet.whitespaces
+            let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
+            let searchItems = strippedString.components(separatedBy: " ") as [String]
+            
+        }
+        //MARK: Search bar stuff - End
 
 //    MARK: Table View
     var listTableView: UITableView!
@@ -259,49 +316,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     //MARK: - Table view cell properties - End
     
-    //MARK: - Search bar start
-    var filteringproducts = [groceryProductsDatabase]()
     
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return tableViewSearchController.searchBar.text?.isEmpty ?? true
-    }
-    
-    func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
-        //self.mySearchBar.endEditing(true)
-    }
-    
-    
-    func filterProductsSearchText(for searchText: String) {
-//        filteringproducts = allproductsInList.filter { groceryProductsDatabase in
-//          return
-//            groceryProductsDatabase.groceryProductName.lowercased().contains(searchText.lowercased())
-//        }
-        
-//        listTableView.reloadData()
-    }
-    
-    func searchBarisFiltering() -> Bool {
-        return tableViewSearchController.isActive && !searchBarIsEmpty()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        
-        guard let searchText = tableViewSearchController.searchBar.text else { return }
-        filterProductsSearchText(for: searchController.searchBar.text ?? "")
-        
-        // Strip out all the leading and trailing spaces.
-        let whitespaceCharacterSet = CharacterSet.whitespaces
-        let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
-        //let searchItems = strippedString.components(separatedBy: " ") as [String]
-        
-    }
-    //MARK: Search bar stuff - End
 
     
     // MARK: - Delete Items
@@ -312,11 +327,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             listTableView.isEditing = true
             self.navigationItem.rightBarButtonItem = nil
             self.tabBarController?.tabBar.isHidden = true
-            //self.navigationItem.rightBarButtonItems = [added, trashed]
             self.navigationController?.isToolbarHidden = false
         } else {
             self.navigationController?.isToolbarHidden = true
-            self.navigationItem.rightBarButtonItems = [searching]
+            
+            self.navigationItem.leftBarButtonItem = nil
             self.tabBarController?.tabBar.isHidden = false
             listTableView.isEditing = false
         }
@@ -345,7 +360,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
    
     //Edit Button
-//    @objc func handleEditButtonClicked() {
+    @objc func handleEditButtonClicked() {
+        setEditing(false, animated: false)
 //        if mMode == .view {
 //            setEditing(true, animated: false)
 //        } else {
@@ -353,8 +369,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
 //        }
 //        //setEditing(true, animated: false)
 //        mMode = mMode == .view ? .selected : .view
-//        print("Edit button was clicked")
-//    }
+        print("Edit button was clicked")
+    }
     
    
     //product Button
@@ -382,7 +398,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     */
-    //product Button
+    //MARK: bring user to product screen
     @objc func handleListProduct() {
         
         let productScreen = listProductVCLayout()
@@ -403,38 +419,29 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     //MARK: - Filter
     var filterListCollectionView: UICollectionView!
-    
     //MARK: - need a collection of types of food
   
     //MARK: - Firebase lists should the app delegate
 
     func firebaseDataFetch() {
+        
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-           guard let documents = querySnapshot?.documents else {
+           
+            guard let documents = querySnapshot?.documents else {
              print("No documents")
              return
            }
-            
             arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataStruct? in
-                print(arrayofProducts)
                 return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
-                
-            
            }
-            
-            
             print("this is the new function maybe \(arrayofProducts)")
             self.listTableView.reloadData()
-            
          }
-        
     }
     
     func getFilters() {
-
         for i in arrayofProducts {
             productCategories.append(i.category ?? "test")
-        
         print("categories \(productCategories)")
     }
         self.filterListCollectionView.reloadData()
@@ -450,8 +457,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     func addTimeStamp(id: String, action: String) {
         //https://firebase.google.com/docs/firestore/solutions/aggregation
 
-
-            userfirebaseProducts.document(id).collection("listDate").addDocument(data: [
+        userfirebaseProducts.document(id).collection("listDate").addDocument(data: [
                 "date" : Firebase.Timestamp(),
                 "action" : action,
                 //every 7 days push to collection
@@ -459,11 +465,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         let add = "a"
         let remove = "r"
         let engaged = "e"
-        //us .updateData for adding a new listDate, pantryDate, etc.
+        //use .updateData for adding a new listDate, pantryDate, etc.
 
     }
-    
-
     //filter
     var filter = [fireStoreDataStruct]()
     var productFilter = [fireStoreDataStruct]()
@@ -555,7 +559,12 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
  
+        if  (self.tableViewSearchController.isActive) {
+            return filteringproducts.count
+        } else {
             return arrayofProducts.count
+        }
+//            return arrayofProducts.count
         //        works for population
 //        return productsGlobal!.count
 
@@ -565,18 +574,44 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
         
         let productsListCell = listTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         productsListCell.accessoryType = .disclosureIndicator
+        
+        /*
         let product = arrayofProducts[indexPath.row]
 //        works for population on didset
 //        let product = productsGlobal![indexPath.row]
         productsListCell.textLabel?.text = product.productName
-        return productsListCell
+        */
+        if (tableViewSearchController.isActive) {
+            let product = filteringproducts[indexPath.row]
+            productsListCell.textLabel?.text = product.productName
+            return productsListCell
+            
+        } else {
+            let product = arrayofProducts[indexPath.row]
+            productsListCell.textLabel?.text = product.productName
+            return productsListCell
+        }
+        
+//        return productsListCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
+       
+        
         print("this is the index path row \(indexPath.row)")
         print("this is the index path row \(listTableView.indexPathForSelectedRow?.row)")
         //FireStore data collection
+        
+        if self.listTableView.isEditing {
+//
+//            var selectedRows = listTableView.indexPathsForSelectedRows
+//            var items = [String]()
+//
+//            for indexPath in selectedRows {
+//                items.append(arrayofProducts[indexPath.row])
+//            }
+        } else {
         addTimeStamp(id: arrayofProducts[indexPath.row].id!, action: "e")
 //        addCategory(id: arrayofIds[indexPath.row].id)
 
@@ -604,7 +639,13 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
 
         self.present(cell, animated: true, completion: nil)
         listTableView.deselectRow(at: indexPath, animated: false)
-       }
+        
+        if self.isEditing {
+            listTableView.deselectRow(at: indexPath, animated: false)
+        }
+        
+        }
+    }
     
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            return 60
@@ -708,6 +749,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
             firebaseDataFetch()
             filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademBlue
         } else {
+            
             filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
             arrayofProducts = arrayofProducts.filter { ($0.category == item) }
             

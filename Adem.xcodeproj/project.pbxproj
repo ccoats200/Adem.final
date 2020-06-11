@@ -10,6 +10,7 @@
 		20790888CE0BC9B828AE4FC4 /* Pods_Adem_AdemUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FB9C79428095200E342D2F /* Pods_Adem_AdemUITests.framework */; };
 		351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF42342F10A006CEAE1 /* imageText.swift */; };
 		351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF62343C215006CEAE1 /* ListTVC.swift */; };
+		3527A0EF248720D000956349 /* pantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527A0EE248720D000956349 /* pantry.swift */; };
 		353C12382301D0E3007DF3BB /* mealsCellLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 353C12372301D0E3007DF3BB /* mealsCellLayout.swift */; };
 		3540826C23E25DBD00137476 /* signUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540826B23E25DBD00137476 /* signUpCell.swift */; };
 		3540826E23E3D5DE00137476 /* signUpInfoPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540826D23E3D5DE00137476 /* signUpInfoPages.swift */; };
@@ -108,6 +109,7 @@
 		1DED251FCBF3126820DEA5B2 /* Pods-Adem-AdemUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem-AdemUITests.release.xcconfig"; path = "Target Support Files/Pods-Adem-AdemUITests/Pods-Adem-AdemUITests.release.xcconfig"; sourceTree = "<group>"; };
 		351B8DF42342F10A006CEAE1 /* imageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageText.swift; sourceTree = "<group>"; };
 		351B8DF62343C215006CEAE1 /* ListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTVC.swift; sourceTree = "<group>"; };
+		3527A0EE248720D000956349 /* pantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantry.swift; sourceTree = "<group>"; };
 		353C123422FF5C84007DF3BB /* Adem.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Adem.entitlements; sourceTree = "<group>"; };
 		353C12372301D0E3007DF3BB /* mealsCellLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mealsCellLayout.swift; sourceTree = "<group>"; };
 		353EA66123EF20AB00790EF2 /* GoogleUtilities.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = GoogleUtilities.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -258,6 +260,7 @@
 			children = (
 				35D6485622ECBD8700015352 /* PantryVC.swift */,
 				356FFEF523FC590700DF67AD /* pantryTVC.swift */,
+				3527A0EE248720D000956349 /* pantry.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -838,6 +841,7 @@
 				35669ACE24043A3A00C95DFB /* nutritionLabel.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				35669AE724185D6400C95DFB /* recomendedMeals.swift in Sources */,
+				3527A0EF248720D000956349 /* pantry.swift in Sources */,
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
 				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
 				35669AE1240AD8C900C95DFB /* accountHomeView.swift in Sources */,
