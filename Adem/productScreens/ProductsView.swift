@@ -73,6 +73,9 @@ class productViews: UIView {
     //self.backgroundColor = UIColor.white.withAlphaComponent(0.10)
     self.addSubview(productNameAndBackButton)
     self.addSubview(priceLabel)
+    self.addSubview(idlabel)
+    idlabel.translatesAutoresizingMaskIntoConstraints = false
+    idlabel.isHidden = true
     productNameAndBackButton.translatesAutoresizingMaskIntoConstraints = false
     priceLabel.translatesAutoresizingMaskIntoConstraints = false
     productNameAndBackButton.clipsToBounds = true
@@ -81,6 +84,12 @@ class productViews: UIView {
     
     
     NSLayoutConstraint.activate([
+        //Might delete
+        idlabel.leftAnchor.constraint(equalTo: self.leftAnchor),
+        idlabel.topAnchor.constraint(equalTo: self.topAnchor),
+        idlabel.heightAnchor.constraint(equalToConstant: 1),
+        idlabel.widthAnchor.constraint(equalToConstant: 1),
+        
     productNameAndBackButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
     productNameAndBackButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
     productNameAndBackButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -150),

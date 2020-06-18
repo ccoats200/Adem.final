@@ -140,3 +140,4 @@ class removeDataCapture: UIViewController {
         ])
     }
 }
+

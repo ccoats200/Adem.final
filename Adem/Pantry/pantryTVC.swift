@@ -13,36 +13,49 @@ import UIKit
 //List Delete protocol
 protocol pantryDelegate: class {
     func delete(cell: pantryCell)
-    func addToList(cell: pantryCell)
 }
 
 
 //MARK: Pantry Product Cell layout Final
 class pantryCell: UICollectionViewCell {
     
+    
     weak var delegate: pantryDelegate?
     
-    var eachCell: UIViewController?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.backgroundColor = UIColor.white
+        
         addSubs()
+        //MARK: hide at first
+        addBackButton.isHidden = !isEditing
     }
     
+    /*
     var gItem = productSKU() {
         didSet {
             pantryItemImageView.image = UIImage(named: (gItem.productImage)!)
             pantryItemName.text = gItem.productName
             quantity.text = "Q: \(gItem.productQuantity ?? 1)"
             expiryDate.text = "\(gItem.productExpirDate ?? "2") Days"
+//            addBackButton.isHidden = !isEditing
+        }
+    }
+    */
+    
+    var isEditing: Bool = false {
+        didSet {
+            addBackButton.isHidden = !isEditing
         }
     }
     
     
-    
     @objc func selectedButtonDidTap(_ sender: Any) {
         delegate?.delete(cell: self)
+        //https://www.youtube.com/watch?v=FUs9gpk04FA
     }
+
     
     let pantryItemImageView: UIImageView = {
         let mealImage = UIImageView()
@@ -90,25 +103,26 @@ class pantryCell: UICollectionViewCell {
         expire.translatesAutoresizingMaskIntoConstraints = false
         return expire
     }()
-
-//    //Delete now editing button
-//    let addBackButton: UIButton = {
-//        let fave = UIButton()
-//        fave.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
-//        fave.clipsToBounds = true
-//        fave.layer.masksToBounds = true
-//        fave.translatesAutoresizingMaskIntoConstraints = false
-//        return fave
-//    }()
+    
+    //Delete now editing button
+    let addBackButton: UIButton = {
+        let fave = UIButton()
+        fave.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+        fave.clipsToBounds = true
+        fave.layer.masksToBounds = true
+        fave.translatesAutoresizingMaskIntoConstraints = false
+        return fave
+    }()
     
     
     private func addSubs() {
         
         addSubview(pantryItemImageView)
         addSubview(pantryItemName)
-//        addSubview(addBackButton)
+        addSubview(addBackButton)
         addSubview(expiryDate)
         addSubview(quantity)
+        addBackButton.addTarget(self, action: #selector(selectedButtonDidTap(_:)), for: .touchUpInside)
         
         setupViews()
     }
@@ -121,10 +135,10 @@ class pantryCell: UICollectionViewCell {
             pantryItemImageView.rightAnchor.constraint(equalTo: self.rightAnchor),
             pantryItemImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 6.5/10),
             
-//            addBackButton.topAnchor.constraint(equalTo: pantryItemImageView.topAnchor),
-//            addBackButton.rightAnchor.constraint(equalTo: pantryItemImageView.rightAnchor),
-//            addBackButton.widthAnchor.constraint(equalToConstant: 30),
-//            addBackButton.heightAnchor.constraint(equalToConstant: 30),
+            addBackButton.topAnchor.constraint(equalTo: pantryItemImageView.topAnchor),
+            addBackButton.rightAnchor.constraint(equalTo: pantryItemImageView.rightAnchor),
+            addBackButton.widthAnchor.constraint(equalToConstant: 30),
+            addBackButton.heightAnchor.constraint(equalToConstant: 30),
             
             pantryItemName.topAnchor.constraint(equalTo: pantryItemImageView.bottomAnchor),
             pantryItemName.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -5),
@@ -164,6 +178,7 @@ protocol CellButtonTap: class {
     //other delegate methods that you can define to perform action in viewcontroller
 }
 
+/*
 
 //MARK: Pantry TableView Cell 
 class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -291,3 +306,4 @@ class pantryTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollecti
         fatalError("init(coder:) has not been implemented")
     }
 }
+*/

@@ -56,3 +56,84 @@ extension Date {
     }
 
 }
+
+enum engagements: String {
+    case added = "a"
+    case removed = "r"
+    case engaged = "e"
+}
+
+enum wasted: String {
+    case oneHundred = "100%"
+    case seventyFive = "75%"
+    case fifty = "50%"
+    case twentyFive = "25%"
+    case none = "0%"
+}
+
+extension UIViewController {
+    
+    func addTimeStamp(id: String, action: String) {
+        //MARK: use engagements enum for action
+        //https://firebase.google.com/docs/firestore/solutions/aggregation
+        
+        userfirebaseProducts.document(id).collection("listDate").addDocument(data: [
+                "date" : Firebase.Timestamp(),
+                "action" : action,
+                //every 7 days push to collection
+            ])
+        //use .updateData for adding a new listDate, pantryDate, etc.
+    }
+    
+    func addWasteAmount(id: String, amount: String) {
+        
+        userfirebaseProducts.document(id).collection("wasteData").addDocument(data: [
+                "time" : Firebase.Timestamp(),
+                "value" : amount,
+            ])
+    }
+    
+    func updateProductQuantityValue(id: String, quantity: Int) {
+        // Or more likely change something related to this cell specifically.
+        for i in arrayofProducts where i.id == id {
+            
+            userfirebaseProducts.document("\(i.id!)").updateData([
+                "productQuantity": quantity,
+            ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+            //TimeStamp
+            
+            print("hello \(i)")
+        }
+    }
+    
+    func updateProductLocationValues(indexPath: String, pantry: Bool, list: Bool){
+             
+            // Or more likely change something related to this cell specifically.
+    //        let cell = listTableView.cellForRow(at: indexPath)
+    //        for i in arrayofProducts {//where i.productName == cell?.textLabel?.text {
+                
+                userfirebaseProducts.document("\(indexPath)").updateData([
+                    "productPantry": pantry,
+                    "productList": list
+                ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                    }
+                }
+                //TimeStamp
+                
+    //        }
+    //        let firstProduct = arrayofProducts[0].id
+    //        let insertedIndexPath = IndexPath(index: firstProduct!.count)
+    //        self.listTableView.insertRows(at: [insertedIndexPath], with: .top)
+    //        self.listTableView.reloadData()
+        }
+}

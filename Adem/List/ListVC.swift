@@ -46,19 +46,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     //MARK: Navigation buttons - End
     
     
-    let mostRecent = "most recent"
-    let productRFIDNumber = "3860407808"
- 
-//    MARK: Cell re-use ID
-    let tableViewCell = "test"
-    let cellID = "product"
-    let headerID = "collectionViewHeader"
     
-//    MARK: FireBase Populate List
-    var products: [food] = [food]()
-    
-//    Search Controller implementation
-    let tableViewSearchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -76,27 +64,31 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            tableViewSearchController.searchBar.searchTextField.textColor = UIColor.white
+            self.tableViewSearchController.searchBar.searchTextField.textColor = UIColor.white
 
             self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
 //            MARK: Opt out of dark mode
-            overrideUserInterfaceStyle = .light
+//            overrideUserInterfaceStyle = .light
+        } else {
+            
         }
         
         //MARK: - Search bar
-        self.tableViewSearchController.searchBar.delegate = self
-        self.definesPresentationContext = true
-        self.navigationItem.searchController = tableViewSearchController
-        self.tableViewSearchController.isActive = true
+        tableViewSearchController.searchBar.delegate = self
+        definesPresentationContext = true
+        navigationItem.searchController = tableViewSearchController
+//        self.tableViewSearchController.isActive = true
         tableViewSearchController.searchResultsUpdater = self
         tableViewSearchController.searchBar.autocorrectionType = .default
         tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
         tableViewSearchController.obscuresBackgroundDuringPresentation = true
         tableViewSearchController.hidesNavigationBarDuringPresentation = false
         tableViewSearchController.searchBar.sizeToFit()
-        tableViewSearchController.searchBar.tintColor = UIColor.white
+        self.tableViewSearchController.searchBar.tintColor = UIColor.white
+        
         tableViewSearchController.searchBar.placeholder = "What Can I Add For You?"
+        //https://www.iosapptemplates.com/blog/ios-programming/uisearchcontroller-swift
          
             //MARK: Search bar
         
@@ -119,6 +111,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         toolBarSetUp()
         setUpFilterView()
         
+//        filteredProducts = filteringproducts
+        
         let panGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
         self.listTableView.addGestureRecognizer(panGestureRecognizer)
         
@@ -127,6 +121,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         getFilters()
     }
     
+    
+    //MARK: Gestures
     @objc func panGestureRecognizerAction(_ gesture: UILongPressGestureRecognizer) {
         gesture.minimumPressDuration = 0.50
         
@@ -139,7 +135,33 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             
         }
     }
-
+    
+//    MARK: - Var & Let
+    let mostRecent = "most recent"
+    let productRFIDNumber = "3860407808"
+    
+//    MARK: FireBase Populate List
+    var products: [food] = [food]()
+//    MARK: Search Controller implementation
+    var tableViewSearchController = UISearchController(searchResultsController: nil)
+    var tableArray = [String]()
+//    MARK: - Search bar
+    var filteringproducts = arrayofProducts
+    var filteredProducts: [String]?
+    
+//    MARK: Table view
+    var listTableView: UITableView!
+    let tableViewCell = "test"
+    let cellID = "product"
+    let headerID = "collectionViewHeader"
+//    MARK: Collection View
+    var filterListCollectionView: UICollectionView!
+    let cfilter = "test"
+//    MARK: Filter
+    var filter = [fireStoreDataStruct]()
+    var productFilter = [fireStoreDataStruct]()
+    
+//    MARK: - Var & Let
     
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
@@ -171,11 +193,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
 //    MARK: - Api Reference
-    var tableArray = [String] ()
-    func parseJSON() {
+    
+    func parseJSON(product: String) {
         //https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0
         var searchterm = tableViewSearchController.searchBar.text
-        print(searchterm)
         let url = URL(string: "https://api.spoonacular.com/food/products/search?query=\(searchterm)&apiKey=\(apiKey)")
         let task = URLSession.shared.dataTask(with: url!) {(data, response, error ) in
 
@@ -214,6 +235,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     
     //MARK: - Api end
 
+//    MARK: - Search bar start
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         let keywords = searchBar.text
 //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
@@ -224,11 +246,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
            self.view.endEditing(true)
     }
     
-    //MARK: - Search bar start
-    var filteringproducts = arrayofProducts
-//    var filteringproducts: [String]?
-        
-        
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
         return tableViewSearchController.searchBar.text?.isEmpty ?? true
@@ -238,6 +255,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     func touchesBegan(touches: NSSet, withEvent event: UIEvent) {
         //self.mySearchBar.endEditing(true)
     }
+    
     func filterProductsSearchText(for searchText: String) {
         filteringproducts = arrayofProducts.filter { fireStoreDataStruct in
               return
@@ -247,31 +265,30 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             listTableView.reloadData()
         }
         
-        func searchBarisFiltering() -> Bool {
-            return tableViewSearchController.isActive && !searchBarIsEmpty()
-        }
-        
-        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-            self.dismiss(animated: true, completion: nil)
-        }
+    func searchBarisFiltering() -> Bool {
+        return tableViewSearchController.isActive && !searchBarIsEmpty()
+    }
         
         
-        func updateSearchResults(for searchController: UISearchController) {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+        
+        
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchResults = arrayofProducts
+        guard let searchText = tableViewSearchController.searchBar.text else { return }
+        filterProductsSearchText(for: searchController.searchBar.text ?? "")
             
-            guard let searchText = tableViewSearchController.searchBar.text else { return }
-            filterProductsSearchText(for: searchController.searchBar.text ?? "")
-            
-            // Strip out all the leading and trailing spaces.
-            let whitespaceCharacterSet = CharacterSet.whitespaces
-            let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
-            let searchItems = strippedString.components(separatedBy: " ") as [String]
-            
+        // Strip out all the leading and trailing spaces.
+        let whitespaceCharacterSet = CharacterSet.whitespaces
+        let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
+        let searchItems = strippedString.components(separatedBy: " ") as [String]
         }
-        //MARK: Search bar stuff - End
+//        MARK: -Search bar stuff - End
 
-//    MARK: Table View
-    var listTableView: UITableView!
-    let cfilter = "test"
+//    MARK: - Table View
     func setUpListView() {
         
         //TODO: If empty
@@ -315,9 +332,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
             ])
     }
     //MARK: - Table view cell properties - End
-    
-    
-
     
     // MARK: - Delete Items
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -417,10 +431,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         self.present(alert, animated: true, completion: nil)
         
     }
-    //MARK: - Filter
-    var filterListCollectionView: UICollectionView!
-    //MARK: - need a collection of types of food
-  
+    
+    //MARK: - Collection Filter
+      
     //MARK: - Firebase lists should the app delegate
 
     func firebaseDataFetch() {
@@ -435,6 +448,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
                 return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
            }
             print("this is the new function maybe \(arrayofProducts)")
+//            let firstProduct = arrayofProducts[0].id
+//            let insertedIndexPath = IndexPath(index: firstProduct!.count)
+//            self.listTableView.insertRows(at: [insertedIndexPath], with: .top)
             self.listTableView.reloadData()
          }
     }
@@ -454,24 +470,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
         
     }
     
-    func addTimeStamp(id: String, action: String) {
-        //https://firebase.google.com/docs/firestore/solutions/aggregation
-
-        userfirebaseProducts.document(id).collection("listDate").addDocument(data: [
-                "date" : Firebase.Timestamp(),
-                "action" : action,
-                //every 7 days push to collection
-            ])
-        let add = "a"
-        let remove = "r"
-        let engaged = "e"
-        //use .updateData for adding a new listDate, pantryDate, etc.
-
-    }
-    //filter
-    var filter = [fireStoreDataStruct]()
-    var productFilter = [fireStoreDataStruct]()
-//MARK: - class end
+//MARK: - class end dont delete this }
 }
 
 
@@ -496,17 +495,9 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
 
 
             self.updateProductLocationValues(indexPath: item, pantry: true, list: false)
-            self.addTimeStamp(id: item, action: "a")
-            
-//
-//            if let index = arrayofIds.index(of: arrayofIds[indexPath.row].productName) {
-//                arrayofIds.remove(at: index)
-//            }
-//            arrayofIds.remove(at: <#T##Int#>)
-            
+            self.addTimeStamp(id: item, action: engagements.added.rawValue)
             
             boolValue(true) // pass true if you want the handler to allow the action
-
             print("User has added the product to their basket in the store")
            }
            checkedAsInBasket.backgroundColor = UIColor.ademGreen
@@ -514,7 +505,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
         let swipeActions = UISwipeActionsConfiguration(actions: [checkedAsInBasket])
         return swipeActions
        }
-    
+    /*
     func updateProductLocationValues(indexPath: String, pantry: Bool, list: Bool){
          
         // Or more likely change something related to this cell specifically.
@@ -534,17 +525,19 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
             //TimeStamp
             
 //        }
-        
-        self.listTableView.reloadData()
+//        let firstProduct = arrayofProducts[0].id
+//        let insertedIndexPath = IndexPath(index: firstProduct!.count)
+//        self.listTableView.insertRows(at: [insertedIndexPath], with: .top)
+//        self.listTableView.reloadData()
     }
-    
+    */
        
        func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
            let item = arrayofProducts[indexPath.row].id!
            let deleteItemFromListAndPanty = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
             
             self.updateProductLocationValues(indexPath: item, pantry: false, list: false)
-            self.addTimeStamp(id: item, action: "r")
+            self.addTimeStamp(id: item, action: engagements.removed.rawValue)
                
             boolValue(true) // pass true if you want the handler to allow the action
            }
@@ -574,7 +567,6 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
         
         let productsListCell = listTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         productsListCell.accessoryType = .disclosureIndicator
-        
         /*
         let product = arrayofProducts[indexPath.row]
 //        works for population on didset
@@ -598,12 +590,15 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
        
        
-        
+        //https://medium.com/ios-os-x-development/ios-multiple-selections-in-table-view-88dc2249c3a2
+        //https://www.ioscreator.com/tutorials/delete-multiple-rows-table-view-ios-tutorial
+        //https://stackoverflow.com/questions/33970807/how-to-select-multiple-rows-in-uitableview-in-edit-mode
         print("this is the index path row \(indexPath.row)")
         print("this is the index path row \(listTableView.indexPathForSelectedRow?.row)")
         //FireStore data collection
         
         if self.listTableView.isEditing {
+            listTableView.deselectRow(at: indexPath, animated: false)
 //
 //            var selectedRows = listTableView.indexPathsForSelectedRows
 //            var items = [String]()
@@ -612,40 +607,38 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate, UIColl
 //                items.append(arrayofProducts[indexPath.row])
 //            }
         } else {
-        addTimeStamp(id: arrayofProducts[indexPath.row].id!, action: "e")
+            addTimeStamp(id: arrayofProducts[indexPath.row].id!, action: engagements.engaged.rawValue)
 //        addCategory(id: arrayofIds[indexPath.row].id)
 
         
-        let cell = listProductVCLayout()
-        let product = arrayofProducts[indexPath.row]
-//        cell.productVariableElements = product
+            let cell = listProductVCLayout()
+            let product = arrayofProducts[indexPath.row]
+            cell.productNameSection.idlabel.text = product.id
         
 //        works for population
 //        let product = productsGlobal![indexPath.row]
 //        cell.elements = product
         
-        let storageRef = Storage.storage().reference(withPath: "groceryProducts/almondExtract.jpeg")
-            storageRef.getData(maxSize: (4 * 1024 * 1024)) { [weak self] (data, error ) in
-                if let error = error {
-                    print("got error \(error.localizedDescription)")
-                    return
-                }
-                if let image = data {
-                    cell.productImageSection.productImage.image = UIImage(data: image)
-                }
-            }
+//        let storageRef = Storage.storage().reference(withPath: "groceryProducts/almondExtract.jpeg")
+//            storageRef.getData(maxSize: (4 * 1024 * 1024)) { [weak self] (data, error ) in
+//                if let error = error {
+//                    print("got error \(error.localizedDescription)")
+//                    return
+//                }
+//                if let image = data {
+//                    cell.productImageSection.productImage.image = UIImage(data: image)
+//                }
+//            }
+            
         
         print("show all \(arrayofProducts)")
-
         self.present(cell, animated: true, completion: nil)
         listTableView.deselectRow(at: indexPath, animated: false)
-        
-        if self.isEditing {
-            listTableView.deselectRow(at: indexPath, animated: false)
-        }
-        
+
         }
     }
+    
+    
     
        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
            return 60

@@ -36,38 +36,8 @@ class listProductVCLayout: UIViewController {
         setUpProductButtons()
         setupProductLayoutContstraints()
         
-        //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
-        //self.view.addGestureRecognizer(panGestureRecognizer)
-        
         self.dismiss(animated: true, completion: nil)
-        
-        //print(testing)
     }
-    
-    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-    @objc func panGestureRecognizerAction(_ gesture: UIPanGestureRecognizer) {
-        
-        let touchPoint = gesture.location(in: self.view?.window)
-        
-        if gesture.state == UIGestureRecognizer.State.began {
-            initialTouchPoint = touchPoint
-        } else if gesture.state == UIGestureRecognizer.State.changed {
-            if touchPoint.y - initialTouchPoint.y > 0 {
-                self.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
-            }
-        } else if gesture.state == UIGestureRecognizer.State.ended || gesture.state == UIGestureRecognizer.State.cancelled {
-            if touchPoint.y - initialTouchPoint.y > 100 {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-                })
-            }
-        }
-        print(gesture)
-        
-    }
-
     
    
     //Does Did set need to be used? I think for speed, the url delays
@@ -168,13 +138,36 @@ class listProductVCLayout: UIViewController {
         productNameSection.translatesAutoresizingMaskIntoConstraints = false
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
         
-        relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(plz), for: .touchDown)
+        relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(updateQuantity), for: .touchDown)
     }
 
-    
-    @objc func plz() {
+    //MARK: Quantity
+    let actionTest = [1: 1,2: 2,3: 3,4 :4,5: 5]
+    @objc func updateQuantity() {
        
-        incorrectInformationAlert(title: "Login Failed", message: "It doesn't work like that...")
+        let sorted = actionTest.sorted {$0.key > $1.key}
+        
+        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
+        
+        for actions in sorted {
+            
+            let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+                
+                //kinda works don't trust that much
+                for i in arrayofProducts where i.id == self.productNameSection.idlabel.text {
+                    //below was outside of for statement
+                    self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
+                    self.updateProductQuantityValue(id: i.id!, quantity: actions.value)
+                }
+            }
+            actionSheetController.addAction(quantity)
+        }
+        
+        actionSheetController.addAction(cancelAction)
+        self.present(actionSheetController, animated: true, completion: nil)
+//        updateQuantity()
 //        let updateQuantity = quantityAlert()
 //        updateQuantity.modalPresentationStyle = UIModalPresentationStyle.formSheet
 //        self.present(updateQuantity, animated: true, completion: nil)
@@ -182,12 +175,9 @@ class listProductVCLayout: UIViewController {
         
     }
     
-    //MARK: Quantity
-    let actionTest = [1: 1,2: 2,3: 3,4 :4,5: 5]
     
-    
-    
-    func incorrectInformationAlert(title: String, message: String) {
+/*
+    func updateQuantity() {
         
         let sorted = actionTest.sorted {$0.key > $1.key}
         
@@ -212,38 +202,8 @@ class listProductVCLayout: UIViewController {
         actionSheetController.addAction(cancelAction)
         self.present(actionSheetController, animated: true, completion: nil)
     }
-    
-    
-//    func addBook(book: fireStoreDataStruct, quantity: Int) {
-//
-//      do {
-////        let _ = try userfirebaseProducts.document(book.id!).updateData(quantity)
-////        let _ = try userfirebaseProducts.document(book.id!).updateData(book)
-//      }
-//      catch {
-//        print(error)
-//      }
-//    }
 
-    func updateProductQuantityValue(id: String, quantity: Int) {
-         
-        // Or more likely change something related to this cell specifically.
-        for i in arrayofProducts where i.id == id {
-            
-            userfirebaseProducts.document("\(i.id!)").updateData([
-                "productQuantity": quantity,
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
-            }
-            //TimeStamp
-            
-            print("hello \(i)")
-        }
-    }
+    */
     
     func setUpProductButtons() {
         //MARK: how to add button interaction

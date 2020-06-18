@@ -15,6 +15,8 @@
 		3540826C23E25DBD00137476 /* signUpCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540826B23E25DBD00137476 /* signUpCell.swift */; };
 		3540826E23E3D5DE00137476 /* signUpInfoPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540826D23E3D5DE00137476 /* signUpInfoPages.swift */; };
 		3540827023E3D60700137476 /* preferencesPages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3540826F23E3D60700137476 /* preferencesPages.swift */; };
+		3542B92F24927F9200E259EE /* gesture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B92E24927F9200E259EE /* gesture.swift */; };
+		3542B9312499A12C00E259EE /* filterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B9302499A12C00E259EE /* filterVC.swift */; };
 		354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944123DCBF81003F2B1F /* accountCreationViews.swift */; };
 		354E944623DCEE30003F2B1F /* customPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944523DCEE30003F2B1F /* customPreferences.swift */; };
 		35669ACE24043A3A00C95DFB /* nutritionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669ACD24043A3A00C95DFB /* nutritionLabel.swift */; };
@@ -117,6 +119,8 @@
 		3540826B23E25DBD00137476 /* signUpCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signUpCell.swift; sourceTree = "<group>"; };
 		3540826D23E3D5DE00137476 /* signUpInfoPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signUpInfoPages.swift; sourceTree = "<group>"; };
 		3540826F23E3D60700137476 /* preferencesPages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferencesPages.swift; sourceTree = "<group>"; };
+		3542B92E24927F9200E259EE /* gesture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = gesture.swift; sourceTree = "<group>"; };
+		3542B9302499A12C00E259EE /* filterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterVC.swift; sourceTree = "<group>"; };
 		354E944123DCBF81003F2B1F /* accountCreationViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountCreationViews.swift; sourceTree = "<group>"; };
 		354E944523DCEE30003F2B1F /* customPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customPreferences.swift; sourceTree = "<group>"; };
 		35669ACD24043A3A00C95DFB /* nutritionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nutritionLabel.swift; sourceTree = "<group>"; };
@@ -250,7 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				35D6485222ECBD5D00015352 /* ListVC.swift */,
-				35669ADC2408BD9F00C95DFB /* listProductView.swift */,
+				35FDD16923C4102200A85023 /* listProductinfo.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -261,6 +265,7 @@
 				35D6485622ECBD8700015352 /* PantryVC.swift */,
 				356FFEF523FC590700DF67AD /* pantryTVC.swift */,
 				3527A0EE248720D000956349 /* pantry.swift */,
+				3542B9302499A12C00E259EE /* filterVC.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -268,9 +273,10 @@
 		35669AD82408B49700C95DFB /* global */ = {
 			isa = PBXGroup;
 			children = (
-				35FDD16923C4102200A85023 /* listProductinfo.swift */,
+				35669ADC2408BD9F00C95DFB /* listProductView.swift */,
 				359E325B23D7F8D50049FA75 /* filterSetUp.swift */,
 				35669ADE2408BF3C00C95DFB /* viewForHeaders.swift */,
+				3542B92E24927F9200E259EE /* gesture.swift */,
 			);
 			path = global;
 			sourceTree = "<group>";
@@ -823,6 +829,7 @@
 				351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */,
 				35D6489222ECBFFD00015352 /* FriendsLayout.swift in Sources */,
 				35D6483722ECBBF300015352 /* Custom Alert.swift in Sources */,
+				3542B92F24927F9200E259EE /* gesture.swift in Sources */,
 				3540827023E3D60700137476 /* preferencesPages.swift in Sources */,
 				356FFEF023F1CF4B00DF67AD /* thankYouPreferences.swift in Sources */,
 				35D6487922ECBEE800015352 /* pantryCellLayout.swift in Sources */,
@@ -837,6 +844,7 @@
 				3591FBCF23BADA9100C410CF /* OCR.swift in Sources */,
 				356FFEFF2401962D00DF67AD /* segmentViews.swift in Sources */,
 				35669AE52410B3FF00C95DFB /* enum.swift in Sources */,
+				3542B9312499A12C00E259EE /* filterVC.swift in Sources */,
 				354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */,
 				35669ACE24043A3A00C95DFB /* nutritionLabel.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
