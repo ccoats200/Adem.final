@@ -5,9 +5,8 @@
 //  Created by Coleman Coats on 7/27/19.
 //  Copyright © 2019 Coleman Coats. All rights reserved.
 //
-
-import Firebase
 import UIKit
+import Firebase
 import CoreData
 //import FirebaseFirestore
 
@@ -28,6 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var enableAllOrientation = false
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        
         if (enableAllOrientation == true){
             return UIInterfaceOrientationMask.allButUpsideDown
         }
@@ -37,57 +37,31 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        window = UIWindow(frame: UIScreen.main.bounds)
+        window = UIWindow()
         window?.makeKeyAndVisible()
         
-        
-       
+
         //MARK: Firestore
         FirebaseApp.configure()
-        let db = Firestore.firestore()
-        let storage = Storage.storage()
-        let storageRef = storage.reference()
-    
-        
+
         //MARK: RootController
-        window?.rootViewController = login()
-        //window?.rootViewController = tabBar()
+//        window?.rootViewController = login()
+        window?.rootViewController = tabBar()
         
         //MARK: THis is for all nav bars Current In solid green
-
         
         //Removes the shadow under the Nav bar
-        UINavigationBar.appearance().shadowImage = UIImage()
-        UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default)
+//        UINavigationBar.appearance().shadowImage = UIImage()
+//        UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default)
         
         
         // to set the below watch https://www.youtube.com/watch?v=APQVltARKF8&list=PL0dzCUj1L5JGKdVUtA5xds1zcyzsz7HLj&index=2 at time 20:00
         
         //Upper bar
-        var preferredStatusBarStyle : UIStatusBarStyle {
-            
-            return .lightContent
-        }
-        
-        
-        if window?.rootViewController == tabBar() {
-            
-            let statusBarBackgroundColor = UIView()
-            statusBarBackgroundColor.backgroundColor = UIColor.ademGreen
-            
-            window?.addSubview(statusBarBackgroundColor)
-            window?.widthAnchor.constraint(equalTo: statusBarBackgroundColor.widthAnchor).isActive = true
-//            window?.addConstraintsWithFormats(format: "H:|[v0]|", views: statusBarBackgroundColor)
-            window?.topAnchor.constraint(equalTo: statusBarBackgroundColor.topAnchor).isActive = true
-            window?.heightAnchor.constraint(equalToConstant: 20).isActive = true
-//            window?.addConstraintsWithFormats(format: "V:|[v0(20)]|", views: statusBarBackgroundColor)
-            
-        } else {
-            
-        }
-        
-        
-        
+//        var preferredStatusBarStyle : UIStatusBarStyle {
+//
+//            return .lightContent
+//        }
         return true
     }
     
@@ -116,13 +90,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     //Should this be here
-//    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
-//       return true
-//    }
-//
-//    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
-//       return true
-//    }
+    func application(_ application: UIApplication, shouldSaveApplicationState coder: NSCoder) -> Bool {
+       return true
+    }
+
+    func application(_ application: UIApplication, shouldRestoreApplicationState coder: NSCoder) -> Bool {
+       return true
+    }
     
     // MARK: - Core Data stack
     

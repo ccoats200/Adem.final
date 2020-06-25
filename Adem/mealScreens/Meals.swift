@@ -20,6 +20,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     var tableViewCategories = ["Breakfast"]
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
+    let mealsCellID = "meals"
     
     //MARK: Food.com API Command
     //https://www.kaggle.com/shuyangli94/food-com-recipes-and-user-interactions
@@ -148,7 +149,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         ])
     }
     
-    let mealsCellID = "meals"
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 1
@@ -176,8 +177,6 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         
         return 50
     }
-    
-
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let he = tableViewHeader()

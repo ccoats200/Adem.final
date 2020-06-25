@@ -13,19 +13,15 @@ import Firebase
 
 class login: UIViewController, UITextFieldDelegate {
     
-    // Add a new document with a generated ID
-    //let minimuPasswordCount = 6
-    
     //MARK: Login Views
     var userInfoCaptureElements = loginInfoView()
     var buttonsUsedToLogIn = loginButtonView()
-    
     var maybeButton = navigationButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        docRef = Firestore.firestore().document("\(userNames)")
+//        docRef = Firestore.firestore().document("\(userNames)")
     
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -53,47 +49,48 @@ class login: UIViewController, UITextFieldDelegate {
         setupconstraints()
         
     }
+    
     //Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+//        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+//
+//        }
         
-        handle = Auth.auth().addStateDidChangeListener { (auth, User) in
-            
-        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        Auth.auth().removeStateDidChangeListener(handle!)
+//        firebaseAuth.removeStateDidChangeListener(handle!)
     }
 
-    @objc func handelLogin()
-    {
+    @objc func handelLogin() {
         //Making sure that credentials are correct
         guard let email = userInfoCaptureElements.emailTextField.text, !email.isEmpty, let password = userInfoCaptureElements.passwordTextField.text, !password.isEmpty else {
             incorrectInformationAlert(title: "Login Failed", message: "It doesn't work like that...")
+            //https://www.youtube.com/watch?v=1HN7usMROt8
+            //50:22
             return
         }
         
         //User: Signed in with email
-        firebaseAuth.signIn(withEmail: email, password: password) { [weak self] user, error in
+        
+        firebaseAuth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
             guard let strongSelf = self else { return }
             
+//            strongSelf.navigationController?.popViewController(animated: true)
+            if error != nil {
+                print(error?.localizedDescription)
+            } else {
+                
             let listController = tabBar()
             let appDelegate = UIApplication.shared.delegate as! AppDelegate
             appDelegate.window?.rootViewController = listController
             appDelegate.window?.makeKeyAndVisible()
+            print("Successfully logged in")
+            }
         }
-        print("Successfully logged in")
-        
-        //Question: Why does this only need on click when in the signIn method but 2 outside it?
-        /*
-        let listController = tabBar()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.window?.rootViewController = listController
-        appDelegate.window?.makeKeyAndVisible()
-        print("Logging in \(email)")
- */
     }
     
 
@@ -138,7 +135,6 @@ class login: UIViewController, UITextFieldDelegate {
     
     @objc func handelGooglesignUp() {
         let signUpInfos = userFlowViewControllerTwo()
-
         self.present(signUpInfos, animated: true, completion: nil)
      print("Sending user to sign up Flow")
     }
@@ -152,11 +148,12 @@ class login: UIViewController, UITextFieldDelegate {
     @objc func handelSignUp() {
         
         //Check how this is transitioning and fix it for a navigation controller
-     let signUpInfo = UserInfo()
+     
+        let signUpInfo = UserInfo()
      //   let signUpInfo = moreInfo()
      //self.navigationController?.pushViewController(signUpInfo, animated: true)
-     self.present(signUpInfo, animated: true, completion: nil)
-     print("Sending user to sign up Flow")
+        self.present(signUpInfo, animated: true, completion: nil)
+        print("Sending user to sign up Flow")
     }
     
     @objc func handleSkip() {

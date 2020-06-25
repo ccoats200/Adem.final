@@ -246,7 +246,7 @@ extension filterViewController: UITableViewDataSource, UITableViewDelegate {
        
        
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHeight = 60
+        let cellHeight = 45
         return CGFloat(cellHeight)
        }
     
@@ -258,6 +258,7 @@ extension filterViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
+    
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
             //Works
             

@@ -19,6 +19,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let cellID = "cell3"
     let headerID = "test"
     let listOfSettingsOptions = "test"
+    let ffCCellID = "test"
+    var friendsAssociated = friends
+    
+    var acctOptions = ["Recipies","Diet","Invite Friends","Rate Us","Apps","Settings"]
     
     //MARK: Views to set up
     var accountStuff = ProfileView()
@@ -42,6 +46,94 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
+        setUpdefaultSegment()
+        handleUserInfo()
+
+        if segmentContr.selectedSegmentIndex == 0 {
+            switchStatsViews()
+        }
+        
+        //MARK: Nav bar is see through
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
+        //MARK: Nav bar is see through
+        
+        self.navigationController?.view.layoutIfNeeded()
+        self.navigationController?.view.setNeedsLayout()
+        
+        
+       
+        }
+    override func viewDidAppear(_ animated: Bool) {
+        handleUserInfo()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+    }
+    
+    //MARK: - Button Action - Start
+    @objc func handleFriends() {
+        let privacyController = friendsTVC()
+        self.navigationController?.pushViewController(privacyController, animated: true)
+        print("Settings Tab is active")
+    }
+    
+    @objc func handleDevices() {
+        let cController = settings()
+        cController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(cController, animated: true)
+        print("Settings Tab is active")
+    }
+    
+    @objc func handleSettings() {
+        let cController = SettingTVC()
+        self.navigationController?.pushViewController(cController, animated: true)
+        print("Settings Tab is active")
+    }
+    
+    @objc func handleHealth() {
+        print("Settings Tab is active")
+    }
+    
+    @objc func editUserInfo() {
+           print("tester")
+       }
+    
+    @objc func handelLogin() {
+        let loginUser = login()
+        loginUser.hidesBottomBarWhenPushed = true
+        self.present(loginUser, animated: true, completion: nil)
+    }
+    
+    @objc func signUp() {
+        let loginInfo = UserInfo()
+        loginInfo.hidesBottomBarWhenPushed = true
+        self.present(loginInfo, animated: true, completion: nil)
+    }
+    
+    @objc func switchStatsViews() {
+        self.view.bringSubviewToFront(accountViewToSwitch[segmentContr.selectedSegmentIndex])
+    }
+    
+    @objc func updateDiet() {
+        
+        let alert = addedItemAlert()
+        alert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.present(alert, animated: true, completion: nil)
+        print("Sending user to sign up Flow")
+        
+    }
+    //MARK: - Button actions - End
+    
+    
     let segmentContr: UISegmentedControl = {
         let items = ["Home", "Stats"]
         let segmentContr = UISegmentedControl(items: items)
@@ -58,35 +150,27 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }()
     
-    
     func setUptopViews() {
+        
         self.view.addSubview(accountStuff)
         self.view.addSubview(segmentContr)
-        
         accountStuff.translatesAutoresizingMaskIntoConstraints = false
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
 
-
         NSLayoutConstraint.activate([
+            accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
+            accountStuff.widthAnchor.constraint(equalTo: view.widthAnchor),
+            accountStuff.heightAnchor.constraint(equalToConstant: 225),
+            accountStuff.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         
-        accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
-        accountStuff.widthAnchor.constraint(equalTo: view.widthAnchor),
-        accountStuff.heightAnchor.constraint(equalToConstant: 225),
-        accountStuff.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        
-        segmentContr.topAnchor.constraint(equalTo: accountStuff.bottomAnchor),
-        segmentContr.heightAnchor.constraint(equalToConstant: 25),
-        segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        segmentContr.centerXAnchor.constraint(equalTo: accountStuff.centerXAnchor),
-        
+            segmentContr.topAnchor.constraint(equalTo: accountStuff.bottomAnchor),
+            segmentContr.heightAnchor.constraint(equalToConstant: 25),
+            segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            segmentContr.centerXAnchor.constraint(equalTo: accountStuff.centerXAnchor),
         ])
-        
     }
     
-    
-    let ffCCellID = "test"
-    
-    func setUpAgain() {
+    func setUpdefaultSegment() {
 
         homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
         homeSegmentView.accountTableView.delegate = self
@@ -94,9 +178,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         homeSegmentView.friendsAndFamily.dataSource = self
         homeSegmentView.friendsAndFamily.delegate = self
         homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
-        
-//        homeSegmentView.accountTableView.rowHeight = 90//UITableView.automaticDimension
-        
+                
         accountViewToSwitch = [UIView]()
                 
         accountViewToSwitch.append(homeSegmentView)
@@ -106,22 +188,18 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             view.addSubview(v)
             v.layer.cornerRadius = 5
             v.translatesAutoresizingMaskIntoConstraints = false
-                    }
+        }
         view.bringSubviewToFront(accountViewToSwitch[0])
-        
         
         homeSegmentView.accountTableView.isScrollEnabled = false
         homeSegmentView.accountTableView.layer.cornerRadius = 5
-        
         personalStats.backgroundColor = UIColor.white
         homeSegmentView.translatesAutoresizingMaskIntoConstraints = false
-
         
 //        homeSegmentView.friendsAndFamily.addButton.addTarget(self, action: #selector(handleFriends), for: .touchDown)
 //        homeSegmentView.friendsAndFamily.nameofUser.text = "Kitchen Staff"
      
      NSLayoutConstraint.activate([
-
         personalStats.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
         personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
         personalStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
@@ -131,85 +209,84 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         homeSegmentView.heightAnchor.constraint(equalTo: personalStats.heightAnchor),
         homeSegmentView.widthAnchor.constraint(equalTo: personalStats.widthAnchor),
         homeSegmentView.centerXAnchor.constraint(equalTo: personalStats.centerXAnchor),
-        
      ])
-        logoutButton()
+        //MARK: Sign Out
+        signOutButton()
     }
+    
+    //MARK: - Sign out
+    func signOutButton() {
+        homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+    }
+    
+    @objc func handleLogout() {
+        let alertController = UIAlertController(title: nil, message: "Are you sure you want to sign out?", preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { action -> Void in
+            self.signOut()
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in }))
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func signOut() {
+        do {
+            //FIXME: This isn't working for some reason. if a user signs in on a diff account right after signing out they get the old account
+            try firebaseAuth.signOut()
+            let loginvc = login()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = loginvc
+            appDelegate.window?.makeKeyAndVisible()
+            //https://www.youtube.com/watch?v=76ANW9VJwCQ
+        } catch let signOutError as NSError {
+            print ("Error signing out: %@", signOutError)
+        }
+    }
+    //MARK: - Sign out
+    
+
+    func handleUserInfo() {
+        
+        self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+        
+        if currentUser?.isAnonymous == true {
+            let doesNotHaveAccount = "Join now"
+            self.accountStuff.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)
+            self.accountStuff.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
+            self.accountStuff.nameofUser.largeNextButton.backgroundColor = UIColor.ademGreen
+            self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.signUp), for: .touchDown)
+            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log In", for: .normal)
+            self.homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
+        } else {
+            
+            //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+               //Probably wrong
+            //db.collection("Users").document(user!.uid).collection("private").getDocuments { (snapshot, err) in
+            db.collection("Users").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    for document in snapshot!.documents {
+                        let latMax = document.get("FirstName") as? String
+                        self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log Out", for: .normal)
+                        self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+                        self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
+                        self.accountStuff.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
+                        self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
+                    }
+                }
+            }
+        }
+    //}
+    }
+    
+
+    //MARK: TableView
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
          return UITableView.automaticDimension
     }
-  
-    var firstNameListener: ListenerRegistration!
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        setUpAgain()
-
-        if segmentContr.selectedSegmentIndex == 0 {
-            switchStatsViews()
-        }
-        
-        //MARK: Nav bar is see through
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
-        //MARK: Nav bar is see through
-        
-        self.navigationController?.view.layoutIfNeeded()
-        self.navigationController?.view.setNeedsLayout()
-        
-        handleUserInfo()
-       
-        }
-
-    private func handleUserInfo() {
-
-
-        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-
-            if user?.isAnonymous != true {
-                db.collection("Users").document(user!.uid).collection("private").getDocuments { (snapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-    
-                    } else {
-                        for document in snapshot!.documents {
-                            let latMax = document.get("FirstName") as? String
-                            self.accountStuff.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
-                            self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
-                            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log Out", for: .normal)
-                            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
-                            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
-                        }
-                    }
-                }
-            } else {
-                let doesNotHaveAccount = "Join now"
-                self.accountStuff.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)
-                self.accountStuff.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
-                self.accountStuff.nameofUser.largeNextButton.backgroundColor = UIColor.ademGreen
-                self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
-                self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log In", for: .normal)
-                self.homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
-                
-                
-            }
-        }
-    }
-        
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-    }
-
-    var acctOptions = ["Recipies","Diet","Invite Friends","Rate Us","Apps","Settings"]
-    //MARK: TableView
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return acctOptions.count
     }
     
@@ -225,8 +302,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        
-       
         return 1
     }
     
@@ -256,72 +331,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    //MARK: Button Action - Start
-    @objc func handleFriends() {
-        let privacyController = friendsTVC()
-        self.navigationController?.pushViewController(privacyController, animated: true)
-        print("Settings Tab is active")
-    }
     
-    @objc func handleDevices() {
-        let cController = settings()
-        cController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(cController, animated: true)
-        print("Settings Tab is active")
-    }
-    
-    @objc func handleSettings() {
-        let cController = SettingTVC()
-        self.navigationController?.pushViewController(cController, animated: true)
-        print("Settings Tab is active")
-    }
-    
-    @objc func handleLogout() {
-        do {
-            try firebaseAuth.signOut()
-        } catch let signOutError as NSError {
-            print ("Error signing out: %@", signOutError)
-        }
-        handelLogin()
-    }
-    
-    @objc func handleHealth() {
-        print("Settings Tab is active")
-    }
-    @objc func editUserInfo() {
-           print("tester")
-       }
-    
-    @objc func handelLogin() {
-        let loginInfo = login()
-        loginInfo.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(loginInfo, animated: true)
-    }
-    
-    @objc fileprivate func switchStatsViews() {
-        
-            self.view.bringSubviewToFront(accountViewToSwitch[segmentContr.selectedSegmentIndex])
-    }
-    
-    @objc func updateDiet() {
-        
-        let alert = addedItemAlert()
-        alert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        self.present(alert, animated: true, completion: nil)
-        print("Sending user to sign up Flow")
-        
-    }
-    
-    func logoutButton() {
-        homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
-    }
-    //MARK: Button actions - End
  
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    var friendsAssociated = friends
+    
 }
 
 

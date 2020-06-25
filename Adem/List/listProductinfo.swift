@@ -157,7 +157,7 @@ class listProductVCLayout: UIViewController {
                 
                 //kinda works don't trust that much
                 for i in arrayofProducts where i.id == self.productNameSection.idlabel.text {
-                    //below was outside of for statement
+                    //belo  w was outside of for statement
                     self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
                     self.updateProductQuantityValue(id: i.id!, quantity: actions.value)
                 }

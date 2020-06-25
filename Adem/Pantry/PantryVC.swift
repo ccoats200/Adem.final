@@ -37,6 +37,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     let tableViewCell = "test"
     let cellID = "product"
     let headerID = "collectionViewHeader"
+    var pantryCollectionView: UICollectionView!
+    let mealsCellID = "meals"
+    let mealsCCellID = "Cmeals"
     
     //Populate List
     var listProducts: [groceryItemCellContent] =  []
@@ -106,22 +109,8 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             return
         }
             //https://www.ioscreator.com/tutorials/delete-item-collection-view-controller-ios-tutorial
-            setEditing(true, animated: true)
-//            self.pantryCollectionView.isEditing = true
-//            switch self.isEditing {
-//            case true:
-//                self.navigationItem.leftBarButtonItem = done
-//            case false:
-//                self.navigationItem.leftBarButtonItem = edit
-//            default:
-//                self.navigationItem.leftBarButtonItem = edit
-//
-////            if self.isEditing {
-////                self.navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleEditButtonClicked))
-////            } else {
-////            self.navigationItem.leftBarButtonItem = edit
-////            }
-//        }
+        setEditing(true, animated: true)
+
     }
     
     
@@ -133,16 +122,11 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
            self.navigationController?.view.setNeedsLayout()
     }
     
-   
-    
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
-       }
-       
-    
-
+    }
     
 //    MARK: Setting up NAV bar buttons
     private func setUpBarButtonItems() {
@@ -156,9 +140,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
 
 //    MARK: - Table View
     
-    var pantryCollectionView: UICollectionView!
-    let mealsCellID = "meals"
-    let mealsCCellID = "Cmeals"
+    
     func setUpListViews() {
         
         let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
@@ -304,10 +286,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
                } else {
                    // Fallback on earlier versions
                }
-               
                print("Camera button working")
-        
-        
     }
     
     
