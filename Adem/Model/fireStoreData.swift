@@ -28,7 +28,8 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 }
 */
 
-var arrayofPantry = [fireStoreDataStruct]()
+//var arrayofPantry = [fireStoreDataStruct]()
+var arrayofPantry = [fireStoreDataClass]()
 //var arrayofProducts = [fireStoreDataStruct]()
 var arrayofProducts = [fireStoreDataClass]()
 var backUp = [fireStoreDataStruct]()

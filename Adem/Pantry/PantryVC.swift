@@ -176,43 +176,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             pantryCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
             ])
     }
-    /*
-    var pantryTableView: UITableView!
-    //    MARK: CollectionView for Filtering
-    let cfilter = "test"
-//    TODO: Does this need to be a weak var?
-    func setUpListView() {
-    
-        //Maybe delete https://theswiftdev.com/2018/06/26/uicollectionview-data-source-and-delegates-programmatically/
 
-
-        pantryTableView = UITableView(frame: self.view.bounds, style: .grouped)
-        if #available(iOS 13.0, *) {
-            pantryTableView.backgroundColor = UIColor.systemGray6
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        pantryTableView.register(pantryTableViewCell.self, forCellReuseIdentifier: tableViewCell)
-        pantryTableView.dataSource = self
-        pantryTableView.delegate = self
-        
-        self.view.addSubview(pantryTableView)
-        pantryTableView.translatesAutoresizingMaskIntoConstraints = false
-     
-        //View contstaints
-        
-//        TODO: Decide if I remove the other View
-        NSLayoutConstraint.activate([
-    
-            pantryTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            pantryTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            pantryTableView.widthAnchor.constraint(equalTo: view.widthAnchor),
-            pantryTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            ])
-    }
- */
-    
     // MARK: - Private instance methods
     func searchBarIsEmpty() -> Bool {
         // Returns true if the text is empty or nil
@@ -312,13 +276,16 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
              return
            }
             
-            arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataStruct? in
-                print(arrayofPantry)
-                return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
-                
+//            arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataStruct? in
+//                print(arrayofPantry)
+//                return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
+//
+//
+//           }
             
-           }
-            
+            arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                 return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+            }
             
             print("this is the new function maybe \(arrayofPantry)")
             self.pantryCollectionView.reloadData()
@@ -362,7 +329,12 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = pantryCollectionView.cellForItem(at: indexPath)
+        let selectedProduct: fireStoreDataClass!
+        selectedProduct = product(forIndexPath: indexPath)
+        let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
+
+        self.present(detailViewController, animated: true, completion: nil)
+        //let cell = pantryCollectionView.cellForItem(at: indexPath)
         
         addTimeStamp(id: arrayofPantry[indexPath.row].id!, action: engagements.engaged.rawValue)
         
@@ -378,7 +350,16 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         return 15
     }
 }
-
+//MARK: For product selection
+extension PantryVC {
+    
+    func product(forIndexPath: IndexPath) -> fireStoreDataClass {
+        var product: fireStoreDataClass!
+        product = arrayofPantry[forIndexPath.item]
+        return product
+    }
+    
+}
 //Add button
 extension PantryVC: pantryDelegate {
     
