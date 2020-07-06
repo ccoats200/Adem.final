@@ -106,7 +106,7 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
 class statsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
  
     let statsCelllID = "statsCells"
-    var mealrecos: UICollectionView!
+    var stats: UICollectionView!
     //initWithFrame to init view from code
   
     override init(frame: CGRect) {
@@ -115,18 +115,18 @@ class statsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     
     
         let layouts = UICollectionViewFlowLayout()
-        mealrecos = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
-        mealrecos.isScrollEnabled = false
-        mealrecos.dataSource = self
-        mealrecos.delegate = self
+        stats = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        stats.isScrollEnabled = false
+        stats.dataSource = self
+        stats.delegate = self
         layouts.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        mealrecos.register(accountStatsProductCells.self, forCellWithReuseIdentifier: statsCelllID)
-        mealrecos.backgroundColor = UIColor.white
+        stats.register(accountStatsProductCells.self, forCellWithReuseIdentifier: statsCelllID)
+        stats.backgroundColor = UIColor.white
         
-        mealrecos.layer.cornerRadius = 10
-        mealrecos.clipsToBounds = true
-        mealrecos.layer.masksToBounds = true
-        mealrecos.isScrollEnabled = false
+        stats.layer.cornerRadius = 10
+        stats.clipsToBounds = true
+        stats.layer.masksToBounds = true
+        stats.isScrollEnabled = false
         
         setupView()
   }
@@ -208,15 +208,15 @@ class statsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
   //common func to init our view
   private func setupView() {
 
-    self.addSubview(mealrecos)
-    mealrecos.translatesAutoresizingMaskIntoConstraints = false
+    self.addSubview(stats)
+    stats.translatesAutoresizingMaskIntoConstraints = false
     
      NSLayoutConstraint.activate([
         
-        mealrecos.topAnchor.constraint(equalTo: self.topAnchor),
-        mealrecos.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        mealrecos.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-        mealrecos.widthAnchor.constraint(equalTo: self.widthAnchor),
+        stats.topAnchor.constraint(equalTo: self.topAnchor),
+        stats.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        stats.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        stats.widthAnchor.constraint(equalTo: self.widthAnchor),
     ])
   }
 }

@@ -29,13 +29,15 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 */
 
 var arrayofPantry = [fireStoreDataStruct]()
-var arrayofProducts = [fireStoreDataStruct]()
+//var arrayofProducts = [fireStoreDataStruct]()
+var arrayofProducts = [fireStoreDataClass]()
 var backUp = [fireStoreDataStruct]()
 var backUp2 = [fireStoreDataStruct]()
 var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 //Should be static add promote if none in filter
 var productCategories = ["All", "Dairy","Fruit","Veggies", "Frozen","Meat","Other", "Extract"]
 var personalProductCategories = ["All",]
+var searchDimensions = ["Add","List"]
 
 struct fireStoreDataStruct: Identifiable, Codable {
 
@@ -59,28 +61,65 @@ struct fireStoreDataStruct: Identifiable, Codable {
        case category
        case productExpir
     }
+ }
+
+class fireStoreDataClass: NSObject, Identifiable, Codable {
+
+   //Grabs the doc Id for me!
+   @DocumentID var id: String?
+   @objc var productName: String
+   @objc var productPrice: Double
+   @objc var productDescription: String
+   @objc var productQuantity: Int
+   @objc var productImage: String
+   @objc var category: String?
+   @objc var productExpir: Date
+   
+   enum CodingKeys: String, CodingKey {
+      case id
+      case productName
+      case productPrice
+      case productDescription
+      case productQuantity
+      case productImage
+      case category
+      case productExpir
+   }
     
-    /*
-    var difference: Int {
-        get {
-            return productExpir.interval(ofComponent: .day, fromDate: Date())
-        }
+    enum ExpressionKeys: String {
+       case id
+       case productName
+       case productPrice
+       case productDescription
+       case productQuantity
+       case productImage
+       case category
+       case productExpir
     }
     
+    init(id: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date) {
+        self.id = id
+        self.productName = productName
+        self.productPrice = productPrice
+        self.productDescription = productDescription
+        self.productQuantity = productQuantity
+        self.productImage = productImage
+        self.category = category
+        self.productExpir = productExpir
+    }
     
-    //https://stackoverflow.com/questions/49309815/how-to-use-computed-property-in-a-codable-struct-swift
-    init() { }
-
-    init(from decoder: Decoder) throws {
-        let values = try decoder.container(keyedBy: CodingKeys.self)
-        id = try values.decode(String.self, forKey: .id)
-        productName = try values.decode(String.self, forKey: .productName)
-        productPrice = try values.decode(Double.self, forKey: .productPrice)
-        productDescription = try values.decode(String.self, forKey: .productDescription)
-        productQuantity = try values.decode(Int.self, forKey: .productQuantity)
-        productImage = try values.decode(String.self, forKey: .productImage)
-        category = try values.decode(String.self, forKey: .category)
-        productExpir = try values.decode(Date.self, forKey: .productExpir)
+    /*
+    //MARK: This is where things are weird
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(String.self, forKey: .id)
+        productName = try container.decode(String.self, forKey: .productName)
+        productPrice = try container.decode(Double.self, forKey: .productPrice)
+        productDescription = try container.decode(String.self, forKey: .productDescription)
+        productQuantity = try container.decode(Int.self, forKey: .productQuantity)
+        productImage = try container.decode(String.self, forKey: .productImage)
+        category = try container.decode(String.self, forKey: .category)
+        productExpir = try container.decode(Date.self, forKey: .productExpir)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -93,11 +132,9 @@ struct fireStoreDataStruct: Identifiable, Codable {
         try container.encode(productImage, forKey: .productImage)
         try container.encode(category, forKey: .category)
         try container.encode(productExpir, forKey: .productExpir)
-        
     }
-*/
- }
-
+ */
+}
 
 //MARK: turns days into time remaining
 extension Date {

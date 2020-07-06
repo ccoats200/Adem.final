@@ -9,9 +9,40 @@
 import Foundation
 import UIKit
 
+class ResultsTableController: UITableViewController {
+    
+    let tableViewCellIdentifier = "cellID"
+    var filteredProducts = [fireStoreDataStruct]()
+    
+//    @IBOutlet weak var resultsLabel: UILabel!
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+//        let nib = UINib(nibName: "TableCell", bundle: nil)
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+        view.backgroundColor = UIColor.red
+//        tableView.register(nib, forCellReuseIdentifier: tableViewCellIdentifier)
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredProducts.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
+        let product = filteredProducts[indexPath.row]
+        cell.backgroundColor = UIColor.red
+        
+        cell.textLabel?.text = product.productName
+    
+        return cell
+    }
+}
 
 class searchTableViewCell: UITableViewCell {
- 
         
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

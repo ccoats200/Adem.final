@@ -30,14 +30,6 @@ class productViews: UIView {
     setupView()
   }
 
-//    var productVariableElements = fireStoreDataStruct() {
-//    didSet {
-//        productNameAndBackButton.setTitle("\(productVariableElements?.productName)", for: .normal)
-//        priceLabel.text = "$\(productVariableElements?.productPrice ?? nil)"
-//        }
-//    }
-   
-
     //make button later
     var priceLabel: UILabel = {
         let price = UILabel()
@@ -48,18 +40,11 @@ class productViews: UIView {
         price.font = UIFont.boldSystemFont(ofSize: 16)
         return price
     }()
-    
-    //Might not be right but works
-    var idlabel: UILabel = {
-        let id = UILabel()
-        id.textColor = UIColor.clear
-        id.font = UIFont.boldSystemFont(ofSize: 1)
-        return id
-    }()
+
     
      var productNameAndBackButton: UIButton = {
         let back = UIButton(type: .system)
-        back.setTitle("Bacon", for: .normal)
+        back.setTitle("Try again", for: .normal)
         back.setTitleColor(UIColor.white, for: .normal)
         back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
@@ -70,12 +55,8 @@ class productViews: UIView {
        
   //common func to init our view
   private func setupView() {
-    //self.backgroundColor = UIColor.white.withAlphaComponent(0.10)
     self.addSubview(productNameAndBackButton)
     self.addSubview(priceLabel)
-    self.addSubview(idlabel)
-    idlabel.translatesAutoresizingMaskIntoConstraints = false
-    idlabel.isHidden = true
     productNameAndBackButton.translatesAutoresizingMaskIntoConstraints = false
     priceLabel.translatesAutoresizingMaskIntoConstraints = false
     productNameAndBackButton.clipsToBounds = true
@@ -84,21 +65,16 @@ class productViews: UIView {
     
     
     NSLayoutConstraint.activate([
-        //Might delete
-        idlabel.leftAnchor.constraint(equalTo: self.leftAnchor),
-        idlabel.topAnchor.constraint(equalTo: self.topAnchor),
-        idlabel.heightAnchor.constraint(equalToConstant: 1),
-        idlabel.widthAnchor.constraint(equalToConstant: 1),
-        
-    productNameAndBackButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-    productNameAndBackButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-    productNameAndBackButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -150),
-    productNameAndBackButton.heightAnchor.constraint(equalToConstant: 50),
+
+        productNameAndBackButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        productNameAndBackButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        productNameAndBackButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -150),
+        productNameAndBackButton.heightAnchor.constraint(equalToConstant: 50),
     
-    priceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-    priceLabel.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 10),
-    priceLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-    priceLabel.heightAnchor.constraint(equalToConstant: 50),
+        priceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        priceLabel.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 10),
+        priceLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+        priceLabel.heightAnchor.constraint(equalToConstant: 50),
         
     ])
   }
@@ -249,7 +225,6 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     let listQuantity: UILabel = {
         let lQuant = UILabel()
-        
         lQuant.textColor = UIColor.white
         lQuant.font = UIFont(name: hNBold, size: 17)
         lQuant.text = "Qty:"

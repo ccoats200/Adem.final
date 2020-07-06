@@ -144,37 +144,37 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     func setUpListViews() {
         
         let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
-            mealsCollectionViewlayouts.scrollDirection = .vertical
-            
-            
-            
+        mealsCollectionViewlayouts.scrollDirection = .vertical
+        
         self.pantryCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
             
             
         
-            pantryCollectionView.showsHorizontalScrollIndicator = false
-            self.pantryCollectionView.dataSource = self
-            self.pantryCollectionView.delegate = self
-            self.pantryCollectionView.register(pantryCell.self, forCellWithReuseIdentifier: mealsCCellID)
-            if #available(iOS 13.0, *) {
-                self.pantryCollectionView.backgroundColor = UIColor.systemGray6
-            } else {
-                // Fallback on earlier versions
-            }
-            self.pantryCollectionView.isUserInteractionEnabled = true
-            self.pantryCollectionView.isScrollEnabled = true
-            pantryCollectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
-            
-            self.pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
-            //adding subviews to the view controller
+          
+        pantryCollectionView.showsHorizontalScrollIndicator = false
+        self.pantryCollectionView.dataSource = self
+        self.pantryCollectionView.delegate = self
+        self.pantryCollectionView.register(pantryCell.self, forCellWithReuseIdentifier: mealsCCellID)
+        if #available(iOS 13.0, *) {
+            self.pantryCollectionView.backgroundColor = UIColor.systemGray6
+        } else {
+            // Fallback on earlier versions
+        }
+        self.pantryCollectionView.isUserInteractionEnabled = true
+        self.pantryCollectionView.isScrollEnabled = true
+        pantryCollectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
+        
+        self.pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        //adding subviews to the view controller
         self.view.addSubview(pantryCollectionView)
             
-            NSLayoutConstraint.activate([
-                pantryCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
-                pantryCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-                pantryCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
-                pantryCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
-                ])
+            
+        NSLayoutConstraint.activate([
+            pantryCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
+            pantryCollectionView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
+            pantryCollectionView.leftAnchor.constraint(equalTo: self.view.leftAnchor),
+            pantryCollectionView.rightAnchor.constraint(equalTo: self.view.rightAnchor),
+            ])
     }
     /*
     var pantryTableView: UITableView!

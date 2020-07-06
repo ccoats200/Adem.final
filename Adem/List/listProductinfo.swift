@@ -19,6 +19,7 @@ class listProductVCLayout: UIViewController {
     
     //Delegate to pass data
     var delegate: ItemTableViewCellDelegate?
+    var product: fireStoreDataClass!
     
     //MARK: View set up
     var productNameSection = productViews()
@@ -40,32 +41,31 @@ class listProductVCLayout: UIViewController {
     }
     
    
-    //Does Did set need to be used? I think for speed, the url delays
+    class func detailViewControllerForProduct(_ product: fireStoreDataClass) -> UIViewController {
+        let viewController = self.init()
+        if let detailViewController = viewController as? listProductVCLayout {
+            detailViewController.product = product
+        }
+        return viewController
+    }
 
-//    let jsonData = try? JSONSerialization.data(withJSONObject: arrayofProducts, options: [])
-//    var productVariableElements = try JSONDecoder().decode(fireStoreDataStruct.self, from: arrayofProducts) {
-//        didSet {
-//            productNameSection.productNameAndBackButton.setTitle("\(productVariableElements?.productName)", for: .normal)
-//            productNameSection.priceLabel.text = "$\(productVariableElements?.productPrice ?? nil)"
-//            }
-//        }
-    
-//    var productVariableElements = try? fireStoreDataStruct(from: arrayofProducts as! Decoder) {
-//           didSet {
-//               productNameSection.productNameAndBackButton.setTitle("\(productVariableElements?.productName)", for: .normal)
-//               productNameSection.priceLabel.text = "$\(productVariableElements?.productPrice ?? nil)"
-//               }
-//           }
-    
-    //Works for population
-//    var elements = groceryItemCellContent() {
-//
-//        didSet {
-//            productNameSection.productNameAndBackButton.setTitle("\(elements.itemName)", for: .normal)
-//            productNameSection.priceLabel.text = elements.Quantity
-//        }
-//    }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        //Top elements
+        productNameSection.productNameAndBackButton.setTitle(product!.productName, for: .normal)
+        productNameSection.priceLabel.text = "$ \(product!.productPrice)"
+        //Image elements
+        
+        //Detail elements
+        relatedProductInfoSection.productDescription.text = "\(product!.productDescription)"
+        relatedProductInfoSection.listQuantity.text = "Qty: \(product!.productQuantity)"
+        
+        //Stats elements
+        //This might be like the above
+//        statsPage.collectionView(statsPage.stats, cellForItemAt: IndexPath).
+        
+    }
+
 
     //MARK: Button engagement
     //product Button
@@ -75,7 +75,6 @@ class listProductVCLayout: UIViewController {
         print("went to new page")
     }
  
-    //product Button
     @objc func handleBack() {
         self.dismiss(animated: true, completion: nil)
         print("went back to previous page")
@@ -88,7 +87,12 @@ class listProductVCLayout: UIViewController {
         
         print("Camera button working")
     }
-
+    
+    @objc func switchViewAction(_ segmentContr: UISegmentedControl) {
+        self.view.bringSubviewToFront(segmentViews[segmentContr.selectedSegmentIndex])
+    }
+    //MARK: Button engagement
+    
     let segmentContr: UISegmentedControl = {
         let items = ["Description", "Meals", "Stats"]
         let segmentContr = UISegmentedControl(items: items)
@@ -109,9 +113,7 @@ class listProductVCLayout: UIViewController {
     }()
     
     
-    @objc func switchViewAction(_ segmentContr: UISegmentedControl) {
-        self.view.bringSubviewToFront(segmentViews[segmentContr.selectedSegmentIndex])
-    }
+    
     
     let mealsPage = mealsSegment()
     let statsPage = statsSegment()
@@ -156,8 +158,7 @@ class listProductVCLayout: UIViewController {
             let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
                 
                 //kinda works don't trust that much
-                for i in arrayofProducts where i.id == self.productNameSection.idlabel.text {
-                    //belo  w was outside of for statement
+                for i in arrayofProducts where i.id == self.product!.id {
                     self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
                     self.updateProductQuantityValue(id: i.id!, quantity: actions.value)
                 }
@@ -245,18 +246,15 @@ class listProductVCLayout: UIViewController {
         statsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
         statsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
         statsPage.centerYAnchor.constraint(equalTo: relatedProductInfoSection.centerYAnchor),
-        
         ])
-            
     }
 }
+
 
 
 extension listProductVCLayout: ItemTableViewCellDelegate {
     func itemCell(cellTapped: IndexPath) {
         let cellTap = arrayofProducts[cellTapped.row]
     }
-    
-    
 }
 
