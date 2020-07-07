@@ -12,7 +12,7 @@ import AVFoundation
 import CoreData
 import FirebaseFirestoreSwift
 
-class listViewController: UIViewController, UISearchControllerDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+class listViewController: UIViewController, UISearchControllerDelegate, UIGestureRecognizerDelegate {
 
     
 //    MARK: Navigation Bar Buttons - Start
@@ -39,8 +39,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     //    MARK: - Search bar
     var filteringproducts = arrayofProducts
     var filteredProducts: [String]?
-    var filterProducts: [fireStoreDataStruct] = []
-    
+//    var filterProducts: [fireStoreDataStruct] = []
+    var filterProducts: [fireStoreDataClass] = []
 //    MARK: Table view
     var listTableView: UITableView!
     let tableViewCell = "test"
@@ -48,12 +48,14 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     let headerID = "collectionViewHeader"
 //    MARK: Collection View
     var filterListCollectionView: UICollectionView!
-    let cfilter = "test"
+    let cfilter = "filtercolletionview"
 //    MARK: Filter
-    var filter = [fireStoreDataStruct]()
-    var productFilter = [fireStoreDataStruct]()
+//    var filter = [fireStoreDataStruct]()
+//    var productFilter = [fireStoreDataStruct]()
+    var filter = [fireStoreDataClass]()
+    var productFilter = [fireStoreDataClass]()
     //    MARK: - Var & Let
-        
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -312,29 +314,19 @@ class listViewController: UIViewController, UISearchControllerDelegate, UISearch
     }
     
     //Button Functions - End
-    
-    //MARK: - Collection Filter
       
     //MARK: - Firebase lists should the app delegate
 
     func firebaseDataFetch() {
         
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-           
             guard let documents = querySnapshot?.documents else {
-             print("No documents")
-             return
-           }
-//            arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataStruct? in
-//                return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
-//            }
+                print("No documents")
+                return
+            }
             arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
                 return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
             }
-            print("this is the new function maybe \(arrayofProducts)")
-//            let firstProduct = arrayofProducts[0].id
-//            let insertedIndexPath = IndexPath(index: firstProduct!.count)
-//            self.listTableView.insertRows(at: [insertedIndexPath], with: .top)
             self.listTableView.reloadData()
          }
     }
@@ -632,13 +624,15 @@ extension listViewController: UISearchBarDelegate {
     //        MARK: - Search bar
         tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
         tableViewSearchController.delegate = self
-        navigationItem.searchController = tableViewSearchController
         tableViewSearchController.searchResultsUpdater = self
         tableViewSearchController.obscuresBackgroundDuringPresentation = true
-        tableViewSearchController.searchBar.sizeToFit()
+        tableViewSearchController.searchBar.delegate = self // Monitor when the search button is tapped.
         definesPresentationContext = true
         
-        tableViewSearchController.searchBar.delegate = self
+        //instantiate the controller
+        
+        // Place the search bar in the navigation bar.
+        navigationItem.searchController = tableViewSearchController
         
         //Design elements
         tableViewSearchController.searchBar.placeholder = "How can I help?"
@@ -656,51 +650,44 @@ extension listViewController: UISearchBarDelegate {
         }
         //https://www.iosapptemplates.com/blog/ios-programming/uisearchcontroller-swift
     }
-    
-    //    MARK: - Search bar start
-    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        print("started searching")
-    }
-    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        print("ended searching")
-    }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        print("\(searchText)")
-    }
-    
+
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+       
         let keywords = searchBar.text
     //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
     //           searchUrl = "https://api.spotify.com/v1/search?q=\(finalKeywords!)&type=track"
         self.view.endEditing(true)
         print(keywords)
+        searchBar.resignFirstResponder()
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         self.dismiss(animated: true, completion: nil)
     }
         
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return tableViewSearchController.searchBar.text?.isEmpty ?? true
-    }
-    
+//    func searchBarIsEmpty() -> Bool {
+//        // Returns true if the text is empty or nil
+//        return tableViewSearchController.searchBar.text?.isEmpty ?? true
+//    }
+//
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        //might break it
+        updateSearchResults(for: tableViewSearchController)
     //        filterProductsSearchText(searchBar.text!, category: searchBar.scopeButtonTitles![selectedScope])
     }
         
     func filterProductsSearchText(for searchText: String) {
-        filteringproducts = arrayofProducts.filter { fireStoreDataStruct in
-            return fireStoreDataStruct.productName.lowercased().contains(searchText.lowercased())
+     
+        filteringproducts = arrayofProducts.filter { fireStoreDataClass in
+            return fireStoreDataClass.productName.lowercased().contains(searchText.lowercased())
         }
         listTableView.reloadData()
     }
             
-    func searchBarisFiltering() -> Bool {
-        return tableViewSearchController.isActive && !searchBarIsEmpty()
-    }
-            
+//    func searchBarisFiltering() -> Bool {
+//        return tableViewSearchController.isActive && !searchBarIsEmpty()
+//    }
+//
     
         
     var isSearchBarEmpty: Bool {
@@ -710,7 +697,7 @@ extension listViewController: UISearchBarDelegate {
     var isFiltering: Bool {
         return tableViewSearchController.isActive && !isSearchBarEmpty
     }
-            
+       /*
     func updateSearchResults(for searchController: UISearchController) {
         //https://developer.apple.com/documentation/uikit/view_controllers/displaying_searchable_content_by_using_a_search_controller
         let searchResults = arrayofProducts
@@ -736,10 +723,9 @@ extension listViewController: UISearchBarDelegate {
 //        filterProductsSearchText(for: searchBar.text!)
 //        guard let searchText = tableViewSearchController.searchBar.text else { return }
 //        filterProductsSearchText(for: searchController.searchBar.text ?? "")
-        
-        
-        
+    
     }
+*/
 }
 
 //MARK: For product selection

@@ -6,13 +6,12 @@
 //  Copyright © 2020 Coleman Coats. All rights reserved.
 //
 
-import Foundation
 import UIKit
 
 class ResultsTableController: UITableViewController {
     
     let tableViewCellIdentifier = "cellID"
-    var filteredProducts = [fireStoreDataStruct]()
+    var filteredProducts = [fireStoreDataClass]()
     
 //    @IBOutlet weak var resultsLabel: UILabel!
     
@@ -20,8 +19,10 @@ class ResultsTableController: UITableViewController {
         super.viewDidLoad()
 
 //        let nib = UINib(nibName: "TableCell", bundle: nil)
+        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
         view.backgroundColor = UIColor.red
+        
 //        tableView.register(nib, forCellReuseIdentifier: tableViewCellIdentifier)
     }
     
@@ -41,6 +42,7 @@ class ResultsTableController: UITableViewController {
         return cell
     }
 }
+
 
 class searchTableViewCell: UITableViewCell {
         
