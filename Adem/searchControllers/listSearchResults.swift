@@ -79,6 +79,7 @@ extension listViewController: UISearchResultsUpdating {
     
         // Handle the scoping.
         let selectedScopeButtonIndex = tableViewSearchController.searchBar.selectedScopeButtonIndex
+        print(selectedScopeButtonIndex)
         if selectedScopeButtonIndex > 0 {
             addResultsTableController = AddResultsTableController()
             addResultsTableController.tableView.delegate = self
