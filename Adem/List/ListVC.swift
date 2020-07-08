@@ -31,7 +31,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     var productsInListArray = arrayofProducts
     //    MARK: Search Controller implementation
     var tableViewSearchController: UISearchController!
-    private var resultsTableController: ResultsTableController!
+    var resultsTableController: ResultsTableController!
+    var addResultsTableController: AddResultsTableController!
         
         
     //https://stackoverflow.com/questions/48569818/how-to-use-custom-view-controller-in-uisearchcontroller-for-results
@@ -83,7 +84,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         //MARK: - sign in confirmation
         alreadySignedIn()
 ////        MARK: Search bar
-//        searchBarSetUp()
+        searchBarSetUp()
 //
 ////        MARK: Switch open view
 //        switch productsGlobal?.isEmpty {
@@ -173,54 +174,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         }
     }
     
-
-    
-//    MARK: - Api Reference
-    func parseJSON(product: String) {
-        //https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0
-        var searchterm = tableViewSearchController.searchBar.text
-        let url = URL(string: "https://api.spoonacular.com/food/products/search?query=\(searchterm)&apiKey=\(apiKey)")
-        let task = URLSession.shared.dataTask(with: url!) {(data, response, error ) in
-
-          guard error == nil else {
-              print("returned error")
-              return
-          }
-            
-          if error != nil {
-
-          } else {
-            print("returned error")
-          }
-
-          guard let content = data else {
-              print("No data")
-              return
-          }
-
-          guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
-                  return
-          }
-            if let array = json["companies"] as? [String] {
-                    self.tableArray = array
-                }
-            print(self.tableArray)
-            DispatchQueue.main.async {
-                self.listTableView.reloadData()
-            }
-        }
-        task.resume()
-    }
-//https://www.raywenderlich.com/3244963-urlsession-tutorial-getting-started
-    //MARK: - Api end
-
-
-//        MARK: -Search bar stuff - End
-
-
-    
-    
-    
     
     //MARK: - Table view cell properties - End
     
@@ -261,13 +214,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //Edit Button
     @objc func handleEditButtonClicked() {
         setEditing(false, animated: false)
-//        if mMode == .view {
-//            setEditing(true, animated: false)
-//        } else {
-//            setEditing(false, animated: false)
-//        }
-//        //setEditing(true, animated: false)
-//        mMode = mMode == .view ? .selected : .view
+
         print("Edit button was clicked")
     }
     
@@ -282,21 +229,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             // Fallback on earlier versions
         }
     }
-//    //product Button
-//    @objc func handleSearch() {
-//        if #available(iOS 13.0, *) {
-////            let productScreen = searchController()
-////            self.becomeFirstResponder()
-//            productScreen.hidesBottomBarWhenPushed = true
-//
-//            productScreen.modalPresentationStyle = .overFullScreen
-//            self.navigationController?.pushViewController(productScreen, animated: true)
-////            self.present(productScreen, animated: true, completion: nil)
-//        } else {
-//            // Fallback on earlier versions
-//        }
-//    }
-//
+
     //MARK: bring user to product screen
     @objc func handleListProduct() {
         
@@ -339,11 +272,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         self.filterListCollectionView.reloadData()
     }
     
-    //kinda
-    func addCategory(id: String) {
-        userfirebaseProducts.document(id).setData([
-            "category" : "Extract"], merge: true)
-    }
 //MARK: - class end dont delete this }
 }
 
@@ -400,7 +328,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
         }
     }
        
-    //MARK: Swipe actions
+    //MARK: - Swipe actions
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
         //If the product in not in the list and they are searching they can swipe to the left to add it to their list
         // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
@@ -432,28 +360,20 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
+        /*
         if (self.tableViewSearchController.isActive) {
             return filteringproducts.count
         } else {
             return arrayofProducts.count
         }
-        
-//MARK: Dont delete
-        //        works for population
-//        return productsGlobal!.count
-        }
+        */
+        return arrayofProducts.count
+    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let productsListCell = listTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         productsListCell.accessoryType = .disclosureIndicator
-        
-        /*
-        let product = arrayofProducts[indexPath.row]
-//        works for population on didset
-//        let product = productsGlobal![indexPath.row]
-        productsListCell.textLabel?.text = product.productName
-        */
         
         if (tableViewSearchController.isActive) {
             let product = filteringproducts[indexPath.row]
@@ -555,8 +475,6 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, didBeginMultipleSelectionInteractionAt indexPath: IndexPath) {
         setEditing(true, animated: true)
     }
-    
-    
 }
 
 extension listViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
@@ -616,16 +534,27 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
+    
 }
 
 extension listViewController: UISearchBarDelegate {
     
     func searchBarSetUp() {
     //        MARK: - Search bar
-        tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
+       
+//        let selectedScopeButtonIndex = tableViewSearchController.searchBar.selectedScopeButtonIndex
+//        if selectedScopeButtonIndex == 0 {
+//            addResultsTableController = AddResultsTableController()
+//            addResultsTableController.tableView.delegate = self
+//            tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
+//        } else {
+            resultsTableController = ResultsTableController()
+            resultsTableController.tableView.delegate = self
+            tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
+//        }
         tableViewSearchController.delegate = self
         tableViewSearchController.searchResultsUpdater = self
-        tableViewSearchController.obscuresBackgroundDuringPresentation = true
+        tableViewSearchController.obscuresBackgroundDuringPresentation = false
         tableViewSearchController.searchBar.delegate = self // Monitor when the search button is tapped.
         definesPresentationContext = true
         
@@ -642,6 +571,7 @@ extension listViewController: UISearchBarDelegate {
         tableViewSearchController.searchBar.tintColor = UIColor.white
         
         tableViewSearchController.searchBar.scopeButtonTitles = searchDimensions
+        definesPresentationContext = true
         
         if #available(iOS 13.0, *) {
             self.tableViewSearchController.searchBar.searchTextField.textColor = UIColor.white
@@ -672,6 +602,13 @@ extension listViewController: UISearchBarDelegate {
 //
     func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         //might break it
+        print(selectedScope)
+        
+        if selectedScope == 0 {
+            addResultsTableController = AddResultsTableController()
+            addResultsTableController.tableView.delegate = self
+            tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
+        }
         updateSearchResults(for: tableViewSearchController)
     //        filterProductsSearchText(searchBar.text!, category: searchBar.scopeButtonTitles![selectedScope])
     }
@@ -697,35 +634,6 @@ extension listViewController: UISearchBarDelegate {
     var isFiltering: Bool {
         return tableViewSearchController.isActive && !isSearchBarEmpty
     }
-       /*
-    func updateSearchResults(for searchController: UISearchController) {
-        //https://developer.apple.com/documentation/uikit/view_controllers/displaying_searchable_content_by_using_a_search_controller
-        let searchResults = arrayofProducts
-        let whitespaceCharacterSet = CharacterSet.whitespaces
-        let strippedString = searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
-        let searchItems = strippedString.components(separatedBy: " ") as [String]
-//        let andMatchPredicates: [NSPredicate] = searchItems.map { searchString in
-//            findMatches(searchString: searchString)
-//        }
-        
-        let resultsController = tableViewSearchController.searchResultsController as? ResultsTableController
-        
-//        if let resultsController = tableViewSearchController.searchResultsController as? ResultsTableController {
-//            resultsController.filteredProducts = filteredResults
-//            resultsController.tableView.reloadData()
-//
-//            resultsController.resultsLabel.text = resultsController.filteredProducts.isEmpty ?
-//                NSLocalizedString("NoItemsFoundTitle", comment: "") :
-//                String(format: NSLocalizedString("Items found: %ld", comment: ""),
-//                       resultsController.filteredProducts.count)
-//        }
-        
-//        filterProductsSearchText(for: searchBar.text!)
-//        guard let searchText = tableViewSearchController.searchBar.text else { return }
-//        filterProductsSearchText(for: searchController.searchBar.text ?? "")
-    
-    }
-*/
 }
 
 //MARK: For product selection
@@ -769,3 +677,43 @@ extension listViewController: UNUserNotificationCenterDelegate {
     }
 }
 
+extension listViewController {
+    //    MARK: - Api Reference
+        func parseJSON(product: String) {
+            //https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0
+            var searchterm = tableViewSearchController.searchBar.text
+            let url = URL(string: "https://api.spoonacular.com/food/products/search?query=\(searchterm)&apiKey=\(apiKey)")
+            let task = URLSession.shared.dataTask(with: url!) {(data, response, error ) in
+
+              guard error == nil else {
+                  print("returned error")
+                  return
+              }
+                
+              if error != nil {
+
+              } else {
+                print("returned error")
+              }
+
+              guard let content = data else {
+                  print("No data")
+                  return
+              }
+
+              guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
+                      return
+              }
+                if let array = json["companies"] as? [String] {
+                        self.tableArray = array
+                    }
+                print(self.tableArray)
+                DispatchQueue.main.async {
+                    self.listTableView.reloadData()
+                }
+            }
+            task.resume()
+        }
+    //https://www.raywenderlich.com/3244963-urlsession-tutorial-getting-started
+        //MARK: - Api end
+}

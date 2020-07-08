@@ -13,17 +13,11 @@ class ResultsTableController: UITableViewController {
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
     
-//    @IBOutlet weak var resultsLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        let nib = UINib(nibName: "TableCell", bundle: nil)
-        
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
-        view.backgroundColor = UIColor.red
-        
-//        tableView.register(nib, forCellReuseIdentifier: tableViewCellIdentifier)
     }
     
     // MARK: - UITableViewDataSource
@@ -35,14 +29,39 @@ class ResultsTableController: UITableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
         let product = filteredProducts[indexPath.row]
-        cell.backgroundColor = UIColor.red
-        
         cell.textLabel?.text = product.productName
     
         return cell
     }
 }
 
+class AddResultsTableController: UITableViewController {
+    
+    let tableViewCellIdentifier = "addProducts"
+    var filteredProducts = [fireStoreDataClass]()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        self.view.backgroundColor = UIColor.blue
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredProducts.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
+        let product = filteredProducts[indexPath.row]
+        cell.textLabel?.text = product.productName
+    
+        return cell
+    }
+}
 
 class searchTableViewCell: UITableViewCell {
         

@@ -64,6 +64,40 @@ struct fireStoreDataStruct: Identifiable, Codable {
     }
  }
 
+class mealClass: NSObject, Identifiable, Codable {
+
+   //Grabs the doc Id for me!
+   @objc var mealName: String
+   @objc var mealRating: Double
+   @objc var mealDescription: String
+   @objc var mealImage: String
+   
+   
+   enum CodingKeys: String, CodingKey {
+      case mealName
+      case mealRating
+      case mealDescription
+      case mealImage
+      
+   }
+    
+    enum ExpressionKeys: String {
+       case mealName
+       case mealRating
+       case mealDescription
+       case mealImage
+       
+    }
+    
+    init(mealName: String, mealRating: Double, mealDescription: String, mealImage: String) {
+        self.mealName = mealName
+        self.mealRating = mealRating
+        self.mealDescription = mealDescription
+        self.mealImage = mealImage
+       
+    }
+}
+
 class fireStoreDataClass: NSObject, Identifiable, Codable {
 
    //Grabs the doc Id for me!

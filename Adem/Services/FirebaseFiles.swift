@@ -136,4 +136,10 @@ extension UIViewController {
     //        self.listTableView.insertRows(at: [insertedIndexPath], with: .top)
     //        self.listTableView.reloadData()
         }
+    
+    //kinda
+       func addCategory(id: String) {
+           userfirebaseProducts.document(id).setData([
+               "category" : "Extract"], merge: true)
+       }
 }

@@ -19,6 +19,8 @@ protocol mealsItemDelegate: class {
 //Pantry Product Cell layout
 class mealsCellLayout: UICollectionViewCell {
     
+    
+    var meal: mealClass!
     weak var delegate: mealsItemDelegate?
     var eachCell: UIViewController?
 
@@ -28,7 +30,9 @@ class mealsCellLayout: UICollectionViewCell {
         self.layer.cornerRadius = 5
         self.backgroundColor = UIColor.white
         setupViews()
+        
     }
+    
     
     var mealItem = meals() {
             didSet {
@@ -165,6 +169,7 @@ class mealsCellLayout: UICollectionViewCell {
 class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var selectedGroceryItems = [groceryItemCellContent]()
+    var product: fireStoreDataClass!
     var selectedCells = [UICollectionViewCell]()
     
     var groceriesSelected = [String]()

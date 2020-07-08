@@ -12,6 +12,7 @@ import UIKit
 
 extension listViewController: UISearchResultsUpdating {
     
+    
     private func findMatches(searchString: String) -> NSCompoundPredicate {
         /** Each searchString creates an OR predicate for: name, yearIntroduced, introPrice.
             Example if searchItems contains "Gladiolus 51.99 2001":
@@ -79,6 +80,9 @@ extension listViewController: UISearchResultsUpdating {
         // Handle the scoping.
         let selectedScopeButtonIndex = tableViewSearchController.searchBar.selectedScopeButtonIndex
         if selectedScopeButtonIndex > 0 {
+            addResultsTableController = AddResultsTableController()
+            addResultsTableController.tableView.delegate = self
+            tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
             // We have a scope type to narrow our search further.
             if !searchItemsPredicate.isEmpty {
                 /** We have a scope type and other fields to search on -
