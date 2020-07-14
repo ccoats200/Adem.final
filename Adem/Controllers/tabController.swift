@@ -75,13 +75,8 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         accountTabButton.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         viewControllers = [listTabButton, pantryTabButton, mealsTabButton, accountTabButton]
-        
-        //Attemting to Change the layout when in edit mode
-        //self.tabBar.items?[3].isEnabled = isManager
-        //if self.selectedViewController! == pantryTabButton {
-          //  viewControllers?.remove(at: 2)
-        //}
-        //setViewControllers([listTabButton, pantryTabButton, mealsTabButton, accountTabButton], animated: false)
+    
+        self.tabBar.items?[1].badgeValue = "1"
     }
     
     /*

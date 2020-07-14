@@ -142,4 +142,39 @@ extension UIViewController {
            userfirebaseProducts.document(id).setData([
                "category" : "Extract"], merge: true)
        }
-}
+    
+    func newUserInformation(dietPreferences: [String]) {
+        //MARK: Private data
+        db.document(currentUser!.uid).collection("private").document("preferences").setData([
+                "dietPreferences": dietPreferences
+            ]) { (error) in
+                
+                if let error = error {
+                    print("Error creating documents: \(error.localizedDescription)")
+                }
+            }
+        }
+    
+    /*
+     //MARK: - Not for production
+                db.collection("groceryProducts").getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                     if let snapshot = querySnapshot {
+                         for document in snapshot.documents {
+                            var data = document.data()
+                            db.collection("Users").document((authResult?.user.uid)!).collection("public").document("products").collection("List").addDocument(data: data)
+                            
+                         }
+                        
+                        
+                        
+                        
+                     }
+
+                    }
+                }
+     */
+    }
+

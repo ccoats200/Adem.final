@@ -171,6 +171,10 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
  */
 }
 
+struct dietPreferences {
+    var dietPreferences: [String]?
+}
+
 //MARK: turns days into time remaining
 extension Date {
     func interval(ofComponent comp: Calendar.Component, fromDate date: Date) -> Int {

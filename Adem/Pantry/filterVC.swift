@@ -233,14 +233,13 @@ extension filterViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let productsListCell = filterTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
-        productsListCell.accessoryType = .disclosureIndicator
         productsListCell.textLabel?.text = productCategories[indexPath.row]
         
         return productsListCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("show all")
+        self.dismiss(animated: true, completion: nil)
     
     }
        

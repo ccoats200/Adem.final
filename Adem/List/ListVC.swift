@@ -113,7 +113,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         super.viewWillAppear(animated)
         setUpLayouts()
             
-        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
+//        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
         print(currentUser?.email)
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
             self.listTableView.reloadData()
@@ -249,9 +249,14 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //Button Functions - End
       
     //MARK: - Firebase lists should the app delegate
+    func isUserLoggedIn() -> Bool {
+      return firebaseAuth.currentUser != nil
+    }
 
     func firebaseDataFetch() {
         
+
+        if isUserLoggedIn() {
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")
@@ -262,6 +267,13 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             }
             self.listTableView.reloadData()
          }
+        } else {
+            let loginvc = login()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = loginvc
+            appDelegate.window?.makeKeyAndVisible()
+        }
+        
     }
     
     func getFilterOptions() {
@@ -542,15 +554,19 @@ extension listViewController: UISearchBarDelegate {
     func searchBarSetUp() {
     //        MARK: - Search bar
        
-//        let selectedScopeButtonIndex = tableViewSearchController.searchBar.selectedScopeButtonIndex
+//        let currentScope = tableViewSearchController.searchBar.selectedScopeButtonIndex
+        
 //        if selectedScopeButtonIndex == 0 {
 //            addResultsTableController = AddResultsTableController()
 //            addResultsTableController.tableView.delegate = self
 //            tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
 //        } else {
-            resultsTableController = ResultsTableController()
-            resultsTableController.tableView.delegate = self
-            tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
+        addResultsTableController = AddResultsTableController()
+        addResultsTableController.tableView.delegate = self
+        tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
+//            resultsTableController = ResultsTableController()
+//            resultsTableController.tableView.delegate = self
+//            tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
 //        }
         tableViewSearchController.delegate = self
         tableViewSearchController.searchResultsUpdater = self
@@ -571,7 +587,6 @@ extension listViewController: UISearchBarDelegate {
         tableViewSearchController.searchBar.tintColor = UIColor.white
         
         tableViewSearchController.searchBar.scopeButtonTitles = searchDimensions
-        definesPresentationContext = true
         
         if #available(iOS 13.0, *) {
             self.tableViewSearchController.searchBar.searchTextField.textColor = UIColor.white
@@ -604,12 +619,21 @@ extension listViewController: UISearchBarDelegate {
         //might break it
         print(selectedScope)
         
-        if selectedScope == 0 {
+        switch selectedScope {
+        case 1:
+            resultsTableController = ResultsTableController()
+            resultsTableController.tableView.delegate = self
+            tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
+            updateSearchResults(for: tableViewSearchController)
+        default:
             addResultsTableController = AddResultsTableController()
             addResultsTableController.tableView.delegate = self
             tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
+            updateSearchResults(for: tableViewSearchController)
         }
-        updateSearchResults(for: tableViewSearchController)
+    
+        
+        
     //        filterProductsSearchText(searchBar.text!, category: searchBar.scopeButtonTitles![selectedScope])
     }
         
@@ -645,36 +669,6 @@ extension listViewController {
         return product
     }
     
-}
-
-
-
-extension listViewController: UNUserNotificationCenterDelegate {
-
-    
-    
-    //for displaying notification when app is in foreground
-    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
-
-        //If you don't want to show notification when app is open, do something here else and make a return here.
-        //Even you you don't implement this delegate method, you will not see the notification on the specified controller. So, you have to implement this delegate and make sure the below line execute. i.e. completionHandler.
-
-        completionHandler([.alert, .badge, .sound])
-    }
-
-    // For handling tap and user actions
-    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-
-        switch response.actionIdentifier {
-        case "action1":
-            print("Action First Tapped")
-        case "action2":
-            print("Action Second Tapped")
-        default:
-            break
-        }
-        completionHandler()
-    }
 }
 
 extension listViewController {

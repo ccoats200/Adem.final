@@ -17,6 +17,7 @@ class ResultsTableController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        self.view.backgroundColor = UIColor.red
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
     }
     
@@ -62,6 +63,35 @@ class AddResultsTableController: UITableViewController {
         return cell
     }
 }
+
+class PantryResultsTableController: UITableViewController {
+    
+    let tableViewCellIdentifier = "cellID"
+    var filteredProducts = [fireStoreDataClass]()
+    
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+    }
+    
+    // MARK: - UITableViewDataSource
+    
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return filteredProducts.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
+        let product = filteredProducts[indexPath.item]
+        cell.textLabel?.text = product.productName
+    
+        return cell
+    }
+}
+
+
 
 class searchTableViewCell: UITableViewCell {
         

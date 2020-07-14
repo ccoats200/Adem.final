@@ -6,13 +6,15 @@
 //  Copyright © 2019 Coleman Coats. All rights reserved.
 //
 
-import UIKit
 import Foundation
+import UIKit
 import Firebase
 import AVFoundation
+import CoreData
+import FirebaseFirestoreSwift
 
 //MARK: This needs to be a collection view
-class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating, UIGestureRecognizerDelegate {
+class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognizerDelegate {
    
     
     
@@ -50,7 +52,14 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
     var selectedCells = [UICollectionViewCell]()
     var groceriesSelected = [String]()
     
-    var searchController = UISearchController(searchResultsController: nil)
+    var searchController: UISearchController!
+    var pantryResultsTableController: PantryResultsTableController!
+    var addResultsTableController: AddResultsTableController!
+    var filteringPantry = arrayofPantry
+    var filterPantry: [fireStoreDataClass] = []
+    var pantryFilter = [fireStoreDataClass]()
+    var productFilter = [fireStoreDataClass]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,27 +79,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             
         }
         
-        //MARK: Search bar
-        self.searchController.searchBar.delegate = self
-        self.definesPresentationContext = true
-        self.navigationItem.searchController = searchController
-        self.navigationItem.searchController?.hidesNavigationBarDuringPresentation = false
         
         
-        self.searchController.isActive = true
-        self.searchController.searchResultsUpdater = self
-        self.searchController.searchBar.autocorrectionType = .default
-        self.searchController.searchBar.enablesReturnKeyAutomatically = true
-        self.searchController.obscuresBackgroundDuringPresentation = true
-        self.searchController.searchBar.placeholder = "What Can I Add For You?"
-        self.searchController.searchBar.tintColor = UIColor.white
-        if #available(iOS 13.0, *) {
-            self.searchController.searchBar.searchTextField.textColor = UIColor.white
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        
+        setUpSearch()
         setUpListViews()
         setUpBarButtonItems()
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
@@ -177,46 +168,8 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UISearchBarDelegat
             ])
     }
 
-    // MARK: - Private instance methods
-    func searchBarIsEmpty() -> Bool {
-        // Returns true if the text is empty or nil
-        return searchController.searchBar.text?.isEmpty ?? true
-    }
     
-    func filterContentForSearchText(_ searchText: String, scope: String = "All") {
-        selectedGroceryItems = (listProducts.filter({( groceryItems : groceryItemCellContent) -> Bool in
-            return (groceryItems.itemName?.lowercased().contains(searchText.lowercased()))!
-        }))
-        //TODO: Why is this breaking when I switch back from list to collection view
-        
-        //collectionView.reloadData()
-    }
-    
-    func isFiltering() -> Bool {
-        return searchController.isActive && !searchBarIsEmpty()
-    }
-    
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        self.dismiss(animated: true, completion: nil)
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        searchController.searchBar.resignFirstResponder()
-    }
-    
-    func updateSearchResults(for searchController: UISearchController) {
-        guard let text = searchController.searchBar.text else { return }
-        print(text)
-        //filterContentForSearchText(searchController.searchBar.text!)
-        
-        
-        // Strip out all the leading and trailing spaces.
-        let whitespaceCharacterSet = CharacterSet.whitespaces
-        let strippedString =
-            searchController.searchBar.text!.trimmingCharacters(in: whitespaceCharacterSet)
-        let searchItems = strippedString.components(separatedBy: " ") as [String]
-        
-    }
+ 
   
     
     // MARK: - Put in edit mode
@@ -467,3 +420,92 @@ extension PantryVC: CellButtonTap {
     
 }
 */
+extension PantryVC: UISearchBarDelegate {
+    
+    func setUpSearch() {
+        //MARK: Search bar
+        pantryResultsTableController = PantryResultsTableController()
+//        pantryResultsTableController.tableView.delegate = self
+        searchController = UISearchController(searchResultsController: pantryResultsTableController)
+        searchController.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self // Monitor when the search button is tapped.
+        definesPresentationContext = true
+                
+                //instantiate the controller
+                
+                // Place the search bar in the navigation bar.
+        navigationItem.searchController = searchController
+                
+                //Design elements
+        searchController.searchBar.placeholder = "How can I help?"
+        searchController.searchBar.autocorrectionType = .default
+        searchController.searchBar.enablesReturnKeyAutomatically = true
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.tintColor = UIColor.white
+                
+        searchController.searchBar.scopeButtonTitles = searchDimensions
+                
+               
+        if #available(iOS 13.0, *) {
+            searchController.searchBar.searchTextField.textColor = UIColor.white
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+           
+            let keywords = searchBar.text
+        //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
+        //           searchUrl = "https://api.spotify.com/v1/search?q=\(finalKeywords!)&type=track"
+            self.view.endEditing(true)
+            print(keywords)
+            searchBar.resignFirstResponder()
+        }
+        
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            self.dismiss(animated: true, completion: nil)
+        }
+            
+    //    func searchBarIsEmpty() -> Bool {
+    //        // Returns true if the text is empty or nil
+    //        return tableViewSearchController.searchBar.text?.isEmpty ?? true
+    //    }
+    //
+        func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+            //might break it
+            print(selectedScope)
+            
+            if selectedScope == 0 {
+                addResultsTableController = AddResultsTableController()
+//                addResultsTableController.tableView.delegate = self
+                searchController = UISearchController(searchResultsController: addResultsTableController)
+            }
+            updateSearchResults(for: searchController)
+        //        filterProductsSearchText(searchBar.text!, category: searchBar.scopeButtonTitles![selectedScope])
+        }
+            
+        func filterProductsSearchText(for searchText: String) {
+         
+            filteringPantry = arrayofPantry.filter { fireStoreDataClass in
+                return fireStoreDataClass.productName.lowercased().contains(searchText.lowercased())
+            }
+            pantryCollectionView.reloadData()
+        }
+                
+    //    func searchBarisFiltering() -> Bool {
+    //        return tableViewSearchController.isActive && !searchBarIsEmpty()
+    //    }
+    //
+        
+            
+        var isSearchBarEmpty: Bool {
+            return searchController.searchBar.text?.isEmpty ?? true
+        }
+            
+        var isFiltering: Bool {
+            return searchController.isActive && !isSearchBarEmpty
+        }
+}

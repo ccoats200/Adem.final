@@ -107,51 +107,55 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         
 
         //MARK: Should only be on list
-        
-        Auth.auth().createUser(withEmail: accountCreationViews.emailTextField.text!, password: accountCreationViews.passwordTextField.text!) { authResult, error in
-            
-            
-            //MARK: Private data
-            db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
-                "FirstName": firstName,
-                "LastName": lastName,
-                "Email": email,
-                "Password": password,
-                "uid": authResult!.user.uid,
-                "isAnonymous": authResult!.user.isAnonymous
-                
-            ]) { (error) in
-
-
-                if let error = error {
-                    print("Error creating documents: \(error.localizedDescription)")
+        firebaseAuth.createUser(withEmail: accountCreationViews.emailTextField.text!, password: accountCreationViews.passwordTextField.text!) { authResult, error in
+            //https://medium.com/firebase-developers/ios-firebase-authentication-sdk-email-and-password-login-6a3bb27e0536
+            if let error = error as? NSError {
+                switch AuthErrorCode(rawValue: error.code) {
+                case .operationNotAllowed:
+                    print("not Allowed")
+                case .emailAlreadyInUse:
+                    print("in Use")
+                case .invalidEmail:
+                    print("invalid")
+                case .weakPassword:
+                    print("weak")
+                default:
+                    print("Error: \(error.localizedDescription)")
+                }
+            } else {
+                print("User signs up successfully")
+                let newUserInfo = Auth.auth().currentUser
+                //MARK: Private data
+                db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                    "FirstName": firstName,
+                    "LastName": lastName,
+                    "Email": email,
+                    "Password": password,
+                    "uid": authResult!.user.uid,
+                    "isAnonymous": authResult!.user.isAnonymous
+                    
+                ]) { (error) in
+                    if let error = error {
+                        print("Error creating documents: \(error.localizedDescription)")
+                    }
                 }
             }
-            //MARK: - Not for production
-            db.collection("groceryProducts").getDocuments() { (querySnapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                 if let snapshot = querySnapshot {
-                     for document in snapshot.documents {
-                        var data = document.data()
-                        db.collection("Users").document((authResult?.user.uid)!).collection("public").document("products").collection("List").addDocument(data: data)
-                        
-                     }
-                    
-                    
-                    
-                    
-                 }
-
-                }
-            }
-            
         }
         
         let moreController = userFlowViewControllerTwo()
         moreController.resignFirstResponder()
         self.present(moreController, animated: true, completion: nil)
+    }
+    
+    func isValidEmail(_ email: String) -> Bool {
+      let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+      let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+      return emailPred.evaluate(with: email)
+    }
+    
+    func isValidPassword(_ password: String) -> Bool {
+      let minPasswordLength = 6
+      return password.count >= minPasswordLength
     }
     
     func showMessagePrompt(title: String, message: String, button: String) {

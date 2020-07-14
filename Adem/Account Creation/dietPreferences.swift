@@ -90,6 +90,7 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     override func viewWillAppear(_ animated: Bool) {
 
     }
+    
     //MARK: Arrays
     let preferencesDictionary = [0: ["Pescaterian","Vegetarian","Vegan","Nuts","Lactose","Other", "None"]]
 
@@ -171,7 +172,10 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     }
     var preferencesStuff: [preferenceContent] = []
     var preferencesCount = preferencesAttributes
+    var selectedItems: [String]?
 }
+
+
 
 extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -198,14 +202,10 @@ extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDat
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
         currentCell?.preferencesElements = preferencesStuff[indexPath.row]
+    
+        selectedItems?.append(preferencesStuff[indexPath.item].preferencesLabelText!)
+        print("firebase preferences \(selectedItems)")
 
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        currentCell?.preferencesElements = preferencesStuff[indexPath.row]
-
-    }
-    
 }
 

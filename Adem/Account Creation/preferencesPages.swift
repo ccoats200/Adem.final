@@ -15,8 +15,8 @@ class signUpUserFlow: UIPageViewController {
     
     var pages = [UIViewController]()
 
-    let flavorPage = addedFlavorPreferences()
     let dietPage = addedDietPreferencesTwo()
+    let flavorPage = addedFlavorPreferences()
     let storePage = addedStorePreferencesTwo()
     let thankYouPage = thankYouPreferences()
 

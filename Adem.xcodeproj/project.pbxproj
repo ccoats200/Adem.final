@@ -19,6 +19,7 @@
 		3542B9312499A12C00E259EE /* filterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B9302499A12C00E259EE /* filterVC.swift */; };
 		3542B93324A5375A00E259EE /* searchTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B93224A5375A00E259EE /* searchTVC.swift */; };
 		3542B93624B41ED800E259EE /* listSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3542B93524B41ED800E259EE /* listSearchResults.swift */; };
+		3543590F24B82F5D001074CF /* apiExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3543590E24B82F5D001074CF /* apiExtension.swift */; };
 		354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944123DCBF81003F2B1F /* accountCreationViews.swift */; };
 		354E944623DCEE30003F2B1F /* customPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 354E944523DCEE30003F2B1F /* customPreferences.swift */; };
 		35669ACE24043A3A00C95DFB /* nutritionLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669ACD24043A3A00C95DFB /* nutritionLabel.swift */; };
@@ -125,6 +126,7 @@
 		3542B9302499A12C00E259EE /* filterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterVC.swift; sourceTree = "<group>"; };
 		3542B93224A5375A00E259EE /* searchTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = searchTVC.swift; sourceTree = "<group>"; };
 		3542B93524B41ED800E259EE /* listSearchResults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = listSearchResults.swift; sourceTree = "<group>"; };
+		3543590E24B82F5D001074CF /* apiExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = apiExtension.swift; sourceTree = "<group>"; };
 		354E944123DCBF81003F2B1F /* accountCreationViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = accountCreationViews.swift; sourceTree = "<group>"; };
 		354E944523DCEE30003F2B1F /* customPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customPreferences.swift; sourceTree = "<group>"; };
 		35669ACD24043A3A00C95DFB /* nutritionLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = nutritionLabel.swift; sourceTree = "<group>"; };
@@ -246,6 +248,7 @@
 			children = (
 				3542B93524B41ED800E259EE /* listSearchResults.swift */,
 				3542B93224A5375A00E259EE /* searchTVC.swift */,
+				3543590E24B82F5D001074CF /* apiExtension.swift */,
 			);
 			path = searchControllers;
 			sourceTree = "<group>";
@@ -860,6 +863,7 @@
 				35669AE52410B3FF00C95DFB /* enum.swift in Sources */,
 				3542B9312499A12C00E259EE /* filterVC.swift in Sources */,
 				354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */,
+				3543590F24B82F5D001074CF /* apiExtension.swift in Sources */,
 				35669ACE24043A3A00C95DFB /* nutritionLabel.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				35669AE724185D6400C95DFB /* recomendedMeals.swift in Sources */,

@@ -67,9 +67,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
         
-        
+        handleUserInfo()
        
-        }
+     
+    }
     override func viewDidAppear(_ animated: Bool) {
         handleUserInfo()
     }
@@ -77,6 +78,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
+        firebaseAuth.removeStateDidChangeListener(handle!)
     }
     
     //MARK: - Button Action - Start
@@ -247,7 +249,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func handleUserInfo() {
         
         self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
-        
+        //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+               
         if currentUser?.isAnonymous == true {
             let doesNotHaveAccount = "Join now"
             self.accountStuff.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)

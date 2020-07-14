@@ -9,7 +9,6 @@
 import UIKit
 import Foundation
 import Firebase
-//import FirebaseFirestore
 
 class login: UIViewController, UITextFieldDelegate {
     
@@ -20,9 +19,7 @@ class login: UIViewController, UITextFieldDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-//        docRef = Firestore.firestore().document("\(userNames)")
-    
+            
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -64,7 +61,13 @@ class login: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(animated)
 //        firebaseAuth.removeStateDidChangeListener(handle!)
     }
-
+    func incorrectInformationAlert(title: String, message: String) {
+        let alertController = UIAlertController(title: title, message:
+            message, preferredStyle: .alert)
+        alertController.addAction(UIAlertAction(title: "Try again", style: .default, handler: {action in
+        }))
+        self.present(alertController, animated: true, completion: nil)
+    }
     @objc func handelLogin() {
         //Making sure that credentials are correct
         guard let email = userInfoCaptureElements.emailTextField.text, !email.isEmpty, let password = userInfoCaptureElements.passwordTextField.text, !password.isEmpty else {
@@ -76,31 +79,38 @@ class login: UIViewController, UITextFieldDelegate {
         
         //User: Signed in with email
         
-        firebaseAuth.signIn(withEmail: email, password: password) { [weak self] authResult, error in
-            guard let strongSelf = self else { return }
+        firebaseAuth.signIn(withEmail: email, password: password) { (authResult, error) in //[weak self] (authResult, error) in
+            //guard let strongSelf = self else { return }
             
-//            strongSelf.navigationController?.popViewController(animated: true)
-            if error != nil {
-                print(error?.localizedDescription)
+            if let error = error as? NSError {
+              switch AuthErrorCode(rawValue: error.code) {
+              case .operationNotAllowed:
+                // Error: Indicates that email and password accounts are not enabled. Enable them in the Auth section of the Firebase console.
+                print("not allowed")
+              case .userDisabled:
+                // Error: The user account has been disabled by an administrator.
+                print("disabled")
+              case .wrongPassword:
+                // Error: The password is invalid or the user does not have a password.
+                self.incorrectInformationAlert(title: "Login Failed", message: "Password incorrect")
+              case .invalidEmail:
+                // Error: Indicates the email address is malformed.
+                self.incorrectInformationAlert(title: "Login Failed", message: "Email incorrect")
+              default:
+                  print("Error: \(error.localizedDescription)")
+              }
             } else {
                 
-            let listController = tabBar()
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = listController
-            appDelegate.window?.makeKeyAndVisible()
-            print("Successfully logged in")
+                print("User signs in successfully")
+                let listController = tabBar()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = listController
+                appDelegate.window?.makeKeyAndVisible()
             }
         }
     }
-    
 
-    func incorrectInformationAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: .alert)
-        alertController.addAction(UIAlertAction(title: "Try again", style: .default, handler: {action in
-        }))
-        self.present(alertController, animated: true, completion: nil)
-    }
+    
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = self.view.viewWithTag(textField.tag + 1) as? UITextField
@@ -115,9 +125,7 @@ class login: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
-    
-    
+
     let loginFieldView: UIView = {
         let logintextfield = UIView()
         logintextfield.backgroundColor = UIColor.white
