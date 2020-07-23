@@ -123,119 +123,67 @@ extension signUpUserFlow: UIPageViewControllerDelegate {
     
 }
 
-class userFlowViewControllerTwo: UIViewController {
-
-    let myContainerView: UIView = {
-        let v = UIView()
-        
-        v.translatesAutoresizingMaskIntoConstraints = false
-        return v
-    }()
+class userCreation: UIViewController {
 
     var signInFlow = signUpUserFlow()
     var bottomView = preferenceNextViews()
+    var currentPage = 0
+    var prog: Float = 0.00
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationController?.navigationBar.backgroundColor = UIColor.white
-
-        view.addSubview(myContainerView)
-        myContainerView.addSubview(bottomView)
-
+        view.addSubview(bottomView)
         bottomView.translatesAutoresizingMaskIntoConstraints = false
-        // constrain it - here I am setting it to
-        //  40-pts top, leading and trailing
-        //  and 200-pts height
-        setUpConstraint()
-
         // instantiate MyPageViewController and add it as a Child View Controller
         signInFlow = signUpUserFlow()
         addChild(signInFlow)
-
         // we need to re-size the page view controller's view to fit our container view
         signInFlow.view.translatesAutoresizingMaskIntoConstraints = false
-
         // add the page VC's view to our container view
-        myContainerView.addSubview(signInFlow.view)
-        //myContainerView.addSubview(bottomView)
-        
-        
-
-        setUpSignConstraint()
-       
+        view.addSubview(signInFlow.view)
+        setUpConstraint()
         signInFlow.didMove(toParent: self)
-        
         //FIXME: needs to be include the first count
         bottomView.pBar.progress = prog
         //MARK: Buttons
         setUpButton()
     }
     
-    
-    
     private func setUpButton() {
         bottomView.nextButton.largeNextButton.addTarget(self, action: #selector(sendUserToNextScreen), for: .touchUpInside)
-        
-        
         let gradient = CAGradientLayer()
-               gradient.frame = view.bounds
-               gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
-               //Top left
-               gradient.startPoint = CGPoint(x: 0, y: 0)
-               //Top right
-               gradient.endPoint = CGPoint(x: 1, y: 1)
-               //bottomView.nextButton.layer.addSublayer(gradient)
-               
+        gradient.frame = view.bounds
+        gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
+        //Top left
+        gradient.startPoint = CGPoint(x: 0, y: 0)
+        //Top right
+        gradient.endPoint = CGPoint(x: 1, y: 1)
+        //bottomView.nextButton.layer.addSublayer(gradient)
     }
-    
-
-    var currentPage = 0
-    var prog: Float = 0.00
     
     func sendForward() {
-            currentPage+=1
-            signInFlow.setViewControllers([signInFlow.pages[currentPage]], direction: .forward, animated: true, completion: nil)
-            
-            if prog < Float((signInFlow.pages.count-1)/(signInFlow.pages.count-1)) {
-                prog += (Float((signInFlow.pages.count-1)/(signInFlow.pages.count-1))/Float((signInFlow.pages.count-1)))
-                print(prog)
-                bottomView.pBar.progress = prog
-            }
-            
-            //MARK: Capture the time of the tap
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "HH:mm:ss"
-            let time = dateFormatter.string(from: Date())
-            print(time)
-            
-            print("The button is working on page \(currentPage)")
-    }
-    
-    @objc func sendUserToNextScreen() {
-
-        if currentPage < ((signInFlow.pages.count)-1) {
-            sendForward()
-        } else {
-            sendToHomeScreen()
+        currentPage+=1
+        signInFlow.setViewControllers([signInFlow.pages[currentPage]], direction: .forward, animated: true, completion: nil)
+        
+        if prog < Float((signInFlow.pages.count-1)/(signInFlow.pages.count-1)) {
+            prog += (Float((signInFlow.pages.count-1)/(signInFlow.pages.count-1))/Float((signInFlow.pages.count-1)))
+            bottomView.pBar.progress = prog
         }
     }
     
-        
-    func sendToHomeScreen() {
-        
-        let listController = tabBar()
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        appDelegate.window?.rootViewController = listController
-        appDelegate.window?.makeKeyAndVisible()
-        //self.dismiss(animated: true, completion: nil)
-        print("There are no more pages \(currentPage)")
-        
+    @objc func sendUserToNextScreen() {
+        if currentPage < ((signInFlow.pages.count)-1) {
+            sendForward()
+        } else {
+            sendToListScreen()
+        }
     }
-    
+
     @objc func testReverse() {
            //This needs to be the next page button
            //I need to remove the scroll function so that they cant scroll back
-           
            if currentPage < ((signInFlow.pages.count)-1) {
            currentPage-=1
            
@@ -244,33 +192,18 @@ class userFlowViewControllerTwo: UIViewController {
            } else { print("There are no more pages \(currentPage)") }
        }
     
-    
-    
     private func setUpConstraint() {
         NSLayoutConstraint.activate([
+
+            bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            bottomView.heightAnchor.constraint(equalToConstant: 100),
+            bottomView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         
-        myContainerView.topAnchor.constraint(equalTo: view.topAnchor),
-        myContainerView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        myContainerView.widthAnchor.constraint(equalTo: view.widthAnchor),
-        myContainerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-        
-        bottomView.bottomAnchor.constraint(equalTo: myContainerView.bottomAnchor),
-        bottomView.widthAnchor.constraint(equalTo: myContainerView.widthAnchor),
-        bottomView.heightAnchor.constraint(equalToConstant: 100),
-        bottomView.centerXAnchor.constraint(equalTo: myContainerView.centerXAnchor),
+            signInFlow.view.topAnchor.constraint(equalTo: view.topAnchor),
+            signInFlow.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            signInFlow.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            signInFlow.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-        
-    }
-    
-    private func setUpSignConstraint() {
-         // constrain it to all 4 sides
-               NSLayoutConstraint.activate([
-                   
-                   signInFlow.view.topAnchor.constraint(equalTo: myContainerView.topAnchor),
-                   signInFlow.view.bottomAnchor.constraint(equalTo: myContainerView.bottomAnchor, constant: -100),
-                   signInFlow.view.leadingAnchor.constraint(equalTo: myContainerView.leadingAnchor),
-                   signInFlow.view.trailingAnchor.constraint(equalTo: myContainerView.trailingAnchor),
-                   
-               ])
     }
 }

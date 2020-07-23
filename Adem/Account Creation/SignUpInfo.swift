@@ -21,14 +21,11 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     
     // Add a new document with a generated ID
     var handle: AuthStateDidChangeListenerHandle?
-    let user = Auth.auth().currentUser
     let minimuPasswordLength = 6
     
-
     //MARK: setUpViews
     var accountCreationViews = userCreationInfo()
-    
-    
+        
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,29 +56,19 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         view.layer.addSublayer(gradient)
         //Backgound Color End
         
-        
-        
         //MARK: function Calls for views
         setUpSubviews()
         setuploginFieldView()
-
-
-        
     }
-
     
     //Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
     }
-    
-
-    
     
     @objc func handelNext() {
         guard let firstName = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else {
@@ -142,7 +129,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
             }
         }
         
-        let moreController = userFlowViewControllerTwo()
+        let moreController = userCreation()
         moreController.resignFirstResponder()
         self.present(moreController, animated: true, completion: nil)
     }

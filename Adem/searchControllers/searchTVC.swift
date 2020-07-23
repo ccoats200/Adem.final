@@ -8,17 +8,22 @@
 
 import UIKit
 
+protocol searchAddToListDelegate: class {
+    func add(cell: searchTableViewCell)
+//    func add(cell: IndexPath)
+}
+
 class ResultsTableController: UITableViewController {
     
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
-    
+//    weak var delegate: searchAddToListDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.red
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+        tableView.register(searchTableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+        //tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
     }
     
     // MARK: - UITableViewDataSource
@@ -28,11 +33,60 @@ class ResultsTableController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath) as! searchTableViewCell
         let product = filteredProducts[indexPath.row]
+//        let addButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+//        addButton.setImage(UIImage(named: "addButton"), for: .normal)
+//        addButton.addTarget(self, action: #selector(selectedButtonDidTap(_:)), for: .touchUpInside)
         cell.textLabel?.text = product.productName
+        cell.delegate = self
+//        cell.accessoryView = self.addButton
     
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.tableView.deselectRow(at: indexPath, animated: false)
+    }
+    
+   
+    
+}
+
+class searchTableViewCell: UITableViewCell {
+    
+    weak var delegate: searchAddToListDelegate?
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+           super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        let addButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+        addButton.setImage(UIImage(named: "addButton"), for: .normal)
+        addButton.addTarget(self, action: #selector(selectedButtonDidTap(_:)), for: .touchUpInside)
+        self.accessoryView = addButton
+        
+    }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    @objc func selectedButtonDidTap(_ sender: Any) {
+        delegate?.add(cell: self)
+    }
+}
+
+
+extension ResultsTableController: searchAddToListDelegate {
+    
+    func add(cell: searchTableViewCell) {
+        
+        if let indexPath = tableView?.indexPath(for: cell) {
+            //1. Change filteredProducts to api search
+            let item = filteredProducts[indexPath.row].id
+            print(item)
+            self.updateProductLocationValues(indexPath: item!, pantry: true, list: false)
+            self.addTimeStamp(id: item!, action: engagements.added.rawValue)
+        }
     }
 }
 
@@ -41,11 +95,9 @@ class AddResultsTableController: UITableViewController {
     let tableViewCellIdentifier = "addProducts"
     var filteredProducts = [fireStoreDataClass]()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.view.backgroundColor = UIColor.blue
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
     }
     
@@ -62,13 +114,15 @@ class AddResultsTableController: UITableViewController {
     
         return cell
     }
+    //https://lottiefiles.com/marketplace
+    //https://spotify.design/
+    //https://lottiefiles.com/27155-preparing-food
 }
 
 class PantryResultsTableController: UITableViewController {
     
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,80 +136,16 @@ class PantryResultsTableController: UITableViewController {
         return filteredProducts.count
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
         let product = filteredProducts[indexPath.item]
         cell.textLabel?.text = product.productName
+        cell.textLabel?.backgroundColor = UIColor.orange
     
         return cell
-    }
-}
-
-
-
-class searchTableViewCell: UITableViewCell {
-        
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
-        self.addSubview(productName)
-        self.addSubview(productImage)
-        self.addSubview(productButton)
-            
-        NSLayoutConstraint.activate([
-            
-            productImage.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
-            productImage.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
-            productImage.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-            productImage.heightAnchor.constraint(equalToConstant: 50),
-            productImage.widthAnchor.constraint(equalToConstant: 50),
-            productName.leadingAnchor.constraint(equalTo: productImage.trailingAnchor, constant: 15),
-            productName.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            productName.bottomAnchor.constraint(equalTo: productButton.topAnchor, constant: -10),
-            productName.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            productButton.leftAnchor.constraint(equalTo: productName.leftAnchor),
-            productButton.topAnchor.constraint(equalTo: productName.bottomAnchor),
-            //friendsTitle.heightAnchor.constraint(equalToConstant: 10),
-            productButton.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
-            productButton.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            
-            ])
-    }
-        
-    //UIView Profile Pic
-        let productImage: UIImageView = {
-            let pic = UIImageView()
-            pic.contentMode = .scaleAspectFill
-            pic.layer.cornerRadius = 15
-            pic.layer.masksToBounds = true
-            pic.clipsToBounds = true
-            pic.layer.shadowColor = UIColor.clear.cgColor
-            pic.layer.borderColor = UIColor.white.cgColor
-            pic.translatesAutoresizingMaskIntoConstraints = false
-            
-            return pic
-        }()
-           
-        let productName: UILabel = {
-            let nameOfProduct = UILabel()
-            nameOfProduct.textAlignment = .left
-            nameOfProduct.numberOfLines = 1
-            nameOfProduct.adjustsFontSizeToFitWidth = true
-            nameOfProduct.font = UIFont.boldSystemFont(ofSize: 20)
-            nameOfProduct.textColor = UIColor.ademBlue
-            nameOfProduct.translatesAutoresizingMaskIntoConstraints = false
-            return nameOfProduct
-        }()
-           
-        let productButton: UIButton = {
-            let add = UIButton()
-            add.layer.cornerRadius = 5
-            add.backgroundColor = UIColor.ademGreen
-            add.translatesAutoresizingMaskIntoConstraints = false
-            return add
-        }()
-    
-    required init?(coder aDecoder: NSCoder) {
-            fatalError("init(coder:) has not been implemented")
     }
 }

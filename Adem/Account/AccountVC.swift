@@ -68,8 +68,14 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.view.setNeedsLayout()
         
         handleUserInfo()
-       
-     
+        
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            if user == nil {
+                self.sendToLogIn()
+            } else {
+                print("User is logged in")
+            }
+        }
     }
     override func viewDidAppear(_ animated: Bool) {
         handleUserInfo()
@@ -219,6 +225,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //MARK: - Sign out
     func signOutButton() {
         homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        homeSegmentView.logOutButton.largeNextButton.titleLabel?.font = UIFont(name: helNeu, size: 20)
     }
     
     @objc func handleLogout() {
@@ -234,10 +241,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         do {
             //FIXME: This isn't working for some reason. if a user signs in on a diff account right after signing out they get the old account
             try firebaseAuth.signOut()
-            let loginvc = login()
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = loginvc
-            appDelegate.window?.makeKeyAndVisible()
+//            sendToLogIn()
             //https://www.youtube.com/watch?v=76ANW9VJwCQ
         } catch let signOutError as NSError {
             print ("Error signing out: %@", signOutError)
@@ -257,10 +261,13 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.accountStuff.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
             self.accountStuff.nameofUser.largeNextButton.backgroundColor = UIColor.ademGreen
             self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.signUp), for: .touchDown)
-            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log In", for: .normal)
+            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign In", for: .normal)
             self.homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
+        } else if currentUser == nil {
+            sendToLogIn()
         } else {
             
+            print("this is the current user \(currentUser!.email)")
             //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
                //Probably wrong
             //db.collection("Users").document(user!.uid).collection("private").getDocuments { (snapshot, err) in
@@ -270,7 +277,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 } else {
                     for document in snapshot!.documents {
                         let latMax = document.get("FirstName") as? String
-                        self.homeSegmentView.logOutButton.largeNextButton.setTitle("Log Out", for: .normal)
+                        self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
                         self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
                         self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
                         self.accountStuff.nameofUser.largeNextButton.setTitle(latMax, for: .normal)

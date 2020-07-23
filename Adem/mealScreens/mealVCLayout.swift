@@ -8,7 +8,7 @@
 
 import UIKit
 import Firebase
-//import FirebaseFirestore
+import Lottie
 
 class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -19,6 +19,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     var productImageSection = mealImageViews()
     var relatedProductInfoSection = mealsBottomViews()
     var ingrediantsList: UITableView!
+    var animationView: AnimationView?
     
     
     override func viewDidLoad() {
@@ -32,41 +33,49 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         setupProductLayoutContstraints()
 
         self.dismiss(animated: true, completion: nil)
-        
-        
     }
-    
-        
 
     //MARK: Button engagement
     @objc func handleFacts() {
         //let signUpInfo = circleTest()
         let signUpInfo = Meals()
         self.present(signUpInfo, animated: true)
-        print("went to new page")
     }
  
     //product Button
     @objc func handleBack() {
         self.dismiss(animated: true, completion: nil)
-        print("went back to previous page")
     }
-        
+    
     @objc func handleNutritionLabel() {
         let productScreen = nutritionLabelVC()
         productScreen.hidesBottomBarWhenPushed = true
         self.present(productScreen, animated: true, completion: nil)
-        
-        print("Camera button working")
     }
     
     @objc func handlefave(sender: UIButton) {
+        
+        animationView = .init(name: "heartsGif")
+        animationView?.frame = view.bounds
+        animationView?.animationSpeed = 0.5
+        view.addSubview(animationView!)
+        animationView?.play()
+        /*
+        sleep(2)
+        do {
+            print("t")
+            //animationView?.removeFromSuperview()
+        }
+        
+        */
+        
+        /*
         if productNameSection.faveButton.isSelected == true {
           productNameSection.faveButton.isSelected = false
         } else {
           productNameSection.faveButton.isSelected = true
-            
         }
+        */
     }
 
     let segmentContr: UISegmentedControl = {

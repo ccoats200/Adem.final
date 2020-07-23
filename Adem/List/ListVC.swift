@@ -11,12 +11,13 @@ import Firebase
 import AVFoundation
 import CoreData
 import FirebaseFirestoreSwift
+import Lottie
 
 class listViewController: UIViewController, UISearchControllerDelegate, UIGestureRecognizerDelegate {
 
     
 //    MARK: Navigation Bar Buttons - Start
-    lazy var cam = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handlecamera))
+    //lazy var cam = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handlecamera))
 //    lazy var add = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearch))
 //    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //MARK: Navigation buttons - End
@@ -73,7 +74,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            self.navigationItem.rightBarButtonItem = cam
+            //self.navigationItem.rightBarButtonItem = cam
 
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
             //MARK: Opt out of dark mode
@@ -82,6 +83,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //Revert to default
         }
         //MARK: - sign in confirmation
+        
+//        observAuthState()
         alreadySignedIn()
 ////        MARK: Search bar
         searchBarSetUp()
@@ -120,6 +123,18 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         }
     }
     
+    func observAuthState() {
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            if user == nil {
+                self.sendToLogIn()
+            } else {
+                self.sendToListScreen()
+                self.listTableView.reloadData()
+             
+            }
+        }
+    }
+    
     func setUpLayouts() {
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
@@ -131,32 +146,37 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         self.navigationController?.view.setNeedsLayout()
 //            firebaseAuth.removeStateDidChangeListener(handle!)
     }
+//    override func viewDidDisappear(_ animated: Bool) {
+//        <#code#>
+//    }
     
     func alreadySignedIn() {
         
+//        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+//            if user == nil {
+//                self.sendToLogIn()
+//            } else {
+//                self.sendToListScreen()
+//                self.listTableView.reloadData()
+//
+//            }
+//        }
+        
         if currentUser == nil {
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = login()
-            appDelegate.window?.makeKeyAndVisible()
+            sendToLogIn()
         } else {
+            
             //MARK: Search bar
             searchBarSetUp()
-            //MARK: Switch open view
             tableViewSetup()
-//            switch productsGlobal?.isEmpty {
-////        switch arrayofProducts.isEmpty {
-//            case true:
-//                tableViewIsEmpty()
-//            default:
-//                tableViewSetup()
-//            }
+
             //MARK: Setting up NAV bar buttons
             //self.navigationItem.leftBarButtonItem = editButtonItem
             //self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
             toolBarSetUp()
             setUpFilterView()
-                   
-            //Firebase working below
+            
+            //MARK: Firebase working below
             firebaseDataFetch()
             getFilterOptions()
         }
@@ -220,6 +240,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     
     //product Button
     @objc func handlecamera() {
+        
         if #available(iOS 13.0, *) {
             let productScreen = camVC()
             productScreen.hidesBottomBarWhenPushed = true
@@ -228,6 +249,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         } else {
             // Fallback on earlier versions
         }
+       
     }
 
     //MARK: bring user to product screen
@@ -255,7 +277,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 
     func firebaseDataFetch() {
         
-
         if isUserLoggedIn() {
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
@@ -268,12 +289,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             self.listTableView.reloadData()
          }
         } else {
-            let loginvc = login()
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = loginvc
-            appDelegate.window?.makeKeyAndVisible()
+            sendToLogIn()
         }
-        
     }
     
     func getFilterOptions() {
@@ -517,7 +534,7 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
         let item = productCategories[indexPath.item]
         filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
         
-        let dairy = arrayofProducts.filter { ($0.category == item) }
+        //let dairy = arrayofProducts.filter { ($0.category == item) }
         if item == "All" {
             firebaseDataFetch()
             filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademBlue
@@ -529,11 +546,6 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
             self.listTableView.reloadData()
         }
         print("Trying to filter for \(productCategories[indexPath.row])")
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        let cell = filterListCollectionView.cellForItem(at: indexPath)!
-        cell.backgroundColor = UIColor.ademBlue
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -561,12 +573,14 @@ extension listViewController: UISearchBarDelegate {
 //            addResultsTableController.tableView.delegate = self
 //            tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
 //        } else {
-        addResultsTableController = AddResultsTableController()
-        addResultsTableController.tableView.delegate = self
-        tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
-//            resultsTableController = ResultsTableController()
-//            resultsTableController.tableView.delegate = self
-//            tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
+//        addResultsTableController = AddResultsTableController()
+//        addResultsTableController.tableView.delegate = self
+//        tableViewSearchController = UISearchController(searchResultsController: addResultsTableController)
+        
+        //MARK: - SEARCH LOCAL LIST
+        resultsTableController = ResultsTableController()
+        resultsTableController.tableView.delegate = self
+        tableViewSearchController = UISearchController(searchResultsController: resultsTableController)
 //        }
         tableViewSearchController.delegate = self
         tableViewSearchController.searchResultsUpdater = self
@@ -676,38 +690,26 @@ extension listViewController {
         func parseJSON(product: String) {
             //https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0
             var searchterm = tableViewSearchController.searchBar.text
-            let url = URL(string: "https://api.spoonacular.com/food/products/search?query=\(searchterm)&apiKey=\(apiKey)")
-            let task = URLSession.shared.dataTask(with: url!) {(data, response, error ) in
+            var semaphore = DispatchSemaphore (value: 0)
 
-              guard error == nil else {
-                  print("returned error")
-                  return
-              }
-                
-              if error != nil {
+            var request = URLRequest(url: URL(string: "https://api.wegmans.io/products/search?query=\(searchterm ?? "something went wrong")&api-version=2018-10-18")!,timeoutInterval: Double.infinity)
+            request.addValue("c455d00cb0f64e238a5282d75921f27e", forHTTPHeaderField: "Subscription-Key")
 
-              } else {
-                print("returned error")
-              }
+            request.httpMethod = "GET"
 
-              guard let content = data else {
-                  print("No data")
-                  return
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+              guard let data = data else {
+                print(String(describing: error))
+                return
               }
-
-              guard let json = (try? JSONSerialization.jsonObject(with: content, options: JSONSerialization.ReadingOptions.mutableContainers)) as? [String: Any] else {
-                      return
-              }
-                if let array = json["companies"] as? [String] {
-                        self.tableArray = array
-                    }
-                print(self.tableArray)
-                DispatchQueue.main.async {
-                    self.listTableView.reloadData()
-                }
+              print(String(data: data, encoding: .utf8)!)
+              semaphore.signal()
             }
+
             task.resume()
-        }
-    //https://www.raywenderlich.com/3244963-urlsession-tutorial-getting-started
+            semaphore.wait()
+    }
+
         //MARK: - Api end
 }
+

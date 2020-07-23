@@ -22,8 +22,6 @@ class ffCell: UICollectionViewCell {
         didSet {
             personImageView.image = UIImage(named: (friendsInAccount.friendImage)!)
             personName.text = friendsInAccount.friendName
-            
-            print("set")
         }
     }
 

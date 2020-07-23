@@ -8,7 +8,8 @@
 
 import UIKit
 import AVFoundation
-
+import Firebase
+import MLKit
 
 class camVC: UIViewController {
 
@@ -18,6 +19,9 @@ class camVC: UIViewController {
     var capturePhotoOutput: AVCapturePhotoOutput!
     var readyImage: UIImage!
 
+    
+
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -27,6 +31,7 @@ class camVC: UIViewController {
         
     }
     
+
     
     override func viewDidAppear(_ animated: Bool) {
       super.viewDidAppear(animated)

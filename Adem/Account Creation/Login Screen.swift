@@ -17,6 +17,11 @@ class login: UIViewController, UITextFieldDelegate {
     var buttonsUsedToLogIn = loginButtonView()
     var maybeButton = navigationButton()
     
+    //MARK: Login methods
+    var facebookLoginImage = roundButtonView()
+    var twitterLoginImage = roundButtonView()
+    var GoogleLoginImage = roundButtonView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
             
@@ -61,6 +66,7 @@ class login: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(animated)
 //        firebaseAuth.removeStateDidChangeListener(handle!)
     }
+    
     func incorrectInformationAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message:
             message, preferredStyle: .alert)
@@ -68,17 +74,13 @@ class login: UIViewController, UITextFieldDelegate {
         }))
         self.present(alertController, animated: true, completion: nil)
     }
+    
     @objc func handelLogin() {
         //Making sure that credentials are correct
-        guard let email = userInfoCaptureElements.emailTextField.text, !email.isEmpty, let password = userInfoCaptureElements.passwordTextField.text, !password.isEmpty else {
-            incorrectInformationAlert(title: "Login Failed", message: "It doesn't work like that...")
-            //https://www.youtube.com/watch?v=1HN7usMROt8
-            //50:22
-            return
-        }
+        guard let email = userInfoCaptureElements.emailTextField.text else { return }
+        guard let password = userInfoCaptureElements.passwordTextField.text else { return }
         
         //User: Signed in with email
-        
         firebaseAuth.signIn(withEmail: email, password: password) { (authResult, error) in //[weak self] (authResult, error) in
             //guard let strongSelf = self else { return }
             
@@ -90,22 +92,24 @@ class login: UIViewController, UITextFieldDelegate {
               case .userDisabled:
                 // Error: The user account has been disabled by an administrator.
                 print("disabled")
+              case .missingEmail:
+                self.incorrectInformationAlert(title: "Login Failed", message: "Email missing")
               case .wrongPassword:
                 // Error: The password is invalid or the user does not have a password.
                 self.incorrectInformationAlert(title: "Login Failed", message: "Password incorrect")
               case .invalidEmail:
                 // Error: Indicates the email address is malformed.
                 self.incorrectInformationAlert(title: "Login Failed", message: "Email incorrect")
+              case .accountExistsWithDifferentCredential:
+                self.incorrectInformationAlert(title: "Login Failed", message: "Incorrect information")
+              case .emailAlreadyInUse:
+                self.incorrectInformationAlert(title: "Login Failed", message: "Email already in use")
               default:
                   print("Error: \(error.localizedDescription)")
               }
             } else {
-                
                 print("User signs in successfully")
-                let listController = tabBar()
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                appDelegate.window?.rootViewController = listController
-                appDelegate.window?.makeKeyAndVisible()
+                self.sendToListScreen()
             }
         }
     }
@@ -122,9 +126,9 @@ class login: UIViewController, UITextFieldDelegate {
         return false
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.view.endEditing(true)
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        self.view.endEditing(true)
+//    }
 
     let loginFieldView: UIView = {
         let logintextfield = UIView()
@@ -138,30 +142,23 @@ class login: UIViewController, UITextFieldDelegate {
     }()
 
     @objc func handelFacebooksignUp() {
-
+        print("Sending user to Facebook Flow")
     }
     
     @objc func handelGooglesignUp() {
-        let signUpInfos = userFlowViewControllerTwo()
+        let signUpInfos = userCreation()
         self.present(signUpInfos, animated: true, completion: nil)
-     print("Sending user to sign up Flow")
+        print("Sending user to Google Flow")
     }
     
     @objc func handelTwittersignUp() {
-        
-     print("Sending user to sign up Flow")
+        print("Sending to Twitter Flow")
     }
 
     
     @objc func handelSignUp() {
-        
-        //Check how this is transitioning and fix it for a navigation controller
-     
         let signUpInfo = UserInfo()
-     //   let signUpInfo = moreInfo()
-     //self.navigationController?.pushViewController(signUpInfo, animated: true)
         self.present(signUpInfo, animated: true, completion: nil)
-        print("Sending user to sign up Flow")
     }
     
     @objc func handleSkip() {
@@ -175,17 +172,12 @@ class login: UIViewController, UITextFieldDelegate {
             "uid": uid
             
         ]) { (error) in
-
-
             if let error = error {
                 print("Error creating documents: \(error.localizedDescription)")
             }
         }
         }
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        let skipAccountCreation = tabBar()
-        appDelegate.window?.rootViewController = skipAccountCreation
+        sendToListScreen()
     }
     
     let ademImageHolder: UIImageView = {
@@ -203,7 +195,6 @@ class login: UIViewController, UITextFieldDelegate {
         view.addSubview(userInfoCaptureElements)
         view.addSubview(buttonsUsedToLogIn)
         view.addSubview(maybeButton)
-        
         
         maybeButton.translatesAutoresizingMaskIntoConstraints = false
         userInfoCaptureElements.translatesAutoresizingMaskIntoConstraints = false
@@ -225,38 +216,18 @@ class login: UIViewController, UITextFieldDelegate {
         GoogleLoginImage.roundLoginImage.addTarget(self, action: #selector(handelGooglesignUp), for: .touchUpInside)
         maybeButton.largeNextButton.addTarget(self, action: #selector(handleSkip), for: .touchUpInside)
         
-        maybeButtonAttributes()
-     }
-    
-    private func maybeButtonAttributes() {
         maybeButton.largeNextButton.setTitle("Maybe Later", for: .normal)
         maybeButton.largeNextButton.titleLabel?.font = UIFont(name: productFont, size: 12)
         maybeButton.largeNextButton.setTitleColor(UIColor.white, for: .normal)
         maybeButton.largeNextButton.backgroundColor = UIColor.clear
-    }
+     }
     
-    var facebookLoginImage = roundButtonView()
-    var twitterLoginImage = roundButtonView()
-    var GoogleLoginImage = roundButtonView()
-    
-    private func setUpStackView() {
-        
-        let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
-        differentSignUpMethodsStackView.contentMode = .scaleAspectFit
-        //differentSignUpMethodsStackView.spacing = 5
-        differentSignUpMethodsStackView.distribution = .equalSpacing
-        
-        
-        view.addSubview(differentSignUpMethodsStackView)
-        differentSignUpMethodsStackView.translatesAutoresizingMaskIntoConstraints = false
-    }
     
     
     private func setupconstraints() {
  
         let differentSignUpMethodsStackView = UIStackView(arrangedSubviews: [facebookLoginImage, twitterLoginImage, GoogleLoginImage])
         differentSignUpMethodsStackView.contentMode = .scaleAspectFit
-        //differentSignUpMethodsStackView.spacing = 5
         differentSignUpMethodsStackView.distribution = .equalSpacing
         
         
@@ -291,9 +262,6 @@ class login: UIViewController, UITextFieldDelegate {
             maybeButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
             maybeButton.widthAnchor.constraint(equalTo: differentSignUpMethodsStackView.widthAnchor, constant: -100),
             maybeButton.heightAnchor.constraint(equalToConstant: 60),
-            
-
         ])
-        
     }
 }

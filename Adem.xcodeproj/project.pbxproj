@@ -51,6 +51,8 @@
 		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
 		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
+		359D693124BD55E500ED0C79 /* viewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D693024BD55E500ED0C79 /* viewController.swift */; };
+		359D693724C9123F00ED0C79 /* heartsGif.json in Resources */ = {isa = PBXBuildFile; fileRef = 359D693624C9123F00ED0C79 /* heartsGif.json */; };
 		359E325C23D7F8D50049FA75 /* filterSetUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E325B23D7F8D50049FA75 /* filterSetUp.swift */; };
 		35B0F300245A82F900823BCE /* firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F2FF245A82F900823BCE /* firebase.swift */; };
 		35C3A35A23C6075400E12747 /* loginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35923C6075400E12747 /* loginViews.swift */; };
@@ -158,6 +160,8 @@
 		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
 		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
+		359D693024BD55E500ED0C79 /* viewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewController.swift; sourceTree = "<group>"; };
+		359D693624C9123F00ED0C79 /* heartsGif.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; name = heartsGif.json; path = ../../../../../Users/colemancoats/Downloads/heartsGif.json; sourceTree = "<group>"; };
 		359E325B23D7F8D50049FA75 /* filterSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterSetUp.swift; sourceTree = "<group>"; };
 		35B0F2FF245A82F900823BCE /* firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firebase.swift; sourceTree = "<group>"; };
 		35C3A35923C6075400E12747 /* loginViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginViews.swift; sourceTree = "<group>"; };
@@ -328,6 +332,15 @@
 			path = productScreens;
 			sourceTree = "<group>";
 		};
+		359D692F24BD55C400ED0C79 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				359D693624C9123F00ED0C79 /* heartsGif.json */,
+				35D6480222ECBABB00015352 /* Assets.xcassets */,
+			);
+			path = assets;
+			sourceTree = "<group>";
+		};
 		35D647EC22ECBABA00015352 = {
 			isa = PBXGroup;
 			children = (
@@ -373,11 +386,11 @@
 				35D6483922ECBC0800015352 /* Transition */,
 				35D6483522ECBBDD00015352 /* Alert */,
 				35E95CBF23E4F47400B6F960 /* Review for Delete */,
+				359D692F24BD55C400ED0C79 /* assets */,
 				35D647F822ECBABA00015352 /* AppDelegate.swift */,
 				35D647FA22ECBABA00015352 /* ViewController.swift */,
 				35D6489922ECF8CC00015352 /* GoogleService-Info.plist */,
 				35D647FC22ECBABA00015352 /* Main.storyboard */,
-				35D6480222ECBABB00015352 /* Assets.xcassets */,
 				35D6480422ECBABB00015352 /* LaunchScreen.storyboard */,
 				35D6480722ECBABB00015352 /* Info.plist */,
 				35D647FF22ECBABA00015352 /* Adem.xcdatamodeld */,
@@ -447,6 +460,7 @@
 				35D6484D22ECBD1300015352 /* toolBar.swift */,
 				35E95CC223EA69AB00B6F960 /* fonts.swift */,
 				35B0F2FF245A82F900823BCE /* firebase.swift */,
+				359D693024BD55E500ED0C79 /* viewController.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -669,6 +683,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				35D6480622ECBABB00015352 /* LaunchScreen.storyboard in Resources */,
+				359D693724C9123F00ED0C79 /* heartsGif.json in Resources */,
 				35D6489A22ECF8CC00015352 /* GoogleService-Info.plist in Resources */,
 				35D6480322ECBABB00015352 /* Assets.xcassets in Resources */,
 				35D647FE22ECBABA00015352 /* Main.storyboard in Resources */,
@@ -893,6 +908,7 @@
 				357B35F423A9DE8E00223F51 /* photoCaptureDelegate.swift in Sources */,
 				35669AD524083C6900C95DFB /* meals save.swift in Sources */,
 				35D6487D22ECBF0D00015352 /* accountViews.swift in Sources */,
+				359D693124BD55E500ED0C79 /* viewController.swift in Sources */,
 				35D6485322ECBD5D00015352 /* ListVC.swift in Sources */,
 				3583B08224660BA600879559 /* fireStoreProtocol.swift in Sources */,
 				357B35F023A9DDEA00223F51 /* camera.swift in Sources */,
