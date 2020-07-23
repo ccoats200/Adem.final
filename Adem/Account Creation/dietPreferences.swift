@@ -10,31 +10,31 @@ import Foundation
 import UIKit
 
 class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLayout {
-
+    
     var currentViewControllerIndex = 0
-    let viewControllerDataSource = ["\(preferenceProgressViews())"]
-
     var data = [friendsListInfo]()
-        
     //reuse ID's
-    let adtest = "privacy"
+    let cellID = "Test"
     let cellHeight = 60
+    
+    var preferencesStuff: [preferenceContent] = []
+    var preferencesCount = preferencesAttributes
+    var selectedItems: [String]?
 
-    //MARK: Element calls
+    //MARK: CollectionView setUp
     var preferencesCollectionView: UICollectionView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.white
         setUpSubviews()
         setuplayoutConstraints()
-        
     }
     
     
     //MARK: Alert
     @objc func handelDismiss() {
-        
         incorrectInformationAlert(title: "Are you Sure", message: "You can finish setting everything up later")
         //self.dismiss(animated: true, completion: nil)
     }
@@ -48,8 +48,6 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         }))
         
         self.present(alertController, animated: true, completion: nil)
-        
-        
     }
     //MARK: End Alert
     
@@ -90,26 +88,16 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     override func viewWillAppear(_ animated: Bool) {
 
     }
-    
-    //MARK: Arrays
-    let preferencesDictionary = [0: ["Pescaterian","Vegetarian","Vegan","Nuts","Lactose","Other", "None"]]
 
-    
     func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
-    
-    //var selectedFoodPreferencesCells = [IndexPath]()
-    var selectedFoodPreferencesCells = [String]()
 
     private func setUpSubviews() {
         
 
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-    
-        //layout.scrollDirection = .horizontal
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
 
         //MARK: CollectionView attributes
@@ -136,14 +124,10 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
            
            let padding: CGFloat =  50
-           
            let collectionViewSize = collectionView.frame.size.width - padding
-
            return CGSize(width: collectionViewSize/2, height: 80)
        }
-    
-    let cellID = "Test"
-    
+
     private func setuplayoutConstraints() {
         
            NSLayoutConstraint.activate([
@@ -170,12 +154,7 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
             
         ])
     }
-    var preferencesStuff: [preferenceContent] = []
-    var preferencesCount = preferencesAttributes
-    var selectedItems: [String]?
 }
-
-
 
 extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
@@ -184,28 +163,25 @@ extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDat
         for i in preferencesCount {
                 preferencesStuff.append(i)
         }
-       
         return preferencesStuff.count
     }
     
-    //var emptyDict: [String: String] = [:]
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
-        
         preferencesCell.preferencesElements = preferencesStuff[indexPath.row]
-
         return preferencesCell
-        
-        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
         currentCell?.preferencesElements = preferencesStuff[indexPath.row]
-    
         selectedItems?.append(preferencesStuff[indexPath.item].preferencesLabelText!)
         print("firebase preferences \(selectedItems)")
-
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign else { return }
+        currentCell.preferencesElements = preferencesStuff[indexPath.row]
     }
 }
 

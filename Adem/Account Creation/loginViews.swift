@@ -149,7 +149,6 @@ class loginButtonView: UIView {
         loginButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
         loginButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant:  -24),
         loginButton.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 1/2),
-        
 
         signUpButton.topAnchor.constraint(equalTo: loginButton.bottomAnchor),
         signUpButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
@@ -163,18 +162,18 @@ class loginButtonView: UIView {
 class roundButtonView: UIView {
   
     //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
   
-    setupView()
-  }
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
   
   //initWithCode to init view from xib or storyboard
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
     
-    setupView()
-  }
+        setupView()
+    }
     
     let roundLoginImage: UIButton = {
 //        https://www.iconfinder.com/icons/1298745/google_icon
@@ -198,7 +197,6 @@ class roundButtonView: UIView {
     self.addSubview(roundLoginImage)
     roundLoginImage.translatesAutoresizingMaskIntoConstraints = false
     
-    
     NSLayoutConstraint.activate([
         
         roundLoginImage.topAnchor.constraint(equalTo: self.topAnchor),
@@ -209,164 +207,54 @@ class roundButtonView: UIView {
   }
 }
 
-
 //MARK: Login button view
-class preferenceProgressViews: UIView {
-  
-    //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-  
-    self.layer.masksToBounds = true
-    self.backgroundColor = UIColor.ademGreen
+class preferenceNextButtonView: UIView {
     
-    setupView()
-  }
-  
-  //initWithCode to init view from xib or storyboard
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    
-    setupView()
-  }
-  
-    let closePreferencesButton: UIButton = {
-        let login = UIButton(type: .system)
-        //login.backgroundColor = UIColor.ademBlue
-        login.setTitle("X", for: .normal)
-        login.translatesAutoresizingMaskIntoConstraints = false
-        //login.titleLabel?.font = UIFont(name: productFont, size: 20)
-        login.layer.cornerRadius = 5
-        login.layer.masksToBounds = true
-        login.setTitleColor(UIColor.white, for: .normal)
-        login.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        return login
-    }()
-    
-    let pBar: UIProgressView = {
-        let progressViewBar = UIProgressView(progressViewStyle: .default)
-        progressViewBar.setProgress(0.00, animated: true)
-        progressViewBar.trackTintColor = UIColor.white
-//        progressViewBar.tintColor = UIColor.ademGreen
-        progressViewBar.tintColor = UIColor.ademBlue
-
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        return progressViewBar
-    }()
+        self.layer.masksToBounds = true
+        self.backgroundColor = UIColor.white
     
-    let ademImageButton: UIButton = {
-        let infoImage = UIImage(named: "Info")
-        let signUp = UIButton()
-        signUp.setImage(infoImage, for: .normal)
-        signUp.setTitleColor(UIColor.white, for: .normal)
-        signUp.titleLabel?.font = UIFont(name: buttonFont, size: 20)
-        signUp.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)
-        signUp.translatesAutoresizingMaskIntoConstraints = false
-        return signUp
-    }()
-       
-  //common func to init our view
-  private func setupView() {
-
-    
-    
-    
-    self.addSubview(closePreferencesButton)
-    self.addSubview(pBar)
-    self.addSubview(ademImageButton)
-    
-    closePreferencesButton.translatesAutoresizingMaskIntoConstraints = false
-    ademImageButton.translatesAutoresizingMaskIntoConstraints = false
-    pBar.translatesAutoresizingMaskIntoConstraints = false
-
-    NSLayoutConstraint.activate([
-        
-        closePreferencesButton.topAnchor.constraint(equalTo: self.topAnchor),
-        closePreferencesButton.leftAnchor.constraint(equalTo: self.leftAnchor),
-        closePreferencesButton.widthAnchor.constraint(equalToConstant: 50),
-        closePreferencesButton.heightAnchor.constraint(equalTo: self.heightAnchor),
-        
-        
-        pBar.leftAnchor.constraint(equalTo: closePreferencesButton.rightAnchor, constant: 25),
-
-        pBar.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-        pBar.rightAnchor.constraint(equalTo: ademImageButton.leftAnchor, constant: -25),
-
-        ademImageButton.topAnchor.constraint(equalTo: self.topAnchor),
-        ademImageButton.rightAnchor.constraint(equalTo: self.rightAnchor),
-        ademImageButton.widthAnchor.constraint(equalToConstant: 50),
-        ademImageButton.heightAnchor.constraint(equalTo: self.heightAnchor),
-    ])
-  }
-}
-
-//MARK: Login button view
-class preferenceNextViews: UIView {
-  
-    //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-  
-    self.layer.masksToBounds = true
-    self.backgroundColor = UIColor.ademGreen
-    //self.layer.cornerRadius = 5
-    
-    setupView()
-  }
-  
-  //initWithCode to init view from xib or storyboard
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    
-    setupView()
-    
-  }
-    
+        setupView()
+    }
+   
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
     
     var nextButton = navigationButton()
     
     let pBar: UIProgressView = {
         let progressViewBar = UIProgressView(progressViewStyle: .bar)
-            progressViewBar.setProgress(0.25, animated: true)
-            progressViewBar.trackTintColor = UIColor.white
-    //        progressViewBar.tintColor = UIColor.ademGreen
-            progressViewBar.tintColor = UIColor.ademGreen
-        //progressViewBar.layer.cornerRadius = 5
-        //progressViewBar.clipsToBounds = true
-
-            
-            return progressViewBar
-        }()
- 
-    private func setupButton() {
+        progressViewBar.setProgress(0.25, animated: true)
+        progressViewBar.trackTintColor = UIColor.white
+        progressViewBar.tintColor = UIColor.ademGreen
+        return progressViewBar
+    }()
+  
+    private func setupView() {
         nextButton.largeNextButton.setTitle("Next", for: .normal)
-    }
-       
     
-  //common func to init our view
-  private func setupView() {
-    setupButton()
 
-    self.backgroundColor = UIColor.white
+        self.addSubview(nextButton)
+        self.addSubview(pBar)
     
-    self.addSubview(nextButton)
-    self.addSubview(pBar)
-    
-    nextButton.translatesAutoresizingMaskIntoConstraints = false
-    pBar.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
+        pBar.translatesAutoresizingMaskIntoConstraints = false
 
+        NSLayoutConstraint.activate([
     
-    NSLayoutConstraint.activate([
-    
-        pBar.heightAnchor.constraint(equalToConstant: 8),
-        pBar.widthAnchor.constraint(equalTo: self.widthAnchor),
-        pBar.topAnchor.constraint(equalTo: self.topAnchor),
-        pBar.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            pBar.heightAnchor.constraint(equalToConstant: 8),
+            pBar.widthAnchor.constraint(equalTo: self.widthAnchor),
+            pBar.topAnchor.constraint(equalTo: self.topAnchor),
+            pBar.centerXAnchor.constraint(equalTo: self.centerXAnchor),
         
-        nextButton.heightAnchor.constraint(equalToConstant: 50),
-        nextButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
-        nextButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-        nextButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-    ])
-  }
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
+            nextButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
+            nextButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            nextButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        ])
+    }
 }

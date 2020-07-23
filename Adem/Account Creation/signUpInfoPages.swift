@@ -13,7 +13,6 @@ import UIKit
 class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayout {
 
     var currentViewControllerIndex = 0
-    let viewControllerDataSource = ["\(preferenceProgressViews())"]
 
     var data = [friendsListInfo]()
         

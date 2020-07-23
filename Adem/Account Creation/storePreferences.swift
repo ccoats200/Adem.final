@@ -12,7 +12,6 @@ import UIKit
 class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLayout {
 
     var currentViewControllerIndex = 0
-    let viewControllerDataSource = ["\(preferenceProgressViews())"]
 
     var data = [friendsListInfo]()
         

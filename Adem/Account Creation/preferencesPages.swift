@@ -29,18 +29,10 @@ class signUpUserFlow: UIPageViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let colors: [UIColor] = [
-        .purple,
-        .green,
-        .blue
-    ]
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //self.navigationController?.navigationItem.title = "please2"
           
         //MARK: Remove data source to stop scroll
-//        self.dataSource = self
         self.dataSource = nil
         self.delegate = nil
         
@@ -54,16 +46,14 @@ class signUpUserFlow: UIPageViewController {
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-            
-    
     // set the pageControl.currentPage to the index of the current viewController in pages
+   
         if let viewControllers = pageViewController.viewControllers {
             if let viewControllerIndex = self.pages.firstIndex(of: viewControllers[0]) {
-                //self.pageControl.currentPage = viewControllerIndex
+            //self.pageControl.currentPage = viewControllerIndex
             }
         }
     }
-
 }
 
 extension signUpUserFlow: UIPageViewControllerDataSource {
@@ -126,22 +116,18 @@ extension signUpUserFlow: UIPageViewControllerDelegate {
 class userCreation: UIViewController {
 
     var signInFlow = signUpUserFlow()
-    var bottomView = preferenceNextViews()
+    var bottomView = preferenceNextButtonView()
     var currentPage = 0
     var prog: Float = 0.00
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationController?.navigationBar.backgroundColor = UIColor.white
         view.addSubview(bottomView)
         bottomView.translatesAutoresizingMaskIntoConstraints = false
-        // instantiate MyPageViewController and add it as a Child View Controller
         signInFlow = signUpUserFlow()
         addChild(signInFlow)
-        // we need to re-size the page view controller's view to fit our container view
         signInFlow.view.translatesAutoresizingMaskIntoConstraints = false
-        // add the page VC's view to our container view
         view.addSubview(signInFlow.view)
         setUpConstraint()
         signInFlow.didMove(toParent: self)
@@ -152,7 +138,7 @@ class userCreation: UIViewController {
     }
     
     private func setUpButton() {
-        bottomView.nextButton.largeNextButton.addTarget(self, action: #selector(sendUserToNextScreen), for: .touchUpInside)
+        nextButtonEngagement()
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
@@ -161,6 +147,13 @@ class userCreation: UIViewController {
         //Top right
         gradient.endPoint = CGPoint(x: 1, y: 1)
         //bottomView.nextButton.layer.addSublayer(gradient)
+    }
+    func nextButtonEngagement() {
+        
+        bottomView.nextButton.largeNextButton.addTarget(self, action: #selector(sendUserToNextScreen), for: .touchUpInside)
+        
+        //Needs to change based on current page below
+//        updatePreferencesValues(preferenceDimension: preference.diet.rawValue, preferenceMap: selectedItems)
     }
     
     func sendForward() {

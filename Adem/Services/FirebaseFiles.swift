@@ -17,6 +17,7 @@ let currentUser = firebaseAuth.currentUser
 let firebaseAuth = Auth.auth()
 let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
 let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
+let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
 
 //MARK: might delete
 let userNames = "Users/user"
@@ -63,6 +64,12 @@ enum engagements: String {
     case engaged = "e"
 }
 
+enum preference: String {
+    case diet = "diet"
+    case flavors = "flavor"
+    case stores = "stores"
+}
+
 enum wasted: String {
     case oneHundred = "100%"
     case seventyFive = "75%"
@@ -73,6 +80,7 @@ enum wasted: String {
 
 extension UIViewController {
     
+    //MARK: -timeStamp
     func addTimeStamp(id: String, action: String) {
         //MARK: use engagements enum for action
         //https://firebase.google.com/docs/firestore/solutions/aggregation
@@ -85,6 +93,7 @@ extension UIViewController {
         //use .updateData for adding a new listDate, pantryDate, etc.
     }
     
+    //MARK: -Waste
     func addWasteAmount(id: String, amount: String) {
         
         userfirebaseProducts.document(id).collection("wasteData").addDocument(data: [
@@ -93,6 +102,7 @@ extension UIViewController {
             ])
     }
     
+    //MARK: -Quantity
     func updateProductQuantityValue(id: String, quantity: Int) {
         // Or more likely change something related to this cell specifically.
         for i in arrayofProducts where i.id == id {
@@ -112,6 +122,7 @@ extension UIViewController {
         }
     }
     
+    //MARK: -List/Pantry
     func updateProductLocationValues(indexPath: String, pantry: Bool, list: Bool){
              
             // Or more likely change something related to this cell specifically.
@@ -128,16 +139,21 @@ extension UIViewController {
                         print("Document successfully updated")
                     }
                 }
-                //TimeStamp
-                
-    //        }
-    //        let firstProduct = arrayofProducts[0].id
-    //        let insertedIndexPath = IndexPath(index: firstProduct!.count)
-    //        self.listTableView.insertRows(at: [insertedIndexPath], with: .top)
-    //        self.listTableView.reloadData()
+
         }
-    
-    //kinda
+    //MARK: -Preferences
+    func updatePreferencesValues(preferenceDimension: String, preferenceMap: [String]) {
+        userfirebaseDietPreferences.document("\(preferenceDimension)").updateData([
+            "\(preferenceDimension)": preferenceMap,
+        ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+        }
+    //Might be useful
        func addCategory(id: String) {
            userfirebaseProducts.document(id).setData([
                "category" : "Extract"], merge: true)
