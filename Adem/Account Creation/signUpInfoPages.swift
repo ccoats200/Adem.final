@@ -22,6 +22,10 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
 
     //MARK: Element calls
     var preferencesCollectionView: UICollectionView!
+    var nextButton = navigationButton()
+    var preferencesCount = flavorsAttributes
+    var selectedItems: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +41,26 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     @objc func handelDismiss() {
         
         incorrectInformationAlert(title: "Are you Sure", message: "You can finish setting everything up later")
+    }
+    
+    private func setUpButtons() {
+        
+        nextButton.largeNextButton.setTitle("Next", for: .normal)
+        nextButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
+    }
+    
+    @objc func handelNext() {
+        updatePreferences(preferenceDimension: "flavors", preferenceMap: selectedItems)
+        
+        let signUpInfos = addedStorePreferencesTwo()
+        if #available(iOS 13.0, *) {
+            signUpInfos.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
+        self.present(signUpInfos, animated: true, completion: nil)
+        print("test")
     }
     
     func incorrectInformationAlert(title: String, message: String) {
@@ -108,48 +132,7 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     2: ["Walmart","Wegmans","Vons","Stater Bros","Not on here", "None", "Please","Work"],
     3: ["Thanks"]]
     
-    
-    @objc func handelNext() {
-        //FIXME: What to do with this
-        print("there are \((preferencesDictionary.keys.count)-1) sets")
-        
-        if currentPage < numberOfPages {
-            currentPage+=1
-        }
-        
-        if prog < Float(numberOfPages/numberOfPages) {
-            prog += (Float(numberOfPages/numberOfPages)/Float(numberOfPages))
-            print(prog)
-        }
-        coverMeImReloading()
-    }
-    
-    private func sendingPreferencesToCloud() {
-                
-//        guard let flavorPreferences = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else { return }
-//
-//        let dataToSave: [String: Any] = [
-//                   "FirstName": flavorPreferences
-//               ]
-//
-//       //MARK: this needs to be a collection
-//        db.collection("Users").document().collection("private").document("UsersPrivateInfo").setData(dataToSave) { (error) in
-//
-//        }
-    }
-    
-    func coverMeImReloading() {
-        
-        preferencesCollectionView.reloadData()
-        
-        switch currentPage {
-        case currentPage:
-            welcomeLabel.text = promptArray[currentPage]
-        default:
-            welcomeLabel.text = "Something Went Wrong... Let me check the recipe"
-        }
-    }
-    
+ 
     func numberOfSections(in tableView: UITableView) -> Int {
             return 1
         }
@@ -160,6 +143,8 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     private func setUpSubviews() {
         
 
+        setUpButtons()
+        
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         //layout.sectionInset = UIEdgeInsets(top: (self.view.frame.height)/5, left: (self.view.frame.width)/5, bottom: (self.view.frame.width)/5, right: (self.view.frame.height)/5)
     
@@ -179,7 +164,9 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         view.addSubview(textFieldSeparator)
         view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
+        view.addSubview(nextButton)
         
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -216,31 +203,32 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
             infoLabel.heightAnchor.constraint(equalToConstant: 50),
             
             preferencesCollectionView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
-            preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            preferencesCollectionView.bottomAnchor.constraint(equalTo: nextButton.topAnchor),
             preferencesCollectionView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 5),
+            nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nextButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
+            
         ])
     }
-    var flavorsCount = flavorsAttributes
-    var flavorStuff: [flavorsContent] = []
+//    var flavorsCount = flavorsAttributes
+//    var flavorStuff: [flavorsContent] = []
 }
 
 extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        for i in flavorsCount {
-            flavorStuff.append(i)
-         }
-        
-         return flavorStuff.count
+        return preferencesCount.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
-        preferencesCell.flavorsElements = flavorStuff[indexPath.row]
+        preferencesCell.flavorsElements = preferencesCount[indexPath.row]
         
         return preferencesCell
         }
@@ -248,13 +236,18 @@ extension addedFlavorPreferences: UICollectionViewDelegate, UICollectionViewData
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         guard let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign else { return }
-
-        currentCell.flavorsElements = flavorStuff[indexPath.row]
+        currentCell.flavorsElements = preferencesCount[indexPath.row]
+        let selectedName = preferencesCount[indexPath.row].flavorLabelText
+        selectedItems.append(selectedName!)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         
         guard let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign else { return }
-        currentCell.flavorsElements = flavorStuff[indexPath.row]
+        currentCell.flavorsElements = preferencesCount[indexPath.row]
+        let selectedName = preferencesCount[indexPath.row].flavorLabelText
+        if let index = selectedItems.firstIndex(of: selectedName!) {
+            selectedItems.remove(at: index)
+        }
     }
 }

@@ -11,6 +11,9 @@ import UIKit
 import Firebase
 import FirebaseAnalytics
 
+//MARK: Retired for Nav and button
+/*
+
 class signUpUserFlow: UIPageViewController {
     
     var pages = [UIViewController]()
@@ -31,6 +34,7 @@ class signUpUserFlow: UIPageViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
           
         //MARK: Remove data source to stop scroll
         self.dataSource = nil
@@ -113,12 +117,17 @@ extension signUpUserFlow: UIPageViewControllerDelegate {
     
 }
 
+
+
 class userCreation: UIViewController {
 
     var signInFlow = signUpUserFlow()
     var bottomView = preferenceNextButtonView()
     var currentPage = 0
     var prog: Float = 0.00
+    
+    //master dict
+    var prefDict = [String : [String]]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -136,9 +145,9 @@ class userCreation: UIViewController {
         //MARK: Buttons
         setUpButton()
     }
-    
+        
     private func setUpButton() {
-        nextButtonEngagement()
+        bottomView.nextButton.largeNextButton.addTarget(self, action: #selector(sendUserToNextScreen), for: .touchUpInside)
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
@@ -148,12 +157,15 @@ class userCreation: UIViewController {
         gradient.endPoint = CGPoint(x: 1, y: 1)
         //bottomView.nextButton.layer.addSublayer(gradient)
     }
-    func nextButtonEngagement() {
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         
-        bottomView.nextButton.largeNextButton.addTarget(self, action: #selector(sendUserToNextScreen), for: .touchUpInside)
-        
-        //Needs to change based on current page below
-//        updatePreferencesValues(preferenceDimension: preference.diet.rawValue, preferenceMap: selectedItems)
+//        self.presentingViewController?.dismiss(animated: true, completion: {
+//            let alert = UIAlertController(title: "d", message: "adf", preferredStyle: .alert)
+//            let top = getRootController().topMostViewController()
+//            top.present(alert, animated: true, completion: nil)
+//        })
     }
     
     func sendForward() {
@@ -167,36 +179,33 @@ class userCreation: UIViewController {
     }
     
     @objc func sendUserToNextScreen() {
-        if currentPage < ((signInFlow.pages.count)-1) {
+        if currentPage < ((signInFlow.pages.count) - 1) {
+            print("next page")
+//            updatePreferences(preferenceDimension: prefDict.keys, preferenceMap: prefDict.values)
             sendForward()
         } else {
+            //should be an alert
+            //Something is wronge with the below function
             sendToListScreen()
         }
     }
-
-    @objc func testReverse() {
-           //This needs to be the next page button
-           //I need to remove the scroll function so that they cant scroll back
-           if currentPage < ((signInFlow.pages.count)-1) {
-           currentPage-=1
-           
-           signInFlow.setViewControllers([signInFlow.pages[currentPage]], direction: .reverse, animated: true, completion: nil)
-               print("The button is working on page \(currentPage)")
-           } else { print("There are no more pages \(currentPage)") }
-       }
     
     private func setUpConstraint() {
+        
         NSLayoutConstraint.activate([
 
+            signInFlow.view.topAnchor.constraint(equalTo: view.topAnchor),
+            signInFlow.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
+            signInFlow.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            signInFlow.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+           
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             bottomView.widthAnchor.constraint(equalTo: view.widthAnchor),
             bottomView.heightAnchor.constraint(equalToConstant: 100),
             bottomView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         
-            signInFlow.view.topAnchor.constraint(equalTo: view.topAnchor),
-            signInFlow.view.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -100),
-            signInFlow.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            signInFlow.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            
         ])
     }
 }
+*/

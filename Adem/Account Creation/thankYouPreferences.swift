@@ -11,8 +11,6 @@ import UIKit
 
 class thankYouPreferences: UIViewController {
 
-    var currentViewControllerIndex = 0
-
     //MARK: Element calls
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,7 +22,19 @@ class thankYouPreferences: UIViewController {
         setuplayoutConstraints()
     }
     
+    var nextButton = navigationButton()
     
+    private func setUpButtons() {
+        
+        nextButton.largeNextButton.setTitle("Next", for: .normal)
+        nextButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
+    }
+    
+    @objc func handelNext() {
+        sendToListScreen()
+        print("sent")
+    }
     
     //Name Section
     let welcomeLabel: UILabel = {
@@ -75,12 +85,14 @@ class thankYouPreferences: UIViewController {
     }
 
     private func setUpSubviews() {
-        
+        setUpButtons()
         //MARK: subviews
         view.addSubview(welcomeLabel)
         view.addSubview(textFieldSeparator)
 //        view.addSubview(ademImageHolder)
         view.addSubview(subText)
+        view.addSubview(nextButton)
+        
         
 
         //TODO: this should be a loading or animation to indicate saving
@@ -88,7 +100,7 @@ class thankYouPreferences: UIViewController {
 //        welcomeLabel.layer.borderColor = UIColor.ademGreen.cgColor
 //        welcomeLabel.layer.cornerRadius = 75
         
-        
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         ademImageHolder.translatesAutoresizingMaskIntoConstraints = false
@@ -116,9 +128,14 @@ class thankYouPreferences: UIViewController {
 //            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             
             subText.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            subText.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -150),
+            subText.bottomAnchor.constraint(equalTo: nextButton.bottomAnchor, constant: -150),
             subText.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             subText.widthAnchor.constraint(equalTo: view.widthAnchor, constant:  -25),
+            
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 5),
+            nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nextButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
             
         ])
     }

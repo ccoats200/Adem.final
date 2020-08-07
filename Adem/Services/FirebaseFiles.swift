@@ -17,6 +17,7 @@ let currentUser = firebaseAuth.currentUser
 let firebaseAuth = Auth.auth()
 let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
 let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
+//let userfirebaseDietPreferences = db.collection("Users").document("B0DOT6FsvLfmhoUw9CIKGkWHxZM2").collection("preferences")
 let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
 
 //MARK: might delete
@@ -78,6 +79,10 @@ enum wasted: String {
     case none = "0%"
 }
 
+func getRootController () -> UIViewController { // function in global scope
+    return (UIApplication.shared.delegate?.window!!.rootViewController)!
+}
+
 extension UIViewController {
     
     //MARK: -timeStamp
@@ -100,6 +105,22 @@ extension UIViewController {
                 "time" : Firebase.Timestamp(),
                 "value" : amount,
             ])
+    }
+    func topMostViewController() -> UIViewController {
+
+        if let presented = self.presentedViewController {
+            return presented.topMostViewController()
+        }
+
+        if let navigation = self as? UINavigationController {
+            return navigation.visibleViewController?.topMostViewController() ?? navigation
+        }
+
+        if let tab = self as? UITabBarController {
+            return tab.selectedViewController?.topMostViewController() ?? tab
+        }
+
+        return self
     }
     
     //MARK: -Quantity
@@ -142,8 +163,10 @@ extension UIViewController {
 
         }
     //MARK: -Preferences
-    func updatePreferencesValues(preferenceDimension: String, preferenceMap: [String]) {
-        userfirebaseDietPreferences.document("\(preferenceDimension)").updateData([
+    func updatePreferences(preferenceDimension: String, preferenceMap: [String]) {
+        //the dimension should be the diet, stores, flavors, etc. It has it's own doc in FB
+        // the map should be the values that are in that dimension
+        userfirebaseDietPreferences.document("\(preferenceDimension)").setData([
             "\(preferenceDimension)": preferenceMap,
         ]) { err in
                 if let err = err {
@@ -153,6 +176,7 @@ extension UIViewController {
                 }
             }
         }
+    
     //Might be useful
        func addCategory(id: String) {
            userfirebaseProducts.document(id).setData([

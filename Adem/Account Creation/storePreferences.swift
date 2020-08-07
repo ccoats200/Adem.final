@@ -21,6 +21,10 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
 
     //MARK: Element calls
     var preferencesCollectionView: UICollectionView!
+    var nextButton = navigationButton()
+    var preferencesCount = stores
+    var selectedItems: [String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -37,6 +41,7 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         //self.dismiss(animated: true, completion: nil)
     }
     
+    
     func incorrectInformationAlert(title: String, message: String) {
         let alertController = UIAlertController(title: title, message:
             message, preferredStyle: .actionSheet) //might be better as an .alert
@@ -51,6 +56,25 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
     }
     //MARK: End Alert
     
+    private func setUpButtons() {
+        
+        nextButton.largeNextButton.setTitle("Next", for: .normal)
+        nextButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
+    }
+    
+    @objc func handelNext() {
+        updatePreferences(preferenceDimension: "stores", preferenceMap: selectedItems)
+        
+        let signUpInfos = thankYouPreferences()
+        if #available(iOS 13.0, *) {
+            signUpInfos.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
+        self.present(signUpInfos, animated: true, completion: nil)
+        print("test")
+    }
     
     //Name Section
     let welcomeLabel: UILabel = {
@@ -98,7 +122,8 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
 
     private func setUpSubviews() {
         
-
+        setUpButtons()
+        
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
     
         //layout.scrollDirection = .horizontal
@@ -106,7 +131,7 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
 
         layout.itemSize = CGSize(width: (view.frame.width)/2, height: 80)
         preferencesCollectionView.register(storeCellDesign.self, forCellWithReuseIdentifier: cellID)
-
+        
         //MARK: CollectionView attributes
         preferencesCollectionView.dataSource = self
         preferencesCollectionView.delegate = self
@@ -119,7 +144,9 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         view.addSubview(textFieldSeparator)
         view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
+        view.addSubview(nextButton)
 
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -149,25 +176,26 @@ class addedStorePreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
             infoLabel.heightAnchor.constraint(equalToConstant: 50),
             
             preferencesCollectionView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
-            preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            preferencesCollectionView.bottomAnchor.constraint(equalTo: nextButton.topAnchor),
             preferencesCollectionView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 5),
+            nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nextButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
+            
         ])
     }
-    var preferencesStuff: [storeContent] = []
-    var preferencesCount = stores
+//    var preferencesStuff: [storeContent] = []
+//    var preferencesCount = stores
 }
 
 extension addedStorePreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        for i in preferencesCount {
-            preferencesStuff.append(i)
-        }
-       
-        return preferencesStuff.count
+        return preferencesCount.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -175,7 +203,7 @@ extension addedStorePreferencesTwo: UICollectionViewDelegate, UICollectionViewDa
         let storeCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! storeCellDesign
         storeCell.layer.cornerRadius = 5
         
-        storeCell.accountImage = preferencesStuff[indexPath.row]
+        storeCell.accountImage = preferencesCount[indexPath.row]
         return storeCell
         
     }
@@ -183,13 +211,18 @@ extension addedStorePreferencesTwo: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? storeCellDesign
         
-        currentCell?.accountImage = preferencesStuff[indexPath.row]
+        currentCell?.accountImage = preferencesCount[indexPath.row]
+        let selectedName = preferencesCount[indexPath.row].storeName
+        selectedItems.append(selectedName!)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? storeCellDesign
-        currentCell?.accountImage = preferencesStuff[indexPath.row]
+        currentCell?.accountImage = preferencesCount[indexPath.row]
+        let selectedName = preferencesCount[indexPath.row].storeName
+        if let index = selectedItems.firstIndex(of: selectedName!) {
+            selectedItems.remove(at: index)
+        }
     }
-    
 }
 

@@ -17,6 +17,7 @@ struct preferenceContent {
     var preferencesLabelText: String?
 }
 
+
 var preferencesAttributes = [
     preferenceContent(preferenceImage: "fish", preferenceImageSelected: "fish_selected", preferencesLabelText: "Pescaterian"),
     preferenceContent(preferenceImage: "veg", preferenceImageSelected: "veg_selected", preferencesLabelText: "Vegetarian"),
@@ -181,7 +182,6 @@ class storeCellDesign: UICollectionViewCell {
         prefLabel.textAlignment = .center
         prefLabel.text = "Opps"
         prefLabel.textColor = UIColor.ademBlue
-        //prefLabel.backgroundColor = UIColor.red
         prefLabel.font = UIFont(name: productFont, size: 20)
         prefLabel.clipsToBounds = true
         prefLabel.layer.masksToBounds = true

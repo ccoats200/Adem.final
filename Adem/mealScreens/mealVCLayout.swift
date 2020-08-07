@@ -55,27 +55,27 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     @objc func handlefave(sender: UIButton) {
         
-        animationView = .init(name: "heartsGif")
-        animationView?.frame = view.bounds
-        animationView?.animationSpeed = 0.5
-        view.addSubview(animationView!)
-        animationView?.play()
-        /*
-        sleep(2)
-        do {
-            print("t")
-            //animationView?.removeFromSuperview()
-        }
-        
-        */
-        
-        /*
         if productNameSection.faveButton.isSelected == true {
           productNameSection.faveButton.isSelected = false
         } else {
-          productNameSection.faveButton.isSelected = true
+        
+            animationView = .init(name: "heartsGif")
+            animationView?.frame = view.bounds
+            animationView?.animationSpeed = 0.5
+            view.addSubview(animationView!)
+            animationView?.play()
+        
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.7) {
+                self.animationView?.removeFromSuperview()
+                self.productNameSection.faveButton.isSelected = true
+            }
         }
-        */
+    }
+    
+    func fadeOut(withDuration duration: TimeInterval = 1.0) {
+        UIView.animate(withDuration: duration, animations: {
+            self.animationView?.alpha = 0.0
+        })
     }
 
     let segmentContr: UISegmentedControl = {

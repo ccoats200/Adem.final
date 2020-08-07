@@ -17,12 +17,15 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     let cellID = "Test"
     let cellHeight = 60
     
-    var preferencesStuff: [preferenceContent] = []
+//    var preferencesStuff: [preferenceContent] = []
     var preferencesCount = preferencesAttributes
-    var selectedItems: [String]?
+    var selectedItems: [String] = []
+    //var selectedItems: [IndexPath]?
 
+    
     //MARK: CollectionView setUp
     var preferencesCollectionView: UICollectionView!
+    var nextButton = navigationButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,27 +33,13 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         view.backgroundColor = UIColor.white
         setUpSubviews()
         setuplayoutConstraints()
+        if #available(iOS 13.0, *) {
+            self.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
+
     }
-    
-    
-    //MARK: Alert
-    @objc func handelDismiss() {
-        incorrectInformationAlert(title: "Are you Sure", message: "You can finish setting everything up later")
-        //self.dismiss(animated: true, completion: nil)
-    }
-    
-    func incorrectInformationAlert(title: String, message: String) {
-        let alertController = UIAlertController(title: title, message:
-            message, preferredStyle: .actionSheet) //might be better as an .alert
-        alertController.addAction(UIAlertAction(title: "Keep going", style: .default, handler: {action in
-        }))
-        alertController.addAction(UIAlertAction(title: "Finish Later", style: .destructive, handler: {action in
-        }))
-        
-        self.present(alertController, animated: true, completion: nil)
-    }
-    //MARK: End Alert
-    
     
     //Name Section
     let welcomeLabel: UILabel = {
@@ -63,6 +52,26 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         welcome.translatesAutoresizingMaskIntoConstraints = false
         return welcome
     }()
+    
+    private func setUpButtons() {
+        
+        nextButton.largeNextButton.setTitle("Next", for: .normal)
+        nextButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
+    }
+    
+     @objc func handelNext() {
+        updatePreferences(preferenceDimension: "diet", preferenceMap: selectedItems)
+        
+        let signUpInfos = addedFlavorPreferences()
+        if #available(iOS 13.0, *) {
+            signUpInfos.isModalInPresentation = true
+        } else {
+            // Fallback on earlier versions
+        }
+        self.present(signUpInfos, animated: true, completion: nil)
+        print("test")
+    }
     
     let textFieldSeparator: UIView = {
         let textSeparator = UIView()
@@ -96,6 +105,8 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     private func setUpSubviews() {
         
 
+        setUpButtons()
+        
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
@@ -112,8 +123,10 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         view.addSubview(textFieldSeparator)
         view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
+        view.addSubview(nextButton)
         
-
+        
+        nextButton.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -148,9 +161,14 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
             infoLabel.heightAnchor.constraint(equalToConstant: 50),
             
             preferencesCollectionView.topAnchor.constraint(equalTo: infoLabel.bottomAnchor, constant: 20),
-            preferencesCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            preferencesCollectionView.bottomAnchor.constraint(equalTo: nextButton.topAnchor),
             preferencesCollectionView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
             preferencesCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
+            nextButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 5),
+            nextButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nextButton.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            nextButton.heightAnchor.constraint(equalToConstant: 50),
             
         ])
     }
@@ -159,29 +177,29 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
 extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        for i in preferencesCount {
-                preferencesStuff.append(i)
-        }
-        return preferencesStuff.count
+        return preferencesCount.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let preferencesCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! signUpCellDesign
-        preferencesCell.preferencesElements = preferencesStuff[indexPath.row]
+        preferencesCell.preferencesElements = preferencesCount[indexPath.row]
         return preferencesCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign
-        currentCell?.preferencesElements = preferencesStuff[indexPath.row]
-        selectedItems?.append(preferencesStuff[indexPath.item].preferencesLabelText!)
-        print("firebase preferences \(selectedItems)")
+        let selectedName = preferencesCount[indexPath.row].preferencesLabelText
+        currentCell?.preferencesElements = preferencesCount[indexPath.row]
+        selectedItems.append(selectedName!)
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         guard let currentCell = preferencesCollectionView.cellForItem(at: indexPath) as? signUpCellDesign else { return }
-        currentCell.preferencesElements = preferencesStuff[indexPath.row]
+        currentCell.preferencesElements = preferencesCount[indexPath.row]
+        let selectedName = preferencesCount[indexPath.row].preferencesLabelText
+        if let index = selectedItems.firstIndex(of: selectedName!) {
+            selectedItems.remove(at: index)
+        }
     }
 }
 

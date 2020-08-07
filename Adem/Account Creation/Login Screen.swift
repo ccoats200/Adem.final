@@ -146,13 +146,20 @@ class login: UIViewController, UITextFieldDelegate {
     }
     
     @objc func handelGooglesignUp() {
-        let signUpInfos = userCreation()
-        self.present(signUpInfos, animated: true, completion: nil)
         print("Sending user to Google Flow")
     }
     
     @objc func handelTwittersignUp() {
-        print("Sending to Twitter Flow")
+        
+//        let signUpInfos = userCreation()
+        let signUpInfos = addedDietPreferencesTwo()
+        if #available(iOS 13.0, *) {
+            signUpInfos.isModalInPresentation = true
+            //https://developer.apple.com/documentation/uikit/uiadaptivepresentationcontrollerdelegate/3229888-presentationcontrollerdidattempt
+        } else {
+            // Fallback on earlier versions
+        }
+        self.present(signUpInfos, animated: true, completion: nil)
     }
 
     

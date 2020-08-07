@@ -49,6 +49,7 @@
 		3583B08424660F7C00879559 /* fireStoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583B08324660F7C00879559 /* fireStoreData.swift */; };
 		358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5023BB00110013EE64 /* imageVCRecipt.swift */; };
 		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
+		3590AB5C24CCBCF90006090C /* signUpNav.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3590AB5B24CCBCF90006090C /* signUpNav.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
 		3591FBCF23BADA9100C410CF /* OCR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCE23BADA9100C410CF /* OCR.swift */; };
 		359D693124BD55E500ED0C79 /* viewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359D693024BD55E500ED0C79 /* viewController.swift */; };
@@ -158,6 +159,7 @@
 		3583B08324660F7C00879559 /* fireStoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fireStoreData.swift; sourceTree = "<group>"; };
 		358C2C5023BB00110013EE64 /* imageVCRecipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageVCRecipt.swift; sourceTree = "<group>"; };
 		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
+		3590AB5B24CCBCF90006090C /* signUpNav.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = signUpNav.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
 		3591FBCE23BADA9100C410CF /* OCR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OCR.swift; sourceTree = "<group>"; };
 		359D693024BD55E500ED0C79 /* viewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = viewController.swift; sourceTree = "<group>"; };
@@ -332,6 +334,14 @@
 			path = productScreens;
 			sourceTree = "<group>";
 		};
+		3590AB5A24CCBCD80006090C /* easier sign up */ = {
+			isa = PBXGroup;
+			children = (
+				3590AB5B24CCBCF90006090C /* signUpNav.swift */,
+			);
+			path = "easier sign up";
+			sourceTree = "<group>";
+		};
 		359D692F24BD55C400ED0C79 /* assets */ = {
 			isa = PBXGroup;
 			children = (
@@ -366,6 +376,7 @@
 		35D647F722ECBABA00015352 /* Adem */ = {
 			isa = PBXGroup;
 			children = (
+				3590AB5A24CCBCD80006090C /* easier sign up */,
 				356FFEF123F3A1AF00DF67AD /* UIElements */,
 				353C123422FF5C84007DF3BB /* Adem.entitlements */,
 				35D6484022ECBC7300015352 /* Account Creation */,
@@ -917,6 +928,7 @@
 				356FFEF323F3A1C000DF67AD /* buttons.swift in Sources */,
 				35D6485D22ECBDC900015352 /* tabController.swift in Sources */,
 				351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */,
+				3590AB5C24CCBCF90006090C /* signUpNav.swift in Sources */,
 				359E325C23D7F8D50049FA75 /* filterSetUp.swift in Sources */,
 				357B35EE23A9CFC100223F51 /* continuedInfo.swift in Sources */,
 				35B0F300245A82F900823BCE /* firebase.swift in Sources */,

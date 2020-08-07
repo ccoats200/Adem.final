@@ -59,6 +59,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         //MARK: function Calls for views
         setUpSubviews()
         setuploginFieldView()
+        
+       
     }
     
     //Authentication State listner
@@ -129,10 +131,19 @@ class UserInfo: UIViewController, UITextFieldDelegate {
             }
         }
         
-        let moreController = userCreation()
+//        let moreController = userCreation()
+        let moreController = addedDietPreferencesTwo()
+        
         moreController.resignFirstResponder()
+        if #available(iOS 13.0, *) {
+            moreController.isModalInPresentation = true
+            //https://developer.apple.com/documentation/uikit/uiadaptivepresentationcontrollerdelegate/3229888-presentationcontrollerdidattempt
+        } else {
+            // Fallback on earlier versions
+        }
         self.present(moreController, animated: true, completion: nil)
     }
+    
     
     func isValidEmail(_ email: String) -> Bool {
       let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"

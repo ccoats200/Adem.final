@@ -43,7 +43,7 @@ class mealsViews: UIView {
     let faveButton: UIButton = {
         let fave = UIButton()
         fave.setBackgroundImage(UIImage(named: "fave-1"), for: .normal)
-        fave.setBackgroundImage(UIImage(named: "heart"), for: .highlighted)
+        //fave.setBackgroundImage(UIImage(named: "heart"), for: .highlighted)
         fave.setBackgroundImage(UIImage(named: "heart"), for: .selected)
         fave.clipsToBounds = true
         fave.layer.masksToBounds = true
