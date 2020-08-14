@@ -23,8 +23,10 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         self.tabBar.backgroundColor = UIColor.white
         self.tabBar.barTintColor = UIColor.white
         self.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
+        self.tabBarItem.badgeColor = UIColor.ademGreen
+
+        
         setUpTabBAR()
-        //determineEditingStateOfViewController()
     }
     var isManager = false
     
@@ -32,22 +34,9 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
     override func viewDidAppear(_ animated: Bool) {
         
     }
-
-//    override func viewWillLayoutSubviews() {
-//        <#code#>
-//    }
-//
-//    override func viewDidLayoutSubviews() {
-//        <#code#>
-//    }
     
     func setUpTabBAR() {
-        //List
-        //let listLayout = UICollectionViewFlowLayout()
-        //let pantryLayout = UICollectionViewFlowLayout()
-        //let mealsLayout = UICollectionViewFlowLayout()
         
-        //let listController = listCollectionView(collectionViewLayout: listLayout)
         let listController = listViewController()
         let listTabButton = UINavigationController(rootViewController: listController)
         listTabButton.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "list"), tag: 2)
@@ -62,21 +51,22 @@ class tabBar: UITabBarController, UICollectionViewDelegateFlowLayout, UITabBarCo
         
         
         //Meals
-        //let mealsController = Meals(collectionViewLayout: mealsLayout)
         let mealsController = Meals()
         let mealsTabButton = UINavigationController(rootViewController: mealsController)
         mealsTabButton.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "Home"), tag: 2)
         mealsTabButton.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         //Account
-        let accountController = AccountVC() //Meals(collectionViewLayout: layout)
+        let accountController = AccountVC()
         let accountTabButton = UINavigationController(rootViewController: accountController)
         accountTabButton.tabBarItem = UITabBarItem(title: "", image: UIImage(named: "AccountIcon"), tag: 2)
         accountTabButton.tabBarItem.imageInsets = UIEdgeInsets(top: 6, left: 0, bottom: -6, right: 0)
         
         viewControllers = [listTabButton, pantryTabButton, mealsTabButton, accountTabButton]
     
+        
         self.tabBar.items?[1].badgeValue = "1"
+        
     }
     
     /*

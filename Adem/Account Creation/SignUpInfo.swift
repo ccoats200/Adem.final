@@ -133,7 +133,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         
 //        let moreController = userCreation()
         let moreController = addedDietPreferencesTwo()
-        
         moreController.resignFirstResponder()
         if #available(iOS 13.0, *) {
             moreController.isModalInPresentation = true

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		20790888CE0BC9B828AE4FC4 /* Pods_Adem_AdemUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79FB9C79428095200E342D2F /* Pods_Adem_AdemUITests.framework */; };
+		3509742E24E6DC6C0056AE9A /* emptyList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3509742D24E6DC6C0056AE9A /* emptyList.swift */; };
 		351B8DF52342F10A006CEAE1 /* imageText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF42342F10A006CEAE1 /* imageText.swift */; };
 		351B8DF72343C215006CEAE1 /* ListTVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 351B8DF62343C215006CEAE1 /* ListTVC.swift */; };
 		3527A0EF248720D000956349 /* pantry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3527A0EE248720D000956349 /* pantry.swift */; };
@@ -115,6 +116,7 @@
 /* Begin PBXFileReference section */
 		17D8E3B742ECC6525C2B8DC2 /* Pods-AdemTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AdemTests.debug.xcconfig"; path = "Target Support Files/Pods-AdemTests/Pods-AdemTests.debug.xcconfig"; sourceTree = "<group>"; };
 		1DED251FCBF3126820DEA5B2 /* Pods-Adem-AdemUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Adem-AdemUITests.release.xcconfig"; path = "Target Support Files/Pods-Adem-AdemUITests/Pods-Adem-AdemUITests.release.xcconfig"; sourceTree = "<group>"; };
+		3509742D24E6DC6C0056AE9A /* emptyList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = emptyList.swift; sourceTree = "<group>"; };
 		351B8DF42342F10A006CEAE1 /* imageText.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageText.swift; sourceTree = "<group>"; };
 		351B8DF62343C215006CEAE1 /* ListTVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListTVC.swift; sourceTree = "<group>"; };
 		3527A0EE248720D000956349 /* pantry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = pantry.swift; sourceTree = "<group>"; };
@@ -277,6 +279,7 @@
 			children = (
 				35D6485222ECBD5D00015352 /* ListVC.swift */,
 				35FDD16923C4102200A85023 /* listProductinfo.swift */,
+				3509742D24E6DC6C0056AE9A /* emptyList.swift */,
 			);
 			path = List;
 			sourceTree = "<group>";
@@ -897,6 +900,7 @@
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
 				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
 				35669AE1240AD8C900C95DFB /* accountHomeView.swift in Sources */,
+				3509742E24E6DC6C0056AE9A /* emptyList.swift in Sources */,
 				3583B08424660F7C00879559 /* fireStoreData.swift in Sources */,
 				35669ADB2408B78E00C95DFB /* accountStatsCells.swift in Sources */,
 				3540826C23E25DBD00137476 /* signUpCell.swift in Sources */,

@@ -22,14 +22,15 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let ffCCellID = "test"
     var friendsAssociated = friends
     
-    var acctOptions = ["Recipies","Diet","Invite Friends","Rate Us","Apps","Settings"]
+    var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Invite Friends","Rate Us","Settings"] //"Apps"]
     
     //MARK: Views to set up
-    var accountStuff = ProfileView()
+    var personalAttributes = ProfileView()
     var homeSegmentView = homeView()
+    var personalStats = statViews()
     var statsCollectionView: UICollectionView!
     var accountViewToSwitch: [UIView]!
-    var personalStats = statViews()
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +41,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.view.backgroundColor = UIColor.clear
         
         view.backgroundColor = UIColor.white
+        
+//        self.homeSegmentView.accountTableView.estimatedRowHeight = 60
+//        self.homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
+        
         
         setUptopViews()
         handleUserInfo()
@@ -53,7 +58,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         setUpdefaultSegment()
         handleUserInfo()
 
-        if segmentContr.selectedSegmentIndex == 0 {
+        if homeStatssegmentContr.selectedSegmentIndex == 0 {
             switchStatsViews()
         }
         
@@ -88,31 +93,37 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     //MARK: - Button Action - Start
-    @objc func handleFriends() {
+    @objc func handleRecipies() {
         let privacyController = friendsTVC()
         self.navigationController?.pushViewController(privacyController, animated: true)
-        print("Settings Tab is active")
     }
     
-    @objc func handleDevices() {
-        let cController = settings()
-        cController.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(cController, animated: true)
-        print("Settings Tab is active")
+    @objc func handleDiet() {
+//        let cController = settings()
+//        cController.hidesBottomBarWhenPushed = true
+//        self.navigationController?.pushViewController(cController, animated: true)
+        let moreController = updateDietPreferencesTwo()
+        self.present(moreController, animated: true, completion: nil)
     }
     
-    @objc func handleSettings() {
-        let cController = SettingTVC()
-        self.navigationController?.pushViewController(cController, animated: true)
-        print("Settings Tab is active")
+    @objc func handleStores() {
+//        let cController = SettingTVC()
+//        self.navigationController?.pushViewController(cController, animated: true)
+        let storesUpdate = updateStorePreferencesTwo()
+        self.present(storesUpdate, animated: true, completion: nil)
     }
     
-    @objc func handleHealth() {
-        print("Settings Tab is active")
+    @objc func handleFlavors() {
+
+        let signUpInfos = updateFlavorPreferences()
+        self.present(signUpInfos, animated: true, completion: nil)
     }
+
     
     @objc func editUserInfo() {
-           print("tester")
+        self.dismiss(animated: true, completion: nil)
+        //This works but I think is fucked
+        print("testing this")
        }
     
     @objc func handelLogin() {
@@ -128,7 +139,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     @objc func switchStatsViews() {
-        self.view.bringSubviewToFront(accountViewToSwitch[segmentContr.selectedSegmentIndex])
+        self.view.bringSubviewToFront(accountViewToSwitch[homeStatssegmentContr.selectedSegmentIndex])
     }
     
     @objc func updateDiet() {
@@ -142,7 +153,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //MARK: - Button actions - End
     
     
-    let segmentContr: UISegmentedControl = {
+    let homeStatssegmentContr: UISegmentedControl = {
         let items = ["Home", "Stats"]
         let segmentContr = UISegmentedControl(items: items)
         segmentContr.tintColor = UIColor.white
@@ -160,21 +171,21 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func setUptopViews() {
         
-        self.view.addSubview(accountStuff)
-        self.view.addSubview(segmentContr)
-        accountStuff.translatesAutoresizingMaskIntoConstraints = false
-        segmentContr.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(personalAttributes)
+        self.view.addSubview(homeStatssegmentContr)
+        personalAttributes.translatesAutoresizingMaskIntoConstraints = false
+        homeStatssegmentContr.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            accountStuff.topAnchor.constraint(equalTo: view.topAnchor),
-            accountStuff.widthAnchor.constraint(equalTo: view.widthAnchor),
-            accountStuff.heightAnchor.constraint(equalToConstant: 225),
-            accountStuff.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            personalAttributes.topAnchor.constraint(equalTo: view.topAnchor),
+            personalAttributes.widthAnchor.constraint(equalTo: view.widthAnchor),
+            personalAttributes.heightAnchor.constraint(equalToConstant: 225),
+            personalAttributes.centerXAnchor.constraint(equalTo: view.centerXAnchor),
         
-            segmentContr.topAnchor.constraint(equalTo: accountStuff.bottomAnchor),
-            segmentContr.heightAnchor.constraint(equalToConstant: 25),
-            segmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            segmentContr.centerXAnchor.constraint(equalTo: accountStuff.centerXAnchor),
+            homeStatssegmentContr.topAnchor.constraint(equalTo: personalAttributes.bottomAnchor),
+            homeStatssegmentContr.heightAnchor.constraint(equalToConstant: 25),
+            homeStatssegmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            homeStatssegmentContr.centerXAnchor.constraint(equalTo: personalAttributes.centerXAnchor),
         ])
     }
     
@@ -186,6 +197,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         homeSegmentView.friendsAndFamily.dataSource = self
         homeSegmentView.friendsAndFamily.delegate = self
         homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
+        
+//        homeSegmentView.accountTableView.estimatedRowHeight = 60
+//        homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
+        
                 
         accountViewToSwitch = [UIView]()
                 
@@ -208,10 +223,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 //        homeSegmentView.friendsAndFamily.nameofUser.text = "Kitchen Staff"
      
      NSLayoutConstraint.activate([
-        personalStats.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 15),
+        personalStats.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 15),
         personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
         personalStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        personalStats.centerXAnchor.constraint(equalTo: segmentContr.centerXAnchor),
+        personalStats.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
         
         homeSegmentView.topAnchor.constraint(equalTo: personalStats.topAnchor),
         homeSegmentView.heightAnchor.constraint(equalTo: personalStats.heightAnchor),
@@ -257,10 +272,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                
         if currentUser?.isAnonymous == true {
             let doesNotHaveAccount = "Join now"
-            self.accountStuff.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)
-            self.accountStuff.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
-            self.accountStuff.nameofUser.largeNextButton.backgroundColor = UIColor.ademGreen
-            self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.signUp), for: .touchDown)
+            self.personalAttributes.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)
+            self.personalAttributes.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
+            self.personalAttributes.nameofUser.largeNextButton.backgroundColor = UIColor.ademGreen
+            self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.signUp), for: .touchDown)
             self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign In", for: .normal)
             self.homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
         } else if currentUser == nil {
@@ -280,22 +295,16 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                         self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
                         self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
                         self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
-                        self.accountStuff.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
-                        self.accountStuff.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
+                        self.personalAttributes.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
+                        self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                     }
                 }
             }
         }
-    //}
     }
     
 
     //MARK: TableView
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-         return UITableView.automaticDimension
-    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return acctOptions.count
     }
@@ -307,35 +316,43 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         friends.textLabel!.textColor = UIColor.white
         friends.textLabel!.text = acctOptions[indexPath.row]
         friends.accessoryType = .disclosureIndicator
+        //friends.textLabel?.lineBreakMode = .byWordWrapping
         
         return friends
     }
+
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        
+//        let c = acctOptions.count
+//        let buttons = [handleRecipies(),handleDiet(),handleStores(),handleFlavors(),handleRecipies(),handleRecipies()]
+//
+//        for i in  1..<c {
+//            if indexPath.row == i {
+//                buttons[i]
+//            }
+//        }
         switch indexPath.row {
         case 0:
-            handleFriends()
+            handleRecipies()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
         case 1:
-            handleSettings()
+            handleDiet()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
 
         case 2:
-            handleFriends()
+            handleStores()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
 
         case 3:
-            handleDevices()
+            handleFlavors()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
 
         default:
-            handleDevices()
+            handleDiet()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
 
         }

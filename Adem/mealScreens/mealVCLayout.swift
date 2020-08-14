@@ -10,6 +10,10 @@ import UIKit
 import Firebase
 import Lottie
 
+protocol mealSelectionCellDelegate {
+    func itemCell(cellTapped: IndexPath)
+}
+
 class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
@@ -21,12 +25,21 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     var ingrediantsList: UITableView!
     var animationView: AnimationView?
     
+    let tableViewCell = "test"
+    var acctOptions = ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good"]
+    //MARK: Pass data
+    //Delegate to pass data
+    var delegate: mealSelectionCellDelegate?
+    var meal: mealClass!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.ademBlue
+        //testing this
+        
+        
         
         setUpViews()
         setUpProductButtons()
@@ -34,6 +47,24 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
 
         self.dismiss(animated: true, completion: nil)
     }
+    
+    //accept data
+    class func detailViewControllerForProduct(_ meal: mealClass) -> UIViewController {
+        let viewController = self.init()
+        if let detailViewController = viewController as? mealVCLayout {
+            detailViewController.meal = meal
+        }
+        return viewController
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+            super.viewWillAppear(animated)
+        //Top elements
+        productNameSection.productNameAndBackButton.setTitle("(meal!.mealName)", for: .normal)
+        //Image elements
+        productImageSection.productImage.image = UIImage(named: "pancake")//"\(meal!.mealImage)")
+
+        }
 
     //MARK: Button engagement
     @objc func handleFacts() {
@@ -143,7 +174,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         
     }
     
-    var acctOptions = ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good time"]
+    
     
     func setUpProductButtons() {
         //MARK: how to add button interaction
@@ -183,10 +214,11 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
             
     }
     
-    let tableViewCell = "test"
+    
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return acctOptions.count
+       return acctOptions.count
+        //return meal.mealIngrediantes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -194,6 +226,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         let friends = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         friends.backgroundColor = UIColor.white
         friends.textLabel!.textColor = UIColor.ademBlue
+        //friends.textLabel!.text = meal.mealIngrediants[indexPath.row]
         friends.textLabel!.text = acctOptions[indexPath.row]
         
         if indexPath.row == 4 {
@@ -223,3 +256,8 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
 }
 
 
+extension mealVCLayout: mealSelectionCellDelegate {
+    func itemCell(cellTapped: IndexPath) {
+        let cellTap = arrayofMeals[cellTapped.row]
+    }
+}

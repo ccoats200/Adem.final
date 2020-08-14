@@ -16,7 +16,8 @@ var handle: AuthStateDidChangeListenerHandle?
 let currentUser = firebaseAuth.currentUser
 let firebaseAuth = Auth.auth()
 let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
-let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
+//let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
+let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("meals").collection("all")
 //let userfirebaseDietPreferences = db.collection("Users").document("B0DOT6FsvLfmhoUw9CIKGkWHxZM2").collection("preferences")
 let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
 

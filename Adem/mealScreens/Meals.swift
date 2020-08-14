@@ -27,11 +27,15 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     //kaggle datasets download -d shuyangli94/food-com-recipes-and-user-interactions
     
     var mealsTableView: UITableView!
+    var add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleCreate))
     
     override func viewDidLoad() {
         super.viewDidLoad()
         //MARK: NavigationBar setup
         navigationItem.title = "Meals"
+        self.navigationItem.rightBarButtonItem = add
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+        
         
         setUpNavigationBar()
         setUpSearchBar()
@@ -43,7 +47,6 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 //        mealsSearchController.searchBar.becomeFirstResponder()
-
     }
     
     //MARK: Pull to refresh
@@ -110,6 +113,10 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
     @objc func handleSearch() {
         print("filter tapped")
+    }
+    
+    @objc func handleCreate() {
+        print("create own meal")
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -186,9 +193,6 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
 }
 
 extension Meals: CustomCollectionCellDelegate {
-   
-    
-
     func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell) {
         //https://slicode.com/collectionview-inside-tableview-cell-part-3/
         let mealRecipe = mealVCLayout()

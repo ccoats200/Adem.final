@@ -174,6 +174,7 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     
     var groceriesSelected = [String]()
     var listProducts = mealsMaster
+    var mealsList: mealClass!
     
     //collection view setup
     var mealsCollectionView: UICollectionView!

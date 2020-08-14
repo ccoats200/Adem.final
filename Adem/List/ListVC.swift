@@ -17,7 +17,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 
     
 //    MARK: Navigation Bar Buttons - Start
-    //lazy var cam = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handlecamera))
+    var cam = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handlecamera))
 //    lazy var add = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearch))
 //    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //MARK: Navigation buttons - End
@@ -35,13 +35,14 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     var resultsTableController: ResultsTableController!
     var addResultsTableController: AddResultsTableController!
         
-        
+    //Empty
+    var footerView = emptyList()
+    
     //https://stackoverflow.com/questions/48569818/how-to-use-custom-view-controller-in-uisearchcontroller-for-results
     var tableArray = [String]()
     //    MARK: - Search bar
     var filteringproducts = arrayofProducts
     var filteredProducts: [String]?
-//    var filterProducts: [fireStoreDataStruct] = []
     var filterProducts: [fireStoreDataClass] = []
 //    MARK: Table view
     var listTableView: UITableView!
@@ -52,8 +53,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     var filterListCollectionView: UICollectionView!
     let cfilter = "filtercolletionview"
 //    MARK: Filter
-//    var filter = [fireStoreDataStruct]()
-//    var productFilter = [fireStoreDataStruct]()
     var filter = [fireStoreDataClass]()
     var productFilter = [fireStoreDataClass]()
     //    MARK: - Var & Let
@@ -74,7 +73,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            //self.navigationItem.rightBarButtonItem = cam
+            self.navigationItem.rightBarButtonItem = cam
 
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
             //MARK: Opt out of dark mode
@@ -91,24 +90,18 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //
 ////        MARK: Switch open view
 //        switch productsGlobal?.isEmpty {
-////        switch arrayofProducts.isEmpty {
+        
+//        switch arrayofProducts.count == 0 {
 //        case true:
 //            tableViewIsEmpty()
+//        case false:
+//            tableViewSetup()
 //        default:
 //            tableViewSetup()
-//
 //        }
-//
-////        MARK: Setting up NAV bar buttons
-//        //self.navigationItem.leftBarButtonItem = editButtonItem
-//        //self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
 //
 //        toolBarSetUp()
 //        setUpFilterView()
-//
-//        //Firebase working below
-//        firebaseDataFetch()
-//        getFilterOptions()
     }
     
     //MARK: Authentication State listner
@@ -144,12 +137,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         super.viewWillDisappear(animated)
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
+        self.isEditing = false
 //            firebaseAuth.removeStateDidChangeListener(handle!)
     }
-//    override func viewDidDisappear(_ animated: Bool) {
-//        <#code#>
-//    }
-    
+
     func alreadySignedIn() {
         
 //        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
@@ -168,11 +159,14 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             
             //MARK: Search bar
             searchBarSetUp()
+            //FIXME: why is this not working
+//            if arrayofProducts.count == 0 {
+//                tableViewIsEmpty()
+//            } else {
+//                tableViewSetup()
+//            }
             tableViewSetup()
 
-            //MARK: Setting up NAV bar buttons
-            //self.navigationItem.leftBarButtonItem = editButtonItem
-            //self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
             toolBarSetUp()
             setUpFilterView()
             
@@ -285,6 +279,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             }
             arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
                 return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                
             }
             self.listTableView.reloadData()
          }
@@ -332,11 +327,15 @@ extension listViewController {
         self.listTableView.addGestureRecognizer(panGestureRecognizer)
     }
 //    MARK: - Table View
+    @objc func handelGooglesignUp() {
+        tableViewSearchController.isActive = true
+        tableViewSearchController.searchBar.becomeFirstResponder()
+    }
+    
     func tableViewIsEmpty() {
-        let footerView = UIView()
-        footerView.backgroundColor = UIColor.ademRed
-        self.view.addSubview(footerView)
+        view.addSubview(footerView)
         footerView.translatesAutoresizingMaskIntoConstraints = false
+        footerView.GoogleLoginImage.roundLoginImage.addTarget(self, action: #selector(handelGooglesignUp), for: .touchUpInside)
         
         //MARK: tableView constraints
         NSLayoutConstraint.activate([
@@ -682,7 +681,6 @@ extension listViewController {
         product = arrayofProducts[forIndexPath.row]
         return product
     }
-    
 }
 
 extension listViewController {

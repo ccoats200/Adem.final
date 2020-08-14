@@ -32,6 +32,9 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 var arrayofPantry = [fireStoreDataClass]()
 //var arrayofProducts = [fireStoreDataStruct]()
 var arrayofProducts = [fireStoreDataClass]()
+
+var arrayofMeals = [mealClass]()
+
 var backUp = [fireStoreDataStruct]()
 var backUp2 = [fireStoreDataStruct]()
 var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
@@ -67,33 +70,40 @@ struct fireStoreDataStruct: Identifiable, Codable {
 class mealClass: NSObject, Identifiable, Codable {
 
    //Grabs the doc Id for me!
-   @objc var mealName: String
-   @objc var mealRating: Double
-   @objc var mealDescription: String
-   @objc var mealImage: String
-   
-   
-   enum CodingKeys: String, CodingKey {
-      case mealName
-      case mealRating
-      case mealDescription
-      case mealImage
+    @DocumentID var id: String?
+    @objc var mealName: String
+    @objc var mealRating: Int
+    @objc var mealDescription: String
+    @objc var mealImage: String
+    @objc var mealIngrediants: [String]
+  
+    enum CodingKeys: String, CodingKey {
+        case id
+        case mealName
+        case mealRating
+        case mealDescription
+        case mealImage
+        case mealIngrediants
       
    }
     
     enum ExpressionKeys: String {
-       case mealName
-       case mealRating
-       case mealDescription
-       case mealImage
+        case id
+        case mealName
+        case mealRating
+        case mealDescription
+        case mealImage
+        case mealIngrediants
        
     }
     
-    init(mealName: String, mealRating: Double, mealDescription: String, mealImage: String) {
+    init(id: String,mealName: String, mealRating: Int, mealDescription: String, mealImage: String, mealIngrediants: [String]) {
+        self.id = id
         self.mealName = mealName
         self.mealRating = mealRating
         self.mealDescription = mealDescription
         self.mealImage = mealImage
+        self.mealIngrediants = mealIngrediants
        
     }
 }

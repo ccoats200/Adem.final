@@ -76,7 +76,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            
         }
         
         
@@ -90,13 +89,14 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         self.pantryCollectionView?.addGestureRecognizer(longPress)
         
        firebaseDataFetch()
+        firebaseMealFetch()
     }
     
    
     //MARK: Gestures
     @objc func panGestureRecognizerAction(_ gesture: UILongPressGestureRecognizer) {
-        
         if gesture.state != .began {
+            
             return
         }
             //https://www.ioscreator.com/tutorials/delete-item-collection-view-controller-ios-tutorial
@@ -117,6 +117,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         super.viewWillDisappear(animated)
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
+        self.isEditing = false
     }
     
 //    MARK: Setting up NAV bar buttons
@@ -138,9 +139,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         mealsCollectionViewlayouts.scrollDirection = .vertical
         
         self.pantryCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
-            
-            
-        
+
           
         pantryCollectionView.showsHorizontalScrollIndicator = false
         self.pantryCollectionView.dataSource = self
@@ -222,6 +221,19 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
 //        self.isEditing = false
     }
     
+    func firebaseMealFetch() {
+        print("running")
+        userfirebaseMeals.whereField("mealDescription", isEqualTo: "d").addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            arrayofMeals = documents.compactMap { queryDocumentSnapshot -> mealClass? in
+                return try? queryDocumentSnapshot.data(as: mealClass.self)
+            }
+        }
+    }
+    
     func firebaseDataFetch() {
         userfirebaseProducts.whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
            guard let documents = querySnapshot?.documents else {
@@ -238,9 +250,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
             
             arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
                  return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                
             }
             
-            print("this is the new function maybe \(arrayofPantry)")
             self.pantryCollectionView.reloadData()
             
          }
@@ -251,7 +263,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
 extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//        print(arrayofPantry.count)
+
+        print("another meal \(arrayofMeals.count)")
+        print("another test \(arrayofPantry.count)")
         return arrayofPantry.count
     }
     

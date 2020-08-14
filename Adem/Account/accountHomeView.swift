@@ -25,6 +25,8 @@ class homeView: UIView {
     //initWithFrame to init view from code
   override init(frame: CGRect) {
     super.init(frame: frame)
+    
+    
   
     setupView()
     setUpButtons()
@@ -51,6 +53,10 @@ class homeView: UIView {
         let displayHeight: CGFloat = self.frame.height
         
         accountTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        accountTableView.rowHeight = 50
+        
+//        accountTableView.rowHeight = UITableView.automaticDimension
+//        accountTableView.estimatedRowHeight = 100
         
         
         let friendsAndFamilyLayouts = UICollectionViewFlowLayout()
@@ -70,7 +76,7 @@ class homeView: UIView {
     
     friendsAndFamily.backgroundColor = UIColor.ademBlue
     friendsAndFamily.layer.cornerRadius = 5
-//    accountTableView.backgroundColor = UIColor.red
+    accountTableView.backgroundColor = UIColor.red
     friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
     accountTableView.translatesAutoresizingMaskIntoConstraints = false
     logOutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -84,7 +90,7 @@ class homeView: UIView {
             friendsAndFamily.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             accountTableView.topAnchor.constraint(equalTo: friendsAndFamily.bottomAnchor, constant: 15),
-            accountTableView.bottomAnchor.constraint(equalTo: logOutButton.topAnchor, constant: -30),
+            accountTableView.bottomAnchor.constraint(equalTo: logOutButton.topAnchor, constant: -15),
             accountTableView.widthAnchor.constraint(equalTo: self.widthAnchor),
             accountTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
