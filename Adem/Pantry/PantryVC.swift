@@ -22,8 +22,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
 //    lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
     lazy var searching = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
- 
-    
     
     lazy var filter = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAlert))
     
@@ -223,13 +221,49 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     
     func firebaseMealFetch() {
         print("running")
-        userfirebaseMeals.whereField("mealDescription", isEqualTo: "d").addSnapshotListener { (querySnapshot, error) in
+       //Adds to the list
+        
+        /*
+        userfirebaseMeals.document("spaghetti").setData([
+            
+            "mealImage": "pancake",
+            "mealName": "spaghetti",
+            "mealRating": 2,
+            "mealIngrediants": ["Chicken","pasta"],
+            "mealDescription": "test",
+        ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+        */
+        
+        
+        //finds one meal! see Products.swift for other ones
+        userfirebaseMeals.addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")
                 return
             }
             arrayofMeals = documents.compactMap { queryDocumentSnapshot -> mealClass? in
                 return try? queryDocumentSnapshot.data(as: mealClass.self)
+            }
+        }
+        
+    }
+    
+    func updateMeals(preferenceDimension: String, preferenceMap: [String]) {
+    //the dimension should be the diet, stores, flavors, etc. It has it's own doc in FB
+    // the map should be the values that are in that dimension
+    userfirebaseDietPreferences.document("\(preferenceDimension)").setData([
+        "\(preferenceDimension)": preferenceMap,
+    ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
             }
         }
     }

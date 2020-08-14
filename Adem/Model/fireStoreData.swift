@@ -69,7 +69,7 @@ struct fireStoreDataStruct: Identifiable, Codable {
 
 class mealClass: NSObject, Identifiable, Codable {
 
-   //Grabs the doc Id for me!
+   //Grabs the doc Id for me
     @DocumentID var id: String?
     @objc var mealName: String
     @objc var mealRating: Int
@@ -152,33 +152,6 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         self.category = category
         self.productExpir = productExpir
     }
-    
-    /*
-    //MARK: This is where things are weird
-    required init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decode(String.self, forKey: .id)
-        productName = try container.decode(String.self, forKey: .productName)
-        productPrice = try container.decode(Double.self, forKey: .productPrice)
-        productDescription = try container.decode(String.self, forKey: .productDescription)
-        productQuantity = try container.decode(Int.self, forKey: .productQuantity)
-        productImage = try container.decode(String.self, forKey: .productImage)
-        category = try container.decode(String.self, forKey: .category)
-        productExpir = try container.decode(Date.self, forKey: .productExpir)
-    }
-    
-    func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(id, forKey: .id)
-        try container.encode(productName, forKey: .productName)
-        try container.encode(productPrice, forKey: .productPrice)
-        try container.encode(productDescription, forKey: .productDescription)
-        try container.encode(productQuantity, forKey: .productQuantity)
-        try container.encode(productImage, forKey: .productImage)
-        try container.encode(category, forKey: .category)
-        try container.encode(productExpir, forKey: .productExpir)
-    }
- */
 }
 
 struct dietPreferences {
