@@ -31,7 +31,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var statsCollectionView: UICollectionView!
     var accountViewToSwitch: [UIView]!
     
-    
+    let collectionViewHeaderFooterReuseIdentifier = "MyHeaderFooterClass"
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -42,6 +43,9 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = UIColor.white
         
+        //collec
+        //self.homeSegmentView.friendsAndFamily.register(UICollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: collectionViewHeaderFooterReuseIdentifier)
+
 //        self.homeSegmentView.accountTableView.estimatedRowHeight = 60
 //        self.homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
         
@@ -371,10 +375,23 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
+        //Must us a Supplementary view
+        //https://developer.apple.com/documentation/uikit/uicollectionview
         return friendsAssociated.count
     }
+    /*
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        
+        let headerView = self.homeSegmentView.friendsAndFamily.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: collectionViewHeaderFooterReuseIdentifier, for: indexPath)
+
+        headerView.backgroundColor = UIColor.blue
+        return headerView
+    }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 180.0)
+    }
+    */
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let personCell = collectionView.dequeueReusableCell(withReuseIdentifier: ffCCellID, for: indexPath) as! ffCell
         personCell.friendsInAccount = friendsAssociated[indexPath.item]

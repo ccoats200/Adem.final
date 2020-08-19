@@ -33,16 +33,6 @@ class mealsCellLayout: UICollectionViewCell {
         
     }
     
-    
-    var mealItem = meals() {
-            didSet {
-                mealImageView.image = UIImage(named: (mealItem.mealImage)!)
-                mealName.text = mealItem.mealName
-                
-                print("set")
-            }
-        }
-    
     @objc func selectedButtonDidTap(_ sender: Any) {
         delegate?.delete(cell: self)
     }
@@ -169,7 +159,6 @@ class mealsCellLayout: UICollectionViewCell {
 class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     var selectedGroceryItems = [groceryItemCellContent]()
-    var product: fireStoreDataClass!
     var selectedCells = [UICollectionViewCell]()
     
     var groceriesSelected = [String]()
@@ -187,6 +176,8 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        firebaseMealFetch()
         
         let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
         mealsCollectionViewlayouts.scrollDirection = .horizontal
@@ -226,10 +217,44 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         
     }
     
+    func firebaseMealFetch() {
+        print("running")
+       //Adds to the list
+        
+        /*
+        userfirebaseMeals.document("spaghetti").setData([
+            
+            "mealImage": "pancake",
+            "mealName": "spaghetti",
+            "mealRating": 2,
+            "mealIngrediants": ["Chicken","pasta"],
+            "mealDescription": "test",
+        ]) { err in
+                if let err = err {
+                    print("Error updating document: \(err)")
+                } else {
+                    print("Document successfully updated")
+                }
+            }
+        */
+        
+        //finds one meal! see Products.swift for other ones
+        userfirebaseMeals.addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            arrayofMeals = documents.compactMap { queryDocumentSnapshot -> mealClass? in
+                return try? queryDocumentSnapshot.data(as: mealClass.self)
+            }
+            self.mealsCollectionView.reloadData()
+        }
+    }
+    
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return listProducts.count
+        return arrayofMeals.count//listProducts.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -238,7 +263,17 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         mealsCell.clipsToBounds = true
         mealsCell.layer.masksToBounds = true
         
-        mealsCell.mealItem = listProducts[indexPath.item]
+        //This needs to have a outline to it
+        mealsCell.favoriteButton.backgroundColor = UIColor.ademRed
+    
+        let meal = arrayofMeals[indexPath.item]
+        //This is where I need to call the meals
+        //mealsCell.meal = meal
+    
+        //MARK: works but need to view pantry first
+        mealsCell.mealName.text = meal.mealName
+        mealsCell.mealImageView.image = UIImage(named: "\(meal.mealImage)")
+        //mealsCell.mealItem = listProducts[indexPath.item]
         
         return mealsCell
     }
@@ -258,6 +293,8 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mealCellTap = collectionView.cellForItem(at: indexPath) as? mealsCellLayout
+
+        //FIXME: This needs to be able to retain the indexpath from the meals array -- see meals extension collectionView.
         self.cellDelegate?.collectionView(collectioncell: mealCellTap, didTappedInTableview: self)
     }
     
@@ -268,5 +305,13 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension mealsTableViewCell {
+    func product(forIndexPath: IndexPath) -> mealClass {
+        var product: mealClass!
+        product = arrayofMeals[forIndexPath.item]
+        return product
     }
 }

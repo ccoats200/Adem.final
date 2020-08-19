@@ -20,7 +20,8 @@ class homeView: UIView {
     var accountTableView: UITableView!
     var logOutButton = navigationButton()
 
-    
+    //var friendsAssociated = friends
+    //let collectionViewHeaderFooterReuseIdentifier = "MyHeaderFooterClass"
     
     //initWithFrame to init view from code
   override init(frame: CGRect) {

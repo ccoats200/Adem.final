@@ -41,6 +41,8 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         setUpSearchBar()
         setUpDifferentViews()
         
+        //getmeals
+        
         refressss()
     }
     
@@ -136,7 +138,6 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         mealsTableView.dataSource = self
 
         
-        
         mealsTableView.register(mealsTableViewCell.self, forCellReuseIdentifier: mealsCellID)
         mealsTableView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -164,6 +165,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mealsCell = tableView.dequeueReusableCell(withIdentifier: mealsCellID) as! mealsTableViewCell
+        
         
         mealsCell.cellDelegate = self
         
@@ -195,9 +197,23 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
 extension Meals: CustomCollectionCellDelegate {
     func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell) {
         //https://slicode.com/collectionview-inside-tableview-cell-part-3/
+        
+        //FIXME: This is where I need to pass the info
+       /*
+        let selectedMeal: mealClass!
+        selectedMeal = product(forIndexPath: indexPath)
+        let detail = mealVCLayout.detailViewControllerForProduct(selectedMeal)
+        */
+        
         let mealRecipe = mealVCLayout()
 //        let mealRecipe = listProductVCLayout()
         mealRecipe.modalPresentationStyle = .overFullScreen
         self.present(mealRecipe, animated: true, completion: nil)
+    }
+    
+    func product(forIndexPath: IndexPath) -> mealClass {
+        var product: mealClass!
+        product = arrayofMeals[forIndexPath.item]
+        return product
     }
 }

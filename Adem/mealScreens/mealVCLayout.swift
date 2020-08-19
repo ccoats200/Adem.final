@@ -17,6 +17,7 @@ protocol mealSelectionCellDelegate {
 class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
+    //MEAL info
     
     //MARK: View set up
     var productNameSection = mealsViews()
@@ -30,7 +31,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     //MARK: Pass data
     //Delegate to pass data
     var delegate: mealSelectionCellDelegate?
-    var meal: mealClass!
+    var mealInfo: mealClass!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +53,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     class func detailViewControllerForProduct(_ meal: mealClass) -> UIViewController {
         let viewController = self.init()
         if let detailViewController = viewController as? mealVCLayout {
-            detailViewController.meal = meal
+            detailViewController.mealInfo = meal
         }
         return viewController
     }
@@ -60,7 +61,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
         //Top elements
-        productNameSection.productNameAndBackButton.setTitle("(meal!.mealName)", for: .normal)
+        productNameSection.productNameAndBackButton.setTitle("(mealInfo!.mealName)", for: .normal)
         //Image elements
         productImageSection.productImage.image = UIImage(named: "pancake")//"\(meal!.mealImage)")
 
@@ -257,6 +258,14 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
 
 
 extension mealVCLayout: mealSelectionCellDelegate {
+    
+    func product(forIndexPath: IndexPath) -> mealClass {
+        var product: mealClass!
+        product = arrayofMeals[forIndexPath.item]
+        return product
+    }
+    
+    
     func itemCell(cellTapped: IndexPath) {
         let cellTap = arrayofMeals[cellTapped.row]
     }

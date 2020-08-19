@@ -86,8 +86,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         longPress.minimumPressDuration = 0.50
         self.pantryCollectionView?.addGestureRecognizer(longPress)
         
-       firebaseDataFetch()
-        firebaseMealFetch()
+        firebaseDataFetch()
     }
     
    
@@ -218,79 +217,18 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         setEditing(false, animated: true)
 //        self.isEditing = false
     }
-    
-    func firebaseMealFetch() {
-        print("running")
-       //Adds to the list
-        
-        /*
-        userfirebaseMeals.document("spaghetti").setData([
-            
-            "mealImage": "pancake",
-            "mealName": "spaghetti",
-            "mealRating": 2,
-            "mealIngrediants": ["Chicken","pasta"],
-            "mealDescription": "test",
-        ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
-            }
-        */
-        
-        
-        //finds one meal! see Products.swift for other ones
-        userfirebaseMeals.addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                return
-            }
-            arrayofMeals = documents.compactMap { queryDocumentSnapshot -> mealClass? in
-                return try? queryDocumentSnapshot.data(as: mealClass.self)
-            }
-        }
-        
-    }
-    
-    func updateMeals(preferenceDimension: String, preferenceMap: [String]) {
-    //the dimension should be the diet, stores, flavors, etc. It has it's own doc in FB
-    // the map should be the values that are in that dimension
-    userfirebaseDietPreferences.document("\(preferenceDimension)").setData([
-        "\(preferenceDimension)": preferenceMap,
-    ]) { err in
-            if let err = err {
-                print("Error updating document: \(err)")
-            } else {
-                print("Document successfully updated")
-            }
-        }
-    }
-    
+
     func firebaseDataFetch() {
         userfirebaseProducts.whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
            guard let documents = querySnapshot?.documents else {
              print("No documents")
              return
            }
-            
-//            arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataStruct? in
-//                print(arrayofPantry)
-//                return try? queryDocumentSnapshot.data(as: fireStoreDataStruct.self)
-//
-//
-//           }
-            
             arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
                  return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
-                
             }
-            
             self.pantryCollectionView.reloadData()
-            
          }
-        
     }
 }
 
@@ -298,7 +236,7 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        print("another meal \(arrayofMeals.count)")
+        print("another meal \(arrayofMeals.count) this meal name is \(arrayofMeals)")
         print("another test \(arrayofPantry.count)")
         return arrayofPantry.count
     }
@@ -310,14 +248,16 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! pantryCell
+    
+        let pantryList = arrayofPantry[indexPath.item]
         
-        pantryItemsCell.pantryItemName.text = arrayofPantry[indexPath.item].productName
-        pantryItemsCell.quantity.text = "Q: \(arrayofPantry[indexPath.item].productQuantity)"
+        pantryItemsCell.pantryItemName.text = pantryList.productName
+        pantryItemsCell.quantity.text = "Q: \(pantryList.productQuantity)"
         pantryItemsCell.pantryItemImageView.image = UIImage(named: "almondExtract")
         //Use this for the Date
-        pantryItemsCell.expiryDate.text = " \(arrayofPantry[indexPath.item].productExpir.interval(ofComponent: .day, fromDate: Date())) Days"
+        pantryItemsCell.expiryDate.text = " \(pantryList.productExpir.interval(ofComponent: .day, fromDate: Date())) Days"
         
-        if arrayofPantry[indexPath.item].productExpir.interval(ofComponent: .day, fromDate: Date()) <= 0 {
+        if pantryList.productExpir.interval(ofComponent: .day, fromDate: Date()) <= 0 {
             pantryItemsCell.backgroundColor = UIColor.ademRed
             pantryItemsCell.pantryItemName.textColor = UIColor.white
             pantryItemsCell.quantity.textColor = UIColor.white
