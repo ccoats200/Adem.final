@@ -76,6 +76,7 @@ class mealClass: NSObject, Identifiable, Codable {
     @objc var mealDescription: String
     @objc var mealImage: String
     @objc var mealIngrediants: [String]
+    @objc var likedMeal: Bool
   
     enum CodingKeys: String, CodingKey {
         case id
@@ -84,6 +85,7 @@ class mealClass: NSObject, Identifiable, Codable {
         case mealDescription
         case mealImage
         case mealIngrediants
+        case likedMeal
       
    }
     
@@ -94,16 +96,18 @@ class mealClass: NSObject, Identifiable, Codable {
         case mealDescription
         case mealImage
         case mealIngrediants
-       
+        case likedMeal
+        
     }
     
-    init(id: String,mealName: String, mealRating: Int, mealDescription: String, mealImage: String, mealIngrediants: [String]) {
+    init(id: String,mealName: String, mealRating: Int, mealDescription: String, mealImage: String, mealIngrediants: [String], likedMeal: Bool) {
         self.id = id
         self.mealName = mealName
         self.mealRating = mealRating
         self.mealDescription = mealDescription
         self.mealImage = mealImage
         self.mealIngrediants = mealIngrediants
+        self.likedMeal = likedMeal
        
     }
 }

@@ -61,9 +61,12 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
         //Top elements
-        productNameSection.productNameAndBackButton.setTitle("(mealInfo!.mealName)", for: .normal)
+        productNameSection.productNameAndBackButton.setTitle("\(mealInfo!.mealName)", for: .normal)
+        productNameSection.faveButton.isSelected = mealInfo.likedMeal
         //Image elements
-        productImageSection.productImage.image = UIImage(named: "pancake")//"\(meal!.mealImage)")
+        productImageSection.productImage.image = UIImage(named: "\(mealInfo!.mealImage)")
+        relatedProductInfoSection.productDescription.text = mealInfo.mealDescription
+        
 
         }
 
@@ -86,9 +89,20 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     @objc func handlefave(sender: UIButton) {
-        
-        if productNameSection.faveButton.isSelected == true {
-          productNameSection.faveButton.isSelected = false
+        //FIXME: kinda works but is really janky
+        if mealInfo.likedMeal == true {
+            productNameSection.faveButton.isSelected = false
+            userfirebaseMeals.document(mealInfo.mealName).updateData([
+                
+                "likedMeal": false,
+
+            ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                    }
+                }
         } else {
         
             animationView = .init(name: "heartsGif")
@@ -101,6 +115,20 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
                 self.animationView?.removeFromSuperview()
                 self.productNameSection.faveButton.isSelected = true
             }
+            //Save to meal
+            userfirebaseMeals.document(mealInfo.mealName).updateData([
+                
+                "likedMeal": true,
+
+            ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                    }
+                }
+            
+            
         }
     }
     
@@ -214,12 +242,9 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         ])
             
     }
-    
-    
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-       return acctOptions.count
-        //return meal.mealIngrediantes.count
+        return mealInfo.mealIngrediants.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -227,8 +252,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         let friends = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
         friends.backgroundColor = UIColor.white
         friends.textLabel!.textColor = UIColor.ademBlue
-        //friends.textLabel!.text = meal.mealIngrediants[indexPath.row]
-        friends.textLabel!.text = acctOptions[indexPath.row]
+        friends.textLabel!.text = mealInfo.mealIngrediants[indexPath.row]
         
         if indexPath.row == 4 {
             friends.backgroundColor = UIColor.ademRed

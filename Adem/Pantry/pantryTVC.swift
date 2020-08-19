@@ -169,7 +169,7 @@ class pantryCell: UICollectionViewCell {
 
 
 protocol CustomCollectionCellDelegate: class {
-    func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell)
+    func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell, IndexPath: IndexPath)
     
 }
 protocol CellButtonTap: class {

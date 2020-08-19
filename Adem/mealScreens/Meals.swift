@@ -195,20 +195,16 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
 }
 
 extension Meals: CustomCollectionCellDelegate {
-    func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell) {
+   
+    func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell, IndexPath: IndexPath) {
         //https://slicode.com/collectionview-inside-tableview-cell-part-3/
-        
+                
         //FIXME: This is where I need to pass the info
-       /*
         let selectedMeal: mealClass!
-        selectedMeal = product(forIndexPath: indexPath)
+        selectedMeal = product(forIndexPath: IndexPath)
         let detail = mealVCLayout.detailViewControllerForProduct(selectedMeal)
-        */
-        
-        let mealRecipe = mealVCLayout()
-//        let mealRecipe = listProductVCLayout()
-        mealRecipe.modalPresentationStyle = .overFullScreen
-        self.present(mealRecipe, animated: true, completion: nil)
+        //detail.modalPresentationStyle = .overFullScreen
+        self.present(detail, animated: true, completion: nil)
     }
     
     func product(forIndexPath: IndexPath) -> mealClass {

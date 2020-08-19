@@ -158,6 +158,8 @@ class mealsCellLayout: UICollectionViewCell {
 
 class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
+    //Think this is where I need to fetch everything
+    
     var selectedGroceryItems = [groceryItemCellContent]()
     var selectedCells = [UICollectionViewCell]()
     
@@ -220,15 +222,15 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     func firebaseMealFetch() {
         print("running")
        //Adds to the list
-        
         /*
         userfirebaseMeals.document("spaghetti").setData([
             
             "mealImage": "pancake",
             "mealName": "spaghetti",
             "mealRating": 2,
-            "mealIngrediants": ["Chicken","pasta"],
+            "mealIngrediants": ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good"],
             "mealDescription": "test",
+            "likedMeal": false,
         ]) { err in
                 if let err = err {
                     print("Error updating document: \(err)")
@@ -254,28 +256,36 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
-        return arrayofMeals.count//listProducts.count
+        return arrayofMeals.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let mealsCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCCellID, for: indexPath) as! mealsCellLayout
+        let mealIndex = arrayofMeals[indexPath.item]
         mealsCell.clipsToBounds = true
         mealsCell.layer.masksToBounds = true
         
         //This needs to have a outline to it
         mealsCell.favoriteButton.backgroundColor = UIColor.ademRed
     
-        let meal = arrayofMeals[indexPath.item]
+        
         //This is where I need to call the meals
         //mealsCell.meal = meal
     
-        //MARK: works but need to view pantry first
-        mealsCell.mealName.text = meal.mealName
-        mealsCell.mealImageView.image = UIImage(named: "\(meal.mealImage)")
+        //MARK: populate the preview
+        mealsCell.mealName.text = mealIndex.mealName
+        mealsCell.mealImageView.image = UIImage(named: "\(mealIndex.mealImage)")
         //mealsCell.mealItem = listProducts[indexPath.item]
         
         return mealsCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let mealCellTap = collectionView.cellForItem(at: indexPath) as? mealsCellLayout
+
+        //FIXME: This needs to be able to retain the indexpath from the meals array -- see meals extension collectionView.
+        self.cellDelegate?.collectionView(collectioncell: mealCellTap, didTappedInTableview: self, IndexPath: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -289,14 +299,7 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let mealCellTap = collectionView.cellForItem(at: indexPath) as? mealsCellLayout
 
-        //FIXME: This needs to be able to retain the indexpath from the meals array -- see meals extension collectionView.
-        self.cellDelegate?.collectionView(collectioncell: mealCellTap, didTappedInTableview: self)
-    }
     
     //Space between rows
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
