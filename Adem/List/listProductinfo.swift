@@ -20,6 +20,7 @@ class listProductVCLayout: UIViewController {
     //Delegate to pass data
     var delegate: ItemTableViewCellDelegate?
     var product: fireStoreDataClass!
+    var meal: mealClass!
     
     //MARK: View set up
     var productNameSection = productViews()
@@ -41,10 +42,20 @@ class listProductVCLayout: UIViewController {
     }
     
    
+    //Needed for sending to the right item selected
     class func detailViewControllerForProduct(_ product: fireStoreDataClass) -> UIViewController {
         let viewController = self.init()
         if let detailViewController = viewController as? listProductVCLayout {
             detailViewController.product = product
+        }
+        return viewController
+    }
+    
+    //might need to move to the nxt screen
+    class func pallatteTested(_ product: mealClass) -> UIViewController {
+        let viewController = self.init()
+        if let detailViewController = viewController as? listProductVCLayout {
+            detailViewController.meal = product
         }
         return viewController
     }
@@ -211,6 +222,8 @@ class listProductVCLayout: UIViewController {
         
         productNameSection.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         relatedProductInfoSection.nutritionLabel.addTarget(self, action: #selector(handleNutritionLabel), for: .touchUpInside)
+        
+        
     }
     
     func setupProductLayoutContstraints() {
@@ -255,6 +268,17 @@ class listProductVCLayout: UIViewController {
 extension listProductVCLayout: ItemTableViewCellDelegate {
     func itemCell(cellTapped: IndexPath) {
         let cellTap = arrayofProducts[cellTapped.row]
+    }
+    
+    func mealsView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
+        //https://slicode.com/collectionview-inside-tableview-cell-part-3/
+
+        //FIXME: This is where I need to pass the info
+        let selectedMeal: mealClass!
+        selectedMeal = relatedProductInfoSection.relatedMeal(forIndexPath: IndexPath)
+        let detail = listProductVCLayout.pallatteTested(selectedMeal)
+        //detail.modalPresentationStyle = .overFullScreen
+        self.present(detail, animated: true, completion: nil)
     }
 }
 

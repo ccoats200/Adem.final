@@ -28,12 +28,12 @@ class recommendedProductCells: UICollectionViewCell {
         setUpConstraintsForCell()
     }
     
-    var recItem = recomend() {
-        didSet {
-            productImageView.image = UIImage(named: (recItem.itemImage)!)
-        }
-    }
-    
+//    var recItem = recomend() {
+//        didSet {
+//            productImageView.image = UIImage(named: (recItem.itemImage)!)
+//        }
+//    }
+//
     //initWithCode to init view from xib or storyboard
     required init?(coder aDecoder: NSCoder) {
       super.init(coder: aDecoder)

@@ -220,13 +220,15 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     }
     
     func firebaseMealFetch() {
-        print("running")
-       //Adds to the list
+        //Adds to the list
+        //MARK: See the Products.swift for the full info
+        //FIXME: need to add some fields. think through
         /*
-        userfirebaseMeals.document("spaghetti").setData([
+        let newMeal = "chicken parm"
+        userfirebaseMeals.document(newMeal).setData([
             
             "mealImage": "pancake",
-            "mealName": "spaghetti",
+            "mealName": newMeal,
             "mealRating": 2,
             "mealIngrediants": ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good"],
             "mealDescription": "test",
@@ -238,8 +240,8 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
                     print("Document successfully updated")
                 }
             }
-        */
         
+        */
         //finds one meal! see Products.swift for other ones
         userfirebaseMeals.addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
@@ -251,6 +253,7 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
             }
             self.mealsCollectionView.reloadData()
         }
+        
     }
     
 
@@ -274,7 +277,8 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         //mealsCell.meal = meal
     
         //MARK: populate the preview
-        mealsCell.mealName.text = mealIndex.mealName
+        mealsCell.mealName.text = mealIndex.mealName.capitalized
+        mealsCell.ratingsCount.text = "(\(mealIndex.mealRating))"
         mealsCell.mealImageView.image = UIImage(named: "\(mealIndex.mealImage)")
         //mealsCell.mealItem = listProducts[indexPath.item]
         

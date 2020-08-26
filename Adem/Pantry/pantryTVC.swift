@@ -172,6 +172,11 @@ protocol CustomCollectionCellDelegate: class {
     func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell, IndexPath: IndexPath)
     
 }
+
+protocol pallatteCellDelegate: class {
+    func collectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath)
+    
+}
 protocol CellButtonTap: class {
     
     func buttonTapped(collectioncell: UICollectionViewCell?, button: UIButton?)

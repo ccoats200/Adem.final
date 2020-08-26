@@ -341,6 +341,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 //        }
         switch indexPath.row {
         case 0:
+            //This is a list of liked meals
             handleRecipies()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
         case 1:

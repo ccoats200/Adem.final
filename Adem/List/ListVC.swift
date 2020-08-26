@@ -270,6 +270,15 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     }
 
     func firebaseDataFetch() {
+        userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            arrayofTestingPallette = documents.compactMap { queryDocumentSnapshot -> mealClass? in
+                return try? queryDocumentSnapshot.data(as: mealClass.self)
+            }
+        }
         
         if isUserLoggedIn() {
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in

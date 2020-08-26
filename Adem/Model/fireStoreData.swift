@@ -34,6 +34,8 @@ var arrayofPantry = [fireStoreDataClass]()
 var arrayofProducts = [fireStoreDataClass]()
 
 var arrayofMeals = [mealClass]()
+var arrayofTestingPallette = [mealClass]()
+var arrayofLikedMeals = [mealClass]()
 
 var backUp = [fireStoreDataStruct]()
 var backUp2 = [fireStoreDataStruct]()

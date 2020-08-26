@@ -46,6 +46,9 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
         return mealRecCell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("this is on the you can make page")
+    }
     
     let segmentLabel: UILabel = {
         let meal = UILabel()

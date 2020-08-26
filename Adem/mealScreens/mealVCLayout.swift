@@ -27,7 +27,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     var animationView: AnimationView?
     
     let tableViewCell = "test"
-    var acctOptions = ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good"]
+    //var acctOptions = ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good"]
     //MARK: Pass data
     //Delegate to pass data
     var delegate: mealSelectionCellDelegate?
@@ -35,7 +35,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+         
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.ademBlue
         //testing this
@@ -61,7 +61,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
         //Top elements
-        productNameSection.productNameAndBackButton.setTitle("\(mealInfo!.mealName)", for: .normal)
+        productNameSection.productNameAndBackButton.setTitle("\(mealInfo!.mealName.capitalized)", for: .normal)
         productNameSection.faveButton.isSelected = mealInfo.likedMeal
         //Image elements
         productImageSection.productImage.image = UIImage(named: "\(mealInfo!.mealImage)")

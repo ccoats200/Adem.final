@@ -38,6 +38,8 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        firebaseLikedMealFetch()
+        
         data = [friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family"),friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family")]
         
         let setText = UILabel()
@@ -67,7 +69,22 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
     }
    
+    func firebaseLikedMealFetch() {
+        //finds one meal! see Products.swift for other ones
+        userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            arrayofLikedMeals = documents.compactMap { queryDocumentSnapshot -> mealClass? in
+                return try? queryDocumentSnapshot.data(as: mealClass.self)
+            }
+            self.tableView.reloadData()
+        }
+        
+    }
     
+    /*
     //Header Testing
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         
@@ -92,6 +109,7 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     }
     
     
+    */
     //product Button
     @objc func inspectingFriend() {
         
@@ -100,7 +118,9 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return data.count
+        print(arrayofLikedMeals.count)
+        return arrayofLikedMeals.count
+        //return data.count
     }
     
     
@@ -109,9 +129,12 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         //let dataSwitch = UISwitch()
         
         let privacy = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath) as! customTableViewCell
-        privacy.friendName = data[indexPath.row].name
-        privacy.friendImage = data[indexPath.row].image
-        privacy.friendTitle = data[indexPath.row].title
+//        privacy.friendName = data[indexPath.row].name
+//        privacy.friendImage = data[indexPath.row].image
+//        privacy.friendTitle = data[indexPath.row].title
+        privacy.friendName = arrayofLikedMeals[indexPath.row].mealName
+        privacy.friendImage = UIImage(named: "\(arrayofLikedMeals[indexPath.row].mealImage)")
+        //privacy.friendTitle = arrayofLikedMeals[indexPath.row].title
         
         return privacy
     }
