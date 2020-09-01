@@ -287,9 +287,9 @@
 		35669AD72408B3A900C95DFB /* Pantry */ = {
 			isa = PBXGroup;
 			children = (
+				3527A0EE248720D000956349 /* pantry.swift */,
 				35D6485622ECBD8700015352 /* PantryVC.swift */,
 				356FFEF523FC590700DF67AD /* pantryTVC.swift */,
-				3527A0EE248720D000956349 /* pantry.swift */,
 				3542B9302499A12C00E259EE /* filterVC.swift */,
 			);
 			path = Pantry;

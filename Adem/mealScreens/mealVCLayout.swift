@@ -32,6 +32,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     //Delegate to pass data
     var delegate: mealSelectionCellDelegate?
     var mealInfo: mealClass!
+    var productMatch: fireStoreDataClass!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -254,12 +255,29 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         friends.textLabel!.textColor = UIColor.ademBlue
         friends.textLabel!.text = mealInfo.mealIngrediants[indexPath.row]
         
-        if indexPath.row == 4 {
-            friends.backgroundColor = UIColor.ademRed
-            friends.textLabel!.textColor = UIColor.white
+        //MARK: Checks list for the item
+        if !arrayofProducts.contains(where: { $0.productName == mealInfo.mealIngrediants[indexPath.row]}) {
+            //MARK: - Not in love with design
+            //friends.textLabel!.font = UIFont.boldSystemFont(ofSize: 18)
+            //friends.textLabel!.textColor = UIColor.ademRed
+            friends.textLabel!.text = mealInfo.mealIngrediants[indexPath.row]
+        } else {
+            friends.accessoryType = .checkmark
+            //friends.accessoryView?.backgroundColor = UIColor.ademGreen
+            //friends.textLabel!.text = arrayofProducts[indexPath.row].productName
+            //print("match")
         }
+
         
         return friends
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        //MARK: find and add
+        productMatch = addingProduct(forIndexPath: indexPath)
+        let detailViewController = listProductVCLayout.detailViewControllerForProduct(productMatch)
+
+        self.present(detailViewController, animated: true, completion: nil)
     }
     
     
@@ -286,6 +304,12 @@ extension mealVCLayout: mealSelectionCellDelegate {
     func product(forIndexPath: IndexPath) -> mealClass {
         var product: mealClass!
         product = arrayofMeals[forIndexPath.item]
+        return product
+    }
+    
+    func addingProduct(forIndexPath: IndexPath) -> fireStoreDataClass {
+        var product: fireStoreDataClass!
+        product = arrayofProducts[forIndexPath.item]
         return product
     }
     

@@ -21,51 +21,48 @@ struct friendsListInfo {
 class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     var data = [friendsListInfo]()
-    var refreshControl = UIRefreshControl()
     
-    private var tableView: UITableView!
+    private var likedMealsTableView: UITableView!
     //reuse ID's
     let privacy = "privacy"
     let cellHeight = 60
-    
-    
-    @objc func refresh(sender: AnyObject) {
-          // Code to refresh table view
-        self.tableView.reloadData()
-        self.refreshControl.endRefreshing()
-       }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         firebaseLikedMealFetch()
         
-        data = [friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family"),friendsListInfo.init(image: #imageLiteral(resourceName: "bread"), name: "Will Glockner", title: "Family")]
-        
-        let setText = UILabel()
-        setText.text = "Friends"
-        setText.textColor = UIColor.white
-        navigationItem.titleView = setText
-        navigationController?.navigationBar.isTranslucent = false
-        
-        
-        self.refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
-        self.refreshControl.addTarget(self, action: #selector(refresh), for: UIControl.Event.valueChanged)
 
-        
-        
+        //FIXME: This is cutting off the top of the user image
+
+        //let setText = UILabel()
+        navigationItem.title = "Liked Meals"
+        if #available(iOS 13.0, *) {
+            let navBarAppearance = UINavigationBarAppearance()
+            navBarAppearance.configureWithOpaqueBackground()
+            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
+            //navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
+            navBarAppearance.backgroundColor = UIColor.ademBlue
+            navigationController?.navigationBar.prefersLargeTitles = false
+            navigationController?.navigationBar.standardAppearance = navBarAppearance
+            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
+            navigationController?.navigationBar.tintColor = UIColor.white
+        } else {
+            //Something else
+            print("something is wrong")
+        }
         let displayWidth: CGFloat = self.view.frame.width
         let displayHeight: CGFloat = self.view.frame.height
         
-        tableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        likedMealsTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        self.likedMealsTableView.separatorStyle = .none
+        likedMealsTableView.backgroundColor = UIColor.white
+        self.likedMealsTableView.register(customMealViewCell.self, forCellReuseIdentifier: privacy)
         
-        tableView.backgroundColor = UIColor.white
-        self.tableView.register(customTableViewCell.self, forCellReuseIdentifier: privacy)
         
-        
-        self.tableView.dataSource = self
-        self.tableView.delegate = self
-        self.view.addSubview(tableView)
+        self.likedMealsTableView.dataSource = self
+        self.likedMealsTableView.delegate = self
+        self.view.addSubview(likedMealsTableView)
         
     }
    
@@ -79,7 +76,7 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
             arrayofLikedMeals = documents.compactMap { queryDocumentSnapshot -> mealClass? in
                 return try? queryDocumentSnapshot.data(as: mealClass.self)
             }
-            self.tableView.reloadData()
+            self.likedMealsTableView.reloadData()
         }
         
     }
@@ -125,16 +122,10 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    
-        //let dataSwitch = UISwitch()
-        
-        let privacy = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath) as! customTableViewCell
-//        privacy.friendName = data[indexPath.row].name
-//        privacy.friendImage = data[indexPath.row].image
-//        privacy.friendTitle = data[indexPath.row].title
-        privacy.friendName = arrayofLikedMeals[indexPath.row].mealName
+            
+        let privacy = tableView.dequeueReusableCell(withIdentifier: self.privacy, for: indexPath) as! customMealViewCell
+        privacy.friendName = arrayofLikedMeals[indexPath.row].mealName.capitalized
         privacy.friendImage = UIImage(named: "\(arrayofLikedMeals[indexPath.row].mealImage)")
-        //privacy.friendTitle = arrayofLikedMeals[indexPath.row].title
         
         return privacy
     }
@@ -143,9 +134,32 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         return CGFloat(cellHeight)
     }
     
-    //func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-    //inspectingFriend()
-    //}
+    weak var cellDelegate: CustomCollectionCellDelegate?
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//    let privacy = tableView.cellForRow(at: indexPath) as? customTableViewCell
+//        
+//        self.cellDelegate?.tableView(TableCell: self, IndexPath: indexPath)
+        inspectingFriend()
+    }
+}
+extension friendsTVC: CustomTableCellDelegate {
+    func tableView(TableCell: UITableViewCell?, IndexPath: IndexPath) {
+         
+        let selectedMeal: mealClass!
+        selectedMeal = likedMeal(forIndexPath: IndexPath)
+             
+        let detail = mealVCLayout.detailViewControllerForProduct(selectedMeal)
+                        
+        self.present(detail, animated: true, completion: nil)
+    }
+    
+    
+    func likedMeal(forIndexPath: IndexPath) -> mealClass {
+        var product: mealClass!
+        product = arrayofLikedMeals[forIndexPath.row]
+        return product
+    }
 }
 
 
@@ -202,8 +216,8 @@ class customTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
-        self.layer.cornerRadius = 5
-        self.layer.borderWidth = 1
+        //self.layer.cornerRadius = 5
+
         self.addSubview(friendsName)
         self.addSubview(friendsPicture)
         self.addSubview(friendsTitle)
@@ -246,3 +260,77 @@ class customTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
+class customMealViewCell: UITableViewCell {
+    
+    var friendName: String?
+    var friendImage: UIImage?
+    
+    //UIView Profile Pic
+    let friendsPicture: UIImageView = {
+        let picOfFriend = UIImageView()
+        picOfFriend.contentMode = .scaleAspectFill
+        picOfFriend.layer.cornerRadius = 15
+        picOfFriend.layer.masksToBounds = true
+        picOfFriend.clipsToBounds = true
+        picOfFriend.layer.shadowColor = UIColor.clear.cgColor
+        picOfFriend.layer.borderColor = UIColor.white.cgColor
+        picOfFriend.translatesAutoresizingMaskIntoConstraints = false
+        
+        return picOfFriend
+    }()
+    
+    let friendsName: UILabel = {
+        let nameOfMeal = UILabel()
+        nameOfMeal.textAlignment = .left
+        nameOfMeal.numberOfLines = 1
+        nameOfMeal.adjustsFontSizeToFitWidth = true
+        //userName.font = UIFont(name: "Lato", size: 80)
+        nameOfMeal.font = UIFont.boldSystemFont(ofSize: 20)
+        nameOfMeal.textColor = UIColor.ademBlue
+        
+        nameOfMeal.translatesAutoresizingMaskIntoConstraints = false
+        print("sets the item name")
+        return nameOfMeal
+    }()
+
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        //self.layer.cornerRadius = 5
+
+        self.addSubview(friendsName)
+        self.addSubview(friendsPicture)
+        
+        NSLayoutConstraint.activate([
+            
+            friendsPicture.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 20),
+            friendsPicture.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
+            friendsPicture.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            friendsPicture.heightAnchor.constraint(equalToConstant: 50),
+            friendsPicture.widthAnchor.constraint(equalToConstant: 50),
+            friendsName.leadingAnchor.constraint(equalTo: friendsPicture.trailingAnchor, constant: 15),
+            friendsName.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            friendsName.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10),
+            friendsName.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            
+            
+            ])
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        if let message = friendName {
+            friendsName.text = message
+        }
+        if let image = friendImage {
+            friendsPicture.image = image
+        }
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+

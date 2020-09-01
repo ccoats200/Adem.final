@@ -206,6 +206,16 @@ extension Meals: CustomCollectionCellDelegate {
         //detail.modalPresentationStyle = .overFullScreen
         self.present(detail, animated: true, completion: nil)
     }
+    func tableView(TableCell: UITableViewCell, IndexPath: IndexPath) {
+        //https://slicode.com/collectionview-inside-tableview-cell-part-3/
+                
+        //FIXME: This is where I need to pass the info
+        let selectedMeal: mealClass!
+        selectedMeal = product(forIndexPath: IndexPath)
+        let detail = mealVCLayout.detailViewControllerForProduct(selectedMeal)
+        //detail.modalPresentationStyle = .overFullScreen
+        self.present(detail, animated: true, completion: nil)
+    }
     
     func product(forIndexPath: IndexPath) -> mealClass {
         var product: mealClass!

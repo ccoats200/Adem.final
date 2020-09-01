@@ -456,14 +456,11 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
-    
-    
-       
+           
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         //Works
         let headerView = UIView()
         headerView.backgroundColor = UIColor.white
-
         headerView.addSubview(filterListCollectionView)
 //        filterListCollectionView.layer.masksToBounds = true
 //        filterListCollectionView.clipsToBounds = true

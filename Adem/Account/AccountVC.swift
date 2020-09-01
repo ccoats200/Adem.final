@@ -99,6 +99,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     //MARK: - Button Action - Start
     @objc func handleRecipies() {
         let privacyController = friendsTVC()
+        
+        //FIXME: This is cutting off the top of the user image
         self.navigationController?.pushViewController(privacyController, animated: true)
     }
     
@@ -195,6 +197,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func setUpdefaultSegment() {
 
+        
         homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
         homeSegmentView.accountTableView.delegate = self
         homeSegmentView.accountTableView.dataSource = self

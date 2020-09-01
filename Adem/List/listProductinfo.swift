@@ -26,6 +26,7 @@ class listProductVCLayout: UIViewController {
     var productNameSection = productViews()
     var productImageSection = productImageViews()
     var relatedProductInfoSection = productInfoViews()
+    //If not in cart use quantity as add button
     
     override func viewDidLoad() {
         super.viewDidLoad()
