@@ -36,10 +36,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
+        setNavbar()
         
         view.backgroundColor = UIColor.white
         
@@ -55,9 +52,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
     }
     
+    
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        setNavbar()
         
         setUpdefaultSegment()
         handleUserInfo()
@@ -67,10 +67,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         
         //MARK: Nav bar is see through
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
+        setUptopViews()
+        
         //MARK: Nav bar is see through
         
         self.navigationController?.view.layoutIfNeeded()
@@ -94,6 +92,13 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         super.viewWillDisappear(animated)
 
         firebaseAuth.removeStateDidChangeListener(handle!)
+    }
+    
+    func setNavbar() {
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        self.navigationController?.navigationBar.isTranslucent = true
+        self.navigationController?.view.backgroundColor = UIColor.clear
     }
     
     //MARK: - Button Action - Start

@@ -10,9 +10,9 @@ import UIKit
 import Firebase
 import Lottie
 
-protocol mealSelectionCellDelegate {
-    func itemCell(cellTapped: IndexPath)
-}
+//protocol mealSelectionCellDelegate {
+//    func itemCell(cellTapped: IndexPath)
+//}
 
 class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -30,7 +30,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     //var acctOptions = ["Flour","Eggs","Milk","Almond Extract","Salt","Syrup","a good"]
     //MARK: Pass data
     //Delegate to pass data
-    var delegate: mealSelectionCellDelegate?
+    //var delegate: mealSelectionCellDelegate?
     var mealInfo: mealClass!
     var productMatch: fireStoreDataClass!
     
@@ -257,15 +257,17 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         
         //MARK: Checks list for the item
         if !arrayofProducts.contains(where: { $0.productName == mealInfo.mealIngrediants[indexPath.row]}) {
-            //MARK: - Not in love with design
-            //friends.textLabel!.font = UIFont.boldSystemFont(ofSize: 18)
-            //friends.textLabel!.textColor = UIColor.ademRed
             friends.textLabel!.text = mealInfo.mealIngrediants[indexPath.row]
         } else {
+            //Might need to match product here
+//            where friends.textLabel?.text == productMatch.productName do {
+//                print("\(friends.textLabel?.text) dfs")
+//            }
+//            if friends.textLabel?.text == productMatch.productName {
+//                print("\(friends.textLabel?.text) dfs")
+//            }
             friends.accessoryType = .checkmark
-            //friends.accessoryView?.backgroundColor = UIColor.ademGreen
-            //friends.textLabel!.text = arrayofProducts[indexPath.row].productName
-            //print("match")
+
         }
 
         
@@ -273,11 +275,32 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //MARK: find and add
-        productMatch = addingProduct(forIndexPath: indexPath)
-        let detailViewController = listProductVCLayout.detailViewControllerForProduct(productMatch)
+        let itemInList = self.tableView(ingrediantsList, cellForRowAt: indexPath).textLabel?.text
+        
+        if itemInList == "Milk" {
+            //MARK: find and add
+            productMatch = addingProduct(forIndexPath: indexPath)
 
-        self.present(detailViewController, animated: true, completion: nil)
+            for productName in mealInfo.mealIngrediants {
+                if productName == productMatch.productName {
+                print(productName)
+                }
+            }
+            //where productMatch.productName == self.tableView(ingrediantsList, cellForRowAt: indexPath)
+            //if productMatch.productName ==
+            
+            let detailViewController = listProductVCLayout.detailViewControllerForProduct(productMatch)
+            self.present(detailViewController, animated: true, completion: nil)
+            ingrediantsList.deselectRow(at: indexPath, animated: true)
+        }
+        
+//        //MARK: find and add
+//        productMatch = addingProduct(forIndexPath: indexPath)
+//        //if productMatch.productName ==
+//
+//        let detailViewController = listProductVCLayout.detailViewControllerForProduct(productMatch)
+//
+//        self.present(detailViewController, animated: true, completion: nil)
     }
     
     
@@ -299,22 +322,27 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
 }
 
 
-extension mealVCLayout: mealSelectionCellDelegate {
+extension mealVCLayout {//: mealSelectionCellDelegate {
     
-    func product(forIndexPath: IndexPath) -> mealClass {
-        var product: mealClass!
-        product = arrayofMeals[forIndexPath.item]
-        return product
-    }
-    
+//    func product(forIndexPath: IndexPath) -> mealClass {
+//        var product: mealClass!
+//        product = arrayofMeals[forIndexPath.item]
+//        return product
+//    }
+//
     func addingProduct(forIndexPath: IndexPath) -> fireStoreDataClass {
+        
+        //might ask dan
+        //it's finding the wrong one need to find the one based on the name of the selected cell
+        var currentIndex = 0
         var product: fireStoreDataClass!
         product = arrayofProducts[forIndexPath.item]
+        
         return product
     }
     
     
-    func itemCell(cellTapped: IndexPath) {
-        let cellTap = arrayofMeals[cellTapped.row]
-    }
+//    func itemCell(cellTapped: IndexPath) {
+//        let cellTap = arrayofMeals[cellTapped.row]
+//    }
 }

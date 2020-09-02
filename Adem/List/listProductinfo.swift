@@ -72,10 +72,17 @@ class listProductVCLayout: UIViewController {
         relatedProductInfoSection.productDescription.text = "\(product!.productDescription)"
         relatedProductInfoSection.listQuantity.text = "Qty: \(product!.productQuantity)"
         
+        //statsPage.collectionView(statsPage.stats, cellForItemAt: <#T##IndexPath#>)
+        
         //Stats elements
         //This might be like the above
 //        statsPage.collectionView(statsPage.stats, cellForItemAt: IndexPath).
         
+    }
+    
+    func assignCollec() {
+        
+        //statsPage.collectionView(statsPage.stats, cellForItemAt: forIndexPath)
     }
 
 
@@ -106,7 +113,7 @@ class listProductVCLayout: UIViewController {
     //MARK: Button engagement
     
     let segmentContr: UISegmentedControl = {
-        let items = ["Description", "Meals", "Stats"]
+        let items = ["Description", "Meals"]//, "Stats"]
         let segmentContr = UISegmentedControl(items: items)
         segmentContr.tintColor = UIColor.white
         segmentContr.selectedSegmentIndex = 0
@@ -133,7 +140,7 @@ class listProductVCLayout: UIViewController {
     
     func setUpViews() {
         
-        segmentViews = [relatedProductInfoSection,mealsPage,statsPage]
+        segmentViews = [relatedProductInfoSection,mealsPage]//,statsPage]
 
         view.addSubview(productNameSection)
         view.addSubview(productImageSection)
@@ -256,10 +263,10 @@ class listProductVCLayout: UIViewController {
         mealsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
         mealsPage.bottomAnchor.constraint(equalTo: relatedProductInfoSection.bottomAnchor),
         
-        statsPage.heightAnchor.constraint(equalTo: relatedProductInfoSection.heightAnchor),
-        statsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
-        statsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
-        statsPage.centerYAnchor.constraint(equalTo: relatedProductInfoSection.centerYAnchor),
+//        statsPage.heightAnchor.constraint(equalTo: relatedProductInfoSection.heightAnchor),
+//        statsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
+//        statsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
+//        statsPage.centerYAnchor.constraint(equalTo: relatedProductInfoSection.centerYAnchor),
         ])
     }
 }
