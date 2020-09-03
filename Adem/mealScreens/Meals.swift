@@ -165,10 +165,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let mealsCell = tableView.dequeueReusableCell(withIdentifier: mealsCellID) as! mealsTableViewCell
-        
-        
         mealsCell.cellDelegate = self
-        
         return mealsCell
     }
     

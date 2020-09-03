@@ -19,6 +19,14 @@ import CoreData
  https://medium.com/app-makers/how-to-remove-cocoapods-from-xcode-project-5166c19152
  */
 
+//MARK: - This is where we get design elements
+/*
+ https://spotify.design/
+ https://lottiefiles.com/blog/working-with-lottie/how-to-add-lottie-animation-ios-app-swift
+ https://lottiefiles.com/
+ */
+
+//MARK: - This is where we get design elements
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

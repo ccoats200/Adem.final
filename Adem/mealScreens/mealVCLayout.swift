@@ -277,18 +277,18 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let itemInList = self.tableView(ingrediantsList, cellForRowAt: indexPath).textLabel?.text
         
-        if itemInList == "Milk" {
-            //MARK: find and add
-            productMatch = addingProduct(forIndexPath: indexPath)
+        if arrayofProducts.contains(where: { $0.productName == itemInList}) {
+            //MARK: find or add
 
-            for productName in mealInfo.mealIngrediants {
-                if productName == productMatch.productName {
-                print(productName)
+            //might go outside of if statement
+            for i in arrayofProducts {
+                if i.productName == itemInList {
+                    print("this is a tests \(i)")
                 }
             }
-            //where productMatch.productName == self.tableView(ingrediantsList, cellForRowAt: indexPath)
-            //if productMatch.productName ==
-            
+            //This is looking up index path but it needs to find the indexPath based on the title
+            productMatch = addingProduct(forIndexPath: indexPath)
+        
             let detailViewController = listProductVCLayout.detailViewControllerForProduct(productMatch)
             self.present(detailViewController, animated: true, completion: nil)
             ingrediantsList.deselectRow(at: indexPath, animated: true)
