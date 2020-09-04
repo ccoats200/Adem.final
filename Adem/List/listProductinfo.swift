@@ -43,7 +43,7 @@ class listProductVCLayout: UIViewController {
     }
     
    
-    //Needed for sending to the right item selected
+    //MARK: Needed for sending to the right item selected
     class func detailViewControllerForProduct(_ product: fireStoreDataClass) -> UIViewController {
         let viewController = self.init()
         if let detailViewController = viewController as? listProductVCLayout {
@@ -65,8 +65,10 @@ class listProductVCLayout: UIViewController {
         super.viewWillAppear(animated)
         //Top elements
         productNameSection.productNameAndBackButton.setTitle(product!.productName, for: .normal)
-        productNameSection.priceLabel.text = "$ \(product!.productPrice)"
+        productNameSection.priceLabel.text = "$\(product!.productPrice)"
         //Image elements
+        productImageSection.productImage.image = UIImage(named: product!.productImage)
+        
         
         //Detail elements
         relatedProductInfoSection.productDescription.text = "\(product!.productDescription)"
@@ -110,8 +112,8 @@ class listProductVCLayout: UIViewController {
     @objc func switchViewAction(_ segmentContr: UISegmentedControl) {
         self.view.bringSubviewToFront(segmentViews[segmentContr.selectedSegmentIndex])
     }
-    //MARK: Button engagement
     
+    //MARK: Button engagement
     let segmentContr: UISegmentedControl = {
         let items = ["Description", "Meals"]//, "Stats"]
         let segmentContr = UISegmentedControl(items: items)
@@ -131,20 +133,17 @@ class listProductVCLayout: UIViewController {
   
     }()
     
-    
-    
-    
     let mealsPage = mealsSegment()
     let statsPage = statsSegment()
     var segmentViews: [UIView]!
     
     func setUpViews() {
         
+        //Add back stats when its time
         segmentViews = [relatedProductInfoSection,mealsPage]//,statsPage]
 
         view.addSubview(productNameSection)
         view.addSubview(productImageSection)
-        
         
         for v in segmentViews {
             view.addSubview(v)
@@ -152,30 +151,22 @@ class listProductVCLayout: UIViewController {
             v.translatesAutoresizingMaskIntoConstraints = false
         }
         view.bringSubviewToFront(segmentViews[0])
-        
         view.addSubview(segmentContr)
-        
         productImageSection.translatesAutoresizingMaskIntoConstraints = false
         productNameSection.translatesAutoresizingMaskIntoConstraints = false
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
-        
         relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(updateQuantity), for: .touchDown)
+        relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchDown)
     }
 
     //MARK: Quantity
     let actionTest = [1: 1,2: 2,3: 3,4 :4,5: 5]
     @objc func updateQuantity() {
-       
         let sorted = actionTest.sorted {$0.key > $1.key}
-        
         let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
         let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
-        
         for actions in sorted {
-            
             let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
-                
                 //kinda works don't trust that much
                 for i in arrayofProducts where i.id == self.product!.id {
                     self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
@@ -184,54 +175,41 @@ class listProductVCLayout: UIViewController {
             }
             actionSheetController.addAction(quantity)
         }
-        
         actionSheetController.addAction(cancelAction)
         self.present(actionSheetController, animated: true, completion: nil)
 //        updateQuantity()
 //        let updateQuantity = quantityAlert()
 //        updateQuantity.modalPresentationStyle = UIModalPresentationStyle.formSheet
 //        self.present(updateQuantity, animated: true, completion: nil)
-
-        
     }
     
-    
-/*
-    func updateQuantity() {
+    @objc func addToOpposite() {
         
-        let sorted = actionTest.sorted {$0.key > $1.key}
-        
-        let actionSheetController: UIAlertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-
-        let cancelAction: UIAlertAction = UIAlertAction(title: "Cancel", style: .cancel) { action -> Void in }
-        
-        for actions in sorted {
-            
-            let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
-                
-                //kinda works don't trust that much
-                for i in arrayofProducts where i.id == self.productNameSection.idlabel.text {
-                    //below was outside of for statement
-                    self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
-                    self.updateProductQuantityValue(id: i.id!, quantity: actions.value)
+        if arrayofProducts.contains(where: { $0.id == self.product.id}) {
+            self.updateProductLocationValues(indexPath: self.product.id!, pantry: true, list: false)
+        } else if arrayofPantry.contains(where: { $0.id == self.product.id}){
+            let find = self.product.id!
+            let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
+            let sorted = actionTest.sorted {$0.key < $1.key}
+            let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
+            let cancelAction: UIAlertAction = UIAlertAction(title: "Not Done Yet", style: .cancel) { action -> Void in }
+            for actions in sorted {
+                let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+                    self.addWasteAmount(id: find, amount: actions.value)
+                    self.updateProductLocationValues(indexPath: find, pantry: false, list: true)
+                    self.addTimeStamp(id: find, action: engagements.added.rawValue)
                 }
+                actionSheetController.addAction(quantity)
             }
-            actionSheetController.addAction(quantity)
+            actionSheetController.addAction(cancelAction)
+            self.present(actionSheetController, animated: true, completion: nil)
         }
-        
-        actionSheetController.addAction(cancelAction)
-        self.present(actionSheetController, animated: true, completion: nil)
     }
-
-    */
     
     func setUpProductButtons() {
         //MARK: how to add button interaction
-        
         productNameSection.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         relatedProductInfoSection.nutritionLabel.addTarget(self, action: #selector(handleNutritionLabel), for: .touchUpInside)
-        
-        
     }
     
     func setupProductLayoutContstraints() {

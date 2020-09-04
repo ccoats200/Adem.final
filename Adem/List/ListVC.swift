@@ -204,7 +204,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             self.navigationController?.isToolbarHidden = true
             self.navigationItem.leftBarButtonItem = nil
             self.tabBarController?.tabBar.isHidden = false
-            listTableView.isEditing = false
+            listTableView?.isEditing = false
         }
     }
     

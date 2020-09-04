@@ -27,7 +27,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     //kaggle datasets download -d shuyangli94/food-com-recipes-and-user-interactions
     
     var mealsTableView: UITableView!
-    var add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleCreate))
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,7 +43,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         
         //getmeals
         
-        refressss()
+        //refressss()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -52,7 +52,9 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     }
     
     //MARK: Pull to refresh
+    /*
     var refreshControl = UIRefreshControl()
+    
     func refressss() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
         refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
@@ -66,7 +68,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         //need delay
         refreshControl.endRefreshing()
     }
-
+    */
     
     func setUpNavigationBar() {
         
@@ -94,6 +96,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
     
     lazy var searching = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
+    lazy var add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleCreate))
     let mealsSearchController = UISearchController(searchResultsController: nil)
 
     private func setUpSearchBar() {

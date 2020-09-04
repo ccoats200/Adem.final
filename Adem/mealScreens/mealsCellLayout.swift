@@ -61,7 +61,7 @@ class mealsCellLayout: UICollectionViewCell {
     let favoriteButton: UIButton = {
         let fave = UIButton()
         fave.setBackgroundImage(UIImage(named: "fave-1"), for: .normal)
-        fave.setBackgroundImage(UIImage(named: "veganIcon"), for: .highlighted)
+        //fave.setBackgroundImage(UIImage(named: "veganIcon"), for: .highlighted)
         fave.clipsToBounds = true
         fave.layer.masksToBounds = true
         fave.translatesAutoresizingMaskIntoConstraints = false
@@ -269,14 +269,19 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         mealsCell.clipsToBounds = true
         mealsCell.layer.masksToBounds = true
         
-        //This needs to have a outline to it
-        mealsCell.favoriteButton.backgroundColor = UIColor.ademRed
+       
     
         
         //This is where I need to call the meals
         //mealsCell.meal = meal
     
         //MARK: populate the preview
+        //This needs to have a outline to it
+        if mealIndex.likedMeal == true {
+            //FIXEME: if you scroll 3 times in a row it sets the last on the faveorited>
+            //precondition
+            mealsCell.favoriteButton.setBackgroundImage(UIImage(named: "heart"), for: .normal)
+        }
         mealsCell.mealName.text = mealIndex.mealName.capitalized
         mealsCell.ratingsCount.text = "(\(mealIndex.mealRating))"
         mealsCell.mealImageView.image = UIImage(named: "\(mealIndex.mealImage)")

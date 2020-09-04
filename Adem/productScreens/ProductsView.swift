@@ -29,6 +29,7 @@ class productViews: UIView {
     super.init(coder: aDecoder)
     setupView()
   }
+    
 
     //make button later
     var priceLabel: UILabel = {
@@ -66,6 +67,8 @@ class productViews: UIView {
     
     NSLayoutConstraint.activate([
 
+        
+        
         productNameAndBackButton.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         productNameAndBackButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
         productNameAndBackButton.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -150),
@@ -168,12 +171,16 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     setupView()
   }
     
+    //MARK: - This needs to be be produst not meals
+    //MARK: - Move this the the meals page since it's partially working
     var relatedMeals: mealClass!
     var listProducts = recCell
     //var myStuff: [recomend] = []
+    
+    
 
     let productDescription: UITextView = {
-        let desc = "This goes great at breakfast. Don't miss the best meal of the day"
+        let desc = "This goes great at breakfast. I usually don't have time for it but I've only heard good things."
         let description = UITextView()
         description.layer.masksToBounds = true
         description.text = "\(desc)"
@@ -200,7 +207,6 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mealCellTap = collectionView.cellForItem(at: indexPath) as? recommendedProductCells
-        
         let selectedProduct: mealClass!
         selectedProduct = relatedMeal(forIndexPath: indexPath)
         print("\(selectedProduct.mealName.capitalized)")
@@ -220,7 +226,12 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return notify
     }()
     
-   
+   var addToPantry: UIButton = {
+       let addToPantry = UIButton(type: .system)
+       addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+       return addToPantry
+   }()
+
     
     let itemQuant: UIView = {
         let quant = UIView()
@@ -300,11 +311,13 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         let textFieldSeparator = UIView()
         textFieldSeparator.backgroundColor = UIColor.ademBlue
         
+        self.addSubview(addToPantry)
         self.addSubview(productDescription)
         self.addSubview(listProductCollectionView)
         self.addSubview(segmentLabel)
         self.addSubview(textFieldSeparator)
         
+        addToPantry.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         segmentLabel.translatesAutoresizingMaskIntoConstraints = false
         listProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -331,6 +344,12 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             nutritionLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
             nutritionLabel.widthAnchor.constraint(equalToConstant: 30),
             nutritionLabel.heightAnchor.constraint(equalToConstant: 30),
+            
+            addToPantry.centerYAnchor.constraint(equalTo: nutritionLabel.centerYAnchor),
+            addToPantry.trailingAnchor.constraint(equalTo: itemQuant.leadingAnchor, constant: -10),
+            //addToPantry.rightAnchor.constraint(equalTo: itemQuant.leftAnchor, constant: -10),
+            addToPantry.heightAnchor.constraint(equalToConstant: 25),
+            addToPantry.widthAnchor.constraint(equalToConstant: 25),
             
             itemQuant.centerYAnchor.constraint(equalTo: nutritionLabel.centerYAnchor),
             itemQuant.widthAnchor.constraint(equalToConstant: 90),
