@@ -23,14 +23,14 @@ class recMealsCellLayout: UICollectionViewCell {
         setupViews()
     }
     
-    var mealItem = meals() {
-            didSet {
-                mealImageView.image = UIImage(named: (mealItem.mealImage)!)
-                mealName.text = mealItem.mealName
-                
-            }
-        }
-    
+//    var mealItem = meals() {
+//            didSet {
+//                mealImageView.image = UIImage(named: (mealItem.mealImage)!)
+//                mealName.text = mealItem.mealName
+//                
+//            }
+//        }
+//    
 
     
     let mealImageView: UIImageView = {

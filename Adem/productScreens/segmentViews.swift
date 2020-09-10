@@ -9,45 +9,55 @@
 import Foundation
 import UIKit
 
+protocol passMeal {
+    func relatedMealCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath)
+}
+
 //MARK: Meals segment view
 class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource {
   
     
     let mealsCelllID = "mealsCells"
     var mealrecos: UICollectionView!
+    //var myMeals: [meals] = []
+    //var makableMeals = mealsMaster
+    var mealsList: mealClass!
+    var mealDelegate: passMeal?
+    
     //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-    setupView()
-  }
   
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+    
+
   //initWithCode to init view from xib or storyboard
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    setupView()
-  }
-    var myMeals: [meals] = []
-    var makableMeals = mealsMaster
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        for i in makableMeals {
-                myMeals.append(i)
-        }
-        return myMeals.count
+        return arrayofMeals.count
     }
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let mealIndex = arrayofMeals[indexPath.item]
         let mealRecCell = collectionView.dequeueReusableCell(withReuseIdentifier: mealsCelllID, for: indexPath) as! recMealsCellLayout
-        for i in makableMeals {
-                myMeals.append(i)
-            mealRecCell.mealItem = myMeals[indexPath.item]
-            }
+        //FIXME: have to go the meal screen first
+        mealRecCell.mealImageView.image = UIImage(named: mealIndex.mealImage)
+        mealRecCell.mealName.text = mealIndex.mealName.capitalized
+
         return mealRecCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("this is on the you can make page")
+        let mealCellTap = collectionView.cellForItem(at: indexPath) as? recMealsCellLayout
+        mealsList = relatedMeal(forIndexPath: indexPath)
+        mealDelegate?.relatedMealCollectionView(collectioncell: mealCellTap, IndexPath: indexPath)
     }
     
     let segmentLabel: UILabel = {
@@ -103,6 +113,17 @@ class mealsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     ])
   }
 }
+
+extension mealsSegment {
+
+    
+    func relatedMeal(forIndexPath: IndexPath) -> mealClass {
+        var product: mealClass!
+        product = arrayofMeals[forIndexPath.item]
+        return product
+    }
+}
+
 
 
 //MARK: Product name view

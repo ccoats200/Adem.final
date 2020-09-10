@@ -256,7 +256,8 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
         friends.textLabel!.text = mealInfo.mealIngrediants[indexPath.row]
         
         //MARK: Checks list for the item
-        if !arrayofProducts.contains(where: { $0.productName == mealInfo.mealIngrediants[indexPath.row]}) {
+        if !arrayofPantry.contains(where: { $0.productName == mealInfo.mealIngrediants[indexPath.row]}) {
+            //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
             friends.textLabel!.text = mealInfo.mealIngrediants[indexPath.row]
         } else {
             //Might need to match product here
@@ -293,14 +294,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
             self.present(detailViewController, animated: true, completion: nil)
             ingrediantsList.deselectRow(at: indexPath, animated: true)
         }
-        
-//        //MARK: find and add
-//        productMatch = addingProduct(forIndexPath: indexPath)
-//        //if productMatch.productName ==
-//
-//        let detailViewController = listProductVCLayout.detailViewControllerForProduct(productMatch)
-//
-//        self.present(detailViewController, animated: true, completion: nil)
+
     }
     
     
@@ -324,25 +318,12 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
 
 extension mealVCLayout {//: mealSelectionCellDelegate {
     
-//    func product(forIndexPath: IndexPath) -> mealClass {
-//        var product: mealClass!
-//        product = arrayofMeals[forIndexPath.item]
-//        return product
-//    }
-//
     func addingProduct(forIndexPath: IndexPath) -> fireStoreDataClass {
-        
-        //might ask dan
-        //it's finding the wrong one need to find the one based on the name of the selected cell
         var currentIndex = 0
         var product: fireStoreDataClass!
         product = arrayofProducts[forIndexPath.item]
         
         return product
     }
-    
-    
-//    func itemCell(cellTapped: IndexPath) {
-//        let cellTap = arrayofMeals[cellTapped.row]
-//    }
+
 }

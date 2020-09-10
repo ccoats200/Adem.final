@@ -29,8 +29,10 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 */
 
 //var arrayofPantry = [fireStoreDataStruct]()
+//FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofPantry = [fireStoreDataClass]()
 //var arrayofProducts = [fireStoreDataStruct]()
+//FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofProducts = [fireStoreDataClass]()
 
 var arrayofMeals = [mealClass]()

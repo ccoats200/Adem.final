@@ -127,21 +127,27 @@ extension UIViewController {
     //MARK: -Quantity
     func updateProductQuantityValue(id: String, quantity: Int) {
         // Or more likely change something related to this cell specifically.
-        for i in arrayofProducts where i.id == id {
-            
-            userfirebaseProducts.document("\(i.id!)").updateData([
-                "productQuantity": quantity,
-            ]) { err in
-                if let err = err {
-                    print("Error updating document: \(err)")
-                } else {
-                    print("Document successfully updated")
-                }
-            }
-            //TimeStamp
-            
-            print("hello \(i)")
-        }
+       if arrayofProducts.contains(where: { $0.id == id}) {
+           userfirebaseProducts.document("\(id)").updateData([
+               "productQuantity": quantity,
+           ]) { err in
+               if let err = err {
+                   print("Error updating document: \(err)")
+               } else {
+                   print("Document successfully updated")
+               }
+           }
+       } else if arrayofPantry.contains(where: { $0.id == id}) {
+           userfirebaseProducts.document("\(id)").updateData([
+               "productQuantity": quantity,
+           ]) { err in
+               if let err = err {
+                   print("Error updating document: \(err)")
+               } else {
+                   print("Document successfully updated")
+               }
+           }
+       }
     }
     
     //MARK: -List/Pantry
@@ -151,18 +157,19 @@ extension UIViewController {
     //        let cell = listTableView.cellForRow(at: indexPath)
     //        for i in arrayofProducts {//where i.productName == cell?.textLabel?.text {
                 
-                userfirebaseProducts.document("\(indexPath)").updateData([
-                    "productPantry": pantry,
-                    "productList": list
-                ]) { err in
-                    if let err = err {
-                        print("Error updating document: \(err)")
-                    } else {
-                        print("Document successfully updated")
-                    }
-                }
-
+                
+        userfirebaseProducts.document("\(indexPath)").updateData([
+            "productPantry": pantry,
+            "productList": list
+        ]) { err in
+            if let err = err {
+                print("Error updating document: \(err)")
+            } else {
+                print("Document successfully updated")
+            }
         }
+    }
+    
     //MARK: -Preferences
     func updatePreferences(preferenceDimension: String, preferenceMap: [String]) {
         //the dimension should be the diet, stores, flavors, etc. It has it's own doc in FB

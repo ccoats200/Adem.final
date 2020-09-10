@@ -20,7 +20,6 @@ protocol mealsItemDelegate: class {
 class mealsCellLayout: UICollectionViewCell {
     
     
-    var meal: mealClass!
     weak var delegate: mealsItemDelegate?
     var eachCell: UIViewController?
 
@@ -164,7 +163,6 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     var selectedCells = [UICollectionViewCell]()
     
     var groceriesSelected = [String]()
-    var listProducts = mealsMaster
     var mealsList: mealClass!
     
     //collection view setup
@@ -269,12 +267,6 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         mealsCell.clipsToBounds = true
         mealsCell.layer.masksToBounds = true
         
-       
-    
-        
-        //This is where I need to call the meals
-        //mealsCell.meal = meal
-    
         //MARK: populate the preview
         //This needs to have a outline to it
         if mealIndex.likedMeal == true {
@@ -285,7 +277,7 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         mealsCell.mealName.text = mealIndex.mealName.capitalized
         mealsCell.ratingsCount.text = "(\(mealIndex.mealRating))"
         mealsCell.mealImageView.image = UIImage(named: "\(mealIndex.mealImage)")
-        //mealsCell.mealItem = listProducts[indexPath.item]
+
         
         return mealsCell
     }

@@ -153,12 +153,18 @@ class productImageViews: UIView {
 }
 
 
+protocol passProduct {
+    func relatedProductCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath)
+}
+
 //MARK: Product info view
 class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
   
-    
-    weak var cellDelegate: pallatteCellDelegate?
-    
+    let cellID = "cell"
+    var listProductCollectionView: UICollectionView!
+    var relatedProducts: fireStoreDataClass!
+    var productDelegate: passProduct?
+
     //initWithFrame to init view from code
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -173,9 +179,28 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     //MARK: - This needs to be be produst not meals
     //MARK: - Move this the the meals page since it's partially working
-    var relatedMeals: mealClass!
-    var listProducts = recCell
-    //var myStuff: [recomend] = []
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        //needs to be a group of 3
+        return arrayofProducts.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let productIndex = arrayofProducts[indexPath.item]
+        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! recommendedProductCells
+        productCell.productImageView.image = UIImage(named: "\(productIndex.productImage)")
+        productCell.backgroundColor = UIColor.white
+        
+        return productCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let productCellTap = collectionView.cellForItem(at: indexPath) as? recommendedProductCells
+        relatedProducts = relatedProduct(forIndexPath: indexPath)
+        productDelegate?.relatedProductCollectionView(collectioncell: productCellTap, IndexPath: indexPath)
+        //MARK: for meals
+        print("\(relatedProducts.productName.capitalized)")
+    }
     
     
 
@@ -190,31 +215,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return description
     }()
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        //needs to be a group of 3
-        return arrayofTestingPallette.count
-    }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let productCell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! recommendedProductCells
-        let mealIndex = arrayofTestingPallette[indexPath.item]
-        productCell.productImageView.image = UIImage(named: "\(mealIndex.mealImage)")
-        //productCell.recItem = listProducts[indexPath.item]
-        productCell.backgroundColor = UIColor.white
-        
-        return productCell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let mealCellTap = collectionView.cellForItem(at: indexPath) as? recommendedProductCells
-        let selectedProduct: mealClass!
-        selectedProduct = relatedMeal(forIndexPath: indexPath)
-        print("\(selectedProduct.mealName.capitalized)")
-//        let detailViewController = listProductVCLayout.pallatteTested(selectedProduct)
-////        self.present(detailViewController, animated: true, completion: nil)
-        
-        self.cellDelegate?.collectionView(collectioncell: mealCellTap, IndexPath: indexPath)
-    }
     
     let nutritionLabel: UIButton = {
         let notify = UIButton()
@@ -279,8 +280,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     }()
     
     
-    var listProductCollectionView: UICollectionView!
-    let cellID = "cell"
+    
 
     private func setUPCollection() {
         
@@ -395,9 +395,10 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
 }
 
 extension productInfoViews {
-    func relatedMeal(forIndexPath: IndexPath) -> mealClass {
-        var product: mealClass!
-        product = arrayofTestingPallette[forIndexPath.item]
+    
+    func relatedProduct(forIndexPath: IndexPath) -> fireStoreDataClass {
+        var product: fireStoreDataClass!
+        product = arrayofProducts[forIndexPath.item]
         return product
     }
 }

@@ -11,16 +11,12 @@ import UIKit
 import Firebase
 import FirebaseFirestoreSwift
 
-protocol ItemTableViewCellDelegate {
-    func itemCell(cellTapped: IndexPath)
-}
+
 
 class listProductVCLayout: UIViewController {
     
     //Delegate to pass data
-    var delegate: ItemTableViewCellDelegate?
     var product: fireStoreDataClass!
-    var meal: mealClass!
     
     //MARK: View set up
     var productNameSection = productViews()
@@ -34,6 +30,10 @@ class listProductVCLayout: UIViewController {
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.ademBlue
         
+        //MARK: Needed to pass the item
+        mealsPage.mealDelegate = self
+        //MARK: This will need to change be a search or search and add the first result
+        relatedProductInfoSection.productDelegate = self
         
         setUpViews()
         setUpProductButtons()
@@ -41,22 +41,13 @@ class listProductVCLayout: UIViewController {
         
         self.dismiss(animated: true, completion: nil)
     }
-    
+    //MARK: meals pass
    
     //MARK: Needed for sending to the right item selected
     class func detailViewControllerForProduct(_ product: fireStoreDataClass) -> UIViewController {
         let viewController = self.init()
         if let detailViewController = viewController as? listProductVCLayout {
             detailViewController.product = product
-        }
-        return viewController
-    }
-    
-    //might need to move to the nxt screen
-    class func pallatteTested(_ product: mealClass) -> UIViewController {
-        let viewController = self.init()
-        if let detailViewController = viewController as? listProductVCLayout {
-            detailViewController.meal = product
         }
         return viewController
     }
@@ -74,18 +65,14 @@ class listProductVCLayout: UIViewController {
         relatedProductInfoSection.productDescription.text = "\(product!.productDescription)"
         relatedProductInfoSection.listQuantity.text = "Qty: \(product!.productQuantity)"
         
-        //statsPage.collectionView(statsPage.stats, cellForItemAt: <#T##IndexPath#>)
-        
-        //Stats elements
-        //This might be like the above
-//        statsPage.collectionView(statsPage.stats, cellForItemAt: IndexPath).
-        
+        //Change color based on product location
+        if arrayofProducts.contains(where: { $0.id == self.product.id}) {
+            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+        } else {
+            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+        }
     }
     
-    func assignCollec() {
-        
-        //statsPage.collectionView(statsPage.stats, cellForItemAt: forIndexPath)
-    }
 
 
     //MARK: Button engagement
@@ -168,9 +155,12 @@ class listProductVCLayout: UIViewController {
         for actions in sorted {
             let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
                 //kinda works don't trust that much
-                for i in arrayofProducts where i.id == self.product!.id {
+                if arrayofProducts.contains(where: { $0.id == self.product.id}) {
                     self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
-                    self.updateProductQuantityValue(id: i.id!, quantity: actions.value)
+                    self.updateProductQuantityValue(id: self.product.id!, quantity: actions.value)
+                } else if arrayofPantry.contains(where: { $0.id == self.product.id}) {
+                    self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
+                    self.updateProductQuantityValue(id: self.product.id!, quantity: actions.value)
                 }
             }
             actionSheetController.addAction(quantity)
@@ -187,7 +177,7 @@ class listProductVCLayout: UIViewController {
         
         if arrayofProducts.contains(where: { $0.id == self.product.id}) {
             self.updateProductLocationValues(indexPath: self.product.id!, pantry: true, list: false)
-        } else if arrayofPantry.contains(where: { $0.id == self.product.id}){
+        } else if arrayofPantry.contains(where: { $0.id == self.product.id}) {
             let find = self.product.id!
             let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
             let sorted = actionTest.sorted {$0.key < $1.key}
@@ -249,22 +239,31 @@ class listProductVCLayout: UIViewController {
     }
 }
 
-
-
-extension listProductVCLayout: ItemTableViewCellDelegate {
-    func itemCell(cellTapped: IndexPath) {
-        let cellTap = arrayofProducts[cellTapped.row]
-    }
+extension listProductVCLayout: passMeal, passProduct {
     
-    func mealsView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
-        //https://slicode.com/collectionview-inside-tableview-cell-part-3/
-
-        //FIXME: This is where I need to pass the info
-        let selectedMeal: mealClass!
-        selectedMeal = relatedProductInfoSection.relatedMeal(forIndexPath: IndexPath)
-        let detail = listProductVCLayout.pallatteTested(selectedMeal)
-        //detail.modalPresentationStyle = .overFullScreen
+    func relatedProductCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
+        let selectedMeal: fireStoreDataClass!
+        selectedMeal = similarProduct(forIndexPath: IndexPath)
+        let detail = listProductVCLayout.detailViewControllerForProduct(selectedMeal)
         self.present(detail, animated: true, completion: nil)
     }
+   
+    func relatedMealCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
+        let selectedMeal: mealClass!
+        selectedMeal = mealYouCanMake(forIndexPath: IndexPath)
+        let detail = mealVCLayout.detailViewControllerForProduct(selectedMeal)
+        self.present(detail, animated: true, completion: nil)
+    }
+    
+    func similarProduct(forIndexPath: IndexPath) -> fireStoreDataClass {
+        var product: fireStoreDataClass!
+        product = arrayofProducts[forIndexPath.item]
+        return product
+    }
+    
+    func mealYouCanMake(forIndexPath: IndexPath) -> mealClass {
+        var product: mealClass!
+        product = arrayofMeals[forIndexPath.item]
+        return product
+    }
 }
-
