@@ -33,7 +33,8 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         super.viewDidLoad()
         //MARK: NavigationBar setup
         navigationItem.title = "Meals"
-        self.navigationItem.rightBarButtonItem = add
+        //MARK: Below is for a later version
+        //self.navigationItem.rightBarButtonItem = add
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         
         
@@ -96,7 +97,8 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
     
     lazy var searching = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
-    lazy var add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleCreate))
+    //MARK: Below is for a later version
+    //lazy var add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleCreate))
     let mealsSearchController = UISearchController(searchResultsController: nil)
 
     private func setUpSearchBar() {
@@ -120,9 +122,13 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         print("filter tapped")
     }
     
+    
+    /*
+     This is for a later version
     @objc func handleCreate() {
         print("create own meal")
     }
+ */
     
     func updateSearchResults(for searchController: UISearchController) {
         print("test")

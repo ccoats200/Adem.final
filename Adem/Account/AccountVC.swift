@@ -285,7 +285,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     //MARK: - Sign out
-    
 
     func handleUserInfo() {
         
@@ -324,7 +323,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
-    
 
     //MARK: TableView
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -343,7 +341,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         return friends
     }
 
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -377,17 +374,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         default:
             handleDiet()
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
-
         }
     }
-
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    
 }
-
-
 
 extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
@@ -420,7 +412,6 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        
         print("Pop up of remove from household for now")
     }
     
@@ -462,7 +453,6 @@ class householdAdd: UICollectionReusableView {
          */
         print("Need to add a setting gear to the top right of the cover image")
         print("Need to have household name on the left")
-
     }
 
     func myCustomInit() {
@@ -480,8 +470,5 @@ class householdAdd: UICollectionReusableView {
            addFam.widthAnchor.constraint(equalToConstant: 30),
            addFam.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         ])
-        
-        print("hello there from SupView")
     }
-    
 }
