@@ -149,7 +149,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         }
         self.pantryCollectionView.isUserInteractionEnabled = true
         self.pantryCollectionView.isScrollEnabled = true
-        pantryCollectionView.contentInset = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
+        
+        //CollectionView spacing
+        pantryCollectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
         
         self.pantryCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //adding subviews to the view controller
@@ -236,8 +238,7 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
-        print("another meal \(arrayofMeals.count) this meal name is \(arrayofMeals)")
-        print("another test \(arrayofPantry.count)")
+       
         return arrayofPantry.count
     }
     
@@ -253,7 +254,7 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         
         pantryItemsCell.pantryItemName.text = pantryList.productName
         pantryItemsCell.quantity.text = "Q: \(pantryList.productQuantity)"
-        pantryItemsCell.pantryItemImageView.image = UIImage(named: "almondExtract")
+        pantryItemsCell.pantryItemImageView.image = UIImage(named: pantryList.productImage)
         //Use this for the Date
         pantryItemsCell.expiryDate.text = " \(pantryList.productExpir.interval(ofComponent: .day, fromDate: Date())) Days"
         
@@ -327,93 +328,14 @@ extension PantryVC: pantryDelegate {
     }
 }
 
-/*
-//MARK: Cell Setup For products
-extension PantryVC: UITableViewDelegate, UITableViewDataSource {
-    
-    //MARK: Head and Footer for tableView
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        
-        let he = tableViewHeader()
-        switch section {
-        case 0:
-            he.title.text = "Breakfast"
-        default:
-            he.title.text = "Dairy"
-        }
-        return he
-    }
-        
-        func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-            return 50
-        }
-        
 
-        
-        //MARK: Table view cell properties - Start
-        func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-            
-            return 1
-        }
-    
-    
-        func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-            
-            let productsListViewLayout = tableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath) as! pantryTableViewCell
-            productsListViewLayout.cellDelegate = self
-            let pt = productsListViewLayout.pantryCollectionView.cellForItem(at: indexPath) as? pantryCell
-            //Needs to be the fire bas info
-            
-            pt?.addBackButton.addTarget(self, action: #selector(handleAlert), for: .touchDown)
-            
-            return productsListViewLayout
-        }
-     
-        func numberOfSections(in tableView: UITableView) -> Int {
-            return 1
-        }
-        
-        func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-            
-            return CGFloat(200)
-        }
-        
-        //MARK: Table view cell properties - End
-    
-    
-    
-}
-
-extension PantryVC: CustomCollectionCellDelegate {
-    
-    
-    func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell) {
-        //https://slicode.com/collectionview-inside-tableview-cell-part-3/
-        let productScreen = listProductVCLayout()
-        
-        productScreen.hidesBottomBarWhenPushed = true
-        self.present(productScreen, animated: true, completion: nil)
-    }
-    
-}
-
-
-extension PantryVC: CellButtonTap {
-    
-    func buttonTapped(collectioncell: UICollectionViewCell?, button: UIButton?) {
-        let alert = removeDataCapture()
-        alert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
-        self.present(alert, animated: true, completion: nil)
-    }
-    
-}
-*/
 extension PantryVC: UISearchBarDelegate {
     
     func setUpSearch() {
         //MARK: Search bar
         pantryResultsTableController = PantryResultsTableController()
-//        pantryResultsTableController.tableView.delegate = self
+        //pantryResultsTableController.tableView.delegate = self
+        //pantryResultsTableController.collectionView.delegate = self
         searchController = UISearchController(searchResultsController: pantryResultsTableController)
         searchController.delegate = self
         searchController.searchResultsUpdater = self
@@ -426,16 +348,13 @@ extension PantryVC: UISearchBarDelegate {
                 // Place the search bar in the navigation bar.
         navigationItem.searchController = searchController
                 
-                //Design elements
-        searchController.searchBar.placeholder = "How can I help?"
+            //Design elements
+        searchController.searchBar.placeholder = "Looking for something?"
         searchController.searchBar.autocorrectionType = .default
         searchController.searchBar.enablesReturnKeyAutomatically = true
         searchController.hidesNavigationBarDuringPresentation = true
         searchController.searchBar.tintColor = UIColor.white
                 
-        searchController.searchBar.scopeButtonTitles = searchDimensions
-                
-               
         if #available(iOS 13.0, *) {
             searchController.searchBar.searchTextField.textColor = UIColor.white
         } else {
@@ -456,25 +375,7 @@ extension PantryVC: UISearchBarDelegate {
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
             self.dismiss(animated: true, completion: nil)
         }
-            
-    //    func searchBarIsEmpty() -> Bool {
-    //        // Returns true if the text is empty or nil
-    //        return tableViewSearchController.searchBar.text?.isEmpty ?? true
-    //    }
-    //
-        func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-            //might break it
-            print(selectedScope)
-            
-            if selectedScope == 0 {
-                addResultsTableController = AddResultsTableController()
-//                addResultsTableController.tableView.delegate = self
-                searchController = UISearchController(searchResultsController: addResultsTableController)
-            }
-            updateSearchResults(for: searchController)
-        //        filterProductsSearchText(searchBar.text!, category: searchBar.scopeButtonTitles![selectedScope])
-        }
-            
+              
         func filterProductsSearchText(for searchText: String) {
          
             filteringPantry = arrayofPantry.filter { fireStoreDataClass in
@@ -482,12 +383,6 @@ extension PantryVC: UISearchBarDelegate {
             }
             pantryCollectionView.reloadData()
         }
-                
-    //    func searchBarisFiltering() -> Bool {
-    //        return tableViewSearchController.isActive && !searchBarIsEmpty()
-    //    }
-    //
-        
             
         var isSearchBarEmpty: Bool {
             return searchController.searchBar.text?.isEmpty ?? true

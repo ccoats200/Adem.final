@@ -149,3 +149,50 @@ class PantryResultsTableController: UITableViewController {
         return cell
     }
 }
+/*
+ class PantryResultsTableController: UICollectionViewController {//UITableViewController,  {
+     
+     let tableViewCellIdentifier = "cellID"
+     var filteredProducts = [fireStoreDataClass]()
+     
+     override func viewDidLoad() {
+         super.viewDidLoad()
+
+         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: tableViewCellIdentifier)
+         //tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+     }
+     
+     // MARK: - UITableViewDataSource
+     
+ //    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+ //        return filteredProducts.count
+ //    }
+     override func numberOfSections(in collectionView: UICollectionView) -> Int {
+         return filteredProducts.count
+     }
+     
+ //    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+ //        return 60
+ //    }
+     
+     
+     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+         
+         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: tableViewCellIdentifier, for: indexPath) as! mealsCellLayout//.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
+         let product = filteredProducts[indexPath.item]
+         cell.mealName.text = product.productName
+         //cell?.mealImageView?.backgroundColor = UIColor.orange
+         return cell
+     }
+     
+ //    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+ //        let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
+ //        let product = filteredProducts[indexPath.item]
+ //        cell.textLabel?.text = product.productName
+ //        cell.textLabel?.backgroundColor = UIColor.orange
+ //
+ //        return cell
+ //    }
+ }
+
+ */

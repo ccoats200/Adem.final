@@ -86,7 +86,7 @@ class homeView: UIView {
         NSLayoutConstraint.activate([
             
             friendsAndFamily.topAnchor.constraint(equalTo: self.topAnchor),
-            friendsAndFamily.heightAnchor.constraint(equalToConstant: 80),
+            friendsAndFamily.heightAnchor.constraint(equalToConstant: 100),
             friendsAndFamily.widthAnchor.constraint(equalTo: self.widthAnchor),
             friendsAndFamily.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
@@ -95,8 +95,8 @@ class homeView: UIView {
             accountTableView.widthAnchor.constraint(equalTo: self.widthAnchor),
             accountTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
-            logOutButton.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            logOutButton.heightAnchor.constraint(equalToConstant: 50),
+            logOutButton.bottomAnchor.constraint(equalTo: self.safeAreaLayoutGuide.bottomAnchor),
+            logOutButton.heightAnchor.constraint(equalToConstant: 30),
             logOutButton.widthAnchor.constraint(equalTo: self.widthAnchor),
             logOutButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
         ])

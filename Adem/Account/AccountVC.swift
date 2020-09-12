@@ -19,8 +19,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let cellID = "cell3"
     let headerID = "test"
     let listOfSettingsOptions = "test"
-    let ffCCellID = "test"
+    let ffCCellID = "reuse"
+    let ffCCellIDAdd = "header"
+    
+    //This needs to be firestoreDataClass for finding people in the home collection
     var friendsAssociated = friends
+    
     
     var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Invite Friends","Rate Us","Settings"] //"Apps"]
     
@@ -31,7 +35,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var statsCollectionView: UICollectionView!
     var accountViewToSwitch: [UIView]!
     
-    let collectionViewHeaderFooterReuseIdentifier = "MyHeaderFooterClass"
+    let collectionViewHeaderReuse = "Header"
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,12 +44,11 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         view.backgroundColor = UIColor.white
         
-        //collec
-        //self.homeSegmentView.friendsAndFamily.register(UICollectionView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: collectionViewHeaderFooterReuseIdentifier)
-
-//        self.homeSegmentView.accountTableView.estimatedRowHeight = 60
-//        self.homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
-        
+        //MARK: QR code gene for households
+        //https://www.hackingwithswift.com/example-code/media/how-to-create-a-qr-code
+        /*This needs to link household and have the option for roomates or families.
+         if roommies then put initials next to their items in the pantry.
+         */
         
         setUptopViews()
         handleUserInfo()
@@ -207,8 +210,15 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         homeSegmentView.accountTableView.delegate = self
         homeSegmentView.accountTableView.dataSource = self
         homeSegmentView.friendsAndFamily.dataSource = self
+        
+        //MARK: - This needs to be avatars. IDC what type but they can't be people
+        //https://kit.snapchat.com/docs/bitmoji-kit-ios
+        //MARK: - Can I use the snap/bitmoji avatar? If so I must use
+
         homeSegmentView.friendsAndFamily.delegate = self
         homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
+        homeSegmentView.friendsAndFamily.register(householdAdd.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd)
+        //homeSegmentView.friendsAndFamily.contentInset = UIEdgeInsets(top: 20, left: 5, bottom: 5, right: 5)
         
 //        homeSegmentView.accountTableView.estimatedRowHeight = 60
 //        homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
@@ -370,9 +380,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
         }
     }
-    
-    
- 
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -388,23 +396,36 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         //https://developer.apple.com/documentation/uikit/uicollectionview
         return friendsAssociated.count
     }
-    /*
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        //https://www.thetopsites.net/article/52167601.shtml
+        //https://stackoverflow.com/questions/29655652/how-to-make-both-header-and-footer-in-collection-view-with-swift
         
-        let headerView = self.homeSegmentView.friendsAndFamily.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: collectionViewHeaderFooterReuseIdentifier, for: indexPath)
+        var reusableView : UICollectionReusableView? = nil
 
-        headerView.backgroundColor = UIColor.blue
-        return headerView
+        // Create header
+        if (kind == UICollectionView.elementKindSectionHeader) {
+            // Create Header
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd, for: indexPath) as! householdAdd
+
+            reusableView = headerView
+        }
+        return reusableView!
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 180.0)
-    }
-    */
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let personCell = collectionView.dequeueReusableCell(withReuseIdentifier: ffCCellID, for: indexPath) as! ffCell
         personCell.friendsInAccount = friendsAssociated[indexPath.item]
         return personCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        print("Pop up of remove from household for now")
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+            return CGSize(width: collectionView.frame.width - 10, height: 20.0)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -412,8 +433,55 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         //MARK: Changes the size of the image in pantry
         return CGSize(width: 70, height: 70)
     }
+}
+
+class householdAdd: UICollectionReusableView {
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+    var addFam = navigationButton()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.myCustomInit()
     }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+        self.myCustomInit()
+    }
+    
+    @objc func handelCamAdd() {
+        /*
+         if #available(iOS 13.0, *) {
+                    let productScreen = camVC()
+                    productScreen.hidesBottomBarWhenPushed = true
+                    productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+                    self.present(productScreen, animated: true, completion: nil)
+                } else {
+                    // Fallback on earlier versions
+                }
+         */
+        print("Need to add a setting gear to the top right of the cover image")
+        print("Need to have household name on the left")
+
+    }
+
+    func myCustomInit() {
+        self.addSubview(addFam)
+        addFam.largeNextButton.backgroundColor = UIColor.ademGreen
+        addFam.translatesAutoresizingMaskIntoConstraints = false
+        
+        addFam.largeNextButton.addTarget(self, action: #selector(handelCamAdd), for: .touchUpInside)
+        
+        NSLayoutConstraint.activate([
+           
+           addFam.topAnchor.constraint(equalTo: self.topAnchor),
+           addFam.heightAnchor.constraint(equalTo: self.heightAnchor),
+           addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+           addFam.widthAnchor.constraint(equalToConstant: 30),
+           addFam.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        ])
+        
+        print("hello there from SupView")
+    }
+    
 }

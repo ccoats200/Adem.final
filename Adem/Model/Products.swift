@@ -27,8 +27,8 @@ struct meals {
 
 struct recomend {
     var itemImage: String?
-   
 }
+
 var recCell = [
     recomend(itemImage: "eggs"),
     recomend(itemImage: "almondExtract"),

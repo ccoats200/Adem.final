@@ -19,6 +19,8 @@ class ProfileView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        //FIXME: Need to add a setting gear to the top right of the cover image
+
         setupViews()
     }
     
