@@ -18,6 +18,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     
     //MEAL info
+    //https://lickability.com/blog/getting-started-with-uicollectionviewcompositionallayout/
     
     //MARK: View set up
     var productNameSection = mealsViews()
@@ -36,7 +37,7 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-         
+        
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.ademBlue
         //testing this

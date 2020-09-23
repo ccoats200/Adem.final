@@ -429,6 +429,7 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
 class householdAdd: UICollectionReusableView {
     
     var addFam = navigationButton()
+    var allFriends = navigationButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -452,23 +453,34 @@ class householdAdd: UICollectionReusableView {
                 }
          */
         print("Need to add a setting gear to the top right of the cover image")
-        print("Need to have household name on the left")
     }
 
     func myCustomInit() {
         self.addSubview(addFam)
+        self.addSubview(allFriends)
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
+        allFriends.largeNextButton.setTitle("The Bev", for: .normal)
+        allFriends.largeNextButton.contentHorizontalAlignment = .left
+        allFriends.largeNextButton.backgroundColor = UIColor.clear
         addFam.translatesAutoresizingMaskIntoConstraints = false
+        allFriends.translatesAutoresizingMaskIntoConstraints = false
+        
         
         addFam.largeNextButton.addTarget(self, action: #selector(handelCamAdd), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
+            
+            allFriends.topAnchor.constraint(equalTo: self.topAnchor),
+            allFriends.heightAnchor.constraint(equalTo: self.heightAnchor),
+            allFriends.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
+            allFriends.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
+            allFriends.centerYAnchor.constraint(equalTo: self.centerYAnchor),
            
-           addFam.topAnchor.constraint(equalTo: self.topAnchor),
-           addFam.heightAnchor.constraint(equalTo: self.heightAnchor),
-           addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-           addFam.widthAnchor.constraint(equalToConstant: 30),
-           addFam.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            addFam.topAnchor.constraint(equalTo: self.topAnchor),
+            addFam.heightAnchor.constraint(equalTo: self.heightAnchor),
+            addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+            addFam.widthAnchor.constraint(equalToConstant: 30),
+            addFam.centerYAnchor.constraint(equalTo: allFriends.centerYAnchor),
         ])
     }
 }

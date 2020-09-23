@@ -19,6 +19,8 @@ import FirebaseFirestoreSwift
 
 class filterViewController: UIViewController {
 
+    //This needs to be a collection view???
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         

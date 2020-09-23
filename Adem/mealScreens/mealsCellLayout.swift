@@ -171,8 +171,9 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
     let mealsCCellID = "Cmeals"
     
     
-    weak var cellDelegate: CustomCollectionCellDelegate?
-
+    //weak var cellDelegate: CustomCollectionCellDelegate?
+    var cellDelegate: CustomCollectionCellDelegate?
+    
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -200,6 +201,7 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         self.mealsCollectionView.register(mealsCellLayout.self, forCellWithReuseIdentifier: mealsCCellID)
         self.mealsCollectionView.isUserInteractionEnabled = true
         self.mealsCollectionView.isScrollEnabled = true
+        
         
          
         self.mealsCollectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -266,27 +268,30 @@ class mealsTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectio
         let mealIndex = arrayofMeals[indexPath.item]
         mealsCell.clipsToBounds = true
         mealsCell.layer.masksToBounds = true
+        //print(mealIndex.mealName)
         
         //MARK: populate the preview
         //This needs to have a outline to it
+        
         if mealIndex.likedMeal == true {
-            //FIXEME: if you scroll 3 times in a row it sets the last on the faveorited>
-            //precondition
+            //FIXEME: if you scroll fast the last on the faveorited
+            //precondition?
             mealsCell.favoriteButton.setBackgroundImage(UIImage(named: "heart"), for: .normal)
         }
         mealsCell.mealName.text = mealIndex.mealName.capitalized
         mealsCell.ratingsCount.text = "(\(mealIndex.mealRating))"
         mealsCell.mealImageView.image = UIImage(named: "\(mealIndex.mealImage)")
-
         
         return mealsCell
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let mealCellTap = collectionView.cellForItem(at: indexPath) as? mealsCellLayout
-
         //FIXME: This needs to be able to retain the indexpath from the meals array -- see meals extension collectionView.
-        self.cellDelegate?.collectionView(collectioncell: mealCellTap, didTappedInTableview: self, IndexPath: indexPath)
+        
+        //MARK: not recognizing tap
+        cellDelegate?.collectionView(collectioncell: mealCellTap, didTappedInTableview: self, IndexPath: indexPath)
+        print("testing tap")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

@@ -157,6 +157,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         //adding subviews to the view controller
         self.view.addSubview(pantryCollectionView)
             
+        
             
         NSLayoutConstraint.activate([
             pantryCollectionView.topAnchor.constraint(equalTo: self.view.topAnchor),
@@ -265,6 +266,7 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
             pantryItemsCell.expiryDate.textColor = UIColor.white
         }
 
+        
         pantryItemsCell.layer.cornerRadius = 5
         pantryItemsCell.delegate = self
         return pantryItemsCell

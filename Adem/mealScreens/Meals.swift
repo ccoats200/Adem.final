@@ -130,6 +130,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     }
  */
     
+    
     func updateSearchResults(for searchController: UISearchController) {
         print("test")
     }
@@ -145,6 +146,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
         
         mealsTableView.delegate = self
         mealsTableView.dataSource = self
+        
 
         
         mealsTableView.register(mealsTableViewCell.self, forCellReuseIdentifier: mealsCellID)
