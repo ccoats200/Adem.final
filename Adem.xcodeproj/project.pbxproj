@@ -263,7 +263,7 @@
 			path = searchControllers;
 			sourceTree = "<group>";
 		};
-		35669ACF24074C7000C95DFB /* mealScreens */ = {
+		35669ACF24074C7000C95DFB /* Meal */ = {
 			isa = PBXGroup;
 			children = (
 				35D6485822ECBDA300015352 /* Meals.swift */,
@@ -274,7 +274,7 @@
 				35669AE624185D6400C95DFB /* recomendedMeals.swift */,
 				3545FF0325196AA7001EF1A0 /* mealSimplify.swift */,
 			);
-			path = mealScreens;
+			path = Meal;
 			sourceTree = "<group>";
 		};
 		35669AD62408B35200C95DFB /* List */ = {
@@ -391,7 +391,7 @@
 				35D6488322ECBF5800015352 /* Model */,
 				35D6487E22ECBF2300015352 /* Services */,
 				3542B93424B41EAB00E259EE /* searchControllers */,
-				35669ACF24074C7000C95DFB /* mealScreens */,
+				35669ACF24074C7000C95DFB /* Meal */,
 				35669AD72408B3A900C95DFB /* Pantry */,
 				35669AD62408B35200C95DFB /* List */,
 				356FFEFD240195CD00DF67AD /* productScreens */,

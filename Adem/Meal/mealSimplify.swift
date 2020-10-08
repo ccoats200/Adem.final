@@ -1,9 +1,9 @@
 //
-//  Meals.swift
+//  mealSimplify.swift
 //  Adem
 //
-//  Created by Coleman Coats on 7/27/19.
-//  Copyright © 2019 Coleman Coats. All rights reserved.
+//  Created by Coleman Coats on 9/21/20.
+//  Copyright © 2020 Coleman Coats. All rights reserved.
 //
 
 import Foundation
@@ -12,7 +12,7 @@ import Firebase
 import AVFoundation
 
 
-class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
+class MealsSimp: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
     
     
     
@@ -202,7 +202,7 @@ class Meals: UIViewController, UITableViewDelegate, UITableViewDataSource, UIGes
     
 }
 
-extension Meals: CustomCollectionCellDelegate {
+extension MealsSimp: CustomCollectionCellDelegate {
    
     func collectionView(collectioncell: UICollectionViewCell?, didTappedInTableview TableCell: UITableViewCell, IndexPath: IndexPath) {
         //https://slicode.com/collectionview-inside-tableview-cell-part-3/

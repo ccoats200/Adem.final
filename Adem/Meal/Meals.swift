@@ -1,9 +1,9 @@
 //
-//  mealSimplify.swift
+//  Meals.swift
 //  Adem
 //
-//  Created by Coleman Coats on 9/21/20.
-//  Copyright © 2020 Coleman Coats. All rights reserved.
+//  Created by Coleman Coats on 7/27/19.
+//  Copyright © 2019 Coleman Coats. All rights reserved.
 //
 
 import Foundation
@@ -12,10 +12,12 @@ import Firebase
 import AVFoundation
 
 
-class MealsSimp: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
+class Meals: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDelegate, UISearchBarDelegate, UISearchResultsUpdating {
     
     let mealsCellID = "meals"
     var mealCollectionView: UICollectionView!
+    
+    let ffCCellIDAdd = "header"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,7 +40,12 @@ class MealsSimp: UIViewController, UIGestureRecognizerDelegate, UISearchControll
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.mealCollectionView.reloadData()
 //        mealsSearchController.searchBar.becomeFirstResponder()
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        self.mealCollectionView.reloadData()
     }
     
     
@@ -144,8 +151,6 @@ class MealsSimp: UIViewController, UIGestureRecognizerDelegate, UISearchControll
         //tv
         //mealCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: layout)
         
-        
-        
 //        self.view.addSubview(mealCollectionView)
 //
 //        mealCollectionView.delegate = self
@@ -178,25 +183,27 @@ class MealsSimp: UIViewController, UIGestureRecognizerDelegate, UISearchControll
                     
                 // Section
                 let section = NSCollectionLayoutSection(group: group)
-                    section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 2.5, bottom: 0, trailing: 2.5)
+                    section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2.5, bottom: 0, trailing: 2.5)
+                //https://lickability.com/blog/getting-started-with-uicollectionviewcompositionallayout/#orthogonal-scrolling
                 section.orthogonalScrollingBehavior = .continuous
                 
                 
-                //let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
-                    
-                //let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: "header", alignment: .top)
-                //section.boundarySupplementaryItems = [headerItem]
+                // Supplementary Item
+                let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
+                let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [headerItem]
                     
                 return UICollectionViewCompositionalLayout(section: section)
                 }()
             mealCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: compositionalLayout)
             self.view.addSubview(mealCollectionView)
-            
+            mealCollectionView.showsVerticalScrollIndicator = false
             mealCollectionView.delegate = self
             mealCollectionView.dataSource = self
 
             
             mealCollectionView.register(mealsCellLayout.self, forCellWithReuseIdentifier: mealsCellID)
+            mealCollectionView.register(HeaderSupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd)
             mealCollectionView.translatesAutoresizingMaskIntoConstraints = false
             mealCollectionView.backgroundColor = UIColor.systemGray6
         } else {
@@ -215,7 +222,7 @@ class MealsSimp: UIViewController, UIGestureRecognizerDelegate, UISearchControll
     
 }
 
-extension MealsSimp: UICollectionViewDelegate, UICollectionViewDataSource {
+extension Meals: UICollectionViewDelegate, UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
 
@@ -233,12 +240,15 @@ extension MealsSimp: UICollectionViewDelegate, UICollectionViewDataSource {
         
         //MARK: populate the preview
         //This needs to have a outline to it
-        
-        if mealIndex.likedMeal == true {
-            //FIXEME: if you scroll fast the last on the faveorited
-            //precondition?
+        switch mealIndex.likedMeal {
+        case true:
             mealsCell.favoriteButton.setBackgroundImage(UIImage(named: "heart"), for: .normal)
+        case false:
+            mealsCell.favoriteButton.setBackgroundImage(UIImage(named: "fave-1"), for: .normal)
+        default:
+            mealsCell.favoriteButton.setBackgroundImage(UIImage(named: "fave-1"), for: .normal)
         }
+        
         mealsCell.mealName.text = mealIndex.mealName.capitalized
         mealsCell.ratingsCount.text = "(\(mealIndex.mealRating))"
         mealsCell.mealImageView.image = UIImage(named: "\(mealIndex.mealImage)")
@@ -254,8 +264,8 @@ extension MealsSimp: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
             switch kind {
-            case "header":
-                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "HeaderSupplementaryView", for: indexPath) as? HeaderSupplementaryView else {
+            case UICollectionView.elementKindSectionHeader:
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: ffCCellIDAdd, for: indexPath) as? HeaderSupplementaryView else {
                     return HeaderSupplementaryView()
                 }
                 
@@ -274,7 +284,8 @@ extension MealsSimp: UICollectionViewDelegate, UICollectionViewDataSource {
         }
 }
 
-extension MealsSimp: UICollectionViewDelegateFlowLayout {
+extension Meals: UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             let width = mealCollectionView.bounds.width
             let numberOfItemsPerRow: CGFloat = 3
@@ -283,6 +294,7 @@ extension MealsSimp: UICollectionViewDelegateFlowLayout {
             let itemDimension = floor(availableWidth / numberOfItemsPerRow)
             return CGSize(width: itemDimension, height: itemDimension)
         }
+    
     func product(forIndexPath: IndexPath) -> mealClass {
         var product: mealClass!
         product = arrayofMeals[forIndexPath.item]
@@ -292,19 +304,59 @@ extension MealsSimp: UICollectionViewDelegateFlowLayout {
 
 class HeaderSupplementaryView: UICollectionReusableView {
     
+    //https://github.com/Lickability/collection-view-compositional-layout-demo/tree/main/Photos
+    
     /// Encapsulates the properties required to display the contents of the view.
     struct ViewModel {
-        
         /// The title to display in the view.
         let title: String
     }
+   
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.myCustomInit()
+        self.backgroundColor = UIColor.ademBlue
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+        self.myCustomInit()
+    }
     
-    @IBOutlet private weak var label: UILabel!
+    
+    let welcomeLabel: UILabel = {
+        let welcome = UILabel()
+        welcome.textAlignment = .left
+        welcome.textColor = UIColor.white
+        welcome.font = UIFont(name: productFont, size: 30.0)
+        //welcome.font = UIFont.systemFont(ofSize: 40)
+        //welcome.font = UIFont.boldSystemFont(ofSize: 16)
+        
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        return welcome
+    }()
     
     /// The cell’s view model. Setting the view model updates the display of the view’s contents.
     var viewModel: ViewModel? {
         didSet {
-            label.text = viewModel?.title
+            welcomeLabel.text = viewModel?.title
         }
+    }
+    
+    func myCustomInit() {
+        self.addSubview(welcomeLabel)
+        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            welcomeLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
+            welcomeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
+            welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor),
+            welcomeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+           
+        ])
     }
 }

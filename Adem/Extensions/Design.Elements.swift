@@ -10,9 +10,11 @@ import UIKit
 
 //MARK: Fonts
 let headerFont = "Montserrat"
+let headerFontBold = "Montserrat"
 let searchPromptFont = "Montserrat"
 let buttonFont = "Avenir"
 let productFont = "Open Sans"
+let smallRound = 5
 
 //Color Extension
 extension UIColor {

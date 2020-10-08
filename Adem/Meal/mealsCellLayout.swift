@@ -59,7 +59,7 @@ class mealsCellLayout: UICollectionViewCell {
     //Delete now editing button
     let favoriteButton: UIButton = {
         let fave = UIButton()
-        fave.setBackgroundImage(UIImage(named: "fave-1"), for: .normal)
+        //fave.setBackgroundImage(UIImage(named: "fave-1"), for: .normal)
         //fave.setBackgroundImage(UIImage(named: "veganIcon"), for: .highlighted)
         fave.clipsToBounds = true
         fave.layer.masksToBounds = true

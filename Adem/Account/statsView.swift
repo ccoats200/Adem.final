@@ -118,13 +118,17 @@ class statViews: UIView, UICollectionViewDelegate, UICollectionViewDataSource, U
         case 2:
             switch cellItem {
             case 0:
-                mealRecCell.statLabel.text = "5 LB"
-                mealRecCell.tileLabel.text = "Plastic Saved"
+                //60 in 4 trips ~ 15 per trip 4 grams per bag 113 bags per pound
+                //8 trips = ~1 pound of plastic
+                //454 grams per pound
+                //0.125 pounds per trip just in plastic bags
+                mealRecCell.statLabel.text = "120"
+                mealRecCell.tileLabel.text = "Bags Saved"
             case 1:
                 mealRecCell.statLabel.text = "$90"
                 mealRecCell.tileLabel.text = "Avg. Saved"
             case 2:
-                mealRecCell.statLabel.text = "Strong"
+                mealRecCell.statLabel.text = "Add"
                 mealRecCell.tileLabel.text = "Health Level"
             default:
                 mealRecCell.tileLabel.text = "ops"

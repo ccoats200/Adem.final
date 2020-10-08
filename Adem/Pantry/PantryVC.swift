@@ -260,9 +260,9 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         pantryItemsCell.expiryDate.text = " \(pantryList.productExpir.interval(ofComponent: .day, fromDate: Date())) Days"
         
         if pantryList.productExpir.interval(ofComponent: .day, fromDate: Date()) <= 0 {
-            pantryItemsCell.backgroundColor = UIColor.ademRed
-            pantryItemsCell.pantryItemName.textColor = UIColor.white
-            pantryItemsCell.quantity.textColor = UIColor.white
+            pantryItemsCell.expiryDate.backgroundColor = UIColor.ademRed
+            //pantryItemsCell.pantryItemName.textColor = UIColor.white
+            //pantryItemsCell.quantity.textColor = UIColor.white
             pantryItemsCell.expiryDate.textColor = UIColor.white
         }
 

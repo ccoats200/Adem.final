@@ -62,7 +62,7 @@ class pantryCell: UICollectionViewCell {
         mealImage.contentMode = .scaleAspectFill
         mealImage.clipsToBounds = true
         mealImage.layer.masksToBounds = true
-        mealImage.layer.cornerRadius = 5
+        mealImage.layer.cornerRadius = CGFloat(smallRound)
         mealImage.translatesAutoresizingMaskIntoConstraints = false
         return mealImage
     }()
@@ -82,7 +82,7 @@ class pantryCell: UICollectionViewCell {
         let n = 1
         quant.textAlignment = .left
         quant.text = "Q: \(n)"
-        quant.font = quant.font.withSize(12)
+        quant.font = quant.font.withSize(15)
         quant.textColor = UIColor.ademBlue
         quant.numberOfLines = 1
         quant.adjustsFontSizeToFitWidth = true
@@ -97,9 +97,11 @@ class pantryCell: UICollectionViewCell {
         expire.textAlignment = .right
         expire.text = "5 days"
         expire.font = expire.font.withSize(15)
-        expire.textColor = UIColor.ademBlue
         expire.numberOfLines = 1
+        expire.textColor = UIColor.ademBlue
         expire.adjustsFontSizeToFitWidth = true
+        expire.layer.cornerRadius = CGFloat(smallRound)
+        expire.layer.masksToBounds = true
         expire.translatesAutoresizingMaskIntoConstraints = false
         return expire
     }()
@@ -122,6 +124,9 @@ class pantryCell: UICollectionViewCell {
         addSubview(addBackButton)
         addSubview(expiryDate)
         addSubview(quantity)
+        
+        //expiryDate.translatesAutoresizingMaskIntoConstraints = false
+        
         addBackButton.addTarget(self, action: #selector(selectedButtonDidTap(_:)), for: .touchUpInside)
         
         setupViews()
@@ -148,10 +153,10 @@ class pantryCell: UICollectionViewCell {
             quantity.topAnchor.constraint(equalTo: pantryItemName.bottomAnchor),
             quantity.leftAnchor.constraint(equalTo: pantryItemName.leftAnchor),
             quantity.trailingAnchor.constraint(equalTo: expiryDate.leadingAnchor),
-            quantity.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            quantity.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
             
             expiryDate.heightAnchor.constraint(equalTo: quantity.heightAnchor),
-            expiryDate.rightAnchor.constraint(equalTo: pantryItemName.rightAnchor),
+            expiryDate.rightAnchor.constraint(equalTo: pantryItemName.rightAnchor, constant: -1),
             expiryDate.leadingAnchor.constraint(equalTo: quantity.trailingAnchor),
             expiryDate.bottomAnchor.constraint(equalTo: quantity.bottomAnchor),
 
