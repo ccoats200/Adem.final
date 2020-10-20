@@ -25,7 +25,6 @@ class filterViewController: UIViewController {
         super.viewDidLoad()
         
 //        MARK: NavigationBar setup
-        navigationItem.title = "What Can I help you find?"
 
         
         if #available(iOS 13.0, *) {
@@ -42,17 +41,8 @@ class filterViewController: UIViewController {
             
         }
         
-        
-        setUpListView()
-        
-        
-        filterTableView.dataSource = self
-        filterTableView.delegate = self
-        filterTableView.allowsMultipleSelection = true
-        filterTableView.backgroundColor = UIColor.white
-        filterTableView.allowsMultipleSelectionDuringEditing = true
-        filterTableView.allowsSelectionDuringEditing = true
-        
+        setUpCollectionView()
+
         //MARK: Buttons
         buttonsClicked()
     }
@@ -64,6 +54,7 @@ class filterViewController: UIViewController {
 
 //    MARK: Table view
     var filterTableView: UITableView!
+    var filterCollectionView: UICollectionView!
     let tableViewCell = "test"
     let cellID = "product"
     let headerID = "collectionViewHeader"
@@ -75,8 +66,7 @@ class filterViewController: UIViewController {
         super.viewWillAppear(animated)
         setUpLayouts()
         
-        
-        self.filterTableView.reloadData()
+        self.filterCollectionView.reloadData()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -117,26 +107,49 @@ class filterViewController: UIViewController {
                 ])
             
         default:
-            
-            filterTableView = UITableView(frame: self.view.bounds)
-            
-//          MARK: Subviews
-            self.view.addSubview(filterTableView)
-            filterTableView.translatesAutoresizingMaskIntoConstraints = false
-            filterTableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCell)
+
             createLayout()
   
         }
+    }
+    
+    func setUpCollectionView() {
+        let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
+        mealsCollectionViewlayouts.scrollDirection = .vertical
+        
+        self.filterCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
+
+          
+        filterCollectionView.showsHorizontalScrollIndicator = false
+        self.filterCollectionView.dataSource = self
+        self.filterCollectionView.delegate = self
+        self.filterCollectionView.register(pantryCollectioViewFilter.self, forCellWithReuseIdentifier: tableViewCell)
+        if #available(iOS 13.0, *) {
+            self.filterCollectionView.backgroundColor = UIColor.systemGray6
+        } else {
+            // Fallback on earlier versions
+        }
+        self.filterCollectionView.isUserInteractionEnabled = true
+        self.filterCollectionView.isScrollEnabled = true
+        
+        //CollectionView spacing
+        filterCollectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
+        
+        self.filterCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        //adding subviews to the view controller
+        self.view.addSubview(filterCollectionView)
+        
     }
     
     private func createLayout() {
 //            MARK: Constraints
         NSLayoutConstraint.activate([
 
-            filterTableView.topAnchor.constraint(equalTo: view.topAnchor),
-            filterTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            filterTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            filterTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            filterCollectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            filterCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            filterCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            filterCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+ 
             ])
     }
     //MARK: - Table view cell properties - End
@@ -180,7 +193,7 @@ class filterViewController: UIViewController {
     //MARK: - Filter header
     let welcomeLabel: UILabel = {
         var welcome = UILabel()
-        welcome.text = "What are you looking for?"
+        welcome.text = "What can I help you find?"
         welcome.textAlignment = .center
         welcome.numberOfLines = 0
         welcome.textColor = UIColor.ademBlue
@@ -221,83 +234,30 @@ class filterViewController: UIViewController {
 //MARK: - class end dont delete this }
 }
 
-
-//MARK: - tableView extension
-extension filterViewController: UITableViewDataSource, UITableViewDelegate {
-    
-    //MARK: Table view cell properties - Start
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
- 
+extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productCategories.count
-
-        }
+    }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
-        let productsListCell = filterTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
-        productsListCell.textLabel?.text = productCategories[indexPath.row]
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.tableViewCell, for: indexPath) as! pantryCollectioViewFilter
+        productsListCell.pantryItemName.text = productCategories[indexPath.row]
+        productsListCell.layer.cornerRadius = 5
         
         return productsListCell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.dismiss(animated: true, completion: nil)
-    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("test the selection")
     }
-       
-       
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let cellHeight = 45
-        return CGFloat(cellHeight)
-       }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 60
-     
-    }
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-            //Works
-            
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.white
-        
-        let stackView = UIStackView(arrangedSubviews: [cancelbutton, welcomeLabel, clearFilterbutton])
-        stackView.axis = .horizontal
-        stackView.distribution = .fillProportionally
-        stackView.spacing = 5
-        stackView.alignment = .fill
-        
-        
-        headerView.addSubview(stackView)
-        headerView.addSubview(textFieldSeparator)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
-            NSLayoutConstraint.activate([
+        //MARK: Changes the size of the image in pantry
+        return CGSize(width: 75, height: 50)
+    }
 
-                stackView.topAnchor.constraint(equalTo: headerView.topAnchor),
-                stackView.heightAnchor.constraint(equalToConstant: 60),
-                stackView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-                stackView.widthAnchor.constraint(equalTo: headerView.widthAnchor, constant: -50),
-                
-                textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
-                textFieldSeparator.centerXAnchor.constraint(equalTo: welcomeLabel.centerXAnchor),
-                textFieldSeparator.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
-                textFieldSeparator.heightAnchor.constraint(equalToConstant: 1)
-            
-            
-            ])
-            return headerView
-        }
-       
-       //Multiple selection
-       func tableView(_ tableView: UITableView, shouldBeginMultipleSelectionInteractionAt indexPath: IndexPath) -> Bool {
-           
-           return true
-       }
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 15
+    }
+    
 }

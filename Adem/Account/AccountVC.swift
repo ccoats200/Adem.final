@@ -52,6 +52,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         setUptopViews()
         handleUserInfo()
+        setUpdefaultSegment()
         
     }
     
@@ -205,23 +206,33 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func setUpdefaultSegment() {
 
+//        let householdCollectionViewlayouts = UICollectionViewFlowLayout()
+        
+//        self.homeSegmentView.friendsAndFamily = UICollectionView(frame: self.view.bounds, collectionViewLayout: householdCollectionViewlayouts)
         
         homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
         homeSegmentView.accountTableView.delegate = self
         homeSegmentView.accountTableView.dataSource = self
-        homeSegmentView.friendsAndFamily.dataSource = self
         
+        
+        homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
+        homeSegmentView.friendsAndFamily.register(householdAdd.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd)
+        
+        homeSegmentView.friendsAndFamily.dataSource = self
+        homeSegmentView.friendsAndFamily.delegate = self
         //MARK: - This needs to be avatars. IDC what type but they can't be people
         //https://kit.snapchat.com/docs/bitmoji-kit-ios
         //MARK: - Can I use the snap/bitmoji avatar? If so I must use
-
-        homeSegmentView.friendsAndFamily.delegate = self
-        homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
-        homeSegmentView.friendsAndFamily.register(householdAdd.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd)
-        //homeSegmentView.friendsAndFamily.contentInset = UIEdgeInsets(top: 20, left: 5, bottom: 5, right: 5)
+        
+        homeSegmentView.friendsAndFamily.contentInset = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
         
 //        homeSegmentView.accountTableView.estimatedRowHeight = 60
 //        homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
+        homeSegmentView.accountTableView.isScrollEnabled = false
+        homeSegmentView.accountTableView.layer.cornerRadius = 5
+        personalStats.backgroundColor = UIColor.white
+        homeSegmentView.friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
+        homeSegmentView.translatesAutoresizingMaskIntoConstraints = false
         
                 
         accountViewToSwitch = [UIView]()
@@ -236,10 +247,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         view.bringSubviewToFront(accountViewToSwitch[0])
         
-        homeSegmentView.accountTableView.isScrollEnabled = false
-        homeSegmentView.accountTableView.layer.cornerRadius = 5
-        personalStats.backgroundColor = UIColor.white
-        homeSegmentView.translatesAutoresizingMaskIntoConstraints = false
+        
         
 //        homeSegmentView.friendsAndFamily.addButton.addTarget(self, action: #selector(handleFriends), for: .touchDown)
 //        homeSegmentView.friendsAndFamily.nameofUser.text = "Kitchen Staff"
@@ -389,6 +397,20 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         return friendsAssociated.count
     }
     
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let personCell = collectionView.dequeueReusableCell(withReuseIdentifier: ffCCellID, for: indexPath) as! ffCell
+        personCell.friendsInAccount = friendsAssociated[indexPath.item]
+        return personCell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print("Pop up of remove from household for now")
+    }
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         //https://www.thetopsites.net/article/52167601.shtml
         //https://stackoverflow.com/questions/29655652/how-to-make-both-header-and-footer-in-collection-view-with-swift
@@ -405,31 +427,23 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         return reusableView!
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let personCell = collectionView.dequeueReusableCell(withReuseIdentifier: ffCCellID, for: indexPath) as! ffCell
-        personCell.friendsInAccount = friendsAssociated[indexPath.item]
-        return personCell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Pop up of remove from household for now")
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+
+        //MARK: Changes the size of the image in pantry
+        return CGSize(width: 70, height: 70)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
             return CGSize(width: collectionView.frame.width - 10, height: 20.0)
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-
-        //MARK: Changes the size of the image in pantry
-        return CGSize(width: 70, height: 70)
-    }
+    
 }
 
 class householdAdd: UICollectionReusableView {
     
     var addFam = navigationButton()
-    var allFriends = navigationButton()
+    var householdName = navigationButton()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -457,30 +471,30 @@ class householdAdd: UICollectionReusableView {
 
     func myCustomInit() {
         self.addSubview(addFam)
-        self.addSubview(allFriends)
+        self.addSubview(householdName)
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
-        allFriends.largeNextButton.setTitle("The Bev", for: .normal)
-        allFriends.largeNextButton.contentHorizontalAlignment = .left
-        allFriends.largeNextButton.backgroundColor = UIColor.clear
+        householdName.largeNextButton.setTitle("The Bev", for: .normal)
+        householdName.largeNextButton.contentHorizontalAlignment = .left
+        householdName.largeNextButton.backgroundColor = UIColor.clear
         addFam.translatesAutoresizingMaskIntoConstraints = false
-        allFriends.translatesAutoresizingMaskIntoConstraints = false
+        householdName.translatesAutoresizingMaskIntoConstraints = false
         
         
         addFam.largeNextButton.addTarget(self, action: #selector(handelCamAdd), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             
-            allFriends.topAnchor.constraint(equalTo: self.topAnchor),
-            allFriends.heightAnchor.constraint(equalTo: self.heightAnchor),
-            allFriends.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
-            allFriends.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
-            allFriends.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            householdName.topAnchor.constraint(equalTo: self.topAnchor),
+            householdName.heightAnchor.constraint(equalTo: self.heightAnchor),
+            householdName.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
+            householdName.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
+            householdName.centerYAnchor.constraint(equalTo: self.centerYAnchor),
            
             addFam.topAnchor.constraint(equalTo: self.topAnchor),
             addFam.heightAnchor.constraint(equalTo: self.heightAnchor),
             addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
             addFam.widthAnchor.constraint(equalToConstant: 30),
-            addFam.centerYAnchor.constraint(equalTo: allFriends.centerYAnchor),
+            addFam.centerYAnchor.constraint(equalTo: householdName.centerYAnchor),
         ])
     }
 }
