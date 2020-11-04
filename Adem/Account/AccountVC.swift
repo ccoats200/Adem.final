@@ -20,7 +20,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     let headerID = "test"
     let listOfSettingsOptions = "test"
     let ffCCellID = "reuse"
-    let ffCCellIDAdd = "header"
+    let ffHeader = "header"
     
     //This needs to be firestoreDataClass for finding people in the home collection
     var friendsAssociated = friends
@@ -207,19 +207,19 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func setUpdefaultSegment() {
 
 //        let householdCollectionViewlayouts = UICollectionViewFlowLayout()
-        
+//        householdCollectionViewlayouts.scrollDirection = .horizontal
 //        self.homeSegmentView.friendsAndFamily = UICollectionView(frame: self.view.bounds, collectionViewLayout: householdCollectionViewlayouts)
+        homeSegmentView.friendsAndFamily.showsHorizontalScrollIndicator = false
+        homeSegmentView.friendsAndFamily.dataSource = self
+        self.homeSegmentView.friendsAndFamily.delegate = self
+        homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
+        homeSegmentView.friendsAndFamily.register(householdAdd.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader)
+
         
-        homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
         homeSegmentView.accountTableView.delegate = self
         homeSegmentView.accountTableView.dataSource = self
+        homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
         
-        
-        homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
-        homeSegmentView.friendsAndFamily.register(householdAdd.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd)
-        
-        homeSegmentView.friendsAndFamily.dataSource = self
-        homeSegmentView.friendsAndFamily.delegate = self
         //MARK: - This needs to be avatars. IDC what type but they can't be people
         //https://kit.snapchat.com/docs/bitmoji-kit-ios
         //MARK: - Can I use the snap/bitmoji avatar? If so I must use
@@ -233,7 +233,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         personalStats.backgroundColor = UIColor.white
         homeSegmentView.friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
         homeSegmentView.translatesAutoresizingMaskIntoConstraints = false
-        
                 
         accountViewToSwitch = [UIView]()
                 
@@ -246,23 +245,19 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             v.translatesAutoresizingMaskIntoConstraints = false
         }
         view.bringSubviewToFront(accountViewToSwitch[0])
-        
-        
-        
-//        homeSegmentView.friendsAndFamily.addButton.addTarget(self, action: #selector(handleFriends), for: .touchDown)
-//        homeSegmentView.friendsAndFamily.nameofUser.text = "Kitchen Staff"
      
-     NSLayoutConstraint.activate([
-        personalStats.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 15),
-        personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-        personalStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        personalStats.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
-        
-        homeSegmentView.topAnchor.constraint(equalTo: personalStats.topAnchor),
-        homeSegmentView.heightAnchor.constraint(equalTo: personalStats.heightAnchor),
-        homeSegmentView.widthAnchor.constraint(equalTo: personalStats.widthAnchor),
-        homeSegmentView.centerXAnchor.constraint(equalTo: personalStats.centerXAnchor),
-     ])
+        NSLayoutConstraint.activate([
+            
+            personalStats.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
+            personalStats.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
+            personalStats.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            personalStats.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
+            
+            homeSegmentView.topAnchor.constraint(equalTo: personalStats.topAnchor),
+            homeSegmentView.heightAnchor.constraint(equalTo: personalStats.heightAnchor),
+            homeSegmentView.widthAnchor.constraint(equalTo: personalStats.widthAnchor),
+            homeSegmentView.centerXAnchor.constraint(equalTo: personalStats.centerXAnchor),
+        ])
         //MARK: Sign Out
         signOutButton()
     }
@@ -354,6 +349,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
 //        let c = acctOptions.count
 //        let buttons = [handleRecipies(),handleDiet(),handleStores(),handleFlavors(),handleRecipies(),handleRecipies()]
 //
@@ -362,6 +358,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 //                buttons[i]
 //            }
 //        }
+        
         switch indexPath.row {
         case 0:
             //This is a list of liked meals
@@ -403,7 +400,10 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let personCell = collectionView.dequeueReusableCell(withReuseIdentifier: ffCCellID, for: indexPath) as! ffCell
-        personCell.friendsInAccount = friendsAssociated[indexPath.item]
+        let houseMembers = friendsAssociated[indexPath.item]
+        
+        personCell.personImageView.image = UIImage(named: (houseMembers.friendImage)!)
+        personCell.personName.text = houseMembers.friendName
         return personCell
     }
     
@@ -420,7 +420,7 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         // Create header
         if (kind == UICollectionView.elementKindSectionHeader) {
             // Create Header
-            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffCCellIDAdd, for: indexPath) as! householdAdd
+            let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader, for: indexPath) as! householdAdd
 
             reusableView = headerView
         }
@@ -434,7 +434,9 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-            return CGSize(width: collectionView.frame.width - 10, height: 20.0)
+        
+        //MARK: header
+            return CGSize(width: collectionView.frame.width - 10, height: 30.0)
     }
     
     
@@ -472,7 +474,9 @@ class householdAdd: UICollectionReusableView {
     func myCustomInit() {
         self.addSubview(addFam)
         self.addSubview(householdName)
-        addFam.largeNextButton.backgroundColor = UIColor.ademGreen
+       //addFam.largeNextButton.backgroundColor = UIColor.ademGreen
+        //Not finding image
+        addFam.largeNextButton.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
         householdName.largeNextButton.setTitle("The Bev", for: .normal)
         householdName.largeNextButton.contentHorizontalAlignment = .left
         householdName.largeNextButton.backgroundColor = UIColor.clear

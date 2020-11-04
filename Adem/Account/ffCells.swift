@@ -17,13 +17,6 @@ class ffCell: UICollectionViewCell {
         super.init(frame: frame)
         addSubs()
     }
-    
-    var friendsInAccount = friendFamily() {
-        didSet {
-            personImageView.image = UIImage(named: (friendsInAccount.friendImage)!)
-            personName.text = friendsInAccount.friendName
-        }
-    }
 
     
     let personImageView: UIImageView = {
@@ -52,8 +45,7 @@ class ffCell: UICollectionViewCell {
         personImageView.translatesAutoresizingMaskIntoConstraints = false
         personName.translatesAutoresizingMaskIntoConstraints = false
         personImageView.layer.cornerRadius = 25
-//        personImageView.layer.cornerRadius = CGFloat(self.bounds.size.width / 2.0)
-        
+
         setupViews()
     }
     
@@ -62,12 +54,9 @@ class ffCell: UICollectionViewCell {
         
         NSLayoutConstraint.activate([
             personImageView.topAnchor.constraint(equalTo: self.topAnchor),
-//            personImageView.widthAnchor.constraint(equalTo: self.widthAnchor),
             personImageView.widthAnchor.constraint(equalToConstant: 50),
-
             personImageView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-//            personImageView.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 7/10),
-             personImageView.heightAnchor.constraint(equalToConstant: 50),
+            personImageView.heightAnchor.constraint(equalToConstant: 50),
             
             
             personName.topAnchor.constraint(equalTo: personImageView.bottomAnchor),

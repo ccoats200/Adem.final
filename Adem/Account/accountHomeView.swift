@@ -62,7 +62,7 @@ class homeView: UIView {
         
         let friendsAndFamilyLayouts = UICollectionViewFlowLayout()
         friendsAndFamily = UICollectionView(frame: self.bounds, collectionViewLayout: friendsAndFamilyLayouts)
-        friendsAndFamily.contentInset = UIEdgeInsets(top: 5, left: 5, bottom: -5, right: 5)
+        friendsAndFamily.contentInset = UIEdgeInsets(top: 15, left: 5, bottom: -5, right: 5)
     }
     
   //common func to init our view
@@ -102,3 +102,7 @@ class homeView: UIView {
         ])
   }
 }
+
+//extension homeView: UICollectionViewDelegateFlowLayout {
+//    //do I need to put stuff here?
+//}

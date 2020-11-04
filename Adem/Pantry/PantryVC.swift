@@ -138,7 +138,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         self.pantryCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
 
           
-        pantryCollectionView.showsHorizontalScrollIndicator = false
+        pantryCollectionView.showsVerticalScrollIndicator = false
         self.pantryCollectionView.dataSource = self
         self.pantryCollectionView.delegate = self
         self.pantryCollectionView.register(pantryCell.self, forCellWithReuseIdentifier: mealsCCellID)
@@ -238,8 +238,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
 extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-
-       
         return arrayofPantry.count
     }
     
@@ -261,8 +259,6 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         
         if pantryList.productExpir.interval(ofComponent: .day, fromDate: Date()) <= 0 {
             pantryItemsCell.expiryDate.backgroundColor = UIColor.ademRed
-            //pantryItemsCell.pantryItemName.textColor = UIColor.white
-            //pantryItemsCell.quantity.textColor = UIColor.white
             pantryItemsCell.expiryDate.textColor = UIColor.white
         }
 
