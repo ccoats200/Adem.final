@@ -224,6 +224,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         //https://kit.snapchat.com/docs/bitmoji-kit-ios
         //MARK: - Can I use the snap/bitmoji avatar? If so I must use
         
+        //Household dimensions
+        
         homeSegmentView.friendsAndFamily.contentInset = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
         
 //        homeSegmentView.accountTableView.estimatedRowHeight = 60
@@ -433,6 +435,10 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         return CGSize(width: 70, height: 70)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 5.0, left: 0, bottom: 0, right: 0)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
         //MARK: header
@@ -495,7 +501,7 @@ class householdAdd: UICollectionReusableView {
             householdName.centerYAnchor.constraint(equalTo: self.centerYAnchor),
            
             addFam.topAnchor.constraint(equalTo: self.topAnchor),
-            addFam.heightAnchor.constraint(equalTo: self.heightAnchor),
+            addFam.heightAnchor.constraint(equalToConstant: 30),//self.heightAnchor),
             addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
             addFam.widthAnchor.constraint(equalToConstant: 30),
             addFam.centerYAnchor.constraint(equalTo: householdName.centerYAnchor),

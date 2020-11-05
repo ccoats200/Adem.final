@@ -169,7 +169,7 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDe
         if #available(iOS 13.0, *) {
             let compositionalLayout: UICollectionViewCompositionalLayout = {
                 let fraction: CGFloat = 1.75 / 3.0
-                let inset: CGFloat = 10.0
+                let inset: CGFloat = 5.0
                     
                     
                 // Item
@@ -183,19 +183,22 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDe
                     
                 // Section
                 let section = NSCollectionLayoutSection(group: group)
-                    section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 2.5, bottom: 0, trailing: 2.5)
+                    section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: inset, bottom: 0, trailing: inset)
                 //https://lickability.com/blog/getting-started-with-uicollectionviewcompositionallayout/#orthogonal-scrolling
                 section.orthogonalScrollingBehavior = .continuous
                 
                 
-                // Supplementary Item
-                let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(100))
+                // Header Supplementary Item
+                //FIXME: figure out height for header in section
+                let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(35))//.estimated(100))
                 let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
                 section.boundarySupplementaryItems = [headerItem]
                     
                 return UICollectionViewCompositionalLayout(section: section)
                 }()
+            
             mealCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: compositionalLayout)
+            mealCollectionView.contentInset = UIEdgeInsets(top: 5, left: 0, bottom: 0, right: 0)
             self.view.addSubview(mealCollectionView)
             mealCollectionView.showsVerticalScrollIndicator = false
             mealCollectionView.delegate = self
@@ -285,6 +288,7 @@ extension Meals: UICollectionViewDelegate, UICollectionViewDataSource {
 }
 
 extension Meals: UICollectionViewDelegateFlowLayout {
+    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
             let width = mealCollectionView.bounds.width
