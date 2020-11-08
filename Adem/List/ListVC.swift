@@ -17,7 +17,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 
     
 //    MARK: Navigation Bar Buttons - Start
-    var cam = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handlecamera))
+    lazy var cam = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handlecamera))
+    lazy var find = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAlert))
 //    lazy var add = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearch))
 //    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //MARK: Navigation buttons - End
@@ -73,35 +74,26 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            self.navigationItem.rightBarButtonItem = cam
+            setUpBarButtonItems()
+            setUpLayouts()
 
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
             //MARK: Opt out of dark mode
             //overrideUserInterfaceStyle = .light
         } else {
             //Revert to default
+            setUpBarButtonItems()
+            setUpLayouts()
         }
+        setUpBarButtonItems()
+        setUpLayouts()
         //MARK: - sign in confirmation
         
 //        observAuthState()
         alreadySignedIn()
 ////        MARK: Search bar
         searchBarSetUp()
-//
-////        MARK: Switch open view
-//        switch productsGlobal?.isEmpty {
-        
-//        switch arrayofProducts.count == 0 {
-//        case true:
-//            tableViewIsEmpty()
-//        case false:
-//            tableViewSetup()
-//        default:
-//            tableViewSetup()
-//        }
-//
-//        toolBarSetUp()
-//        setUpFilterView()
+
     }
     
     //MARK: Authentication State listner
@@ -114,6 +106,13 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
             self.listTableView.reloadData()
         }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        setUpLayouts()
+        self.isEditing = false
+//            firebaseAuth.removeStateDidChangeListener(handle!)
     }
     
     func observAuthState() {
@@ -133,12 +132,12 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         self.navigationController?.view.setNeedsLayout()
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.navigationController?.view.layoutIfNeeded()
-        self.navigationController?.view.setNeedsLayout()
-        self.isEditing = false
-//            firebaseAuth.removeStateDidChangeListener(handle!)
+    
+    
+    private func setUpBarButtonItems() {
+        self.navigationItem.rightBarButtonItem = cam
+        self.navigationItem.leftBarButtonItem = find
+        
     }
 
     func alreadySignedIn() {
@@ -254,11 +253,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         self.present(productScreen, animated: true, completion: nil)
     }
+    
     //Search Button
     @objc func handleAlert() {
-        
-        let alert = addedItemAlert()
-        alert.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        let alert = filterViewController()
+        //alert.modalPresentationStyle = UIModalPresentationStyle.custom
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -511,6 +510,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
+//FIXME: remove header with filter
 extension listViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
     
     func setUpFilterView() {
