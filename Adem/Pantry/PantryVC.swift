@@ -205,12 +205,15 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
                print("Camera button working")
     }
     
-    
+    private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
     @objc func handleAlert() {
         
 //        let alert = removeDataCapture()
         let alert = filterViewController()
+        detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
+        alert.modalPresentationStyle = UIModalPresentationStyle.custom
+        alert.transitioningDelegate = detailsTransitioningDelegate
         self.present(alert, animated: true, completion: nil)
         
     }

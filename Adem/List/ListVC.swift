@@ -51,8 +51,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     let cellID = "product"
     let headerID = "collectionViewHeader"
 //    MARK: Collection View
-    var filterListCollectionView: UICollectionView!
-    let cfilter = "filtercolletionview"
+    //var filterListCollectionView: UICollectionView!
+    //let cfilter = "filtercolletionview"
 //    MARK: Filter
     var filter = [fireStoreDataClass]()
     var productFilter = [fireStoreDataClass]()
@@ -167,7 +167,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             tableViewSetup()
 
             toolBarSetUp()
-            setUpFilterView()
+            //setUpFilterView()
             
             //MARK: Firebase working below
             firebaseDataFetch()
@@ -201,7 +201,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             self.navigationController?.isToolbarHidden = false
         } else {
             self.navigationController?.isToolbarHidden = true
-            self.navigationItem.leftBarButtonItem = nil
+            //self.navigationItem.leftBarButtonItem = nil
             self.tabBarController?.tabBar.isHidden = false
             listTableView?.isEditing = false
         }
@@ -254,12 +254,17 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         self.present(productScreen, animated: true, completion: nil)
     }
     
+    private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
     @objc func handleAlert() {
         let alert = filterViewController()
-        //alert.modalPresentationStyle = UIModalPresentationStyle.custom
+        detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
+        alert.modalPresentationStyle = UIModalPresentationStyle.custom
+        alert.transitioningDelegate = detailsTransitioningDelegate
         self.present(alert, animated: true, completion: nil)
     }
+    
+    
     
     //Button Functions - End
       
@@ -301,7 +306,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             productCategories.append(i.category ?? "test")
         print("categories \(productCategories)")
     }
-        self.filterListCollectionView.reloadData()
+        //self.filterListCollectionView.reloadData()
     }
     
 //MARK: - class end dont delete this }
@@ -455,24 +460,25 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
-           
+       /*
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        print("removed")
         //Works
-        let headerView = UIView()
-        headerView.backgroundColor = UIColor.white
-        headerView.addSubview(filterListCollectionView)
-//        filterListCollectionView.layer.masksToBounds = true
-//        filterListCollectionView.clipsToBounds = true
-        filterListCollectionView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            filterListCollectionView.heightAnchor.constraint(equalTo: headerView.heightAnchor),
-            filterListCollectionView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-            filterListCollectionView.widthAnchor.constraint(equalTo: headerView.widthAnchor),
-            filterListCollectionView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-        ])
-        return headerView
+//        let headerView = UIView()
+//        headerView.backgroundColor = UIColor.white
+//        headerView.addSubview(filterListCollectionView)
+////        filterListCollectionView.layer.masksToBounds = true
+////        filterListCollectionView.clipsToBounds = true
+//        filterListCollectionView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            filterListCollectionView.heightAnchor.constraint(equalTo: headerView.heightAnchor),
+//            filterListCollectionView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
+//            filterListCollectionView.widthAnchor.constraint(equalTo: headerView.widthAnchor),
+//            filterListCollectionView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
+//        ])
+//        return headerView
     }
-    
+    */
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1
     }
@@ -512,44 +518,45 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
 
 //FIXME: remove header with filter
 extension listViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
-    
+    /*
     func setUpFilterView() {
         //move to viewdidload?
         let layouts = UICollectionViewFlowLayout()
         let collectionLayout = UICollectionViewLayout()
         layouts.itemSize = CGSize(width: 75, height: (self.view.frame.height)-1)
-        filterListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layouts)
-        filterListCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: "test")
+        //filterListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layouts)
+        //filterListCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: "test")
 
         layouts.scrollDirection = .horizontal
-        filterListCollectionView.showsHorizontalScrollIndicator = false
+        //filterListCollectionView.showsHorizontalScrollIndicator = false
         //Why isnt it working?
-        filterListCollectionView.contentInsetAdjustmentBehavior = .never
-        filterListCollectionView.backgroundColor = UIColor.white
-        filterListCollectionView.dataSource = self
-        filterListCollectionView.delegate = self
-        filterListCollectionView.isUserInteractionEnabled = true
-        filterListCollectionView.isScrollEnabled = true
+//        filterListCollectionView.contentInsetAdjustmentBehavior = .never
+//        filterListCollectionView.backgroundColor = UIColor.white
+//        filterListCollectionView.dataSource = self
+//        filterListCollectionView.delegate = self
+//        filterListCollectionView.isUserInteractionEnabled = true
+//        filterListCollectionView.isScrollEnabled = true
     }
+ */
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productCategories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let item = productCategories[indexPath.item]
-        filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
-        
-        //let dairy = arrayofProducts.filter { ($0.category == item) }
-        if item == "All" {
-            firebaseDataFetch()
-            filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademBlue
-        } else {
-            
-            filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
-            arrayofProducts = arrayofProducts.filter { ($0.category == item) }
-            
-            self.listTableView.reloadData()
-        }
+//        filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
+//
+//        //let dairy = arrayofProducts.filter { ($0.category == item) }
+//        if item == "All" {
+//            firebaseDataFetch()
+//            filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademBlue
+//        } else {
+//
+//            filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
+//            arrayofProducts = arrayofProducts.filter { ($0.category == item) }
+//
+//            self.listTableView.reloadData()
+//        }
         print("Trying to filter for \(productCategories[indexPath.row])")
     }
     

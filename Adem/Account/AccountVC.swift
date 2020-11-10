@@ -382,6 +382,16 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
         }
     }
+    private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
+    //Search Button
+    @objc func handleAlert() {
+        let alert = filterViewController()
+        detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
+        alert.modalPresentationStyle = UIModalPresentationStyle.custom
+        alert.transitioningDelegate = detailsTransitioningDelegate
+        self.present(alert, animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -422,6 +432,7 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         if (kind == UICollectionView.elementKindSectionHeader) {
             // Create Header
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader, for: indexPath) as! householdAdd
+            
 
             reusableView = headerView
         }
@@ -463,6 +474,8 @@ class householdAdd: UICollectionReusableView {
     }
     
     @objc func handelCamAdd() {
+        
+        
         /*
          if #available(iOS 13.0, *) {
                     let productScreen = camVC()
@@ -488,7 +501,7 @@ class householdAdd: UICollectionReusableView {
         addFam.translatesAutoresizingMaskIntoConstraints = false
         householdName.translatesAutoresizingMaskIntoConstraints = false
         
-        
+        //addFam.largeNextButton.addTarget(self, action: #selector(AccountVC().handleAlert), for: .touchUpInside)
         addFam.largeNextButton.addTarget(self, action: #selector(handelCamAdd), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
