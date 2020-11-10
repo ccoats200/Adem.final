@@ -219,17 +219,16 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         homeSegmentView.accountTableView.delegate = self
         homeSegmentView.accountTableView.dataSource = self
         homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
+        homeSegmentView.accountTableView.estimatedRowHeight = 30
+        homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
         
         //MARK: - This needs to be avatars. IDC what type but they can't be people
         //https://kit.snapchat.com/docs/bitmoji-kit-ios
         //MARK: - Can I use the snap/bitmoji avatar? If so I must use
         
         //Household dimensions
-        
         homeSegmentView.friendsAndFamily.contentInset = UIEdgeInsets(top: 2, left: 0, bottom: 0, right: 0)
-        
-//        homeSegmentView.accountTableView.estimatedRowHeight = 60
-//        homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
+
         homeSegmentView.accountTableView.isScrollEnabled = false
         homeSegmentView.accountTableView.layer.cornerRadius = 5
         personalStats.backgroundColor = UIColor.white

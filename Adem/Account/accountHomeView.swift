@@ -91,7 +91,7 @@ class homeView: UIView {
             friendsAndFamily.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             accountTableView.topAnchor.constraint(equalTo: friendsAndFamily.bottomAnchor, constant: 10),
-            accountTableView.bottomAnchor.constraint(equalTo: logOutButton.topAnchor, constant: -10),
+            accountTableView.bottomAnchor.constraint(equalTo: logOutButton.topAnchor, constant: -40),
             accountTableView.widthAnchor.constraint(equalTo: self.widthAnchor),
             accountTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
