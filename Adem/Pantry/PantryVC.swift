@@ -21,9 +21,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     //MARK: - Navigation Bar Buttons - Start
 //    lazy var searching = UIBarButtonItem(image: UIImage(named: "cart_1")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
     
-    lazy var searching = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleSearch))
+    lazy var searching = UIBarButtonItem(barButtonSystemItem: .camera, target: self, action: #selector(handleCamAdd))
     
-    lazy var filter = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAlert))
+    lazy var filter = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleFilter))
     
     lazy var done = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(handleEditButtonClicked))
     
@@ -192,10 +192,11 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     }
     
     //MARK: Alert product Button
-    @objc func handleSearch() {
+    @objc func handleCamAdd() {
 
         if #available(iOS 13.0, *) {
                    let productScreen = camVC()
+            //let productScreen = camView()
                    productScreen.hidesBottomBarWhenPushed = true
                    productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
                    self.present(productScreen, animated: true, completion: nil)
@@ -207,7 +208,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
-    @objc func handleAlert() {
+    @objc func handleFilter() {
         
 //        let alert = removeDataCapture()
         let alert = filterViewController()

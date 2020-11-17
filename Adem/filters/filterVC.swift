@@ -19,7 +19,7 @@ import FirebaseFirestoreSwift
 
 class filterViewController: UIViewController {
 
-    //This needs to be a collection view???
+    let filterHeader = "header"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -89,28 +89,28 @@ class filterViewController: UIViewController {
 //    MARK: - Table View
     func setUpListView() {
         
-        //TODO: If empty
-        switch productsGlobal?.isEmpty {
-        case true:
-            
-            let footerView = UIView()
-            footerView.backgroundColor = UIColor.ademRed
-            self.view.addSubview(footerView)
-            footerView.translatesAutoresizingMaskIntoConstraints = false
-            
-            //MARK: tableView constraints
-            NSLayoutConstraint.activate([
-                footerView.topAnchor.constraint(equalTo: view.topAnchor),
-                footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-                ])
-            
-        default:
+//        //TODO: If empty
+//        switch productsGlobal?.isEmpty {
+//        case true:
+//
+//            let footerView = UIView()
+//            footerView.backgroundColor = UIColor.ademRed
+//            self.view.addSubview(footerView)
+//            footerView.translatesAutoresizingMaskIntoConstraints = false
+//
+//            //MARK: tableView constraints
+//            NSLayoutConstraint.activate([
+//                footerView.topAnchor.constraint(equalTo: view.topAnchor),
+//                footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//                footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//                footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//                ])
+//
+//        default:
 
             createLayout()
   
-        }
+        //}
     }
     
     func setUpCollectionView() {
@@ -123,7 +123,9 @@ class filterViewController: UIViewController {
         filterCollectionView.showsHorizontalScrollIndicator = false
         self.filterCollectionView.dataSource = self
         self.filterCollectionView.delegate = self
-        self.filterCollectionView.register(pantryCollectioViewFilter.self, forCellWithReuseIdentifier: tableViewCell)
+        
+        filterCollectionView.register(pantryCollectioViewFilter.self, forCellWithReuseIdentifier: tableViewCell)
+        filterCollectionView.register(filterHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: filterHeader)
         if #available(iOS 13.0, *) {
             self.filterCollectionView.backgroundColor = UIColor.systemGray6
         } else {
@@ -131,7 +133,7 @@ class filterViewController: UIViewController {
         }
         self.filterCollectionView.isUserInteractionEnabled = true
         self.filterCollectionView.isScrollEnabled = true
-        
+        self.filterCollectionView.allowsMultipleSelection = false
         //CollectionView spacing
         filterCollectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
         
@@ -248,8 +250,13 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("test the selection")
+        self.filterCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        self.filterCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.white
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
 
         //MARK: Changes the size of the image in pantry
@@ -260,4 +267,90 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
         return 15
     }
     
+    
+    
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: filterHeader, for: indexPath) as? filterHeaderView else {
+                    return filterHeaderView()
+                }
+                
+                headerView.viewModel = filterHeaderView.ViewModel(title: "What can I help you find?")
+                return headerView
+                
+            case "new-banner":
+                let bannerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "NewBannerSupplementaryView", for: indexPath)
+                bannerView.isHidden = indexPath.row % 5 != 0 // show on every 5th item
+                return bannerView
+                
+            default:
+                assertionFailure("Unexpected element kind: \(kind).")
+                return UICollectionReusableView()
+            }
+        }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        //MARK: header
+            return CGSize(width: collectionView.frame.width - 10, height: 30.0)
+    }
+    
+}
+
+class filterHeaderView: UICollectionReusableView {
+    
+    //https://github.com/Lickability/collection-view-compositional-layout-demo/tree/main/Photos
+    
+    /// Encapsulates the properties required to display the contents of the view.
+    struct ViewModel {
+        /// The title to display in the view.
+        let title: String
+    }
+   
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.myCustomInit()
+        self.backgroundColor = UIColor.ademBlue
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+        self.myCustomInit()
+    }
+    
+    
+    let welcomeLabel: UILabel = {
+        let welcome = UILabel()
+        welcome.text = "test"
+        welcome.textAlignment = .center
+        welcome.textColor = UIColor.white
+        welcome.font = UIFont(name: productFont, size: 30.0)
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        return welcome
+    }()
+    
+    /// The cell’s view model. Setting the view model updates the display of the view’s contents.
+    var viewModel: ViewModel? {
+        didSet {
+            welcomeLabel.text = viewModel?.title
+        }
+    }
+    
+    func myCustomInit() {
+        self.addSubview(welcomeLabel)
+        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            welcomeLabel.heightAnchor.constraint(equalTo: self.heightAnchor),
+            welcomeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
+            welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor),
+            welcomeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+           
+        ])
+    }
 }

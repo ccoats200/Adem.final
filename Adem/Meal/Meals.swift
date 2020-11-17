@@ -109,7 +109,7 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDe
 
     }
     
-    lazy var searching = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleSearch))
+    lazy var searching = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleFilter))
     //MARK: Below is for a later version
     //lazy var add = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(handleCreate))
     let mealsSearchController = UISearchController(searchResultsController: nil)
@@ -131,8 +131,13 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDe
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.white
     }
     
-    @objc func handleSearch() {
-        print("filter tapped")
+    private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
+    @objc func handleFilter() {
+        let alert = filterViewController()
+        detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
+        alert.modalPresentationStyle = UIModalPresentationStyle.custom
+        alert.transitioningDelegate = detailsTransitioningDelegate
+        self.present(alert, animated: true, completion: nil)
     }
     
     func updateSearchResults(for searchController: UISearchController) {

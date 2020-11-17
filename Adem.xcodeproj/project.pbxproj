@@ -61,6 +61,8 @@
 		359E325C23D7F8D50049FA75 /* filterSetUp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 359E325B23D7F8D50049FA75 /* filterSetUp.swift */; };
 		35B0F300245A82F900823BCE /* firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F2FF245A82F900823BCE /* firebase.swift */; };
 		35C3A35A23C6075400E12747 /* loginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35923C6075400E12747 /* loginViews.swift */; };
+		35C6CAF025635BA300A4464E /* addHomeMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C6CAEF25635BA300A4464E /* addHomeMember.swift */; };
+		35C6CAF8256375F000A4464E /* QrReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C6CAF7256375F000A4464E /* QrReader.swift */; };
 		35D647F922ECBABA00015352 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647F822ECBABA00015352 /* AppDelegate.swift */; };
 		35D647FB22ECBABA00015352 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35D647FA22ECBABA00015352 /* ViewController.swift */; };
 		35D647FE22ECBABA00015352 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 35D647FC22ECBABA00015352 /* Main.storyboard */; };
@@ -175,6 +177,8 @@
 		359E325B23D7F8D50049FA75 /* filterSetUp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = filterSetUp.swift; sourceTree = "<group>"; };
 		35B0F2FF245A82F900823BCE /* firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firebase.swift; sourceTree = "<group>"; };
 		35C3A35923C6075400E12747 /* loginViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginViews.swift; sourceTree = "<group>"; };
+		35C6CAEF25635BA300A4464E /* addHomeMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addHomeMember.swift; sourceTree = "<group>"; };
+		35C6CAF7256375F000A4464E /* QrReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrReader.swift; sourceTree = "<group>"; };
 		35D647F522ECBABA00015352 /* Adem.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Adem.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		35D647F822ECBABA00015352 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		35D647FA22ECBABA00015352 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -260,8 +264,10 @@
 		35362462252EAAF800F8C940 /* filters */ = {
 			isa = PBXGroup;
 			children = (
+				3542B9302499A12C00E259EE /* filterVC.swift */,
 				35362463252EAB1D00F8C940 /* collectionViewFilter.swift */,
 				35774D4C255A2BB2005FBFD2 /* halfWay.swift */,
+				35C6CAEF25635BA300A4464E /* addHomeMember.swift */,
 			);
 			path = filters;
 			sourceTree = "<group>";
@@ -306,7 +312,6 @@
 				3527A0EE248720D000956349 /* pantry.swift */,
 				35D6485622ECBD8700015352 /* PantryVC.swift */,
 				356FFEF523FC590700DF67AD /* pantryTVC.swift */,
-				3542B9302499A12C00E259EE /* filterVC.swift */,
 			);
 			path = Pantry;
 			sourceTree = "<group>";
@@ -544,6 +549,7 @@
 				3591FBCC23BAD29700C410CF /* camViewController.swift */,
 				3591FBCE23BADA9100C410CF /* OCR.swift */,
 				358C2C5023BB00110013EE64 /* imageVCRecipt.swift */,
+				35C6CAF7256375F000A4464E /* QrReader.swift */,
 			);
 			path = Camera;
 			sourceTree = "<group>";
@@ -879,6 +885,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35C6CAF025635BA300A4464E /* addHomeMember.swift in Sources */,
 				35D6488722ECBF7300015352 /* Products.swift in Sources */,
 				3545FF0425196AA7001EF1A0 /* mealSimplify.swift in Sources */,
 				35669ADF2408BF3C00C95DFB /* viewForHeaders.swift in Sources */,
@@ -909,6 +916,7 @@
 				3591FBCF23BADA9100C410CF /* OCR.swift in Sources */,
 				356FFEFF2401962D00DF67AD /* segmentViews.swift in Sources */,
 				35669AE52410B3FF00C95DFB /* enum.swift in Sources */,
+				35C6CAF8256375F000A4464E /* QrReader.swift in Sources */,
 				3542B9312499A12C00E259EE /* filterVC.swift in Sources */,
 				354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */,
 				3543590F24B82F5D001074CF /* apiExtension.swift in Sources */,

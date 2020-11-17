@@ -385,7 +385,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
     @objc func handleAlert() {
-        let alert = filterViewController()
+        //let alert = filterViewController()
+        let alert = addHomeMember()
         detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
         alert.modalPresentationStyle = UIModalPresentationStyle.custom
         alert.transitioningDelegate = detailsTransitioningDelegate
@@ -432,7 +433,8 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         if (kind == UICollectionView.elementKindSectionHeader) {
             // Create Header
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader, for: indexPath) as! householdAdd
-            
+            headerView.addFam.largeNextButton.addTarget(self, action: #selector(handleAlert), for: .touchDown)
+            headerView.householdName.largeNextButton.addTarget(self, action: #selector(handleAlert), for: .touchDown)
 
             reusableView = headerView
         }
@@ -460,6 +462,7 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
 
 class householdAdd: UICollectionReusableView {
     
+    
     var addFam = navigationButton()
     var householdName = navigationButton()
     
@@ -473,21 +476,6 @@ class householdAdd: UICollectionReusableView {
         self.myCustomInit()
     }
     
-    @objc func handelCamAdd() {
-        
-        
-        /*
-         if #available(iOS 13.0, *) {
-                    let productScreen = camVC()
-                    productScreen.hidesBottomBarWhenPushed = true
-                    productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-                    self.present(productScreen, animated: true, completion: nil)
-                } else {
-                    // Fallback on earlier versions
-                }
-         */
-        print("Need to add a setting gear to the top right of the cover image")
-    }
 
     func myCustomInit() {
         self.addSubview(addFam)
@@ -501,8 +489,6 @@ class householdAdd: UICollectionReusableView {
         addFam.translatesAutoresizingMaskIntoConstraints = false
         householdName.translatesAutoresizingMaskIntoConstraints = false
         
-        //addFam.largeNextButton.addTarget(self, action: #selector(AccountVC().handleAlert), for: .touchUpInside)
-        addFam.largeNextButton.addTarget(self, action: #selector(handelCamAdd), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             

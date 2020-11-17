@@ -23,6 +23,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
     //MARK: Navigation buttons - End
     
+    var filterController = filterViewController()
+    
     //    MARK: - Var & Let
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
@@ -543,8 +545,8 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
         let item = productCategories[indexPath.item]
-//        filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
 //
 //        //let dairy = arrayofProducts.filter { ($0.category == item) }
 //        if item == "All" {
