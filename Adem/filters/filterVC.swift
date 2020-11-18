@@ -262,6 +262,11 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
         //MARK: Changes the size of the image in pantry
         return CGSize(width: 75, height: 50)
     }
+    
+    //MARK: - Distance between header and filters
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 10.0, left: 0, bottom: 0, right: 0)
+    }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 15
