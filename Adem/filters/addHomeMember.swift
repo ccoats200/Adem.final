@@ -25,7 +25,6 @@ class addHomeMember: UIViewController {
         view.addSubview(addLabelView)
         
         setUpAddDismiss()
-        changeOption()
     }
     
     let addLabelView: UILabel = {
@@ -46,6 +45,7 @@ class addHomeMember: UIViewController {
     @objc func switchStatsViews() {
         self.view.bringSubviewToFront(accountViewToSwitch[homeStatssegmentContr.selectedSegmentIndex])
     }
+    var leaveGroup = navigationButton()
     
     let homeStatssegmentContr: UISegmentedControl = {
         let items = ["Welcome", "Join"]
@@ -78,7 +78,31 @@ class addHomeMember: UIViewController {
         
     }()
     
-    func changeOption() {
+    @objc func handleLeaveGroup() {
+        print("testing the leave group action")
+    }
+    
+
+    func leaveGroupButtonAttributes() {
+        leaveGroup.largeNextButton.backgroundColor = UIColor.ademRed
+        leaveGroup.largeNextButton.setTitleColor(UIColor.white, for: .normal)
+        leaveGroup.largeNextButton.layer.masksToBounds = true
+        leaveGroup.largeNextButton.setTitle("Leave Group", for: .normal)
+        leaveGroup.largeNextButton.addTarget(self, action: #selector(handleLeaveGroup), for: .touchUpInside)
+        
+    }
+    
+    func setUpAddDismiss() {
+        view.addSubview(addLabelView)
+        view.addSubview(homeStatssegmentContr)
+        view.addSubview(leaveGroup)
+        leaveGroupButtonAttributes()
+        
+        addLabelView.translatesAutoresizingMaskIntoConstraints = false
+        homeStatssegmentContr.translatesAutoresizingMaskIntoConstraints = false
+        leaveGroup.translatesAutoresizingMaskIntoConstraints = false
+        
+        
         accountViewToSwitch = [UIView]()
                 
         accountViewToSwitch.append(ademImageHolder)
@@ -91,25 +115,6 @@ class addHomeMember: UIViewController {
         }
         view.bringSubviewToFront(accountViewToSwitch[0])
         
-        NSLayoutConstraint.activate([
-            
-            ademImageHolder.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
-            ademImageHolder.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5),
-            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            ademImageHolder.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
-            
-            ademImageHolder.topAnchor.constraint(equalTo: ademImageHolder.topAnchor),
-            ademImageHolder.heightAnchor.constraint(equalTo: ademImageHolder.heightAnchor),
-            ademImageHolder.widthAnchor.constraint(equalTo: ademImageHolder.widthAnchor),
-            ademImageHolder.centerXAnchor.constraint(equalTo: ademImageHolder.centerXAnchor),
-        ])
-    }
-    
-    func setUpAddDismiss() {
-        view.addSubview(addLabelView)
-        self.view.addSubview(homeStatssegmentContr)
-        addLabelView.translatesAutoresizingMaskIntoConstraints = false
-        homeStatssegmentContr.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
@@ -122,6 +127,17 @@ class addHomeMember: UIViewController {
             homeStatssegmentContr.heightAnchor.constraint(equalToConstant: 25),
             homeStatssegmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             homeStatssegmentContr.centerXAnchor.constraint(equalTo: addLabelView.centerXAnchor),
+            
+            ademImageHolder.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
+            ademImageHolder.bottomAnchor.constraint(equalTo: leaveGroup.topAnchor, constant: -15),
+            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            ademImageHolder.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
+            
+                        
+            leaveGroup.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            leaveGroup.heightAnchor.constraint(equalToConstant: 50),
+            leaveGroup.widthAnchor.constraint(equalTo: homeStatssegmentContr.widthAnchor),
+            leaveGroup.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor)
             
         ])
     }

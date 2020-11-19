@@ -416,6 +416,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let productsListCell = listTableView.dequeueReusableCell(withIdentifier: self.tableViewCell, for: indexPath)
+        //MARK: - need custom for the time lead
         productsListCell.accessoryType = .disclosureIndicator
         
         if (tableViewSearchController.isActive) {
@@ -544,7 +545,17 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
         return productCategories.count
     }
     
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
+        filterCells.backgroundColor = UIColor.ademBlue
+        filterCells.productName.text = productCategories[indexPath.row]
+        return filterCells
+    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
         
         let item = productCategories[indexPath.item]
 //
@@ -560,13 +571,6 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
 //            self.listTableView.reloadData()
 //        }
         print("Trying to filter for \(productCategories[indexPath.row])")
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
-        filterCells.backgroundColor = UIColor.ademBlue
-        filterCells.productName.text = productCategories[indexPath.row]
-        return filterCells
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {

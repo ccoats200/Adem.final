@@ -250,7 +250,15 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        //FIXME: Take notes from didSelect in pantry
+        let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.tableViewCell, for: indexPath) as! pantryCollectioViewFilter
+        
+        let fc = productsListCell.pantryItemName
+        
         self.filterCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
+    
+        print("\(fc)")
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -271,8 +279,6 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 15
     }
-    
-    
     
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
             switch kind {
