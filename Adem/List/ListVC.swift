@@ -521,26 +521,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
 
 //FIXME: remove header with filter
 extension listViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout  {
-    /*
-    func setUpFilterView() {
-        //move to viewdidload?
-        let layouts = UICollectionViewFlowLayout()
-        let collectionLayout = UICollectionViewLayout()
-        layouts.itemSize = CGSize(width: 75, height: (self.view.frame.height)-1)
-        //filterListCollectionView = UICollectionView(frame: .zero, collectionViewLayout: layouts)
-        //filterListCollectionView.register(filterCellLayout.self, forCellWithReuseIdentifier: "test")
-
-        layouts.scrollDirection = .horizontal
-        //filterListCollectionView.showsHorizontalScrollIndicator = false
-        //Why isnt it working?
-//        filterListCollectionView.contentInsetAdjustmentBehavior = .never
-//        filterListCollectionView.backgroundColor = UIColor.white
-//        filterListCollectionView.dataSource = self
-//        filterListCollectionView.delegate = self
-//        filterListCollectionView.isUserInteractionEnabled = true
-//        filterListCollectionView.isScrollEnabled = true
-    }
- */
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productCategories.count
     }
