@@ -317,6 +317,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                 } else {
                     for document in snapshot!.documents {
                         let latMax = document.get("FirstName") as? String
+                        let latHome = document.get("home") as? String
+                        print(latHome)
                         self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
                         self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
                         self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue

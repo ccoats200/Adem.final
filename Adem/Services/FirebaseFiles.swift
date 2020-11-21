@@ -19,11 +19,19 @@ let firebaseAuth = Auth.auth()
 
 
 let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
+//FIXME: Adding the products
+
+let userMergefirebaseProducts = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2").collection("public").document("products").collection("List")
+let addProducts = db.collection("groceryProducts")
+let userfirebaseAddProducts = db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("public").document("products").collection("List")
+//FIXME: Adding the products
+
+
 //let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
 let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("meals").collection("all")
 //let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
 let userfirebaseDietPreferences = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("preferences")
-//MARK: - Testing on jXYJraXUNtfM5bLs2S7dhxqz8gC2
+//MARK: - Testing on
 
 //MARK: - The home set up
 /*

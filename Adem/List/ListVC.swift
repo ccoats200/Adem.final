@@ -286,6 +286,22 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             }
         }
         
+        userMergefirebaseProducts.addSnapshotListener { (querySnapshot, error) in
+            guard let doc = querySnapshot?.documents else {
+                print("No documents")
+                return
+            }
+            
+            arrayofAddProducts = doc.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+            }
+            
+            
+            print("this is a test of the find \(arrayofAddProducts)")
+            print(arrayofAddProducts.count)
+            //userfirebaseAddProducts.addDocument(data: arrayofAddProducts)
+            
+        }
         if isUserLoggedIn() {
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
@@ -296,8 +312,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                 return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
                 
             }
+            print("this is another test of the find \(arrayofProducts)")
             self.listTableView.reloadData()
          }
+        
         } else {
             sendToLogIn()
         }

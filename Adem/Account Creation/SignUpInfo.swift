@@ -130,8 +130,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
  */
                 //Mark: Home section
                 //Why is this not working
-                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
-                    "home": authResult!.user.uid,
+                db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                    "home": "9HKADS7IMYffVV9Wj1F8uIU3zgq1",
                     "FirstName": firstName,
                     "LastName": lastName,
                     "Email": email,

@@ -34,6 +34,7 @@ var arrayofPantry = [fireStoreDataClass]()
 //var arrayofProducts = [fireStoreDataStruct]()
 //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofProducts = [fireStoreDataClass]()
+var arrayofAddProducts = [fireStoreDataClass]()
 
 var arrayofMeals = [mealClass]()
 var arrayofTestingPallette = [mealClass]()
@@ -161,6 +162,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         self.productExpir = productExpir
     }
 }
+
+
 
 struct dietPreferences {
     var dietPreferences: [String]?
