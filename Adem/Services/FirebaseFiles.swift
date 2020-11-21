@@ -14,14 +14,16 @@ var docRef: DocumentReference!
 var colRef: CollectionReference!
 var handle: AuthStateDidChangeListenerHandle?
 let currentUser = firebaseAuth.currentUser
+//let currentHome = firebaseAuth.
 let firebaseAuth = Auth.auth()
 
 
 let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
 //let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
 let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("meals").collection("all")
-//let userfirebaseDietPreferences = db.collection("Users").document("B0DOT6FsvLfmhoUw9CIKGkWHxZM2").collection("preferences")
-let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
+//let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
+let userfirebaseDietPreferences = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("preferences")
+//MARK: - Testing on jXYJraXUNtfM5bLs2S7dhxqz8gC2
 
 //MARK: - The home set up
 /*

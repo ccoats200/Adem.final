@@ -30,8 +30,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
 
         
-        //UserLoginInfo
-        colRef = Firestore.firestore().collection("User")
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -115,7 +113,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 print("User signs up successfully")
                 let newUserInfo = Auth.auth().currentUser
                 //MARK: Private data
-                
+                /*
                 db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
                     "FirstName": firstName,
                     "LastName": lastName,
@@ -129,10 +127,11 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
- 
+ */
                 //Mark: Home section
-                /*
-                db.collection("home").document("The Bev").collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                //Why is this not working
+                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                    "home": authResult!.user.uid,
                     "FirstName": firstName,
                     "LastName": lastName,
                     "Email": email,
@@ -145,7 +144,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
-               */
+               
             }
         }
         
