@@ -88,25 +88,6 @@ class filterViewController: UIViewController {
     }
 //    MARK: - Table View
     func setUpListView() {
-        
-//        //TODO: If empty
-//        switch productsGlobal?.isEmpty {
-//        case true:
-//
-//            let footerView = UIView()
-//            footerView.backgroundColor = UIColor.ademRed
-//            self.view.addSubview(footerView)
-//            footerView.translatesAutoresizingMaskIntoConstraints = false
-//
-//            //MARK: tableView constraints
-//            NSLayoutConstraint.activate([
-//                footerView.topAnchor.constraint(equalTo: view.topAnchor),
-//                footerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//                footerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//                footerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//                ])
-//
-//        default:
 
             createLayout()
   
@@ -237,6 +218,7 @@ class filterViewController: UIViewController {
 }
 
 extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return productCategories.count
     }
@@ -251,12 +233,27 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        //FIXME: Take notes from didSelect in pantry
         let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.tableViewCell, for: indexPath) as! pantryCollectioViewFilter
+        let list = listViewController()
+        let item = productCategories[indexPath.item]
+        var selectedCell = self.filterCollectionView.cellForItem(at: indexPath)
         
         let fc = productsListCell.pantryItemName
-        
-        self.filterCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
+        if item == "All" {
+            //list.firebaseDataFetch()
+        } else {
+            arrayofProducts = arrayofProducts.filter { ($0.category == item) }
+            print(arrayofProducts.count)
+            list.listTableView?.reloadData()
+            //kinda working. select 'dairy and then flour
+            //filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
+        }
+        //selectedCell?.backgroundColor = UIColor.ademGreen
+        if selectedCell?.backgroundColor == UIColor.ademGreen && ((selectedCell?.isSelected) != nil) {
+            selectedCell?.backgroundColor = UIColor.white
+        } else {
+            selectedCell?.backgroundColor = UIColor.ademGreen
+        }
     
         print("\(fc)")
     }

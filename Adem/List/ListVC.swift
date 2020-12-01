@@ -302,6 +302,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //userfirebaseAddProducts.addDocument(data: arrayofAddProducts)
             
         }
+        
         if isUserLoggedIn() {
         userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
@@ -421,14 +422,11 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
-        /*
         if (self.tableViewSearchController.isActive) {
             return filteringproducts.count
         } else {
             return arrayofProducts.count
         }
-        */
-        return arrayofProducts.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -442,22 +440,24 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
             productsListCell.textLabel?.text = product.productName
             return productsListCell
             
+        } else if (tableViewSearchController.isActive) {
+            let product = filteringproducts[indexPath.row]
+            productsListCell.textLabel?.text = product.productName
+            print("filter tapped")
+            return productsListCell
+            
         } else {
             let product = arrayofProducts[indexPath.row]
             productsListCell.textLabel?.text = product.productName
             return productsListCell
         }
-//        return productsListCell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         //https://developer.apple.com/documentation/uikit/view_controllers/displaying_searchable_content_by_using_a_search_controller
         //work backwards
         let selectedProduct: fireStoreDataClass!
-//        if tableView === self.listTableView {
-//            selectedProduct = product(forIndexPath: indexPath)
-//        }
-        
+
         if self.listTableView.isEditing {
             
 //            var selectedRows = listTableView.indexPathsForSelectedRows
@@ -481,25 +481,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return 60
     }
-       /*
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        print("removed")
-        //Works
-//        let headerView = UIView()
-//        headerView.backgroundColor = UIColor.white
-//        headerView.addSubview(filterListCollectionView)
-////        filterListCollectionView.layer.masksToBounds = true
-////        filterListCollectionView.clipsToBounds = true
-//        filterListCollectionView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            filterListCollectionView.heightAnchor.constraint(equalTo: headerView.heightAnchor),
-//            filterListCollectionView.centerYAnchor.constraint(equalTo: headerView.centerYAnchor),
-//            filterListCollectionView.widthAnchor.constraint(equalTo: headerView.widthAnchor),
-//            filterListCollectionView.centerXAnchor.constraint(equalTo: headerView.centerXAnchor),
-//        ])
-//        return headerView
-    }
-    */
+    
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
         return 1
     }
@@ -544,8 +526,6 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
         return productCategories.count
     }
     
-    
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
         filterCells.backgroundColor = UIColor.ademBlue
@@ -557,7 +537,7 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
         let filterCells = collectionView.dequeueReusableCell(withReuseIdentifier: "test", for: indexPath) as! filterCellLayout
         
         let item = productCategories[indexPath.item]
-//
+        
 //        //let dairy = arrayofProducts.filter { ($0.category == item) }
 //        if item == "All" {
 //            firebaseDataFetch()

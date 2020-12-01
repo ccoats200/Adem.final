@@ -24,6 +24,8 @@ let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).col
 let userMergefirebaseProducts = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2").collection("public").document("products").collection("List")
 let addProducts = db.collection("groceryProducts")
 let userfirebaseAddProducts = db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("public").document("products").collection("List")
+let moveUser = db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members")
+let oldUser = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2")
 //FIXME: Adding the products
 
 

@@ -325,6 +325,11 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                         self.personalAttributes.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
                         self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                     }
+                    //moveUser.addDocument(from: oldUser)
+                    
+                    
+                    
+                    //for users in blnk where home == blnak. add user to home where home uid == user home
                 }
             }
         }
