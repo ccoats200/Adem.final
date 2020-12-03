@@ -87,6 +87,7 @@ class addHomeMember: UIViewController {
         
         return ademImage
     }()
+    
     let scanBacking: UIView = {
         let welcomeBacking = UIView()
         welcomeBacking.backgroundColor = UIColor.ademBlue
