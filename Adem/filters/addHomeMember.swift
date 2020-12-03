@@ -48,7 +48,7 @@ class addHomeMember: UIViewController {
     var leaveGroup = navigationButton()
     
     let homeStatssegmentContr: UISegmentedControl = {
-        let items = ["Welcome", "Join"]
+        let items = ["Welcome", "Scan"]
         let segmentContr = UISegmentedControl(items: items)
         segmentContr.tintColor = UIColor.white
         segmentContr.selectedSegmentIndex = 0
@@ -63,7 +63,14 @@ class addHomeMember: UIViewController {
         
     }()
     
-    let ademImageHolder: UIImageView = {
+    let welcomeBacking: UIView = {
+        let welcomeBacking = UIView()
+        welcomeBacking.backgroundColor = UIColor.ademBlue
+        welcomeBacking.translatesAutoresizingMaskIntoConstraints = false
+        return welcomeBacking
+        
+    }()
+    let welcomeQR: UIImageView = {
         let ademImage = UIImageView()
         ademImage.image = UIImage(named: "Adem Logo")
         ademImage.translatesAutoresizingMaskIntoConstraints = false
@@ -72,8 +79,26 @@ class addHomeMember: UIViewController {
         return ademImage
     }()
     
+    let scan: UIImageView = {
+        let ademImage = UIImageView()
+        ademImage.image = UIImage(named: "milk")
+        ademImage.translatesAutoresizingMaskIntoConstraints = false
+        ademImage.contentMode = .scaleAspectFit
+        
+        return ademImage
+    }()
+    let scanBacking: UIView = {
+        let welcomeBacking = UIView()
+        welcomeBacking.backgroundColor = UIColor.ademBlue
+        welcomeBacking.translatesAutoresizingMaskIntoConstraints = false
+        return welcomeBacking
+        
+    }()
+    
     let camView: UIView = {
-       let t = UIView()
+        let t = UIView()
+        t.backgroundColor = UIColor.ademBlue
+        t.translatesAutoresizingMaskIntoConstraints = false
         return t
         
     }()
@@ -96,23 +121,29 @@ class addHomeMember: UIViewController {
         view.addSubview(addLabelView)
         view.addSubview(homeStatssegmentContr)
         view.addSubview(leaveGroup)
+        
+        view.addSubview(welcomeBacking)
+        view.addSubview(scanBacking)
+        welcomeBacking.addSubview(welcomeQR)
+        scanBacking.addSubview(scan)
         leaveGroupButtonAttributes()
         
         addLabelView.translatesAutoresizingMaskIntoConstraints = false
         homeStatssegmentContr.translatesAutoresizingMaskIntoConstraints = false
         leaveGroup.translatesAutoresizingMaskIntoConstraints = false
+        welcomeQR.translatesAutoresizingMaskIntoConstraints = false
+        scan.translatesAutoresizingMaskIntoConstraints = false
+        welcomeBacking.translatesAutoresizingMaskIntoConstraints = false
+        scanBacking.translatesAutoresizingMaskIntoConstraints = false
+        
         
         
         accountViewToSwitch = [UIView]()
                 
-        accountViewToSwitch.append(ademImageHolder)
-        accountViewToSwitch.append(ademImageHolder)
+        accountViewToSwitch.append(welcomeBacking)
+        accountViewToSwitch.append(scanBacking)
         
-        for v in accountViewToSwitch {
-            view.addSubview(v)
-            v.layer.cornerRadius = 5
-            v.translatesAutoresizingMaskIntoConstraints = false
-        }
+       
         view.bringSubviewToFront(accountViewToSwitch[0])
         
         
@@ -128,11 +159,25 @@ class addHomeMember: UIViewController {
             homeStatssegmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             homeStatssegmentContr.centerXAnchor.constraint(equalTo: addLabelView.centerXAnchor),
             
-            ademImageHolder.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
-            ademImageHolder.bottomAnchor.constraint(equalTo: leaveGroup.topAnchor, constant: -15),
-            ademImageHolder.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            ademImageHolder.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
+            welcomeQR.topAnchor.constraint(equalTo: welcomeBacking.topAnchor, constant: 10),
+            welcomeQR.bottomAnchor.constraint(equalTo: welcomeBacking.bottomAnchor, constant: -15),
+            welcomeQR.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor, constant: -25),
+            welcomeQR.centerXAnchor.constraint(equalTo: welcomeBacking.centerXAnchor),
             
+            welcomeBacking.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
+            welcomeBacking.bottomAnchor.constraint(equalTo: leaveGroup.topAnchor, constant: -15),
+            welcomeBacking.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            welcomeBacking.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
+            
+            scan.topAnchor.constraint(equalTo: scanBacking.topAnchor, constant: 10),
+            scan.bottomAnchor.constraint(equalTo: scanBacking.bottomAnchor, constant: -15),
+            scan.widthAnchor.constraint(equalTo: scanBacking.widthAnchor, constant: -2),
+            scan.centerXAnchor.constraint(equalTo: scanBacking.centerXAnchor),
+            
+            scanBacking.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
+            scanBacking.bottomAnchor.constraint(equalTo: leaveGroup.topAnchor, constant: -15),
+            scanBacking.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -2),
+            scanBacking.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
                         
             leaveGroup.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             leaveGroup.heightAnchor.constraint(equalToConstant: 50),

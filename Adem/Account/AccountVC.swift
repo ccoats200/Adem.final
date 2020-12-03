@@ -26,7 +26,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var friendsAssociated = friends
     
     
-    var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Invite Friends","Rate Us","Settings"] //"Apps"]
+    var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Rate Us","Settings"] //"Apps"]
     
     //MARK: Views to set up
     var personalAttributes = ProfileView()
@@ -209,16 +209,22 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 //        let householdCollectionViewlayouts = UICollectionViewFlowLayout()
 //        householdCollectionViewlayouts.scrollDirection = .horizontal
 //        self.homeSegmentView.friendsAndFamily = UICollectionView(frame: self.view.bounds, collectionViewLayout: householdCollectionViewlayouts)
+        
         homeSegmentView.friendsAndFamily.showsHorizontalScrollIndicator = false
         homeSegmentView.friendsAndFamily.dataSource = self
         self.homeSegmentView.friendsAndFamily.delegate = self
         homeSegmentView.friendsAndFamily.register(ffCell.self, forCellWithReuseIdentifier: ffCCellID)
         homeSegmentView.friendsAndFamily.register(householdAdd.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader)
-
         
         homeSegmentView.accountTableView.delegate = self
         homeSegmentView.accountTableView.dataSource = self
+        homeSegmentView.accountTableView.reloadData()
+        homeSegmentView.accountTableView.layoutIfNeeded()
         homeSegmentView.accountTableView.register(UITableViewCell.self, forCellReuseIdentifier: listOfSettingsOptions)
+        //https://stackoverflow.com/questions/41094672/increase-tableview-height-based-on-cells
+        //This sets the height automatically
+        
+        homeSegmentView.accountTableView.heightAnchor.constraint(equalToConstant: homeSegmentView.accountTableView.contentSize.height).isActive = true
         homeSegmentView.accountTableView.estimatedRowHeight = 30
         homeSegmentView.accountTableView.rowHeight = UITableView.automaticDimension
         
@@ -389,6 +395,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             homeSegmentView.accountTableView.deselectRow(at: indexPath, animated: false)
         }
     }
+    
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
     @objc func handleAlert() {

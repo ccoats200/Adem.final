@@ -13,32 +13,29 @@ import Firebase
 
 //MARK: Login button view
 class homeView: UIView {
-  
+    
+    
     //MARK: Views
 //    var friendsAndFamily = fAndFView()
     var friendsAndFamily: UICollectionView!
     var accountTableView: UITableView!
     var logOutButton = navigationButton()
-
+    
     //var friendsAssociated = friends
     //let collectionViewHeaderFooterReuseIdentifier = "MyHeaderFooterClass"
-    
     //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
     
-    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+        setUpButtons()
+    }
   
-    setupView()
-    setUpButtons()
-  }
-  
-  //initWithCode to init view from xib or storyboard
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
-    setupView()
-  }
-    
+    //initWithCode to init view from xib or storyboard
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
     
     private func setUpButtons() {
         //MARK: login button
@@ -46,7 +43,6 @@ class homeView: UIView {
         logOutButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
         logOutButton.largeNextButton.layer.masksToBounds = true
         logOutButton.largeNextButton.setTitleColor(UIColor.white, for: .normal)
-        
     }
     
     func setUpTableView() {
@@ -55,34 +51,29 @@ class homeView: UIView {
         
         accountTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         accountTableView.rowHeight = 50
-        
-//        accountTableView.rowHeight = UITableView.automaticDimension
-//        accountTableView.estimatedRowHeight = 100
-        
+        accountTableView.rowHeight = UITableView.automaticDimension
         
         let friendsAndFamilyLayouts = UICollectionViewFlowLayout()
         friendsAndFamily = UICollectionView(frame: self.bounds, collectionViewLayout: friendsAndFamilyLayouts)
         friendsAndFamily.contentInset = UIEdgeInsets(top: 15, left: 5, bottom: -5, right: 5)
     }
     
-  //common func to init our view
-  private func setupView() {
+    //common func to init our view
+    private func setupView() {
+        
+        self.backgroundColor = UIColor.white
+        setUpTableView()
+        
+        self.addSubview(friendsAndFamily)
+        self.addSubview(accountTableView)
+        self.addSubview(logOutButton)
     
-    self.backgroundColor = UIColor.white
-    setUpTableView()
-    
-    self.addSubview(friendsAndFamily)
-    self.addSubview(accountTableView)
-    self.addSubview(logOutButton)
-    
-    friendsAndFamily.backgroundColor = UIColor.ademBlue
-    friendsAndFamily.layer.cornerRadius = 5
-    accountTableView.backgroundColor = UIColor.red
-    friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
-    accountTableView.translatesAutoresizingMaskIntoConstraints = false
-    logOutButton.translatesAutoresizingMaskIntoConstraints = false
-
-    
+        friendsAndFamily.backgroundColor = UIColor.ademBlue
+        friendsAndFamily.layer.cornerRadius = 5
+        friendsAndFamily.translatesAutoresizingMaskIntoConstraints = false
+        accountTableView.translatesAutoresizingMaskIntoConstraints = false
+        logOutButton.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             
             friendsAndFamily.topAnchor.constraint(equalTo: self.topAnchor),
@@ -91,7 +82,8 @@ class homeView: UIView {
             friendsAndFamily.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
             accountTableView.topAnchor.constraint(equalTo: friendsAndFamily.bottomAnchor, constant: 10),
-            accountTableView.bottomAnchor.constraint(equalTo: logOutButton.topAnchor, constant: -40),
+            //accountTableView.heightAnchor.constraint(equalTo: self.intrinsicContentSize.height, constant: -20),
+            //accountTableView.bottomAnchor.constraint(equalTo: logOutButton.topAnchor, constant: -20),
             accountTableView.widthAnchor.constraint(equalTo: self.widthAnchor),
             accountTableView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             
@@ -102,7 +94,3 @@ class homeView: UIView {
         ])
   }
 }
-
-//extension homeView: UICollectionViewDelegateFlowLayout {
-//    //do I need to put stuff here?
-//}

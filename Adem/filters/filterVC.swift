@@ -246,16 +246,13 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
             print(arrayofProducts.count)
             list.listTableView?.reloadData()
             //kinda working. select 'dairy and then flour
-            //filterListCollectionView.cellForItem(at: indexPath)?.backgroundColor = UIColor.ademGreen
         }
-        //selectedCell?.backgroundColor = UIColor.ademGreen
+        
         if selectedCell?.backgroundColor == UIColor.ademGreen && ((selectedCell?.isSelected) != nil) {
             selectedCell?.backgroundColor = UIColor.white
         } else {
             selectedCell?.backgroundColor = UIColor.ademGreen
         }
-    
-        print("\(fc)")
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
