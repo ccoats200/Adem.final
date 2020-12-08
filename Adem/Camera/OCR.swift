@@ -22,6 +22,7 @@ class camVC: UIViewController {
     
 
     
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -153,6 +154,7 @@ extension camVC : AVCapturePhotoCaptureDelegate {
 
 
 class camAddHouseView: UIView {
+    
     
     //https://stackoverflow.com/questions/28487146/how-to-add-live-camera-preview-to-uiview
     

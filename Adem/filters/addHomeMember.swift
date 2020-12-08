@@ -17,6 +17,10 @@ class addHomeMember: UIViewController {
     // Anywhere there is a server call we need to have the the function return a tuple to show the server status incase the server fails. see the section in the swift book on tuples
     var accountViewToSwitch: [UIView]!
     //var camAddViews = self().camView
+    var leaveGroup = navigationButton()
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
+    let linkToFam = "https://www.avanderlee.com/swift/qr-code-generation-swift/"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,6 +28,7 @@ class addHomeMember: UIViewController {
         self.view.backgroundColor = UIColor.ademBlue
         view.addSubview(addLabelView)
         
+
         setUpAddDismiss()
     }
     
@@ -37,15 +42,10 @@ class addHomeMember: UIViewController {
         return welcome
     }()
     
-    //let contect = CIContext()
-    //let filter = CIFilter.qrCodeGenerator()
-    //https://www.hackingwithswift.com/books/ios-swiftui/generating-and-scaling-up-a-qr-code
-    
-    
     @objc func switchStatsViews() {
         self.view.bringSubviewToFront(accountViewToSwitch[homeStatssegmentContr.selectedSegmentIndex])
     }
-    var leaveGroup = navigationButton()
+    
     
     let homeStatssegmentContr: UISegmentedControl = {
         let items = ["Welcome", "Scan"]
@@ -63,6 +63,8 @@ class addHomeMember: UIViewController {
         
     }()
     
+    
+    
     let welcomeBacking: UIView = {
         let welcomeBacking = UIView()
         welcomeBacking.backgroundColor = UIColor.ademBlue
@@ -70,14 +72,31 @@ class addHomeMember: UIViewController {
         return welcomeBacking
         
     }()
+    
     let welcomeQR: UIImageView = {
         let ademImage = UIImageView()
-        ademImage.image = UIImage(named: "Adem Logo")
-        ademImage.translatesAutoresizingMaskIntoConstraints = false
         ademImage.contentMode = .scaleAspectFit
+        //ademImage.layer.magnificationFilter =
+        //ademImage.contentMode = .
+        //ademImage.image = UIImage(named: "Adem Logo")
+        ademImage.translatesAutoresizingMaskIntoConstraints = false
         
         return ademImage
     }()
+
+    
+    func generateQRCodeImage(_ url: String) -> UIImage {
+        let data = Data(url.utf8)
+        //let data = absoluteString.data(using: String.Encoding.ascii)
+        filter.setValue(data, forKey: "inputMessage")
+        
+        if let qrCodeImage = filter.outputImage {
+            if let qrCodeCGImage = context.createCGImage(qrCodeImage, from: qrCodeImage.extent) {
+                return UIImage(cgImage: qrCodeCGImage)
+            }
+        }
+        return UIImage(named: "Adem Logo") ?? UIImage()
+    }
     
     let scan: UIImageView = {
         let ademImage = UIImageView()
@@ -110,6 +129,9 @@ class addHomeMember: UIViewController {
     
 
     func leaveGroupButtonAttributes() {
+        //https://developer.apple.com/documentation/swiftui/image/interpolation
+        welcomeQR.image = generateQRCodeImage(linkToFam)
+        //welcomeQR.contentMode = .sc
         leaveGroup.largeNextButton.backgroundColor = UIColor.ademRed
         leaveGroup.largeNextButton.setTitleColor(UIColor.white, for: .normal)
         leaveGroup.largeNextButton.layer.masksToBounds = true
@@ -160,9 +182,9 @@ class addHomeMember: UIViewController {
             homeStatssegmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             homeStatssegmentContr.centerXAnchor.constraint(equalTo: addLabelView.centerXAnchor),
             
-            welcomeQR.topAnchor.constraint(equalTo: welcomeBacking.topAnchor, constant: 10),
-            welcomeQR.bottomAnchor.constraint(equalTo: welcomeBacking.bottomAnchor, constant: -15),
-            welcomeQR.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor, constant: -25),
+            welcomeQR.topAnchor.constraint(equalTo: welcomeBacking.topAnchor, constant: 50),
+            welcomeQR.bottomAnchor.constraint(equalTo: welcomeBacking.bottomAnchor, constant: -55),
+            welcomeQR.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor, constant: -65),
             welcomeQR.centerXAnchor.constraint(equalTo: welcomeBacking.centerXAnchor),
             
             welcomeBacking.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
@@ -188,9 +210,5 @@ class addHomeMember: UIViewController {
         ])
     }
 }
-
-
-
-
 
 
