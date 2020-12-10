@@ -24,6 +24,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //This needs to be firestoreDataClass for finding people in the home collection
     var friendsAssociated = friends
+    var arrayOfHome = [homeSettingClass]()
+    var nameOfHouse = "Kitche"
     
     
     var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Rate Us","Settings"] //"Apps"]
@@ -332,7 +334,21 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                         self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                     }
                     //moveUser.addDocument(from: oldUser)
-                    
+                    moveUser.document("homeSettings").addSnapshotListener { documentSnapshot, error in
+                        guard let document = documentSnapshot else {
+                          print("Error fetching document: \(error!)")
+                          return
+                        }
+                        guard let data = document.data() else {
+                          print("Document data was empty.")
+                          return
+                        }
+                        
+                        print(document.get("name"))
+                        
+                        self.nameOfHouse = document.get("name") as! String
+                        print("Current data: \(data)")
+                      }
                     
                     
                     //for users in blnk where home == blnak. add user to home where home uid == user home
@@ -501,8 +517,7 @@ class householdAdd: UICollectionReusableView {
         self.addSubview(addFam)
         self.addSubview(homeName)
         
-        homeName.text = addHomeMember().addChangeHomeName.text
-        print(homeName.text)
+        homeName.text = AccountVC().nameOfHouse
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
         addFam.largeNextButton.layer.cornerRadius = 15
         //Not finding image

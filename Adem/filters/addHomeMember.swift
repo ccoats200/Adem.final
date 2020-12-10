@@ -26,6 +26,8 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         super.viewDidLoad()
         
         self.view.backgroundColor = UIColor.ademBlue
+        
+        self.addChangeHomeName.delegate = self
         view.addSubview(addLabelView)
         
 
@@ -46,7 +48,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     
     let addChangeHomeName: UITextField = {
         var welcome = UITextField()
-        welcome.text = "The Be"
+        welcome.text = "The Bev"
         welcome.textAlignment = .center
         welcome.keyboardType = .alphabet
         welcome.returnKeyType = .done
@@ -99,6 +101,28 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         return ademImage
     }()
 
+    func fetchHomeSettings() {
+        
+        moveUser.document("homeSettings").addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+              print("Error fetching document: \(error!)")
+              return
+            }
+            guard let data = document.data() else {
+              print("Document data was empty.")
+              return
+            }
+            
+            //print(document.setValue(self.addChangeHomeName.text, forKeyPath: "name"))
+            
+          }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        //fetchHomeSettings()
+        print(self.addChangeHomeName.text)
+        return true
+    }
     
     func generateQRCodeImage(_ url: String) -> UIImage {
         let data = Data(url.utf8)

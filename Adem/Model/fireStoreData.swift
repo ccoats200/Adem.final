@@ -163,6 +163,26 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
     }
 }
 
+class homeSettingClass: NSObject, Identifiable, Codable {
+
+   //Grabs the doc Id for me!
+   @objc var name: String
+   
+   
+   enum CodingKeys: String, CodingKey {
+      case name
+   }
+    
+    enum ExpressionKeys: String {
+       case name
+       
+    }
+    
+    init(name: String) {
+        self.name = name
+       
+    }
+}
 
 
 struct dietPreferences {
