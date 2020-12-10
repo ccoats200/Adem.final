@@ -13,8 +13,9 @@ import Firebase
 class ProfileView: UIView {
     
     let urlImage = URL(string: "gs://adem-f0007.appspot.com/blueBerry.jpg")!
-    
-    //let task = URLSession.shared.dataTask(with: <#T##URLRequest#>)
+   
+    //Kitchen icons
+    let avaiableIcons = ["Adem Logo","Dairy","fish","fruity","nut","veg","vegan","spoon","chop","pot","spatula"]
     
     
     override init(frame: CGRect) {
@@ -42,8 +43,9 @@ class ProfileView: UIView {
     //UIView Profile Pic
     var userProfileImage: UIImageView = {
         let profPic = UIImageView()
-        profPic.image = UIImage(named: "me")
-        profPic.contentMode = .scaleAspectFill
+        profPic.image = UIImage(named: "chop")
+        profPic.backgroundColor = UIColor.ademGreen
+        profPic.contentMode = .scaleAspectFit
         profPic.layer.cornerRadius = 50
         profPic.layer.masksToBounds = true
         profPic.clipsToBounds = true
@@ -65,6 +67,7 @@ class ProfileView: UIView {
 //        print("sets the item name")
 //        return userName
 //    }(){
+    
     let nameofUser = navigationButton()
     
     func nameButtonSetUp() {
@@ -72,10 +75,7 @@ class ProfileView: UIView {
         nameofUser.largeNextButton.backgroundColor = UIColor.clear
         
     }
-    
 
-  
-    
     func setupViews() {
         
         nameButtonSetUp()
