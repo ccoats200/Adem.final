@@ -398,15 +398,13 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
-    @objc func handleAlert() {
-        //let alert = filterViewController()
+    @objc func handleAddPerson() {
         let alert = addHomeMember()
         detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
         alert.modalPresentationStyle = UIModalPresentationStyle.custom
         alert.transitioningDelegate = detailsTransitioningDelegate
         self.present(alert, animated: true, completion: nil)
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -447,8 +445,8 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         if (kind == UICollectionView.elementKindSectionHeader) {
             // Create Header
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader, for: indexPath) as! householdAdd
-            headerView.addFam.largeNextButton.addTarget(self, action: #selector(handleAlert), for: .touchDown)
-            headerView.householdName.largeNextButton.addTarget(self, action: #selector(handleAlert), for: .touchDown)
+            headerView.addFam.largeNextButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
+            //headerView.householdName.largeNextButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
 
             reusableView = headerView
         }
@@ -478,7 +476,15 @@ class householdAdd: UICollectionReusableView {
     
     
     var addFam = navigationButton()
-    var householdName = navigationButton()
+    
+    let homeName: UILabel = {
+        var welcome = UILabel()
+        welcome.textAlignment = .left
+        welcome.textColor = UIColor.white
+        welcome.font = UIFont(name: hNBold, size: 20.0)
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        return welcome
+    }()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -493,30 +499,31 @@ class householdAdd: UICollectionReusableView {
 
     func myCustomInit() {
         self.addSubview(addFam)
-        self.addSubview(householdName)
-       //addFam.largeNextButton.backgroundColor = UIColor.ademGreen
+        self.addSubview(homeName)
+        
+        homeName.text = addHomeMember().addChangeHomeName.text
+        print(homeName.text)
+        addFam.largeNextButton.backgroundColor = UIColor.ademGreen
+        addFam.largeNextButton.layer.cornerRadius = 15
         //Not finding image
         addFam.largeNextButton.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
-        householdName.largeNextButton.setTitle("The Bev", for: .normal)
-        householdName.largeNextButton.contentHorizontalAlignment = .left
-        householdName.largeNextButton.backgroundColor = UIColor.clear
+        //MARK: THE BEV
         addFam.translatesAutoresizingMaskIntoConstraints = false
-        householdName.translatesAutoresizingMaskIntoConstraints = false
-        
+        homeName.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
             
-            householdName.topAnchor.constraint(equalTo: self.topAnchor),
-            householdName.heightAnchor.constraint(equalTo: self.heightAnchor),
-            householdName.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
-            householdName.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
-            householdName.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            homeName.topAnchor.constraint(equalTo: self.topAnchor),
+            homeName.heightAnchor.constraint(equalTo: self.heightAnchor),
+            homeName.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
+            homeName.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
+            homeName.centerYAnchor.constraint(equalTo: self.centerYAnchor),
            
             addFam.topAnchor.constraint(equalTo: self.topAnchor),
             addFam.heightAnchor.constraint(equalToConstant: 30),//self.heightAnchor),
             addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
             addFam.widthAnchor.constraint(equalToConstant: 30),
-            addFam.centerYAnchor.constraint(equalTo: householdName.centerYAnchor),
+            addFam.centerYAnchor.constraint(equalTo: homeName.centerYAnchor),
         ])
     }
 }

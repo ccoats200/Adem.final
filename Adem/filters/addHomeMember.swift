@@ -12,7 +12,7 @@ import AVFoundation
 import CoreImage.CIFilterBuiltins
 
 
-class addHomeMember: UIViewController {
+class addHomeMember: UIViewController, UITextFieldDelegate {
     
     // Anywhere there is a server call we need to have the the function return a tuple to show the server status incase the server fails. see the section in the swift book on tuples
     var accountViewToSwitch: [UIView]!
@@ -36,6 +36,21 @@ class addHomeMember: UIViewController {
         var welcome = UILabel()
         welcome.text = "Add a New Member?"
         welcome.textAlignment = .center
+        welcome.textColor = UIColor.white
+        welcome.font = UIFont(name: helNeu, size: 20.0)
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        return welcome
+    }()
+    
+    
+    
+    let addChangeHomeName: UITextField = {
+        var welcome = UITextField()
+        welcome.text = "The Be"
+        welcome.textAlignment = .center
+        welcome.keyboardType = .alphabet
+        welcome.returnKeyType = .done
+        welcome.autocorrectionType = .no
         welcome.textColor = UIColor.white
         welcome.font = UIFont(name: helNeu, size: 20.0)
         welcome.translatesAutoresizingMaskIntoConstraints = false
@@ -142,15 +157,18 @@ class addHomeMember: UIViewController {
     
     func setUpAddDismiss() {
         view.addSubview(addLabelView)
+        
         view.addSubview(homeStatssegmentContr)
         view.addSubview(leaveGroup)
         
         view.addSubview(welcomeBacking)
         view.addSubview(scanBacking)
         welcomeBacking.addSubview(welcomeQR)
+        welcomeBacking.addSubview(addChangeHomeName)
         scanBacking.addSubview(scan)
         leaveGroupButtonAttributes()
         
+        addChangeHomeName.translatesAutoresizingMaskIntoConstraints = false
         addLabelView.translatesAutoresizingMaskIntoConstraints = false
         homeStatssegmentContr.translatesAutoresizingMaskIntoConstraints = false
         leaveGroup.translatesAutoresizingMaskIntoConstraints = false
@@ -182,7 +200,12 @@ class addHomeMember: UIViewController {
             homeStatssegmentContr.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             homeStatssegmentContr.centerXAnchor.constraint(equalTo: addLabelView.centerXAnchor),
             
-            welcomeQR.topAnchor.constraint(equalTo: welcomeBacking.topAnchor, constant: 50),
+            addChangeHomeName.centerXAnchor.constraint(equalTo: welcomeBacking.centerXAnchor),
+            addChangeHomeName.topAnchor.constraint(equalTo: welcomeBacking.topAnchor, constant: -5),
+            addChangeHomeName.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor),
+            addChangeHomeName.heightAnchor.constraint(equalToConstant: 25),
+            
+            welcomeQR.topAnchor.constraint(equalTo: addChangeHomeName.bottomAnchor, constant: 10),
             welcomeQR.bottomAnchor.constraint(equalTo: welcomeBacking.bottomAnchor, constant: -55),
             welcomeQR.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor, constant: -65),
             welcomeQR.centerXAnchor.constraint(equalTo: welcomeBacking.centerXAnchor),
