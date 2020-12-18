@@ -19,11 +19,6 @@ class camVC: UIViewController {
     var capturePhotoOutput: AVCapturePhotoOutput!
     var readyImage: UIImage!
 
-    
-
-    
-    
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupCamera()

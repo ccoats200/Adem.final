@@ -20,7 +20,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     var leaveGroup = navigationButton()
     let context = CIContext()
     let filter = CIFilter.qrCodeGenerator()
-    let linkToFam = "https://www.avanderlee.com/swift/qr-code-generation-swift/"
+    let linkToFam = "9HKADS7IMYffVV9Wj1F8uIU3zgq1"//"https://www.avanderlee.com/swift/qr-code-generation-swift/"
     
     override func viewDidLoad() {
         super.viewDidLoad()
