@@ -67,6 +67,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //        MARK: NavigationBar setup
         navigationItem.title = "List"
         
+        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -173,11 +174,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             
             //MARK: Firebase working below
             firebaseDataFetch()
-            getFilterOptions()
         }
     }
     
     //MARK: Gestures
+    /*
     @objc func panGestureRecognizerAction(_ gesture: UILongPressGestureRecognizer) {
         gesture.minimumPressDuration = 0.50
         
@@ -189,7 +190,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         }
     }
     
-    
+    */
     //MARK: - Table view cell properties - End
     
     // MARK: - Delete Items
@@ -259,6 +260,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
     @objc func handleAlert() {
+        getFilterOptions()
         let alert = filterViewController()
         detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: alert)
         alert.modalPresentationStyle = UIModalPresentationStyle.custom
@@ -324,10 +326,16 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     
     func getFilterOptions() {
         for i in arrayofProducts {
-            productCategories.append(i.category ?? "test")
-        print("categories \(productCategories)")
+            if personalProductCategories.contains(i.category!) {
+                //probably could be cleaner
+                //Need a reset once no longer found
+                print("already here")
+            } else {
+            personalProductCategories.append(i.category ?? "test")
+            print("categories \(personalProductCategories)")
     }
-        //self.filterListCollectionView.reloadData()
+        //filterViewController().filterCollectionView.reloadData()
+    }
     }
     
 //MARK: - class end dont delete this }
@@ -357,8 +365,8 @@ extension listViewController {
         listTableView.allowsSelectionDuringEditing = true
             
 //        MARK:- Edit Gesture
-        let panGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
-        self.listTableView.addGestureRecognizer(panGestureRecognizer)
+       // let panGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
+        //self.listTableView.addGestureRecognizer(panGestureRecognizer)
     }
 //    MARK: - Table View
     @objc func handelGooglesignUp() {

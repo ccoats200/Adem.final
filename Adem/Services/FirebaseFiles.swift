@@ -19,6 +19,8 @@ let firebaseAuth = Auth.auth()
 
 
 let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
+
+let userfirebasehome = db.collection("Users").document(currentUser!.uid).collection("private").document("UsersPrivateInfo")
 //FIXME: Adding the products
 
 let userMergefirebaseProducts = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2").collection("public").document("products").collection("List")

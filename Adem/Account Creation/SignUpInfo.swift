@@ -113,25 +113,11 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 print("User signs up successfully")
                 let newUserInfo = Auth.auth().currentUser
                 //MARK: Private data
-                /*
-                db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
-                    "FirstName": firstName,
-                    "LastName": lastName,
-                    "Email": email,
-                    "Password": password,
-                    "uid": authResult!.user.uid,
-                    "isAnonymous": authResult!.user.isAnonymous
-                    
-                ]) { (error) in
-                    if let error = error {
-                        print("Error creating documents: \(error.localizedDescription)")
-                    }
-                }
- */
-                //Mark: Home section
+                
+                //MARK: Home section
                 //Why is this not working
-                db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
-                    "home": "9HKADS7IMYffVV9Wj1F8uIU3zgq1",
+                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                    "home": authResult!.user.uid,
                     "FirstName": firstName,
                     "LastName": lastName,
                     "Email": email,
@@ -144,7 +130,11 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
-               
+                
+                //FIXME: This is where the home name is first set to Kitchen
+                //This will need to be in the search bar
+                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("products").collection("List")
+                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("meals").collection("all")
             }
         }
         

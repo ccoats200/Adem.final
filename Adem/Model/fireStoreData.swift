@@ -36,6 +36,7 @@ var arrayofPantry = [fireStoreDataClass]()
 var arrayofProducts = [fireStoreDataClass]()
 var arrayofAddProducts = [fireStoreDataClass]()
 
+
 var arrayofMeals = [mealClass]()
 var arrayofTestingPallette = [mealClass]()
 var arrayofLikedMeals = [mealClass]()
@@ -45,8 +46,13 @@ var backUp2 = [fireStoreDataStruct]()
 var alphabet = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"]
 //Should be static add promote if none in filter
 var productCategories = ["All", "Dairy","Fruit","Veggies", "Frozen","Meat","Other", "Extract","Grain"]
-var personalProductCategories = ["All",]
+var personalProductCategories = ["All"]
 var searchDimensions = ["Add","List"]
+
+//MARK: - This is for Changing the home they are in
+var privatehomeAttributes = [String: Any]()
+//MARK: - This is for Changing the home they are in
+
 
 struct fireStoreDataStruct: Identifiable, Codable {
 
@@ -163,26 +169,6 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
     }
 }
 
-class homeSettingClass: NSObject, Identifiable, Codable {
-
-   //Grabs the doc Id for me!
-   @objc var name: String
-   
-   
-   enum CodingKeys: String, CodingKey {
-      case name
-   }
-    
-    enum ExpressionKeys: String {
-       case name
-       
-    }
-    
-    init(name: String) {
-        self.name = name
-       
-    }
-}
 
 
 struct dietPreferences {

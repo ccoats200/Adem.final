@@ -24,8 +24,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //This needs to be firestoreDataClass for finding people in the home collection
     var friendsAssociated = friends
-    var arrayOfHome = [homeSettingClass]()
-    var nameOfHouse = "Kitche"
     
     
     var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Rate Us","Settings"] //"Apps"]
@@ -55,6 +53,9 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         setUptopViews()
         handleUserInfo()
         setUpdefaultSegment()
+        
+        //testing
+        fetchUserPrivateInfo()
         
     }
     
@@ -100,6 +101,22 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         firebaseAuth.removeStateDidChangeListener(handle!)
     }
     
+    
+    func fetchUserPrivateInfo() {
+        //FIXME: This is still using the old hierarchy
+        userfirebasehome.addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+              print("Error fetching document: \(error!)")
+              return
+            }
+            guard let data = document.data() else {
+              print("Document data was empty.")
+              return
+            }
+            privatehomeAttributes = data
+          }
+    }
+    
     func setNavbar() {
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
@@ -115,17 +132,16 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.navigationController?.pushViewController(privacyController, animated: true)
     }
     
+    
+    
     @objc func handleDiet() {
-//        let cController = settings()
-//        cController.hidesBottomBarWhenPushed = true
-//        self.navigationController?.pushViewController(cController, animated: true)
+
         let moreController = updateDietPreferencesTwo()
         self.present(moreController, animated: true, completion: nil)
     }
     
     @objc func handleStores() {
-//        let cController = SettingTVC()
-//        self.navigationController?.pushViewController(cController, animated: true)
+
         let storesUpdate = updateStorePreferencesTwo()
         self.present(storesUpdate, animated: true, completion: nil)
     }
@@ -302,6 +318,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
         //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+        
                
         if currentUser?.isAnonymous == true {
             let doesNotHaveAccount = "Join now"
@@ -314,8 +331,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         } else if currentUser == nil {
             sendToLogIn()
         } else {
+            //Sign out text
+            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
+            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
+            //Sign out text
             
-            print("this is the current user \(currentUser!.email)")
             //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
                //Probably wrong
             //db.collection("Users").document(user!.uid).collection("private").getDocuments { (snapshot, err) in
@@ -326,10 +347,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                     for document in snapshot!.documents {
                         let latMax = document.get("FirstName") as? String
                         let latHome = document.get("home") as? String
-                        print(latHome)
-                        self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
-                        self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
-                        self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
                         self.personalAttributes.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
                         self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                     }
@@ -344,10 +361,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                           return
                         }
                         
-                        print(document.get("name"))
-                        
-                        self.nameOfHouse = document.get("name") as! String
-                        print("Current data: \(data)")
+                        //print(document.get("name"))
+                        householdAdd().homeName.text = document.get("name") as? String
+                        //self.nameOfHouse = document.get("name") as! String
+                        //print("Current data: \(data)")
                       }
                     
                     
@@ -492,14 +509,14 @@ class householdAdd: UICollectionReusableView {
     
     
     var addFam = navigationButton()
-    
+    //Label should be pulling from firebase but the firebase should populate from the text field
     let homeName: UILabel = {
-        var welcome = UILabel()
-        welcome.textAlignment = .left
-        welcome.textColor = UIColor.white
-        welcome.font = UIFont(name: hNBold, size: 20.0)
-        welcome.translatesAutoresizingMaskIntoConstraints = false
-        return welcome
+        var homeNickName = UILabel()
+        homeNickName.textAlignment = .left
+        homeNickName.textColor = UIColor.white
+        homeNickName.font = UIFont(name: hNBold, size: 20.0)
+        homeNickName.translatesAutoresizingMaskIntoConstraints = false
+        return homeNickName
     }()
     
     override init(frame: CGRect) {
@@ -517,7 +534,7 @@ class householdAdd: UICollectionReusableView {
         self.addSubview(addFam)
         self.addSubview(homeName)
         
-        homeName.text = AccountVC().nameOfHouse
+        homeName.text = addHomeMember().addChangeHomeName.text//AccountVC().nameOfHouse
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
         addFam.largeNextButton.layer.cornerRadius = 15
         //Not finding image

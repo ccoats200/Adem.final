@@ -20,7 +20,10 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     var leaveGroup = navigationButton()
     let context = CIContext()
     let filter = CIFilter.qrCodeGenerator()
-    let linkToFam = "9HKADS7IMYffVV9Wj1F8uIU3zgq1"//"https://www.avanderlee.com/swift/qr-code-generation-swift/"
+    let scanner = camVC()
+    let cameraView = QRScannerView()
+
+    let linkToFam = "9HKADS7IMYffVV9Wj1F8uIU3zgq1"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,9 +32,24 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         
         self.addChangeHomeName.delegate = self
         view.addSubview(addLabelView)
-        
+        fetchHSettings()
 
         setUpAddDismiss()
+    }
+    
+    func firebaseHome() {
+        moveUser.document("homeSettings").addSnapshotListener { documentSnapshot, error in
+            guard let document = documentSnapshot else {
+              print("Error fetching document: \(error!)")
+              return
+            }
+            guard let data = document.data() else {
+              print("Document data was empty.")
+              return
+            }
+            
+            self.addChangeHomeName.text = document.get("name") as? String
+          }
     }
     
     let addLabelView: UILabel = {
@@ -45,10 +63,12 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     }()
     
     
-    
+    //This pushes to firebase. Firebase should have the default of "Kitchen"
     let addChangeHomeName: UITextField = {
+        //Use Firebase from accountVC
         var welcome = UITextField()
-        welcome.text = "The Bev"
+        //This line should be pulling from fire base
+        welcome.text = "Kitchen"
         welcome.textAlignment = .center
         welcome.keyboardType = .alphabet
         welcome.returnKeyType = .done
@@ -58,6 +78,19 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         welcome.translatesAutoresizingMaskIntoConstraints = false
         return welcome
     }()
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        //fetchHomeSettings()
+        //This line should update firebase
+        print(self.addChangeHomeName.text)
+        let text = textField.text
+        addChangeHomeName.text = text
+        
+        addChangeHomeName.resignFirstResponder()
+        return true
+    }
     
     @objc func switchStatsViews() {
         self.view.bringSubviewToFront(accountViewToSwitch[homeStatssegmentContr.selectedSegmentIndex])
@@ -112,17 +145,43 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
               print("Document data was empty.")
               return
             }
-            
-            //print(document.setValue(self.addChangeHomeName.text, forKeyPath: "name"))
-            
           }
+        userfirebasehome.addSnapshotListener { documentSnapshot, error in
+              guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+              }
+              guard let data = document.data() else {
+                print("Document data was empty.")
+                return
+              }
+            
+              print("Current data: \(data)")
+            }
     }
     
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        //fetchHomeSettings()
-        print(self.addChangeHomeName.text)
-        return true
+    func fetchHSettings() {
+        
+        userfirebasehome.addSnapshotListener { documentSnapshot, error in
+              guard let document = documentSnapshot else {
+                print("Error fetching document: \(error!)")
+                return
+              }
+              guard let data = document.data() else {
+                print("Document data was empty.")
+                return
+              }
+            
+//            home = document.data()?.compactMapValues({ documentSnapshot -> homeSettingClass? in
+//                return try? documentSnapshot.data(as: homeSettingClass.self)
+//            })
+
+            
+            print("Current data: \(data)")
+            }
     }
+    
+    
     
     func generateQRCodeImage(_ url: String) -> UIImage {
         let data = Data(url.utf8)
@@ -163,7 +222,9 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     }()
     
     @objc func handleLeaveGroup() {
-        print("testing the leave group action")
+        
+        userfirebasehome.updateData([
+                                        "home" : privatehomeAttributes["uid"]!])
     }
     
 
@@ -189,7 +250,9 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         view.addSubview(scanBacking)
         welcomeBacking.addSubview(welcomeQR)
         welcomeBacking.addSubview(addChangeHomeName)
-        scanBacking.addSubview(scan)
+        //scanBacking.addSubview(scan)
+        scanBacking.addSubview(cameraView)
+        cameraView.layer.cornerRadius = 10
         leaveGroupButtonAttributes()
         
         addChangeHomeName.translatesAutoresizingMaskIntoConstraints = false
@@ -197,10 +260,10 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         homeStatssegmentContr.translatesAutoresizingMaskIntoConstraints = false
         leaveGroup.translatesAutoresizingMaskIntoConstraints = false
         welcomeQR.translatesAutoresizingMaskIntoConstraints = false
-        scan.translatesAutoresizingMaskIntoConstraints = false
+        //scan.translatesAutoresizingMaskIntoConstraints = false
         welcomeBacking.translatesAutoresizingMaskIntoConstraints = false
         scanBacking.translatesAutoresizingMaskIntoConstraints = false
-        
+        cameraView.translatesAutoresizingMaskIntoConstraints = false
         
         
         accountViewToSwitch = [UIView]()
@@ -230,23 +293,28 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
             addChangeHomeName.heightAnchor.constraint(equalToConstant: 25),
             
             welcomeQR.topAnchor.constraint(equalTo: addChangeHomeName.bottomAnchor, constant: 10),
-            welcomeQR.bottomAnchor.constraint(equalTo: welcomeBacking.bottomAnchor, constant: -55),
-            welcomeQR.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor, constant: -65),
+            welcomeQR.bottomAnchor.constraint(equalTo: welcomeBacking.bottomAnchor),
+            welcomeQR.widthAnchor.constraint(equalTo: welcomeBacking.widthAnchor, multiplier: 1/2),
             welcomeQR.centerXAnchor.constraint(equalTo: welcomeBacking.centerXAnchor),
             
             welcomeBacking.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
             welcomeBacking.bottomAnchor.constraint(equalTo: leaveGroup.topAnchor, constant: -15),
-            welcomeBacking.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            welcomeBacking.widthAnchor.constraint(equalTo: view.widthAnchor),
             welcomeBacking.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
             
-            scan.topAnchor.constraint(equalTo: scanBacking.topAnchor, constant: 10),
-            scan.bottomAnchor.constraint(equalTo: scanBacking.bottomAnchor, constant: -15),
-            scan.widthAnchor.constraint(equalTo: scanBacking.widthAnchor, constant: -2),
-            scan.centerXAnchor.constraint(equalTo: scanBacking.centerXAnchor),
+//            scan.topAnchor.constraint(equalTo: scanBacking.topAnchor, constant: 10),
+//            scan.bottomAnchor.constraint(equalTo: scanBacking.bottomAnchor, constant: -15),
+//            scan.widthAnchor.constraint(equalTo: scanBacking.widthAnchor, constant: -2),
+//            scan.centerXAnchor.constraint(equalTo: scanBacking.centerXAnchor),
+            
+            cameraView.topAnchor.constraint(equalTo: scanBacking.topAnchor, constant: 10),
+            cameraView.bottomAnchor.constraint(equalTo: scanBacking.bottomAnchor ),
+            cameraView.widthAnchor.constraint(equalTo: scanBacking.widthAnchor, multiplier: 1/2),
+            cameraView.centerXAnchor.constraint(equalTo: scanBacking.centerXAnchor),
             
             scanBacking.topAnchor.constraint(equalTo: homeStatssegmentContr.bottomAnchor, constant: 10),
             scanBacking.bottomAnchor.constraint(equalTo: leaveGroup.topAnchor, constant: -15),
-            scanBacking.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -2),
+            scanBacking.widthAnchor.constraint(equalTo: view.widthAnchor),
             scanBacking.centerXAnchor.constraint(equalTo: homeStatssegmentContr.centerXAnchor),
                         
             leaveGroup.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),

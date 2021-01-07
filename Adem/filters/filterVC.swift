@@ -19,14 +19,12 @@ import FirebaseFirestoreSwift
 
 class filterViewController: UIViewController {
 
-    let filterHeader = "header"
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
 //        MARK: NavigationBar setup
-
-        
         if #available(iOS 13.0, *) {
             let navBarAppearance = UINavigationBarAppearance()
             navBarAppearance.configureWithOpaqueBackground()
@@ -48,24 +46,20 @@ class filterViewController: UIViewController {
     }
     
 //    MARK: - Var & Let
+    let collectionViewCell = "test"
+    let filterHeader = "header"
 
 //    MARK: FireBase Populate List
 
 
-//    MARK: Table view
-    var filterTableView: UITableView!
+//    MARK: - Collection view
     var filterCollectionView: UICollectionView!
-    let tableViewCell = "test"
-    let cellID = "product"
-    let headerID = "collectionViewHeader"
-
-//    MARK: - Var & Let
+   
     
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setUpLayouts()
-        
         self.filterCollectionView.reloadData()
     }
     
@@ -86,26 +80,20 @@ class filterViewController: UIViewController {
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
     }
-//    MARK: - Table View
-    func setUpListView() {
 
-            createLayout()
-  
-        //}
-    }
+    
     
     func setUpCollectionView() {
+        
         let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
         mealsCollectionViewlayouts.scrollDirection = .vertical
-        
         self.filterCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
 
-          
-        filterCollectionView.showsHorizontalScrollIndicator = false
+        filterCollectionView.showsVerticalScrollIndicator = false
         self.filterCollectionView.dataSource = self
         self.filterCollectionView.delegate = self
         
-        filterCollectionView.register(pantryCollectioViewFilter.self, forCellWithReuseIdentifier: tableViewCell)
+        filterCollectionView.register(pantryCollectioViewFilter.self, forCellWithReuseIdentifier: collectionViewCell)
         filterCollectionView.register(filterHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: filterHeader)
         if #available(iOS 13.0, *) {
             self.filterCollectionView.backgroundColor = UIColor.systemGray6
@@ -135,17 +123,16 @@ class filterViewController: UIViewController {
  
             ])
     }
-    //MARK: - Table view cell properties - End
+//    MARK: - Collection view cell properties - End
     
     
-    //MARK: Button Functions - Start
-
+//    MARK: - Button Functions - Start
     func buttonsClicked() {
         cancelbutton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
         clearFilterbutton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
     }
    
-    //Edit Button
+//    Edit Button
     @objc func handleBack() {
         self.dismiss(animated: true, completion: nil)
         print("went back to previous page")
@@ -155,25 +142,10 @@ class filterViewController: UIViewController {
         print("Edit button was clicked")
     }
     
-   
-    //product Button
-    @objc func handleSearch() {
-
-        if #available(iOS 13.0, *) {
-            let productScreen = camVC()
-            productScreen.hidesBottomBarWhenPushed = true
-            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            self.present(productScreen, animated: true, completion: nil)
-        } else {
-            // Fallback on earlier versions
-        }
-        
-    }
     
+//    MARK: - Button Functions - End
     
-    //Button Functions - End
-    
-    //MARK: - Filter header
+//    MARK: - Filter header
     let welcomeLabel: UILabel = {
         var welcome = UILabel()
         welcome.text = "What can I help you find?"
@@ -205,13 +177,6 @@ class filterViewController: UIViewController {
         clear.translatesAutoresizingMaskIntoConstraints = false
         return clear
     }()
-    
-    let textFieldSeparator: UIView = {
-        let textSeparator = UIView()
-        textSeparator.backgroundColor = UIColor.ademBlue
-        textSeparator.translatesAutoresizingMaskIntoConstraints = false
-        return textSeparator
-    }()
 
     
 //MARK: - class end dont delete this }
@@ -220,12 +185,12 @@ class filterViewController: UIViewController {
 extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return productCategories.count
+        return personalProductCategories.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.tableViewCell, for: indexPath) as! pantryCollectioViewFilter
-        productsListCell.pantryItemName.text = productCategories[indexPath.row]
+        let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewCell, for: indexPath) as! pantryCollectioViewFilter
+        productsListCell.pantryItemName.text = personalProductCategories[indexPath.row]
         productsListCell.layer.cornerRadius = 5
         
         return productsListCell
@@ -233,9 +198,9 @@ extension filterViewController: UICollectionViewDelegate, UICollectionViewDataSo
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.tableViewCell, for: indexPath) as! pantryCollectioViewFilter
+        let productsListCell = filterCollectionView.dequeueReusableCell(withReuseIdentifier: self.collectionViewCell, for: indexPath) as! pantryCollectioViewFilter
         let list = listViewController()
-        let item = productCategories[indexPath.item]
+        let item = personalProductCategories[indexPath.item]
         var selectedCell = self.filterCollectionView.cellForItem(at: indexPath)
         
         let fc = productsListCell.pantryItemName

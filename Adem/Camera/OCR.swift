@@ -7,9 +7,17 @@
 //
 
 import UIKit
+import Foundation
 import AVFoundation
 import Firebase
 import MLKit
+import CoreVideo
+
+protocol QRScannerViewDelegate: class {
+    func qrScanningDidFail()
+    func qrScanningSucceededWithCode(_ str: String?)
+    func qrScanningDidStop()
+}
 
 class camVC: UIViewController {
 
@@ -148,129 +156,126 @@ extension camVC : AVCapturePhotoCaptureDelegate {
 }
 
 
-class camAddHouseView: UIView {
+class QRScannerView: UIView {
     
+    //https://github.com/azamsharp/FirebaseML/blob/master/FirebaseML/BarCodeDetectorViewController.swift
     
-    //https://stackoverflow.com/questions/28487146/how-to-add-live-camera-preview-to-uiview
+    weak var delagate: QRScannerViewDelegate?
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer:AVCaptureVideoPreviewLayer?
+    lazy var vision = Vision.vision()
+    var barcodeDetector :VisionBarcodeDetector?
+    var newHome = ""
     
-    var previewView : UIView!
-    var boxView:UIView!
-        let myButton: UIButton = UIButton()
-
-        //Camera Capture requiered properties
-        var videoDataOutput: AVCaptureVideoDataOutput!
-        var videoDataOutputQueue: DispatchQueue!
-        var previewLayer:AVCaptureVideoPreviewLayer!
-        var captureDevice : AVCaptureDevice!
-        let session = AVCaptureSession()
-
     override init(frame: CGRect) {
-      super.init(frame: frame)
-            previewView = UIView(frame: CGRect(x: 0,
-                                               y: 0,
-                                               width: UIScreen.main.bounds.size.width,
-                                               height: UIScreen.main.bounds.size.height))
-            previewView.contentMode = UIView.ContentMode.scaleAspectFit
-        self.addSubview(previewView)
+        super.init(frame: frame)
 
-            //Add a view on top of the cameras' view
-            boxView = UIView(frame: self.frame)
-
-            myButton.frame = CGRect(x: 0, y: 0, width: 200, height: 40)
-            myButton.backgroundColor = UIColor.red
-            myButton.layer.masksToBounds = true
-            myButton.setTitle("press me", for: .normal)
-            myButton.setTitleColor(UIColor.white, for: .normal)
-            myButton.layer.cornerRadius = 20.0
-            myButton.layer.position = CGPoint(x: self.frame.width/2, y:200)
-            myButton.addTarget(self, action: #selector(self.onClickMyButton(sender:)), for: .touchUpInside)
-
-        self.addSubview(boxView)
-            self.addSubview(myButton)
-
-            self.setupAVCapture()
-        }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    var shouldAutorotate: Bool {
-            if (UIDevice.current.orientation == UIDeviceOrientation.landscapeLeft ||
-            UIDevice.current.orientation == UIDeviceOrientation.landscapeRight ||
-            UIDevice.current.orientation == UIDeviceOrientation.unknown) {
-                return false
-            }
-            else {
-                return true
-            }
-        }
-
-        @objc func onClickMyButton(sender: UIButton){
-            print("button pressed")
-        }
+        doInitialSetup()
+        self.barcodeDetector = vision.barcodeDetector()
     }
 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
 
-    // AVCaptureVideoDataOutputSampleBufferDelegate protocol and related methods
-    extension camAddHouseView:  AVCaptureVideoDataOutputSampleBufferDelegate{
-         func setupAVCapture(){
-            session.sessionPreset = AVCaptureSession.Preset.vga640x480
-            guard let device = AVCaptureDevice
-            .default(AVCaptureDevice.DeviceType.builtInWideAngleCamera,
-                     for: .video,
-                     position: AVCaptureDevice.Position.back) else {
-                                return
-            }
-            captureDevice = device
-            beginSession()
-        }
-
-        func beginSession(){
-            var deviceInput: AVCaptureDeviceInput!
-
-            do {
-                deviceInput = try AVCaptureDeviceInput(device: captureDevice)
-                guard deviceInput != nil else {
-                    print("error: cant get deviceInput")
+        doInitialSetup()
+        self.barcodeDetector = vision.barcodeDetector()
+    }
+    
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+            
+        if let barcodeDetector = self.barcodeDetector {
+        //let visionImage = VisionImage(buffer: sampleBuffer)
+            barcodeDetector.detect(in: .init(buffer: sampleBuffer)) { (barcodes, error) in
+                if let error = error {
+                    print(error.localizedDescription)
                     return
+                    }
+                for barcode in barcodes! {
+                    self.newHome = barcode.rawValue!
+                    //This should be one time
+                    //Confirm and merge lists
+                    userfirebasehome.updateData([
+                                                    "home" : self.newHome])
                 }
-
-                if self.session.canAddInput(deviceInput){
-                    self.session.addInput(deviceInput)
-                }
-
-                videoDataOutput = AVCaptureVideoDataOutput()
-                videoDataOutput.alwaysDiscardsLateVideoFrames=true
-                videoDataOutputQueue = DispatchQueue(label: "VideoDataOutputQueue")
-                videoDataOutput.setSampleBufferDelegate(self, queue:self.videoDataOutputQueue)
-
-                if session.canAddOutput(self.videoDataOutput){
-                    session.addOutput(self.videoDataOutput)
-                }
-
-                videoDataOutput.connection(with: .video)?.isEnabled = true
-
-                previewLayer = AVCaptureVideoPreviewLayer(session: self.session)
-                previewLayer.videoGravity = AVLayerVideoGravity.resizeAspect
-
-                let rootLayer :CALayer = self.previewView.layer
-                rootLayer.masksToBounds=true
-                previewLayer.frame = rootLayer.bounds
-                rootLayer.addSublayer(self.previewLayer)
-                session.startRunning()
-            } catch let error as NSError {
-                deviceInput = nil
-                print("error: \(error.localizedDescription)")
             }
         }
+    }
+    override class var layerClass: AnyClass{
+        return AVCaptureVideoPreviewLayer.self
+    }
+    override var layer: AVCaptureVideoPreviewLayer {
+        return super.layer as! AVCaptureVideoPreviewLayer
+    }
+}
 
-        func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-            // do stuff here
+
+extension QRScannerView: AVCaptureVideoDataOutputSampleBufferDelegate {
+
+    var isRunning: Bool {
+        return captureSession?.isRunning ?? false
+    }
+    
+    
+    func stopScanning() {
+        captureSession?.stopRunning()
+        delagate?.qrScanningDidStop()
+    }
+    
+    private func doInitialSetup() {
+        clipsToBounds = true
+        captureSession = AVCaptureSession()
+        
+        captureSession?.sessionPreset = AVCaptureSession.Preset.photo
+        let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
+        let deviceOutput = AVCaptureVideoDataOutput()
+        
+        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
+        let videoInput: AVCaptureDeviceInput
+        do {
+            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
+            deviceOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
+            deviceOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
+        } catch let error {
+            print(error)
+            return
         }
+        if (captureSession?.canAddInput(videoInput) ?? false) {
+            
+            captureSession?.addInput(videoInput)
+            captureSession?.addOutput(deviceOutput)            
+        } else {
+            scanningDidFail()
+        }
+        
+        self.layer.session = captureSession
+        self.layer.videoGravity = .resizeAspectFill
+        captureSession?.startRunning()
+    }
+    
+    func scanningDidFail() {
+        delagate?.qrScanningDidFail()
+        captureSession = nil
+    }
+    func found(code: String) {
+        delagate?.qrScanningSucceededWithCode(code)
+        print(code)
+    }
+}
 
-        // clean up AVCapture
-        func stopCamera(){
-            session.stopRunning()
+extension QRScannerView: AVCaptureMetadataOutputObjectsDelegate {
+   
+    func metadataOutput(_ output: AVCaptureMetadataOutput,
+                        didOutput metadataObjects: [AVMetadataObject],
+                        from connection: AVCaptureConnection) {
+       stopScanning()
+        
+        
+        if let metadataObject = metadataObjects.first {
+            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
+            guard let stringValue = readableObject.stringValue else { return }
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            found(code: stringValue)
+            print("this it the home \(stringValue)")
         }
     }
+}

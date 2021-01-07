@@ -36,6 +36,7 @@
 		35669AE3240AEDAF00C95DFB /* ffCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE2240AEDAF00C95DFB /* ffCells.swift */; };
 		35669AE52410B3FF00C95DFB /* enum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE42410B3FF00C95DFB /* enum.swift */; };
 		35669AE724185D6400C95DFB /* recomendedMeals.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35669AE624185D6400C95DFB /* recomendedMeals.swift */; };
+		356C8B152591BC120020FCF1 /* bugs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356C8B142591BC110020FCF1 /* bugs.swift */; };
 		356FFEEC23F1CEED00DF67AD /* dietPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEEB23F1CEED00DF67AD /* dietPreferences.swift */; };
 		356FFEEE23F1CF1C00DF67AD /* storePreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEED23F1CF1C00DF67AD /* storePreferences.swift */; };
 		356FFEF023F1CF4B00DF67AD /* thankYouPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 356FFEEF23F1CF4B00DF67AD /* thankYouPreferences.swift */; };
@@ -152,6 +153,7 @@
 		35669AE2240AEDAF00C95DFB /* ffCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ffCells.swift; sourceTree = "<group>"; };
 		35669AE42410B3FF00C95DFB /* enum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = enum.swift; sourceTree = "<group>"; };
 		35669AE624185D6400C95DFB /* recomendedMeals.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = recomendedMeals.swift; sourceTree = "<group>"; };
+		356C8B142591BC110020FCF1 /* bugs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bugs.swift; sourceTree = "<group>"; };
 		356FFEEB23F1CEED00DF67AD /* dietPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = dietPreferences.swift; sourceTree = "<group>"; };
 		356FFEED23F1CF1C00DF67AD /* storePreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = storePreferences.swift; sourceTree = "<group>"; };
 		356FFEEF23F1CF4B00DF67AD /* thankYouPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = thankYouPreferences.swift; sourceTree = "<group>"; };
@@ -362,6 +364,7 @@
 			isa = PBXGroup;
 			children = (
 				3590AB5B24CCBCF90006090C /* signUpNav.swift */,
+				356C8B142591BC110020FCF1 /* bugs.swift */,
 			);
 			path = "easier sign up";
 			sourceTree = "<group>";
@@ -920,6 +923,7 @@
 				3542B9312499A12C00E259EE /* filterVC.swift in Sources */,
 				354E944223DCBF81003F2B1F /* accountCreationViews.swift in Sources */,
 				3543590F24B82F5D001074CF /* apiExtension.swift in Sources */,
+				356C8B152591BC120020FCF1 /* bugs.swift in Sources */,
 				35669ACE24043A3A00C95DFB /* nutritionLabel.swift in Sources */,
 				35D6483D22ECBC3900015352 /* CircleTransition.swift in Sources */,
 				35669AE724185D6400C95DFB /* recomendedMeals.swift in Sources */,

@@ -174,6 +174,7 @@ class login: UIViewController, UITextFieldDelegate {
           guard let user = authResult?.user else { return }
           let isAnonymous = user.isAnonymous  // true
           let uid = user.uid
+            /*
         db.collection("Users").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
             "isAnonymous": isAnonymous,
             "uid": uid
@@ -183,6 +184,16 @@ class login: UIViewController, UITextFieldDelegate {
                 print("Error creating documents: \(error.localizedDescription)")
             }
         }
+ */
+            db.collection("home").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                "isAnonymous": isAnonymous,
+                "uid": uid
+                
+            ]) { (error) in
+                if let error = error {
+                    print("Error creating documents: \(error.localizedDescription)")
+                }
+            }
         }
         sendToListScreen()
     }
