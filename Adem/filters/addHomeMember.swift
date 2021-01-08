@@ -66,17 +66,17 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     //This pushes to firebase. Firebase should have the default of "Kitchen"
     let addChangeHomeName: UITextField = {
         //Use Firebase from accountVC
-        var welcome = UITextField()
+        var homeTextField = UITextField()
         //This line should be pulling from fire base
-        welcome.text = "Kitchen"
-        welcome.textAlignment = .center
-        welcome.keyboardType = .alphabet
-        welcome.returnKeyType = .done
-        welcome.autocorrectionType = .no
-        welcome.textColor = UIColor.white
-        welcome.font = UIFont(name: helNeu, size: 20.0)
-        welcome.translatesAutoresizingMaskIntoConstraints = false
-        return welcome
+        homeTextField.text = "Kitchen"
+        homeTextField.textAlignment = .center
+        homeTextField.keyboardType = .alphabet
+        homeTextField.returnKeyType = .done
+        homeTextField.autocorrectionType = .no
+        homeTextField.textColor = UIColor.white
+        homeTextField.font = UIFont(name: helNeu, size: 20.0)
+        homeTextField.translatesAutoresizingMaskIntoConstraints = false
+        return homeTextField
     }()
     
     

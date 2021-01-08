@@ -18,14 +18,19 @@ enum signUpErrors: Error {
 }
 
 class UserInfo: UIViewController, UITextFieldDelegate {
-    
-    // Add a new document with a generated ID
-    var handle: AuthStateDidChangeListenerHandle?
-    let minimuPasswordLength = 6
-    
-    //MARK: setUpViews
-    var accountCreationViews = userCreationInfo()
         
+    
+//    MARK: - Vars and Lets START
+    let minimuPasswordLength = 6
+    var handle: AuthStateDidChangeListenerHandle?
+//    MARK: - Vars and Lets END
+
+    
+//    MARK: - Views START
+    var accountCreationViews = userCreationInfo()
+    var nextButton = navigationButton()
+//    MARK: - Views END
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -43,7 +48,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         accountCreationViews.passwordTextField.delegate = self
         
 
-        //Backgound Color Start
+//        MARK: Gradient Backgound Color START
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
@@ -52,7 +57,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         //Top right
         gradient.endPoint = CGPoint(x: 1, y: 1)
         view.layer.addSublayer(gradient)
-        //Backgound Color End
+//        MARK: Gradient Backgound Color END
         
         //MARK: function Calls for views
         setUpSubviews()
@@ -61,7 +66,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
        
     }
     
-    //Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
@@ -70,6 +74,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         super.viewWillDisappear(animated)
     }
     
+    
+//    MARK: - Buttons START
     @objc func handelNext() {
         guard let firstName = accountCreationViews.firstNameTextField.text, !firstName.isEmpty else {
             self.showMessagePrompt(title: "You forgot something", message: "What should we call you", button: "Retry")
@@ -111,34 +117,35 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 print("User signs up successfully")
-                let newUserInfo = Auth.auth().currentUser
                 //MARK: Private data
                 
                 //MARK: Home section
                 //Why is this not working
-                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("UsersPrivateInfo").setData([
+                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("usersPrivateData").setData([
+                    //FIXME: use homeID instead of home
                     "home": authResult!.user.uid,
                     "FirstName": firstName,
                     "LastName": lastName,
                     "Email": email,
                     "Password": password,
                     "uid": authResult!.user.uid,
-                    "isAnonymous": authResult!.user.isAnonymous
+                    "isAnonymous": authResult!.user.isAnonymous,
+                    "homeName": "Kitchen"
                     
                 ]) { (error) in
                     if let error = error {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
-                
+                /*
                 //FIXME: This is where the home name is first set to Kitchen
                 //This will need to be in the search bar
                 db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("products").collection("List")
                 db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("meals").collection("all")
+ */
             }
         }
-        
-//        let moreController = userCreation()
+        //MARK: Sending to the next screen in the sign up flow
         let moreController = addedDietPreferencesTwo()
         moreController.resignFirstResponder()
         if #available(iOS 13.0, *) {
@@ -149,8 +156,9 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         }
         self.present(moreController, animated: true, completion: nil)
     }
+//    MARK: - Buttons END
     
-    
+//    MARK: Sign up Checks START
     func isValidEmail(_ email: String) -> Bool {
       let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
       let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
@@ -161,6 +169,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
       let minPasswordLength = 6
       return password.count >= minPasswordLength
     }
+//    MARK: Sign up Checks END
+
     
     func showMessagePrompt(title: String, message: String, button: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
@@ -191,7 +201,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return scrolling
     }()
     
-    //Name Section
+//    MARK: - GUI Elements Start
     let welcomeLabel: UILabel = {
         let welcome = UILabel()
         welcome.text = "Welcome to Adem"
@@ -204,8 +214,16 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return welcome
     }()
     
-    var nextButton = navigationButton()
-    
+    let ademImageHolder: UIImageView = {
+        let ademImage = UIImageView()
+        ademImage.image = UIImage(named: "Adem Logo")
+        ademImage.contentMode = .scaleAspectFit
+        
+        return ademImage
+    }()
+//    MARK: - GUI Elements END
+
+//    MARK: - subViews instantiation START
     private func setUpButtons() {
         
         nextButton.largeNextButton.backgroundColor = UIColor.white
@@ -216,16 +234,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         nextButton.largeNextButton.addTarget(self, action: #selector(handelNext), for: .touchUpInside)
         nextButton.largeNextButton.resignFirstResponder()
     }
-    
-    
-    
-    let ademImageHolder: UIImageView = {
-        let ademImage = UIImageView()
-        ademImage.image = UIImage(named: "Adem Logo")
-        ademImage.contentMode = .scaleAspectFit
-        
-        return ademImage
-    }()
     
     private func setUpSubviews() {
         
@@ -247,7 +255,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     func setuploginFieldView() {
         
         NSLayoutConstraint.activate([
-            
         
         ademImageHolder.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
         ademImageHolder.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -276,4 +283,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     
         ])
     }
+//    MARK: - subViews instantiation END
+
 }

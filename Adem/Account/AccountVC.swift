@@ -345,9 +345,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                     print("Error getting documents: \(err)")
                 } else {
                     for document in snapshot!.documents {
-                        let latMax = document.get("FirstName") as? String
+                        let userFirstName = document.get("FirstName") as? String
+                        let userKitchenName = document.get("homeName") as? String
                         let latHome = document.get("home") as? String
-                        self.personalAttributes.nameofUser.largeNextButton.setTitle(latMax, for: .normal)
+                        self.personalAttributes.nameofUser.largeNextButton.setTitle(userFirstName, for: .normal)
                         self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                     }
                     //moveUser.addDocument(from: oldUser)
@@ -360,11 +361,9 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                           print("Document data was empty.")
                           return
                         }
+                    
+                        //householdAdd().homeName.text = document.get("name") as? String
                         
-                        //print(document.get("name"))
-                        householdAdd().homeName.text = document.get("name") as? String
-                        //self.nameOfHouse = document.get("name") as! String
-                        //print("Current data: \(data)")
                       }
                     
                     
