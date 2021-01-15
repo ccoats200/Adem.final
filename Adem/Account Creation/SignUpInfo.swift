@@ -123,6 +123,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
+                //db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("products").collection("List").document()
             }
         }
 //    MARK: Create User END -

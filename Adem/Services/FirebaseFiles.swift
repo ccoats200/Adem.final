@@ -18,7 +18,8 @@ let currentUser = firebaseAuth.currentUser
 let firebaseAuth = Auth.auth()
 
 
-let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
+//let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
+let userfirebaseProducts = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("public").document("products").collection("List")
 
 let userfirebasehome = db.collection("Users").document(currentUser!.uid).collection("private").document("UsersPrivateInfo")
 //FIXME: Adding the products
@@ -88,6 +89,8 @@ extension Date {
 
 enum engagements: String {
     case added = "a"
+    case list = "l"
+    case pantry = "p"
     case removed = "r"
     case engaged = "e"
 }

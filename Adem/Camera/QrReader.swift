@@ -6,102 +6,141 @@
 //  Copyright © 2020 Coleman Coats. All rights reserved.
 //
 
+import UIKit
 import Foundation
 import AVFoundation
-import UIKit
+import Firebase
+import MLKit
+import CoreVideo
+
+protocol QRScannerViewDelegate: class {
+    func qrScanningDidFail()
+    func qrScanningSucceededWithCode(_ str: String?)
+    func qrScanningDidStop()
+}
+
+class QRScannerView: UIView {
+    
+    //https://github.com/azamsharp/FirebaseML/blob/master/FirebaseML/BarCodeDetectorViewController.swift
+    
+    weak var delagate: QRScannerViewDelegate?
+    var captureSession: AVCaptureSession?
+    var videoPreviewLayer:AVCaptureVideoPreviewLayer?
+    lazy var vision = Vision.vision()
+    var barcodeDetector : VisionBarcodeDetector?
+    var newHome = ""
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        doInitialSetup()
+        self.barcodeDetector = vision.barcodeDetector()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+
+        doInitialSetup()
+        self.barcodeDetector = vision.barcodeDetector()
+    }
+    
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+            
+        if let barcodeDetector = self.barcodeDetector {
+        //let visionImage = VisionImage(buffer: sampleBuffer)
+            barcodeDetector.detect(in: .init(buffer: sampleBuffer)) { (barcodes, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    return
+                    }
+                for barcode in barcodes! {
+                    //Scanning is working the update is not
+                    print(barcode.rawValue!)
+                    self.newHome = barcode.rawValue!
+                    //This should be one time
+                    //Confirm and merge lists
+                    userfirebaseHomeSettings.updateData([
+                                                    "home" : barcode.rawValue!])
+                }
+            }
+        }
+    }
+    override class var layerClass: AnyClass{
+        return AVCaptureVideoPreviewLayer.self
+    }
+    override var layer: AVCaptureVideoPreviewLayer {
+        return super.layer as! AVCaptureVideoPreviewLayer
+    }
+}
 
 
-class camView: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    var captureSession: AVCaptureSession!
-    var previewLayer: AVCaptureVideoPreviewLayer!
+extension QRScannerView: AVCaptureVideoDataOutputSampleBufferDelegate {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        view.backgroundColor = UIColor.black
+    var isRunning: Bool {
+        return captureSession?.isRunning ?? false
+    }
+    
+    
+    func stopScanning() {
+        captureSession?.stopRunning()
+        delagate?.qrScanningDidStop()
+    }
+    
+    private func doInitialSetup() {
+        clipsToBounds = true
         captureSession = AVCaptureSession()
-
+        
+        captureSession?.sessionPreset = AVCaptureSession.Preset.photo
+        let captureDevice = AVCaptureDevice.default(for: AVMediaType.video)
+        let deviceOutput = AVCaptureVideoDataOutput()
+        
         guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return }
         let videoInput: AVCaptureDeviceInput
-
         do {
             videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-        } catch {
+            deviceOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
+            deviceOutput.setSampleBufferDelegate(self, queue: DispatchQueue.global(qos: DispatchQoS.QoSClass.default))
+        } catch let error {
+            print(error)
             return
         }
-
-        if (captureSession.canAddInput(videoInput)) {
-            captureSession.addInput(videoInput)
+        if (captureSession?.canAddInput(videoInput) ?? false) {
+            
+            captureSession?.addInput(videoInput)
+            captureSession?.addOutput(deviceOutput)
         } else {
-            failed()
-            return
+            scanningDidFail()
         }
-
-        let metadataOutput = AVCaptureMetadataOutput()
-
-        if (captureSession.canAddOutput(metadataOutput)) {
-            captureSession.addOutput(metadataOutput)
-
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr]
-        } else {
-            failed()
-            return
-        }
-
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.frame = view.layer.bounds
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-
-        captureSession.startRunning()
+        
+        self.layer.session = captureSession
+        self.layer.videoGravity = .resizeAspectFill
+        captureSession?.startRunning()
     }
-
-    func failed() {
-        let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
+    
+    func scanningDidFail() {
+        delagate?.qrScanningDidFail()
         captureSession = nil
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if (captureSession?.isRunning == false) {
-            captureSession.startRunning()
-        }
+    func found(code: String) {
+        delagate?.qrScanningSucceededWithCode(code)
+        print(code)
     }
+}
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        if (captureSession?.isRunning == true) {
-            captureSession.stopRunning()
-        }
-    }
-
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        captureSession.stopRunning()
-
+extension QRScannerView: AVCaptureMetadataOutputObjectsDelegate {
+   
+    func metadataOutput(_ output: AVCaptureMetadataOutput,
+                        didOutput metadataObjects: [AVMetadataObject],
+                        from connection: AVCaptureConnection) {
+       stopScanning()
+        
+        
         if let metadataObject = metadataObjects.first {
             guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
             guard let stringValue = readableObject.stringValue else { return }
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
             found(code: stringValue)
+            print("this it the home \(stringValue)")
         }
-
-        dismiss(animated: true)
-    }
-
-    func found(code: String) {
-        print(code)
-    }
-
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
     }
 }

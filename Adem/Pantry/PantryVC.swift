@@ -320,7 +320,7 @@ extension PantryVC: pantryDelegate {
                 let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
                     self.addWasteAmount(id: item!, amount: actions.value)
                     self.updateProductLocationValues(indexPath: item!, pantry: false, list: true)
-                    self.addTimeStamp(id: item!, action: engagements.added.rawValue)
+                    self.addTimeStamp(id: item!, action: engagements.list.rawValue)
                 }
                 actionSheetController.addAction(quantity)
             }

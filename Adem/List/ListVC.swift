@@ -268,6 +268,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     }
 
     func firebaseDataFetch() {
+        
+        
         userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")
@@ -395,7 +397,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
         let item = arrayofProducts[indexPath.row].id!
         let checkedAsInBasket = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
             self.updateProductLocationValues(indexPath: item, pantry: true, list: false)
-            self.addTimeStamp(id: item, action: engagements.added.rawValue)
+            self.addTimeStamp(id: item, action: engagements.pantry.rawValue)
             boolValue(true) // pass true if you want the handler to allow the action
             print("User has added the product to their basket in the store")
            }

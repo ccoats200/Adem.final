@@ -177,6 +177,7 @@ class listProductVCLayout: UIViewController {
         
         if arrayofProducts.contains(where: { $0.id == self.product.id}) {
             self.updateProductLocationValues(indexPath: self.product.id!, pantry: true, list: false)
+            self.addTimeStamp(id: self.product.id!, action: engagements.pantry.rawValue)
         } else if arrayofPantry.contains(where: { $0.id == self.product.id}) {
             let find = self.product.id!
             let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
@@ -187,7 +188,7 @@ class listProductVCLayout: UIViewController {
                 let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
                     self.addWasteAmount(id: find, amount: actions.value)
                     self.updateProductLocationValues(indexPath: find, pantry: false, list: true)
-                    self.addTimeStamp(id: find, action: engagements.added.rawValue)
+                    self.addTimeStamp(id: find, action: engagements.list.rawValue)
                 }
                 actionSheetController.addAction(quantity)
             }

@@ -16,14 +16,15 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     
     // Anywhere there is a server call we need to have the the function return a tuple to show the server status incase the server fails. see the section in the swift book on tuples
     var accountViewToSwitch: [UIView]!
-    //var camAddViews = self().camView
     var leaveGroup = navigationButton()
     let context = CIContext()
     let filter = CIFilter.qrCodeGenerator()
     let scanner = camVC()
     let cameraView = QRScannerView()
 
-    let linkToFam = "9HKADS7IMYffVV9Wj1F8uIU3zgq1"
+    let linkToFam = privatehomeAttributes["uid"]
+    let houseName = privatehomeAttributes["homeName"]
+    var placeholderNameOfHome = "Kitchen"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,24 +33,11 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         
         self.addChangeHomeName.delegate = self
         view.addSubview(addLabelView)
-        fetchHSettings()
+//        updates based on firebase
+        addChangeHomeName.text = houseName as! String
+        fetchHomeSettings()
 
         setUpAddDismiss()
-    }
-    
-    func firebaseHome() {
-        moveUser.document("homeSettings").addSnapshotListener { documentSnapshot, error in
-            guard let document = documentSnapshot else {
-              print("Error fetching document: \(error!)")
-              return
-            }
-            guard let data = document.data() else {
-              print("Document data was empty.")
-              return
-            }
-            
-            self.addChangeHomeName.text = document.get("name") as? String
-          }
     }
     
     let addLabelView: UILabel = {
@@ -62,13 +50,12 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         return welcome
     }()
     
-    
     //This pushes to firebase. Firebase should have the default of "Kitchen"
-    let addChangeHomeName: UITextField = {
+    var addChangeHomeName: UITextField = {
         //Use Firebase from accountVC
         var homeTextField = UITextField()
         //This line should be pulling from fire base
-        homeTextField.text = "Kitchen"
+        homeTextField.text = "Kit"
         homeTextField.textAlignment = .center
         homeTextField.keyboardType = .alphabet
         homeTextField.returnKeyType = .done
@@ -82,9 +69,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
-        //fetchHomeSettings()
         //This line should update firebase
-        print(self.addChangeHomeName.text)
         let text = textField.text
         addChangeHomeName.text = text
         
@@ -126,62 +111,26 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     let welcomeQR: UIImageView = {
         let ademImage = UIImageView()
         ademImage.contentMode = .scaleAspectFit
-        //ademImage.layer.magnificationFilter =
-        //ademImage.contentMode = .
-        //ademImage.image = UIImage(named: "Adem Logo")
         ademImage.translatesAutoresizingMaskIntoConstraints = false
         
         return ademImage
     }()
 
+    
     func fetchHomeSettings() {
         
-        moveUser.document("homeSettings").addSnapshotListener { documentSnapshot, error in
+        userfirebasehome.addSnapshotListener { documentSnapshot, error in
             guard let document = documentSnapshot else {
-              print("Error fetching document: \(error!)")
-              return
+            print("Error fetching document: \(error!)")
+            return
             }
             guard let data = document.data() else {
-              print("Document data was empty.")
-              return
+            print("Document data was empty.")
+            return
             }
-          }
-        userfirebasehome.addSnapshotListener { documentSnapshot, error in
-              guard let document = documentSnapshot else {
-                print("Error fetching document: \(error!)")
-                return
-              }
-              guard let data = document.data() else {
-                print("Document data was empty.")
-                return
-              }
-            
-              print("Current data: \(data)")
-            }
+        print("Current data: \(data)")
+        }
     }
-    
-    func fetchHSettings() {
-        
-        userfirebasehome.addSnapshotListener { documentSnapshot, error in
-              guard let document = documentSnapshot else {
-                print("Error fetching document: \(error!)")
-                return
-              }
-              guard let data = document.data() else {
-                print("Document data was empty.")
-                return
-              }
-            
-//            home = document.data()?.compactMapValues({ documentSnapshot -> homeSettingClass? in
-//                return try? documentSnapshot.data(as: homeSettingClass.self)
-//            })
-
-            
-            print("Current data: \(data)")
-            }
-    }
-    
-    
     
     func generateQRCodeImage(_ url: String) -> UIImage {
         let data = Data(url.utf8)
@@ -230,7 +179,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
 
     func leaveGroupButtonAttributes() {
         //https://developer.apple.com/documentation/swiftui/image/interpolation
-        welcomeQR.image = generateQRCodeImage(linkToFam)
+        welcomeQR.image = generateQRCodeImage(linkToFam as! String)
         //welcomeQR.contentMode = .sc
         leaveGroup.largeNextButton.backgroundColor = UIColor.ademRed
         leaveGroup.largeNextButton.setTitleColor(UIColor.white, for: .normal)

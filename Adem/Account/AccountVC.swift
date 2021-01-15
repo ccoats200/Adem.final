@@ -504,7 +504,7 @@ class householdAdd: UICollectionReusableView {
     
     var addFam = navigationButton()
     //Label should be pulling from firebase but the firebase should populate from the text field
-    let homeName: UILabel = {
+    var homeName: UILabel = {
         var homeNickName = UILabel()
         homeNickName.textAlignment = .left
         homeNickName.textColor = UIColor.white
@@ -527,7 +527,6 @@ class householdAdd: UICollectionReusableView {
     func myCustomInit() {
         self.addSubview(addFam)
         self.addSubview(homeName)
-        
         homeName.text = addHomeMember().addChangeHomeName.text//AccountVC().nameOfHouse
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
         addFam.largeNextButton.layer.cornerRadius = 15
