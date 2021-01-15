@@ -191,11 +191,13 @@ class QRScannerView: UIView {
                     return
                     }
                 for barcode in barcodes! {
+                    //Scanning is working the update is not
+                    print(barcode.rawValue!)
                     self.newHome = barcode.rawValue!
                     //This should be one time
                     //Confirm and merge lists
-                    userfirebasehome.updateData([
-                                                    "home" : self.newHome])
+                    userfirebaseHomeSettings.updateData([
+                                                    "home" : barcode.rawValue!])
                 }
             }
         }
@@ -242,7 +244,7 @@ extension QRScannerView: AVCaptureVideoDataOutputSampleBufferDelegate {
         if (captureSession?.canAddInput(videoInput) ?? false) {
             
             captureSession?.addInput(videoInput)
-            captureSession?.addOutput(deviceOutput)            
+            captureSession?.addOutput(deviceOutput)
         } else {
             scanningDidFail()
         }

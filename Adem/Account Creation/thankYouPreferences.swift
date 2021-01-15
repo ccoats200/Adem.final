@@ -33,7 +33,6 @@ class thankYouPreferences: UIViewController {
     
     @objc func handelNext() {
         sendToListScreen()
-        print("sent")
     }
     
     //Name Section

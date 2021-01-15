@@ -10,6 +10,13 @@ import Foundation
 import UIKit
 
 
+/*
+//FIXME: This is where the home name is first set to Kitchen
+//This will need to be in the search bar
+db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("products").collection("List")
+db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("meals").collection("all")
+*/
+
 extension listViewController: UISearchResultsUpdating {
     
     

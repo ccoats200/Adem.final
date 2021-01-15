@@ -51,7 +51,20 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
     }
     
     @objc func handelNext() {
-        updatePreferences(preferenceDimension: "flavors", preferenceMap: selectedItems)
+        handle = firebaseAuth.addStateDidChangeListener({ (Auth, user) in
+            let newUserfirebaseDietPreferences = db.collection("home").document(user!.uid).collection("members").document(user!.uid).collection("preferences")
+            newUserfirebaseDietPreferences.document("flavors").setData([
+                "flavors": self.selectedItems,
+            ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                    }
+                }
+        })
+
+        //updatePreferences(preferenceDimension: "flavors", preferenceMap: selectedItems)
         
         let signUpInfos = addedStorePreferencesTwo()
         if #available(iOS 13.0, *) {

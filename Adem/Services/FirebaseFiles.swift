@@ -35,6 +35,7 @@ let oldUser = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2")
 let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("meals").collection("all")
 //let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
 let userfirebaseDietPreferences = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("preferences")
+let userfirebaseHomeSettings = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private").document("usersPrivateData")
 //MARK: - Testing on
 
 //MARK: - The home set up

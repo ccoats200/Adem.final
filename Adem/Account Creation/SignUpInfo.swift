@@ -23,32 +23,30 @@ class UserInfo: UIViewController, UITextFieldDelegate {
 //    MARK: - Vars and Lets START
     let minimuPasswordLength = 6
     var handle: AuthStateDidChangeListenerHandle?
-//    MARK: - Vars and Lets END
+//    MARK: Vars and Lets END -
 
     
 //    MARK: - Views START
     var accountCreationViews = userCreationInfo()
     var nextButton = navigationButton()
-//    MARK: - Views END
+//    MARK: Views END -
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        
         
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
         self.navigationController?.view.backgroundColor = UIColor.clear
         
-        //MARK: textfield nav
+//        MARK: textfield nav
         accountCreationViews.firstNameTextField.delegate = self
         accountCreationViews.lastNameTextField.delegate = self
         accountCreationViews.emailTextField.delegate = self
         accountCreationViews.passwordTextField.delegate = self
         
 
-//        MARK: Gradient Backgound Color START
+//        MARK: - Gradient Backgound Color START
         let gradient = CAGradientLayer()
         gradient.frame = view.bounds
         gradient.colors = [UIColor.ademBlue.cgColor,UIColor.ademGreen.cgColor]
@@ -57,9 +55,9 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         //Top right
         gradient.endPoint = CGPoint(x: 1, y: 1)
         view.layer.addSublayer(gradient)
-//        MARK: Gradient Backgound Color END
+//        MARK: Gradient Backgound Color END -
         
-        //MARK: function Calls for views
+//        MARK: function Calls for views
         setUpSubviews()
         setuploginFieldView()
         
@@ -81,25 +79,19 @@ class UserInfo: UIViewController, UITextFieldDelegate {
             self.showMessagePrompt(title: "You forgot something", message: "What should we call you", button: "Retry")
             return
         }
-        
         guard let lastName = accountCreationViews.lastNameTextField.text, !lastName.isEmpty else {
             self.showMessagePrompt(title: "You forgot something \(firstName)", message: "Last name or initial", button: "Retry")
             return
         }
-        
         guard let email = accountCreationViews.emailTextField.text, (!email.isEmpty && email.contains(".com")) else {
             self.showMessagePrompt(title: "Email Invalid", message: "Must be a valid email address", button: "Retry")
             return
         }
-        
         guard let password = accountCreationViews.passwordTextField.text, (!password.isEmpty && password.count > 6) else {
-            
             self.showMessagePrompt(title: "Password Invalid", message: "Must be a valid password. Must include a special character and number", button: "Retry")
             return
         }
-        
-
-        //MARK: Should only be on list
+//        MARK: - Create User START
         firebaseAuth.createUser(withEmail: accountCreationViews.emailTextField.text!, password: accountCreationViews.passwordTextField.text!) { authResult, error in
             //https://medium.com/firebase-developers/ios-firebase-authentication-sdk-email-and-password-login-6a3bb27e0536
             if let error = error as? NSError {
@@ -116,13 +108,8 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                     print("Error: \(error.localizedDescription)")
                 }
             } else {
-                print("User signs up successfully")
-                //MARK: Private data
-                
-                //MARK: Home section
-                //Why is this not working
+                //MARK: Home section in Firebase
                 db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("usersPrivateData").setData([
-                    //FIXME: use homeID instead of home
                     "home": authResult!.user.uid,
                     "FirstName": firstName,
                     "LastName": lastName,
@@ -131,21 +118,19 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                     "uid": authResult!.user.uid,
                     "isAnonymous": authResult!.user.isAnonymous,
                     "homeName": "Kitchen"
-                    
                 ]) { (error) in
                     if let error = error {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
-                /*
-                //FIXME: This is where the home name is first set to Kitchen
-                //This will need to be in the search bar
-                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("products").collection("List")
-                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("meals").collection("all")
- */
             }
         }
-        //MARK: Sending to the next screen in the sign up flow
+//    MARK: Create User END -
+        sendToSignUpFlow()
+    }
+    
+    func sendToSignUpFlow() {
+//        MARK: Sending to the next screen in the sign up flow
         let moreController = addedDietPreferencesTwo()
         moreController.resignFirstResponder()
         if #available(iOS 13.0, *) {
@@ -156,9 +141,9 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         }
         self.present(moreController, animated: true, completion: nil)
     }
-//    MARK: - Buttons END
+//    MARK: Buttons END -
     
-//    MARK: Sign up Checks START
+//    MARK:- Sign up Checks START
     func isValidEmail(_ email: String) -> Bool {
       let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
       let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
@@ -169,8 +154,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
       let minPasswordLength = 6
       return password.count >= minPasswordLength
     }
-//    MARK: Sign up Checks END
-
+//    MARK: Sign up Checks END -
     
     func showMessagePrompt(title: String, message: String, button: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertController.Style.alert)
@@ -191,6 +175,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         self.view.endEditing(true)
     }
+//    MARK: - GUI Elements Start
     
     let scrollView: UIScrollView = {
         let scrolling = UIScrollView()
@@ -201,7 +186,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         return scrolling
     }()
     
-//    MARK: - GUI Elements Start
     let welcomeLabel: UILabel = {
         let welcome = UILabel()
         welcome.text = "Welcome to Adem"
@@ -221,7 +205,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
         
         return ademImage
     }()
-//    MARK: - GUI Elements END
+//    MARK: GUI Elements END -
 
 //    MARK: - subViews instantiation START
     private func setUpButtons() {
@@ -283,6 +267,6 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     
         ])
     }
-//    MARK: - subViews instantiation END
+//    MARK: subViews instantiation END -
 
 }

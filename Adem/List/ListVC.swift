@@ -145,16 +145,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 
     func alreadySignedIn() {
         
-//        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-//            if user == nil {
-//                self.sendToLogIn()
-//            } else {
-//                self.sendToListScreen()
-//                self.listTableView.reloadData()
-//
-//            }
-//        }
-        
         if currentUser == nil {
             sendToLogIn()
         } else {

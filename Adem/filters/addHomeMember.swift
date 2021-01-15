@@ -223,7 +223,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     
     @objc func handleLeaveGroup() {
         
-        userfirebasehome.updateData([
+        userfirebaseHomeSettings.updateData([
                                         "home" : privatehomeAttributes["uid"]!])
     }
     

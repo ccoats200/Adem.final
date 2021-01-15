@@ -12,7 +12,7 @@ import UIKit
 class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLayout {
     
     
-//    MARK: Vars and Lets START
+//    MARK: - Vars and Lets START
     var currentViewControllerIndex = 0
     var data = [friendsListInfo]()
     let cellID = "Test"
@@ -21,16 +21,18 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     var preferencesCount = preferencesAttributes
     var selectedItems: [String] = []
     //var selectedItems: [IndexPath]?
-//    MARK: Vars and Lets END
+//    MARK: Vars and Lets END-
     
     
 //    MARK: - Views START
     var preferencesCollectionView: UICollectionView!
     var nextButton = navigationButton()
-//    MARK: - Views END
+//    MARK: Views END -
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        
         
         view.backgroundColor = UIColor.white
         setUpSubviews()
@@ -77,7 +79,7 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         reason.translatesAutoresizingMaskIntoConstraints = false
         return reason
     }()
-//    MARK: - GUI Elements END
+//    MARK: GUI Elements END -
     
     
 //    MARK: - Button START
@@ -88,8 +90,20 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     }
     
      @objc func handelNext() {
-        //This will break because the current user id is lost i think need to check
-        updatePreferences(preferenceDimension: "diet", preferenceMap: selectedItems)
+        
+        handle = firebaseAuth.addStateDidChangeListener({ (Auth, user) in
+            let newUserfirebaseDietPreferences = db.collection("home").document(user!.uid).collection("members").document(user!.uid).collection("preferences")
+            newUserfirebaseDietPreferences.document("diet").setData([
+                "diet": self.selectedItems,
+            ]) { err in
+                    if let err = err {
+                        print("Error updating document: \(err)")
+                    } else {
+                        print("Document successfully updated")
+                    }
+                }
+        })
+
         let signUpInfos = addedFlavorPreferences()
         if #available(iOS 13.0, *) {
             signUpInfos.isModalInPresentation = true
@@ -98,7 +112,7 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         }
         self.present(signUpInfos, animated: true, completion: nil)
     }
-//    MARK: - Button END
+//    MARK: Button END-
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -113,26 +127,30 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
 
-//        MARK: CollectionView attributes
+//        MARK: - CollectionView attributes START
         preferencesCollectionView.dataSource = self
         preferencesCollectionView.delegate = self
         preferencesCollectionView.backgroundColor = .white
         preferencesCollectionView.isScrollEnabled = true
         preferencesCollectionView.allowsMultipleSelection = true
+//        MARK: CollectionView attributes END -
+
         
-//        MARK: subviews
+//        MARK: - Subviews START
         view.addSubview(dietRestrictions)
         view.addSubview(textFieldSeparator)
         view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
         view.addSubview(nextButton)
         
-        
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         dietRestrictions.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+//        MARK: Subviews END -
+        
+        
 
     }
     
@@ -143,6 +161,7 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
            return CGSize(width: collectionViewSize/2, height: 80)
        }
 
+//    MARK: - Constraints START
     private func setuplayoutConstraints() {
         
            NSLayoutConstraint.activate([
@@ -174,8 +193,11 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
             
         ])
     }
+//    MARK: Constraints END -
 }
 
+
+//MARK: - Extenstion START
 extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -204,24 +226,23 @@ extension addedDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDat
         }
     }
 }
+//MARK:  Extentsion END -
 
-
-//MARK: - This is the Start of the updat screen on the Account page
-//Migt be able to get away with one
+//MARK: - This is the Start of the update screen on the Account page
 class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLayout {
     
-//    MARK: Vars and Lets START
+//    MARK: - Vars and Lets START
     var data = [friendsListInfo]()
     let cellID = "Test"
     let cellHeight = 60
     var preferencesCount = preferencesAttributes
     var selectedItems: [String] = []
-//    MARK: Vars and Lets END
+//    MARK: Vars and Lets END -
     
-//    MARK: Views START
+//    MARK: - Views START
     var preferencesCollectionView: UICollectionView!
     var nextButton = navigationButton()
-//    MARK: Views END
+//    MARK: Views END -
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -236,7 +257,7 @@ class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
 
     }
     
-//    MARK: GUI Elements START
+//    MARK: - GUI Elements START
     let welcomeLabel: UILabel = {
         var welcome = UILabel()
         welcome.text = "Any Foods You Don't Eat?"
@@ -266,7 +287,7 @@ class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         reason.translatesAutoresizingMaskIntoConstraints = false
         return reason
     }()
-//    MARK: GUI Elements END
+//    MARK: GUI Elements END -
     
 //    MARK: - Button START
     func setUpButton() {
@@ -280,7 +301,7 @@ class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         self.dismiss(animated: true, completion: nil)
         
     }
-//    MARK: - Button END
+//    MARK: Button END -
     
     
     
@@ -298,26 +319,29 @@ class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
         preferencesCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         preferencesCollectionView.register(signUpCellDesign.self, forCellWithReuseIdentifier: cellID)
 
-        //MARK: CollectionView attributes
+//        MARK: - CollectionView attributes START
         preferencesCollectionView.dataSource = self
         preferencesCollectionView.delegate = self
         preferencesCollectionView.backgroundColor = .white
         preferencesCollectionView.isScrollEnabled = true
         preferencesCollectionView.allowsMultipleSelection = true
+//        MARK: CollectionView attributes END -
         
-        //MARK: subviews
+//        MARK: - Subviews START
         view.addSubview(welcomeLabel)
         view.addSubview(textFieldSeparator)
         view.addSubview(infoLabel)
         view.addSubview(preferencesCollectionView)
         view.addSubview(nextButton)
         
-        
         nextButton.translatesAutoresizingMaskIntoConstraints = false
         welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
         textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
         infoLabel.translatesAutoresizingMaskIntoConstraints = false
         preferencesCollectionView.translatesAutoresizingMaskIntoConstraints = false
+//        MARK: Subviews - END
+        
+        
 
     }
     
@@ -328,6 +352,7 @@ class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
            return CGSize(width: collectionViewSize/2, height: 80)
        }
 
+//    MARK: - Constraints START
     private func setuplayoutConstraints() {
         
            NSLayoutConstraint.activate([
@@ -359,8 +384,10 @@ class updateDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLa
             
         ])
     }
+//    MARK: Constraints END -
 }
 
+//MARK: - Extension START
 extension updateDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -389,3 +416,4 @@ extension updateDietPreferencesTwo: UICollectionViewDelegate, UICollectionViewDa
         }
     }
 }
+//MARK: Extension END -

@@ -12,6 +12,8 @@ import Firebase
 
 class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
+    //MARK: For the QR scanner see OCR.swift QRScannerView
+    
     //Cell Id's
     let cellId = "cellId0"
     let cellId2 = "cell1"
@@ -104,7 +106,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func fetchUserPrivateInfo() {
         //FIXME: This is still using the old hierarchy
-        userfirebasehome.addSnapshotListener { documentSnapshot, error in
+        userfirebaseHomeSettings.addSnapshotListener { documentSnapshot, error in
             guard let document = documentSnapshot else {
               print("Error fetching document: \(error!)")
               return
@@ -337,10 +339,9 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
             //Sign out text
             
-            //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-               //Probably wrong
-            //db.collection("Users").document(user!.uid).collection("private").getDocuments { (snapshot, err) in
-            db.collection("Users").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
+            //MARK: below is the old way to do it
+            //db.collection("Users").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
+            db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
@@ -361,13 +362,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                           print("Document data was empty.")
                           return
                         }
-                    
                         //householdAdd().homeName.text = document.get("name") as? String
-                        
                       }
-                    
-                    
-                    //for users in blnk where home == blnak. add user to home where home uid == user home
                 }
             }
         }
@@ -385,7 +381,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         friends.textLabel!.textColor = UIColor.white
         friends.textLabel!.text = acctOptions[indexPath.row]
         friends.accessoryType = .disclosureIndicator
-        //friends.textLabel?.lineBreakMode = .byWordWrapping
         
         return friends
     }
