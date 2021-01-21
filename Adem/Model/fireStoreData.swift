@@ -31,6 +31,8 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 //var arrayofPantry = [fireStoreDataStruct]()
 //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofPantry = [fireStoreDataClass]()
+var arrayofHome = [individualHomeAttributes]()
+var arrayofHouse = [collectiveHouseAttributes]()
 //var arrayofProducts = [fireStoreDataStruct]()
 //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofProducts = [fireStoreDataClass]()
@@ -53,6 +55,60 @@ var searchDimensions = ["Add","List"]
 var privatehomeAttributes = [String: Any]()
 //MARK: - This is for Changing the home they are in
 
+
+struct individualHomeAttributes: Identifiable, Codable {
+
+   //Grabs the doc Id for me
+    @DocumentID var id: String?
+    var homeName: String
+    var home: String
+    var uid: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case homeName
+        case home
+        case uid
+   }
+    
+    enum ExpressionKeys: String {
+        case id
+        case homeName
+        case home
+        case uid
+    }
+    
+    init(id: String, homeName: String, home: String, uid: String) {
+        self.id = id
+        self.homeName = homeName
+        self.home = home
+        self.uid = uid
+    }
+}
+struct collectiveHouseAttributes: Identifiable, Codable {
+
+    @DocumentID var id: String?
+    var homeName: String
+    var homeId: String
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case homeName
+        case homeId
+   }
+    
+    enum ExpressionKeys: String {
+        case id
+        case homeName
+        case homeId
+    }
+    
+    init(id: String, homeName: String, homeId: String) {
+        self.id = id
+        self.homeName = homeName
+        self.homeId = homeId
+    }
+}
 
 struct fireStoreDataStruct: Identifiable, Codable {
 

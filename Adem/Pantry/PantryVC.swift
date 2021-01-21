@@ -226,17 +226,21 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     }
 
     func firebaseDataFetch() {
-        userfirebaseProducts.whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-           guard let documents = querySnapshot?.documents else {
-             print("No documents")
-             return
-           }
-            arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
-                 return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+
+        let listId = privatehomeAttributes["listId"] as! String
+        print(listId)
+        //Every item needs a private option
+        listfirebaseProducts.document("\(listId)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents")
+                    return
+                }
+                arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                    return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                }
+                self.pantryCollectionView.reloadData()
             }
-            self.pantryCollectionView.reloadData()
-         }
-    }
+        }
 }
 
 extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

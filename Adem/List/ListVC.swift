@@ -88,6 +88,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             setUpBarButtonItems()
             setUpLayouts()
         }
+        firebaseDataFetch()
         setUpBarButtonItems()
         setUpLayouts()
         //MARK: - sign in confirmation
@@ -269,6 +270,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 
     func firebaseDataFetch() {
         
+
+        
+        print(listId)
         
         userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
@@ -280,35 +284,20 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             }
         }
         
-        userMergefirebaseProducts.addSnapshotListener { (querySnapshot, error) in
-            guard let doc = querySnapshot?.documents else {
-                print("No documents")
-                return
-            }
-            
-            arrayofAddProducts = doc.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
-                return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
-            }
-            
-            
-            print("this is a test of the find \(arrayofAddProducts)")
-            print(arrayofAddProducts.count)
-            //userfirebaseAddProducts.addDocument(data: arrayofAddProducts)
-            
-        }
         
         if isUserLoggedIn() {
-        userfirebaseProducts.whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+            
+            // userfirebaseProducts
+            listfirebaseProducts.document("cpVa58Up92hrJ3i4o4tqvgvPOte2").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
             guard let documents = querySnapshot?.documents else {
                 print("No documents")
                 return
             }
-            arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
-                return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
-                
-            }
-            print("this is another test of the find \(arrayofProducts)")
-            self.listTableView.reloadData()
+                arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                    return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                }
+                print("this is another test of the find \(arrayofProducts)")
+                self.listTableView.reloadData()
          }
         
         } else {
@@ -325,11 +314,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             } else {
             personalProductCategories.append(i.category ?? "test")
             print("categories \(personalProductCategories)")
-    }
+            }
         //filterViewController().filterCollectionView.reloadData()
+        }
     }
-    }
-    
 //MARK: - class end dont delete this }
 }
 

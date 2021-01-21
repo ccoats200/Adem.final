@@ -173,10 +173,11 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     @objc func handleLeaveGroup() {
         
         userfirebaseHomeSettings.updateData([
-                                        "home" : privatehomeAttributes["uid"]!])
+                                        "listId" : privatehomeAttributes["uid"]!])
+//        userfirebaseHousehold.updateData([
+//                                        "homeId" : privatehomeAttributes["uid"]!])
     }
     
-
     func leaveGroupButtonAttributes() {
         //https://developer.apple.com/documentation/swiftui/image/interpolation
         welcomeQR.image = generateQRCodeImage(linkToFam as! String)

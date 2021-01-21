@@ -52,24 +52,37 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         //MARK: Firestore
         FirebaseApp.configure()
 
+        //MARK: populate lists
+        
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            //This is changing and messing it up because the auth changes
+            if user == nil {
+                let loginvc = login()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = loginvc
+                appDelegate.window?.makeKeyAndVisible()
+            } else {
+                db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
+                    
+                    guard let document = documentSnapshot else {
+                      print("Error fetching document: \(error!)")
+                      return
+                    }
+                    guard let data = document.data() else {
+                      print("Document data was empty.")
+                      return
+                    }
+                    privatehomeAttributes = data
+                  }
+            }
+        }
+        
+        
         //MARK: RootController
 //        window?.rootViewController = login()
         window?.rootViewController = tabBar()
         
-        //MARK: THis is for all nav bars Current In solid green
-        
-        //Removes the shadow under the Nav bar
-//        UINavigationBar.appearance().shadowImage = UIImage()
-//        UINavigationBar.appearance().backgroundImage(for: UIBarMetrics.default)
-        
-        
-        // to set the below watch https://www.youtube.com/watch?v=APQVltARKF8&list=PL0dzCUj1L5JGKdVUtA5xds1zcyzsz7HLj&index=2 at time 20:00
-        
-        //Upper bar
-//        var preferredStatusBarStyle : UIStatusBarStyle {
-//
-//            return .lightContent
-//        }
+
         return true
     }
     

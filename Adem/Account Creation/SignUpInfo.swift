@@ -109,8 +109,22 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                 }
             } else {
                 //MARK: Home section in Firebase
-                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("usersPrivateData").setData([
-                    "home": authResult!.user.uid,
+//                db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("private").document("usersPrivateData").setData([
+//                    "home": authResult!.user.uid,
+//                    "FirstName": firstName,
+//                    "LastName": lastName,
+//                    "Email": email,
+//                    "Password": password,
+//                    "uid": authResult!.user.uid,
+//                    "isAnonymous": authResult!.user.isAnonymous,
+//                    "homeName": "Kitchen"
+//                ]) { (error) in
+//                    if let error = error {
+//                        print("Error creating documents: \(error.localizedDescription)")
+//                    }
+//                }
+                db.collection("user").document(authResult!.user.uid).collection("private").document("usersPrivateData").setData([
+                    "listId": authResult!.user.uid,
                     "FirstName": firstName,
                     "LastName": lastName,
                     "Email": email,
@@ -123,7 +137,16 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
-                //db.collection("home").document(authResult!.user.uid).collection("members").document(authResult!.user.uid).collection("public").document("products").collection("List").document()
+                
+                db.collection("lists").document(authResult!.user.uid).setData([
+                    "owner": authResult!.user.uid,
+                    "sharedWith": [authResult!.user.uid],
+                    "houseName": "Kitchen"
+                ]) { (error) in
+                    if let error = error {
+                        print("Error creating documents: \(error.localizedDescription)")
+                    }
+                }
             }
         }
 //    MARK: Create User END -

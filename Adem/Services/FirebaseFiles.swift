@@ -16,27 +16,34 @@ var handle: AuthStateDidChangeListenerHandle?
 let currentUser = firebaseAuth.currentUser
 //let currentHome = firebaseAuth.
 let firebaseAuth = Auth.auth()
+let listId = privatehomeAttributes["listId"] as? String
 
+let userfirebaseProducts = db.collection("user").document(currentUser!.uid).collection("public").document("products").collection("List")
+let productAnalytics = db.collection("lists").document("\(listId)").collection("list")
+let listfirebaseProducts = db.collection("lists")
+//let userfirebaseProducts = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("public").document("products").collection("List")
+let roomatesfirebaseProducts = db.collection("home").document("\(privatehomeAttributes["home"])").collection("members").document("\(privatehomeAttributes["home"])").collection("public").document("products").collection("List")
 
-//let userfirebaseProducts = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("List")
-let userfirebaseProducts = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("public").document("products").collection("List")
 
 let userfirebasehome = db.collection("Users").document(currentUser!.uid).collection("private").document("UsersPrivateInfo")
 //FIXME: Adding the products
 
-let userMergefirebaseProducts = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2").collection("public").document("products").collection("List")
 let addProducts = db.collection("groceryProducts")
-let userfirebaseAddProducts = db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("public").document("products").collection("List")
-let moveUser = db.collection("home").document("9HKADS7IMYffVV9Wj1F8uIU3zgq1").collection("members")
-let oldUser = db.collection("Users").document("woFOwMECxlWLZxc7Yx9nfUrOSvK2")
 //FIXME: Adding the products
 
 
 //let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("products").collection("meals")
 let userfirebaseMeals = db.collection("Users").document(currentUser!.uid).collection("public").document("meals").collection("all")
-//let userfirebaseDietPreferences = db.collection("Users").document(currentUser!.uid).collection("preferences")
-let userfirebaseDietPreferences = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("preferences")
-let userfirebaseHomeSettings = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private").document("usersPrivateData")
+let userfirebaseDietPreferences = db.collection("user").document(currentUser!.uid).collection("preferences")
+//let userfirebaseDietPreferences = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("preferences")
+//let userfirebaseHomeSettings = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private").document("usersPrivateData")
+//let userPrivateSettings = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private")
+//let userfirebaseHousehold = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private").document("household")
+let userfirebaseHomeSettings = db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData")
+let userPrivateSettings = db.collection("user").document(currentUser!.uid).collection("private")
+let userfirebaseHousehold = db.collection("user").document(currentUser!.uid).collection("private").document("household")
+
+
 //MARK: - Testing on
 
 //MARK: - The home set up
@@ -120,7 +127,7 @@ extension UIViewController {
         //MARK: use engagements enum for action
         //https://firebase.google.com/docs/firestore/solutions/aggregation
         
-        userfirebaseProducts.document(id).collection("listDate").addDocument(data: [
+        productAnalytics.document(id).collection("listDate").addDocument(data: [
                 "date" : Firebase.Timestamp(),
                 "action" : action,
                 //every 7 days push to collection
@@ -131,7 +138,7 @@ extension UIViewController {
     //MARK: -Waste
     func addWasteAmount(id: String, amount: String) {
         
-        userfirebaseProducts.document(id).collection("wasteData").addDocument(data: [
+        productAnalytics.document(id).collection("wasteData").addDocument(data: [
                 "time" : Firebase.Timestamp(),
                 "value" : amount,
             ])
@@ -157,7 +164,7 @@ extension UIViewController {
     func updateProductQuantityValue(id: String, quantity: Int) {
         // Or more likely change something related to this cell specifically.
        if arrayofProducts.contains(where: { $0.id == id}) {
-           userfirebaseProducts.document("\(id)").updateData([
+        productAnalytics.document("\(id)").updateData([
                "productQuantity": quantity,
            ]) { err in
                if let err = err {
@@ -167,7 +174,7 @@ extension UIViewController {
                }
            }
        } else if arrayofPantry.contains(where: { $0.id == id}) {
-           userfirebaseProducts.document("\(id)").updateData([
+        productAnalytics.document("\(id)").updateData([
                "productQuantity": quantity,
            ]) { err in
                if let err = err {
@@ -187,7 +194,7 @@ extension UIViewController {
     //        for i in arrayofProducts {//where i.productName == cell?.textLabel?.text {
                 
                 
-        userfirebaseProducts.document("\(indexPath)").updateData([
+        productAnalytics.document("\(indexPath)").updateData([
             "productPantry": pantry,
             "productList": list
         ]) { err in
@@ -216,7 +223,7 @@ extension UIViewController {
     
     //Might be useful
        func addCategory(id: String) {
-           userfirebaseProducts.document(id).setData([
+        productAnalytics.document(id).setData([
                "category" : "Extract"], merge: true)
        }
     
@@ -231,27 +238,5 @@ extension UIViewController {
                 }
             }
         }
-    
-    /*
-     //MARK: - Not for production
-                db.collection("groceryProducts").getDocuments() { (querySnapshot, err) in
-                    if let err = err {
-                        print("Error getting documents: \(err)")
-                    } else {
-                     if let snapshot = querySnapshot {
-                         for document in snapshot.documents {
-                            var data = document.data()
-                            db.collection("Users").document((authResult?.user.uid)!).collection("public").document("products").collection("List").addDocument(data: data)
-                            
-                         }
-                        
-                        
-                        
-                        
-                     }
-
-                    }
-                }
-     */
     }
 

@@ -86,6 +86,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         handleUserInfo()
         
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            
             if user == nil {
                 self.sendToLogIn()
             } else {
@@ -93,6 +94,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
         }
     }
+    
     override func viewDidAppear(_ animated: Bool) {
         handleUserInfo()
     }
@@ -105,8 +107,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     
     func fetchUserPrivateInfo() {
+        
         //FIXME: This is still using the old hierarchy
         userfirebaseHomeSettings.addSnapshotListener { documentSnapshot, error in
+            
             guard let document = documentSnapshot else {
               print("Error fetching document: \(error!)")
               return
@@ -226,9 +230,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func setUpdefaultSegment() {
 
-//        let householdCollectionViewlayouts = UICollectionViewFlowLayout()
-//        householdCollectionViewlayouts.scrollDirection = .horizontal
-//        self.homeSegmentView.friendsAndFamily = UICollectionView(frame: self.view.bounds, collectionViewLayout: householdCollectionViewlayouts)
         
         homeSegmentView.friendsAndFamily.showsHorizontalScrollIndicator = false
         homeSegmentView.friendsAndFamily.dataSource = self
@@ -341,7 +342,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             
             //MARK: below is the old way to do it
             //db.collection("Users").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
-            db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
+            db.collection("user").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
                 if let err = err {
                     print("Error getting documents: \(err)")
                 } else {
@@ -352,18 +353,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
                         self.personalAttributes.nameofUser.largeNextButton.setTitle(userFirstName, for: .normal)
                         self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
                     }
-                    //moveUser.addDocument(from: oldUser)
-                    moveUser.document("homeSettings").addSnapshotListener { documentSnapshot, error in
-                        guard let document = documentSnapshot else {
-                          print("Error fetching document: \(error!)")
-                          return
-                        }
-                        guard let data = document.data() else {
-                          print("Document data was empty.")
-                          return
-                        }
-                        //householdAdd().homeName.text = document.get("name") as? String
-                      }
                 }
             }
         }

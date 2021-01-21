@@ -14,6 +14,7 @@ import FirebaseFirestoreSwift
 
 
 class listProductVCLayout: UIViewController {
+    //MARK: ALL ITEMS NEED PRIVATE
     
     //Delegate to pass data
     var product: fireStoreDataClass!

@@ -20,7 +20,7 @@ protocol QRScannerViewDelegate: class {
 }
 
 class QRScannerView: UIView {
-    
+    //This is running before it should
     //https://github.com/azamsharp/FirebaseML/blob/master/FirebaseML/BarCodeDetectorViewController.swift
     
     weak var delagate: QRScannerViewDelegate?
@@ -60,10 +60,12 @@ class QRScannerView: UIView {
                     //This should be one time
                     //Confirm and merge lists
                     userfirebaseHomeSettings.updateData([
-                                                    "home" : barcode.rawValue!])
+                                                    "listId" : barcode.rawValue!])
                 }
             }
         }
+        
+        
     }
     override class var layerClass: AnyClass{
         return AVCaptureVideoPreviewLayer.self
