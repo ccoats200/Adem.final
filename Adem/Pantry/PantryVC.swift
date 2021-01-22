@@ -76,8 +76,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
         }
         
-        
-        
         setUpSearch()
         setUpListViews()
         setUpBarButtonItems()
@@ -86,7 +84,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         longPress.minimumPressDuration = 0.50
         self.pantryCollectionView?.addGestureRecognizer(longPress)
         
-        firebaseDataFetch()
+        FirestoreFetches().FirestorePantryForAuthUser()
+        self.pantryCollectionView.reloadData()
+        //firebaseDataFetch()
     }
     
    
@@ -108,6 +108,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
                 
            self.navigationController?.view.layoutIfNeeded()
            self.navigationController?.view.setNeedsLayout()
+        self.pantryCollectionView.reloadData()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -116,6 +117,23 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         self.navigationController?.view.setNeedsLayout()
         self.isEditing = false
     }
+    
+    func firebaseDataFetch() {
+
+        let listId = privatehomeAttributes["listId"] as! String
+        print(listId)
+        //Every item needs a private option
+        listfirebaseProducts.document("\(listId)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+                guard let documents = querySnapshot?.documents else {
+                    print("No documents")
+                    return
+                }
+                arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                    return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                }
+                self.pantryCollectionView.reloadData()
+            }
+        }
     
 //    MARK: Setting up NAV bar buttons
     private func setUpBarButtonItems() {
@@ -225,22 +243,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
 //        self.isEditing = false
     }
 
-    func firebaseDataFetch() {
-
-        let listId = privatehomeAttributes["listId"] as! String
-        print(listId)
-        //Every item needs a private option
-        listfirebaseProducts.document("\(listId)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-                guard let documents = querySnapshot?.documents else {
-                    print("No documents")
-                    return
-                }
-                arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
-                    return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
-                }
-                self.pantryCollectionView.reloadData()
-            }
-        }
+    
 }
 
 extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {

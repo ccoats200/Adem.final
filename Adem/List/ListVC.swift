@@ -105,11 +105,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         super.viewWillAppear(animated)
         setUpLayouts()
             
-//        let switchDefaults = UserDefaults.standard.bool(forKey: "SwitchKey")
         print(currentUser?.email)
-        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-            self.listTableView.reloadData()
-        }
+//        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+//            self.listTableView.reloadData()
+//        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -135,7 +134,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
     }
-    
     
     
     private func setUpBarButtonItems() {
@@ -271,18 +269,18 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     func firebaseDataFetch() {
         
 
-        
+        //let listId = privatehomeAttributes["listId"] as! String
         print(listId)
         
-        userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                return
-            }
-            arrayofTestingPallette = documents.compactMap { queryDocumentSnapshot -> mealClass? in
-                return try? queryDocumentSnapshot.data(as: mealClass.self)
-            }
-        }
+//        userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+//            guard let documents = querySnapshot?.documents else {
+//                print("No documents")
+//                return
+//            }
+//            arrayofTestingPallette = documents.compactMap { queryDocumentSnapshot -> mealClass? in
+//                return try? queryDocumentSnapshot.data(as: mealClass.self)
+//            }
+//        }
         
         
         if isUserLoggedIn() {
