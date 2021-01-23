@@ -9,6 +9,7 @@
 import Foundation
 import Firebase
 import FirebaseFirestoreSwift
+import Resolver
 
 
 class FirestoreFetches {

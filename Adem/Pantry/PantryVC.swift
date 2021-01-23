@@ -84,9 +84,9 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         longPress.minimumPressDuration = 0.50
         self.pantryCollectionView?.addGestureRecognizer(longPress)
         
-        FirestoreFetches().FirestorePantryForAuthUser()
-        self.pantryCollectionView.reloadData()
-        //firebaseDataFetch()
+        //FirestoreFetches().FirestorePantryForAuthUser()
+        //self.pantryCollectionView.reloadData()
+        firebaseDataFetch()
     }
     
    
@@ -120,19 +120,37 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     
     func firebaseDataFetch() {
 
-        let listId = privatehomeAttributes["listId"] as! String
-        print(listId)
-        //Every item needs a private option
-        listfirebaseProducts.document("\(listId)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-                guard let documents = querySnapshot?.documents else {
-                    print("No documents")
-                    return
+        
+        if currentUser == nil {
+            let loginvc = login()
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            appDelegate.window?.rootViewController = loginvc
+            appDelegate.window?.makeKeyAndVisible()
+        } else {
+            db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
+                
+                guard let document = documentSnapshot else {
+                  print("Error fetching document: \(error!)")
+                  return
                 }
-                arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
-                    return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                guard let data = document.data() else {
+                  print("Document data was empty.")
+                  return
                 }
-                self.pantryCollectionView.reloadData()
-            }
+                privatehomeAttributes = data
+              }
+            
+            listfirebaseProducts.document("\(listId)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+                    guard let documents = querySnapshot?.documents else {
+                        print("No documents")
+                        return
+                    }
+                    arrayofPantry = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                        return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                    }
+                    self.pantryCollectionView.reloadData()
+                }
+        }
         }
     
 //    MARK: Setting up NAV bar buttons

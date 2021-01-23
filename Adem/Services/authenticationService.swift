@@ -8,6 +8,7 @@
 
 import Foundation
 import Firebase
+import Resolver
 
 class AuthenticationService: ObservableObject {
   
@@ -15,11 +16,11 @@ class AuthenticationService: ObservableObject {
   
   func signIn() {
     registerStateListener() // (2)
-    Auth.auth().signInAnonymously() // (3)
+    firebaseAuth.signInAnonymously() // (3)
   }
   
   private func registerStateListener() {
-    Auth.auth().addStateDidChangeListener { (auth, user) in // (4)
+    firebaseAuth.addStateDidChangeListener { (auth, user) in // (4)
       print("Sign in state has changed.")
       self.user = user
       
@@ -33,4 +34,11 @@ class AuthenticationService: ObservableObject {
     }
   }
   
+}
+
+extension Resolver: ResolverRegistering {
+  public static func registerAllServices() {
+    register { AuthenticationService() }.scope(application)
+    //register { FirestoreTaskRepository() as TaskRepository }.scope(application)
+  }
 }

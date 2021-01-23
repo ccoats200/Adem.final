@@ -51,32 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         //MARK: Firestore
         FirebaseApp.configure()
-
-        //MARK: populate lists
-        
-        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-            //This is changing and messing it up because the auth changes
-            if user == nil {
-                let loginvc = login()
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                appDelegate.window?.rootViewController = loginvc
-                appDelegate.window?.makeKeyAndVisible()
-            } else {
-                db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
-                    
-                    guard let document = documentSnapshot else {
-                      print("Error fetching document: \(error!)")
-                      return
-                    }
-                    guard let data = document.data() else {
-                      print("Document data was empty.")
-                      return
-                    }
-                    privatehomeAttributes = data
-                  }
-            }
-        }
-        
         
         //MARK: RootController
 //        window?.rootViewController = login()

@@ -262,15 +262,15 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //Button Functions - End
       
     //MARK: - Firebase lists should the app delegate
-    func isUserLoggedIn() -> Bool {
-      return firebaseAuth.currentUser != nil
-    }
+    
 
     func firebaseDataFetch() {
         
 
-        //let listId = privatehomeAttributes["listId"] as! String
-        print(listId)
+        pullUserInformation()
+//        print(listId)
+//        let listId = privatehomeAttributes["listId"] as! String
+//        print(listId)
         
 //        userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
 //            guard let documents = querySnapshot?.documents else {
@@ -281,26 +281,42 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //                return try? queryDocumentSnapshot.data(as: mealClass.self)
 //            }
 //        }
+    }
+    
+    func pullUserInformation() {
         
-        
-        if isUserLoggedIn() {
-            
-            // userfirebaseProducts
-            listfirebaseProducts.document("cpVa58Up92hrJ3i4o4tqvgvPOte2").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-            guard let documents = querySnapshot?.documents else {
-                print("No documents")
-                return
+            //This is changing and messing it up because the auth changes
+            if currentUser == nil {
+                let loginvc = login()
+                let appDelegate = UIApplication.shared.delegate as! AppDelegate
+                appDelegate.window?.rootViewController = loginvc
+                appDelegate.window?.makeKeyAndVisible()
+            } else {
+                db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
+                    
+                    guard let document = documentSnapshot else {
+                      print("Error fetching document: \(error!)")
+                      return
+                    }
+                    guard let data = document.data() else {
+                      print("Document data was empty.")
+                      return
+                    }
+                    privatehomeAttributes = data
+                  }
+                
+                listfirebaseProducts.document("\(listId)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+                    guard let documents = querySnapshot?.documents else {
+                        print("No documents")
+                        return
+                    }
+                        arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+                            return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+                        }
+                        print("this is another test of the find \(arrayofProducts)")
+                        self.listTableView.reloadData()
+                 }
             }
-                arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
-                    return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
-                }
-                print("this is another test of the find \(arrayofProducts)")
-                self.listTableView.reloadData()
-         }
-        
-        } else {
-            sendToLogIn()
-        }
     }
     
     func getFilterOptions() {
