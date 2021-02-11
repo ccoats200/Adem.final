@@ -28,6 +28,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //    MARK: - Var & Let
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
+    
+    
         
     //    MARK: FireBase List
     var products: [food] = [food]()
@@ -60,6 +62,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     var productFilter = [fireStoreDataClass]()
     //    MARK: - Var & Let
     
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,13 +91,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             setUpBarButtonItems()
             setUpLayouts()
         }
-        firebaseDataFetch()
+        pullUserInformation()
         setUpBarButtonItems()
         setUpLayouts()
         //MARK: - sign in confirmation
         
-//        observAuthState()
-        alreadySignedIn()
 ////        MARK: Search bar
         searchBarSetUp()
 
@@ -103,30 +104,22 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //MARK: Authentication State listner
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setUpLayouts()
-            
+        //By checking user defaults on the last page of the login I might be able to use user defaults here for checking the login state.
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+        }
         print(currentUser?.email)
-//        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-//            self.listTableView.reloadData()
-//        }
     }
+    
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         setUpLayouts()
         self.isEditing = false
-//            firebaseAuth.removeStateDidChangeListener(handle!)
-    }
-    
-    func observAuthState() {
-        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-            if user == nil {
-                self.sendToLogIn()
-            } else {
-                self.sendToListScreen()
-                self.listTableView.reloadData()
-             
-            }
+        
+        if currentUser != nil {
+            firebaseAuth.removeStateDidChangeListener(handle!)
+        } else {
+            print("user is logged out")
         }
     }
     
@@ -135,36 +128,12 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         self.navigationController?.view.setNeedsLayout()
     }
     
-    
     private func setUpBarButtonItems() {
         self.navigationItem.rightBarButtonItem = cam
         self.navigationItem.leftBarButtonItem = find
         
     }
 
-    func alreadySignedIn() {
-        
-        if currentUser == nil {
-            sendToLogIn()
-        } else {
-            
-            //MARK: Search bar
-            searchBarSetUp()
-            //FIXME: why is this not working
-//            if arrayofProducts.count == 0 {
-//                tableViewIsEmpty()
-//            } else {
-//                tableViewSetup()
-//            }
-            tableViewSetup()
-
-            toolBarSetUp()
-            //setUpFilterView()
-            
-            //MARK: Firebase working below
-            firebaseDataFetch()
-        }
-    }
     
     //MARK: Gestures
     /*
@@ -256,56 +225,40 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         alert.transitioningDelegate = detailsTransitioningDelegate
         self.present(alert, animated: true, completion: nil)
     }
-    
-    
+
     
     //Button Functions - End
       
     //MARK: - Firebase lists should the app delegate
     
-
-    func firebaseDataFetch() {
-        
-
-        pullUserInformation()
-//        print(listId)
-//        let listId = privatehomeAttributes["listId"] as! String
-//        print(listId)
-        
-//        userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
-//            guard let documents = querySnapshot?.documents else {
-//                print("No documents")
-//                return
-//            }
-//            arrayofTestingPallette = documents.compactMap { queryDocumentSnapshot -> mealClass? in
-//                return try? queryDocumentSnapshot.data(as: mealClass.self)
-//            }
-//        }
-    }
-    
     func pullUserInformation() {
+        let currentListID = defaults.value(forKey: "listId")
         
             //This is changing and messing it up because the auth changes
             if currentUser == nil {
-                let loginvc = login()
-                let appDelegate = UIApplication.shared.delegate as! AppDelegate
-                appDelegate.window?.rootViewController = loginvc
-                appDelegate.window?.makeKeyAndVisible()
+                sendToLogIn()
             } else {
-                db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
-                    
-                    guard let document = documentSnapshot else {
-                      print("Error fetching document: \(error!)")
-                      return
-                    }
-                    guard let data = document.data() else {
-                      print("Document data was empty.")
-                      return
-                    }
-                    privatehomeAttributes = data
-                  }
+                //MARK: Search bar
+                searchBarSetUp()
+                //FIXME: why is this not working
+                tableViewSetup()
+                toolBarSetUp()
+                //setUpFilterView()
+                //MARK: Firebase working below
                 
-                listfirebaseProducts.document("\(listId)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+                //See firestoreData.swift
+                
+//                db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+//                    if let err = err {
+//                        print("Error getting documents: \(err)")
+//                    } else {
+//
+//                        self.defaults.setValuesForKeys((snapshot?.data())!)
+//
+//                    }
+//                }
+                
+                listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
                         print("No documents")
                         return

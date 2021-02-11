@@ -42,20 +42,33 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return UIInterfaceOrientationMask.portrait
     }
     
+    func changeRootViewController(_ vc: UIViewController, animated: Bool = true) {
+        guard let window = self.window else {
+            return
+        }
+        window.rootViewController = vc
+    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        window = UIWindow()
-        window?.makeKeyAndVisible()
+        //window = UIWindow()
+        //window?.makeKeyAndVisible()
         
-
         //MARK: Firestore
         FirebaseApp.configure()
         
         //MARK: RootController
-//        window?.rootViewController = login()
-        window?.rootViewController = tabBar()
-        
+        if currentUser?.uid != nil {
+            self.window = UIWindow()
+            self.window?.rootViewController = tabBar()
+            self.window?.makeKeyAndVisible()
+        } else {
+            self.window = UIWindow()
+            self.window?.rootViewController = login()
+            self.window?.makeKeyAndVisible()
+            print(currentUser?.uid)
+        }
+
 
         return true
     }

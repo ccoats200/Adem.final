@@ -55,7 +55,6 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         //Use Firebase from accountVC
         var homeTextField = UITextField()
         //This line should be pulling from fire base
-        homeTextField.text = "Kit"
         homeTextField.textAlignment = .center
         homeTextField.keyboardType = .alphabet
         homeTextField.returnKeyType = .done

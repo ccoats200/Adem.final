@@ -46,7 +46,15 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
     }
     
     override func viewWillAppear(_ animated: Bool) {
-
+        super.viewWillAppear(animated)
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+          // ...
+        }
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        firebaseAuth.removeStateDidChangeListener(handle!)
     }
     
 //    MARK: - GUI Elements START
@@ -92,6 +100,18 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
      @objc func handelNext() {
         
         handle = firebaseAuth.addStateDidChangeListener({ (Auth, user) in
+            db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
+                
+                guard let document = documentSnapshot else {
+                  print("Error fetching document: \(error!)")
+                  return
+                }
+                guard let data = document.data() else {
+                  print("Document data was empty.")
+                  return
+                }
+                privatehomeAttributes = data
+              }
             //let newUserfirebaseDietPreferences = db.collection("home").document(user!.uid).collection("members").document(user!.uid).collection("preferences")
             let newUserfirebaseDietPreferences = db.collection("user").document(user!.uid).collection("preferences")
             newUserfirebaseDietPreferences.document("diet").setData([
@@ -103,7 +123,9 @@ class addedDietPreferencesTwo: UIViewController, UICollectionViewDelegateFlowLay
                         print("Document successfully updated")
                     }
                 }
+            
         })
+        
 
         let signUpInfos = addedFlavorPreferences()
         if #available(iOS 13.0, *) {

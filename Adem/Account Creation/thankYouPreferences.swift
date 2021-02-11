@@ -8,9 +8,16 @@
 
 import Foundation
 import UIKit
+import Firebase
 
 class thankYouPreferences: UIViewController {
 
+    //MARK: - on this screen I need to pull the info and assign it to user defaults. I also need to pull it on ever potential drop out point. if crashed or otherwise.
+    
+    var nextButton = navigationButton()
+    let defaults = UserDefaults.standard
+
+    
     //MARK: Element calls
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,7 +29,29 @@ class thankYouPreferences: UIViewController {
         setuplayoutConstraints()
     }
     
-    var nextButton = navigationButton()
+    override func viewWillAppear(_ animated: Bool) {
+
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    
+                    self.defaults.setValuesForKeys((snapshot?.data())!)
+                    print("The person ois \(self.defaults.value(forKey: "Email"))")
+                    
+                    let userFirstName = snapshot!.get("listId") as? String
+                    print("This is \(userFirstName)")
+                }
+            }
+        }
+        super.viewWillAppear(animated)
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        firebaseAuth.removeStateDidChangeListener(handle!)
+    }
     
     private func setUpButtons() {
         
@@ -32,9 +61,11 @@ class thankYouPreferences: UIViewController {
     }
     
     @objc func handelNext() {
+        
+        
         sendToListScreen()
     }
-    
+        
     //Name Section
     let welcomeLabel: UILabel = {
         var welcome = UILabel()
@@ -77,11 +108,6 @@ class thankYouPreferences: UIViewController {
         
         return subtext
     }()
-
-    
-    override func viewWillAppear(_ animated: Bool) {
-
-    }
 
     private func setUpSubviews() {
         setUpButtons()

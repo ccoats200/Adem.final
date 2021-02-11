@@ -33,6 +33,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     let mostRecent = "most recent"
     let productRFIDNumber = "3860407808"
  
+    let defaults = UserDefaults.standard
     //MARK: Cell re-use ID
     let tableViewCell = "test"
     let cellID = "product"
@@ -120,6 +121,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     
     func firebaseDataFetch() {
 
+        let currentListID = defaults.value(forKey: "listId")
         
         if currentUser == nil {
             let loginvc = login()
@@ -127,20 +129,8 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
             appDelegate.window?.rootViewController = loginvc
             appDelegate.window?.makeKeyAndVisible()
         } else {
-            db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").addSnapshotListener { documentSnapshot, error in
-                
-                guard let document = documentSnapshot else {
-                  print("Error fetching document: \(error!)")
-                  return
-                }
-                guard let data = document.data() else {
-                  print("Document data was empty.")
-                  return
-                }
-                privatehomeAttributes = data
-              }
-            
-            listfirebaseProducts.document("\(listId)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
+
+            listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
                         print("No documents")
                         return

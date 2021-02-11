@@ -22,6 +22,10 @@ class login: UIViewController, UITextFieldDelegate {
     var twitterLoginImage = roundButtonView()
     var GoogleLoginImage = roundButtonView()
     
+    
+    let defaults = UserDefaults.standard
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
             
@@ -56,15 +60,15 @@ class login: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-//        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-//
-//        }
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+
+        }
         
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        firebaseAuth.removeStateDidChangeListener(handle!)
+        firebaseAuth.removeStateDidChangeListener(handle!)
     }
     
     func incorrectInformationAlert(title: String, message: String) {
@@ -81,8 +85,8 @@ class login: UIViewController, UITextFieldDelegate {
         guard let password = userInfoCaptureElements.passwordTextField.text else { return }
         
         //User: Signed in with email
-        firebaseAuth.signIn(withEmail: email, password: password) { (authResult, error) in //[weak self] (authResult, error) in
-            //guard let strongSelf = self else { return }
+        firebaseAuth.signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
+            guard let strongSelf = self else { return }
             
             if let error = error as? NSError {
               switch AuthErrorCode(rawValue: error.code) {
@@ -93,29 +97,49 @@ class login: UIViewController, UITextFieldDelegate {
                 // Error: The user account has been disabled by an administrator.
                 print("disabled")
               case .missingEmail:
-                self.incorrectInformationAlert(title: "Login Failed", message: "Email missing")
+                self?.incorrectInformationAlert(title: "Login Failed", message: "Email missing")
               case .wrongPassword:
                 // Error: The password is invalid or the user does not have a password.
-                self.incorrectInformationAlert(title: "Login Failed", message: "Password incorrect")
+                self?.incorrectInformationAlert(title: "Login Failed", message: "Password incorrect")
               case .invalidEmail:
                 // Error: Indicates the email address is malformed.
-                self.incorrectInformationAlert(title: "Login Failed", message: "Email incorrect")
+                self?.incorrectInformationAlert(title: "Login Failed", message: "Email incorrect")
               case .accountExistsWithDifferentCredential:
-                self.incorrectInformationAlert(title: "Login Failed", message: "Incorrect information")
+                self?.incorrectInformationAlert(title: "Login Failed", message: "Incorrect information")
               case .emailAlreadyInUse:
-                self.incorrectInformationAlert(title: "Login Failed", message: "Email already in use")
+                self?.incorrectInformationAlert(title: "Login Failed", message: "Email already in use")
               default:
                   print("Error: \(error.localizedDescription)")
               }
             } else {
-                print("User signs in successfully")
-                self.sendToListScreen()
+                
+                //This may be wrong but I need to grab defaults on login if user deleted app. only the first time. don't want multiple calls to fb.
+                handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+                    db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+                        if let err = err {
+                            print("Error getting documents: \(err)")
+                        } else {
+                            self!.defaults.setValuesForKeys((snapshot?.data())!)
+
+                        }
+                    }
+                }
+                //Need to see if this list is accurate or showing the old list. Need to go through user defaults
+                //Might need these for later
+                //https://stackoverflow.com/questions/55795444/how-to-check-is-user-is-log-in-in-different-view-controllers-in-firebase/55795674
+                //https://fluffy.es/how-to-transition-from-login-screen-to-tab-bar-controller/
+                //https://fluffy.es/how-to-transition-from-login-screen-to-tab-bar-controller/
+                
+                //This needs user defaults!!!
+                //https://github.com/firebase/quickstart-ios/blob/5694c29ac5a8dcc672ec13f55f0ab74a6b9af11e/authentication/LegacyAuthQuickstart/AuthenticationExampleSwift/EmailViewController.swift#L38-L85
+                
+                //Need a defaults setup here?
+                strongSelf.sendToListScreen()
             }
         }
     }
 
-    
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let nextField = self.view.viewWithTag(textField.tag + 1) as? UITextField
         {

@@ -25,7 +25,15 @@ extension UIViewController {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.window?.rootViewController = listController
         appDelegate.window?.makeKeyAndVisible()
-     }
+        }
     
+    func changeRootViewControllerAny(_ vc: UIViewController, animated: Bool = true) {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        guard let window = appDelegate.window else {
+            return
+        }
+        window.rootViewController = vc
+        appDelegate.window?.makeKeyAndVisible()
+    }
     
 }

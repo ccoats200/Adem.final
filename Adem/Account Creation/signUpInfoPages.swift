@@ -36,6 +36,17 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+          // ...
+        }
+        
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        firebaseAuth.removeStateDidChangeListener(handle!)
+    }
     
     //MARK: Alert
     @objc func handelDismiss() {
@@ -123,10 +134,6 @@ class addedFlavorPreferences: UIViewController, UICollectionViewDelegateFlowLayo
         reason.translatesAutoresizingMaskIntoConstraints = false
         return reason
     }()
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-    }
     
     var currentPage = 0
     let numberOfPages = 3

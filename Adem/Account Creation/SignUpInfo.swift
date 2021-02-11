@@ -235,7 +235,7 @@ class UserInfo: UIViewController, UITextFieldDelegate {
     private func setUpButtons() {
         
         nextButton.largeNextButton.backgroundColor = UIColor.white
-        nextButton.largeNextButton.setTitle("Next", for: .normal)
+        nextButton.largeNextButton.setTitle("Create Account", for: .normal)
         nextButton.largeNextButton.translatesAutoresizingMaskIntoConstraints = false
         nextButton.largeNextButton.setTitleColor(UIColor.rgb(red: 76, green: 82, blue: 111), for: .normal)
         nextButton.largeNextButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 20)

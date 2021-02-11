@@ -342,19 +342,9 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             
             //MARK: below is the old way to do it
             //db.collection("Users").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
-            db.collection("user").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
-                if let err = err {
-                    print("Error getting documents: \(err)")
-                } else {
-                    for document in snapshot!.documents {
-                        let userFirstName = document.get("FirstName") as? String
-                        let userKitchenName = document.get("homeName") as? String
-                        let latHome = document.get("home") as? String
-                        self.personalAttributes.nameofUser.largeNextButton.setTitle(userFirstName, for: .normal)
-                        self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
-                    }
-                }
-            }
+            self.personalAttributes.nameofUser.largeNextButton.setTitle("\(defaults.value(forKey: "FirstName")!)", for: .normal)
+            self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
+
         }
     }
 
@@ -516,7 +506,8 @@ class householdAdd: UICollectionReusableView {
     func myCustomInit() {
         self.addSubview(addFam)
         self.addSubview(homeName)
-        homeName.text = addHomeMember().addChangeHomeName.text//AccountVC().nameOfHouse
+        //Will need to update user defauls when changed. snapshotlistner
+        homeName.text = "\(defaults.value(forKey: "homeName")!)"//addHomeMember().addChangeHomeName.text//AccountVC().nameOfHouse
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
         addFam.largeNextButton.layer.cornerRadius = 15
         //Not finding image
