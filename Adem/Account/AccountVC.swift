@@ -452,7 +452,16 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
             // Create Header
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader, for: indexPath) as! householdAdd
             headerView.addFam.largeNextButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
-            //headerView.householdName.largeNextButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
+            userfirebaseHomeSettings.addSnapshotListener { (querySnapshot, error) in
+                guard let documents = querySnapshot?.data() else {
+                    print("No documents")
+                    return
+                }
+                let homeName = documents["homeName"]
+                //print(homeName!)
+                headerView.homeName.text = "\(homeName!)"
+             }
+            //headerView.homeName.text =
 
             reusableView = headerView
         }
@@ -507,7 +516,7 @@ class householdAdd: UICollectionReusableView {
         self.addSubview(addFam)
         self.addSubview(homeName)
         //Will need to update user defauls when changed. snapshotlistner
-        homeName.text = "\(defaults.value(forKey: "homeName")!)"//addHomeMember().addChangeHomeName.text//AccountVC().nameOfHouse
+        homeName.text = "\(defaults.value(forKey: "homeName")!)"
         addFam.largeNextButton.backgroundColor = UIColor.ademGreen
         addFam.largeNextButton.layer.cornerRadius = 15
         //Not finding image

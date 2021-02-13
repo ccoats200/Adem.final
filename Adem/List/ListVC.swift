@@ -347,7 +347,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
             listTableView.deleteRows(at: [indexPath], with: UITableView.RowAnimation.automatic)
         }
     }
-       
+    
     //MARK: - Swipe actions
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
         //If the product in not in the list and they are searching they can swipe to the left to add it to their list

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import AVFoundation
 import CoreImage.CIFilterBuiltins
+import Firebase
 
 
 class addHomeMember: UIViewController, UITextFieldDelegate {
@@ -22,7 +23,6 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     let scanner = camVC()
     let cameraView = QRScannerView()
 
-    let linkToFam = privatehomeAttributes["uid"]
     let houseName = privatehomeAttributes["homeName"]
     var placeholderNameOfHome = "Kitchen"
     
@@ -34,7 +34,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         self.addChangeHomeName.delegate = self
         view.addSubview(addLabelView)
 //        updates based on firebase
-        addChangeHomeName.text = houseName as! String
+//        addChangeHomeName.text = houseName as! String
         fetchHomeSettings()
 
         setUpAddDismiss()
@@ -54,6 +54,10 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     var addChangeHomeName: UITextField = {
         //Use Firebase from accountVC
         var homeTextField = UITextField()
+        
+        //this needs to change to default of Kitchen
+        homeTextField.placeholder = "Kitchen"
+        homeTextField.text = defaults.string(forKey: "homeName")
         //This line should be pulling from fire base
         homeTextField.textAlignment = .center
         homeTextField.keyboardType = .alphabet
@@ -67,14 +71,30 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
-        //This line should update firebase
-        let text = textField.text
-        addChangeHomeName.text = text
-        
-        addChangeHomeName.resignFirstResponder()
+        textField.resignFirstResponder()
         return true
     }
+    
+    func updatedLabelandFirebase(textField: UITextField) {
+        guard let text = textField.text else { return }
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField, reason: UITextField.DidEndEditingReason) {
+        if textField.text?.isEmpty == true {
+            updatedLabelandFirebase(textField: textField)
+            defaults.set("Kitchen", forKey: "homeName")
+            userfirebaseHomeSettings.updateData([
+                                            "homeName" : "Kitchen"])
+        } else {
+            updatedLabelandFirebase(textField: textField)
+            defaults.set(textField.text, forKey: "homeName")
+            userfirebaseHomeSettings.updateData([
+                                            "homeName" : textField.text!])
+            //should update for the group too.
+        }
+        
+    }
+    
     
     @objc func switchStatsViews() {
         self.view.bringSubviewToFront(accountViewToSwitch[homeStatssegmentContr.selectedSegmentIndex])
