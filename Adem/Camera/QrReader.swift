@@ -59,6 +59,7 @@ class QRScannerView: UIView {
                     self.newHome = barcode.rawValue!
                     //This should be one time
                     //Confirm and merge lists
+                    defaults.set(barcode.rawValue!, forKey: "listId")
                     userfirebaseHomeSettings.updateData([
                                                     "listId" : barcode.rawValue!])
                 }

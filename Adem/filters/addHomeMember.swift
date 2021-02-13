@@ -170,16 +170,15 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     }()
     
     @objc func handleLeaveGroup() {
-        
+        defaults.set(homeListID!, forKey: "listId")
         userfirebaseHomeSettings.updateData([
-                                        "listId" : privatehomeAttributes["uid"]!])
-//        userfirebaseHousehold.updateData([
-//                                        "homeId" : privatehomeAttributes["uid"]!])
+                                        "listId" : homeListID!])
+
     }
     
     func leaveGroupButtonAttributes() {
         //https://developer.apple.com/documentation/swiftui/image/interpolation
-        welcomeQR.image = generateQRCodeImage(linkToFam as! String)
+        welcomeQR.image = generateQRCodeImage(homeListID as! String)
         //welcomeQR.contentMode = .sc
         leaveGroup.largeNextButton.backgroundColor = UIColor.ademRed
         leaveGroup.largeNextButton.setTitleColor(UIColor.white, for: .normal)

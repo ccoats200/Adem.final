@@ -18,9 +18,13 @@ let currentUser = firebaseAuth.currentUser
 let firebaseAuth = Auth.auth()
 let listId = privatehomeAttributes["listId"] as? String
 
+let currentListID = defaults.value(forKey: "listId")
+let homeListID = defaults.value(forKey: "uid")
+
 let userfirebaseProducts = db.collection("user").document(currentUser!.uid).collection("public").document("products").collection("List")
-let productAnalytics = db.collection("lists").document("\(listId)").collection("list")
 let listfirebaseProducts = db.collection("lists")
+let productAnalytics = listfirebaseProducts.document("\(currentListID!)").collection("list")
+
 //let userfirebaseProducts = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("public").document("products").collection("List")
 let roomatesfirebaseProducts = db.collection("home").document("\(privatehomeAttributes["home"])").collection("members").document("\(privatehomeAttributes["home"])").collection("public").document("products").collection("List")
 
@@ -188,12 +192,6 @@ extension UIViewController {
     
     //MARK: -List/Pantry
     func updateProductLocationValues(indexPath: String, pantry: Bool, list: Bool){
-             
-            // Or more likely change something related to this cell specifically.
-    //        let cell = listTableView.cellForRow(at: indexPath)
-    //        for i in arrayofProducts {//where i.productName == cell?.textLabel?.text {
-                
-                
         productAnalytics.document("\(indexPath)").updateData([
             "productPantry": pantry,
             "productList": list

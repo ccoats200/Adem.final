@@ -105,6 +105,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //By checking user defaults on the last page of the login I might be able to use user defaults here for checking the login state.
+        pullUserInformation()
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
         }
         print(currentUser?.email)
@@ -232,7 +233,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //MARK: - Firebase lists should the app delegate
     
     func pullUserInformation() {
-        let currentListID = defaults.value(forKey: "listId")
+        
+        //this isn't updating until killing app. I added this to view will appear and it might be working. but forced??
+
         
             //This is changing and messing it up because the auth changes
             if currentUser == nil {

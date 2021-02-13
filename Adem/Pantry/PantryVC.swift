@@ -121,7 +121,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     
     func firebaseDataFetch() {
 
-        let currentListID = defaults.value(forKey: "listId")
         
         if currentUser == nil {
             let loginvc = login()
