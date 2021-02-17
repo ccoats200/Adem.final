@@ -40,10 +40,14 @@ var arrayofHouse = [collectiveHouseAttributes]()
 var arrayofProducts = [fireStoreDataClass]()
 var arrayofAddProducts = [fireStoreDataClass]()
 
+var sharedUser = [sharedHouseAttributes]()
+var sharedUserNoClass = [String: Any]()
+
 
 var arrayofMeals = [mealClass]()
 var arrayofTestingPallette = [mealClass]()
 var arrayofLikedMeals = [mealClass]()
+
 
 var backUp = [fireStoreDataStruct]()
 var backUp2 = [fireStoreDataStruct]()
@@ -56,6 +60,7 @@ var searchDimensions = ["Add","List"]
 //MARK: - This is for Changing the home they are in
 //Needs to be userdefaults
 var privatehomeAttributes = [String: Any]()
+
 //MARK: - This is for Changing the home they are in
 
 class UserRepository {
@@ -153,6 +158,35 @@ struct collectiveHouseAttributes: Identifiable, Codable {
         self.id = id
         self.homeName = homeName
         self.homeId = homeId
+    }
+}
+
+struct sharedHouseAttributes: Identifiable, Codable {
+    
+    @DocumentID var id: String?
+    var houseName: String
+    var owner: String
+    var sharedWith: [String]
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case houseName
+        case owner
+        case sharedWith
+   }
+    
+    enum ExpressionKeys: String {
+        case id
+        case houseName
+        case owner
+        case sharedWith
+    }
+    
+    init(id: String, houseName: String, owner: String, sharedWith: [String]) {
+        self.id = id
+        self.houseName = houseName
+        self.owner = owner
+        self.sharedWith = sharedWith
     }
 }
 

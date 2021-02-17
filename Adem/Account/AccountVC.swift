@@ -108,19 +108,40 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func fetchUserPrivateInfo() {
         
-        //FIXME: This is still using the old hierarchy
-        userfirebaseHomeSettings.addSnapshotListener { documentSnapshot, error in
+        
+        listfirebaseProducts.document("\(currentListID!)").addSnapshotListener { documentSnapshot, error in
             
             guard let document = documentSnapshot else {
-              print("Error fetching document: \(error!)")
-              return
+                print("Error fetching document: \(error!)")
+                return
             }
             guard let data = document.data() else {
-              print("Document data was empty.")
-              return
+                print("Document data was empty.")
+                return
             }
-            privatehomeAttributes = data
-          }
+            
+            sharedUserNoClass = data
+            print(sharedUser)
+            
+            
+//            print(people)
+//            for i in people {
+//                db.document(people!).collection("private").document("usersPrivateData").getD
+//            }
+        }
+        //FIXME: This is still using the old hierarchy
+//        userfirebaseHomeSettings.addSnapshotListener { documentSnapshot, error in
+            
+//            guard let document = documentSnapshot else {
+//              print("Error fetching document: \(error!)")
+//              return
+//            }
+//            guard let data = document.data() else {
+//              print("Document data was empty.")
+//              return
+//            }
+//            privatehomeAttributes = data
+//          }
     }
     
     func setNavbar() {
@@ -426,6 +447,7 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let personCell = collectionView.dequeueReusableCell(withReuseIdentifier: ffCCellID, for: indexPath) as! ffCell
+        //MARK: - Finding the friends
         let houseMembers = friendsAssociated[indexPath.item]
         
         personCell.personImageView.image = UIImage(named: (houseMembers.friendImage)!)

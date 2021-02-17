@@ -54,7 +54,7 @@ class QRScannerView: UIView {
                     return
                     }
                 for barcode in barcodes! {
-                    //Scanning is working the update is not
+                    //Scanning might only need to read once? IDK
                     print(barcode.rawValue!)
                     self.newHome = barcode.rawValue!
                     //This should be one time
@@ -62,6 +62,7 @@ class QRScannerView: UIView {
                     defaults.set(barcode.rawValue!, forKey: "listId")
                     userfirebaseHomeSettings.updateData([
                                                     "listId" : barcode.rawValue!])
+                    //Glitchend
                     listfirebaseProducts.document("\(currentListID!)").updateData(["sharedWith" : FieldValue.arrayUnion([homeListID!])])
                 }
             }
