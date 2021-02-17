@@ -20,6 +20,7 @@ let listId = privatehomeAttributes["listId"] as? String
 
 let currentListID = defaults.value(forKey: "listId")
 let homeListID = defaults.value(forKey: "uid")
+let currentUserStatus = defaults.value(forKey: "isAnonymous")
 
 let userfirebaseProducts = db.collection("user").document(currentUser!.uid).collection("public").document("products").collection("List")
 let listfirebaseProducts = db.collection("lists")

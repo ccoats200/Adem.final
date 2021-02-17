@@ -121,13 +121,6 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     
     func firebaseDataFetch() {
 
-        
-        if currentUser == nil {
-            let loginvc = login()
-            let appDelegate = UIApplication.shared.delegate as! AppDelegate
-            appDelegate.window?.rootViewController = loginvc
-            appDelegate.window?.makeKeyAndVisible()
-        } else {
 
             listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productPantry", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
@@ -139,14 +132,14 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
                     }
                     self.pantryCollectionView.reloadData()
                 }
-        }
-        }
+        
+    }
     
 //    MARK: Setting up NAV bar buttons
     private func setUpBarButtonItems() {
         self.navigationItem.leftBarButtonItem = filter
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
-        self.navigationItem.rightBarButtonItem = searching
+        //self.navigationItem.rightBarButtonItem = searching
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         
     }

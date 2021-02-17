@@ -323,7 +323,16 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
         
                
-        if currentUser?.isAnonymous == true {
+        if currentUser?.isAnonymous == false {
+            //Sign out text
+            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
+            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
+            //Sign out text
+            self.personalAttributes.nameofUser.largeNextButton.setTitle("\(defaults.value(forKey: "FirstName")!)", for: .normal)
+            self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
+
+        } else {
             let doesNotHaveAccount = "Join now"
             self.personalAttributes.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)
             self.personalAttributes.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
@@ -331,20 +340,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.signUp), for: .touchDown)
             self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign In", for: .normal)
             self.homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
-        } else if currentUser == nil {
-            sendToLogIn()
-        } else {
-            //Sign out text
-            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
-            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
-            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
-            //Sign out text
             
-            //MARK: below is the old way to do it
-            //db.collection("Users").document(currentUser!.uid).collection("private").getDocuments { (snapshot, err) in
-            self.personalAttributes.nameofUser.largeNextButton.setTitle("\(defaults.value(forKey: "FirstName")!)", for: .normal)
-            self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
-
         }
     }
 

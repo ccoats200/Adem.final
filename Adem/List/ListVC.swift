@@ -80,25 +80,17 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            setUpBarButtonItems()
-            setUpLayouts()
-
             self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
             //MARK: Opt out of dark mode
             //overrideUserInterfaceStyle = .light
-        } else {
+        }
             //Revert to default
+        searchBarSetUp()
+        pullUserInformation()
+        tableViewSetup()
             setUpBarButtonItems()
             setUpLayouts()
-        }
-        pullUserInformation()
-        setUpBarButtonItems()
-        setUpLayouts()
-        //MARK: - sign in confirmation
-        
-////        MARK: Search bar
-        searchBarSetUp()
-
+            
     }
     
     //MARK: Authentication State listner
@@ -106,11 +98,16 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         super.viewWillAppear(animated)
         //By checking user defaults on the last page of the login I might be able to use user defaults here for checking the login state.
         pullUserInformation()
+        tableViewSetup()
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
         }
         print(currentUser?.email)
     }
     
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        searchBarSetUp()
+//    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -130,7 +127,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     }
     
     private func setUpBarButtonItems() {
-        self.navigationItem.rightBarButtonItem = cam
+        //self.navigationItem.rightBarButtonItem = cam
         self.navigationItem.leftBarButtonItem = find
         
     }
@@ -169,6 +166,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         }
     }
     
+    /* Might be for later versions
     func toolBarSetUp() {
 
         let fixedWidth = 15
@@ -184,7 +182,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         rightSpacer.width = CGFloat(fixedWidth)
         self.setToolbarItems([leftSpacer, add, leftCenterSpacer, centerSpacer, rightCenterSpacer, delete, rightSpacer], animated: false)
     }
-    
+    */
     //MARK: Button Functions - Start
     //Edit Button
     @objc func handleEditButtonClicked() {
@@ -241,11 +239,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             if currentUser == nil {
                 sendToLogIn()
             } else {
-                //MARK: Search bar
-                searchBarSetUp()
+                //MARK: Search bar not working
+                
                 //FIXME: why is this not working
-                tableViewSetup()
-                toolBarSetUp()
                 //setUpFilterView()
                 //MARK: Firebase working below
                 
@@ -270,7 +266,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                             return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
                         }
                         print("this is another test of the find \(arrayofProducts)")
-                        self.listTableView.reloadData()
+                        
+                    if arrayofProducts.isEmpty == true {
+                        self.tableViewIsEmpty()
+                    }
+                    self.listTableView.reloadData()
                  }
             }
     }
@@ -313,6 +313,7 @@ extension listViewController {
         listTableView.backgroundColor = UIColor.white
         listTableView.allowsMultipleSelectionDuringEditing = true
         listTableView.allowsSelectionDuringEditing = true
+        
             
 //        MARK:- Edit Gesture
        // let panGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
@@ -380,6 +381,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     //MARK: Table view cell properties - Start
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 
+        //This should only be the ones in the search
         if (self.tableViewSearchController.isActive) {
             return filteringproducts.count
         } else {
@@ -418,12 +420,6 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
 
         if self.listTableView.isEditing {
             
-//            var selectedRows = listTableView.indexPathsForSelectedRows
-//            var items = [String]()
-//
-//            for indexPath in selectedRows {
-//                items.append(arrayofProducts[indexPath.row])
-//            }
         } else {
             addTimeStamp(id: arrayofProducts[indexPath.row].id!, action: engagements.engaged.rawValue)
 //        addCategory(id: arrayofIds[indexPath.row].id)
@@ -513,7 +509,6 @@ extension listViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 1
     }
-    
 }
 
 extension listViewController: UISearchBarDelegate {
@@ -542,17 +537,16 @@ extension listViewController: UISearchBarDelegate {
         tableViewSearchController.obscuresBackgroundDuringPresentation = false
         tableViewSearchController.searchBar.delegate = self // Monitor when the search button is tapped.
         definesPresentationContext = true
-        
-        //instantiate the controller
-        
-        // Place the search bar in the navigation bar.
         navigationItem.searchController = tableViewSearchController
+        
         
         //Design elements
         tableViewSearchController.searchBar.placeholder = "How can I help?"
         tableViewSearchController.searchBar.autocorrectionType = .default
         tableViewSearchController.searchBar.enablesReturnKeyAutomatically = true
         tableViewSearchController.hidesNavigationBarDuringPresentation = true
+        //FIXME: Search bar glitch
+        self.navigationItem.hidesSearchBarWhenScrolling = false
         tableViewSearchController.searchBar.tintColor = UIColor.white
         
         tableViewSearchController.searchBar.scopeButtonTitles = searchDimensions

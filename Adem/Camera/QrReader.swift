@@ -62,6 +62,7 @@ class QRScannerView: UIView {
                     defaults.set(barcode.rawValue!, forKey: "listId")
                     userfirebaseHomeSettings.updateData([
                                                     "listId" : barcode.rawValue!])
+                    listfirebaseProducts.document("\(currentListID!)").updateData(["sharedWith" : FieldValue.arrayUnion([homeListID!])])
                 }
             }
         }
