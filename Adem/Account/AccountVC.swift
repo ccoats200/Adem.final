@@ -26,6 +26,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     //This needs to be firestoreDataClass for finding people in the home collection
     var friendsAssociated = friends
+    private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     
     
     var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Rate Us","Settings"] //"Apps"]
@@ -108,8 +109,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func fetchUserPrivateInfo() {
         
-        
-        listfirebaseProducts.document("\(currentListID!)").addSnapshotListener { documentSnapshot, error in
+        listfirebaseProducts.document("\(currentListID!)").addSnapshotListener { [weak self] documentSnapshot, error in
             
             guard let document = documentSnapshot else {
                 print("Error fetching document: \(error!)")
@@ -121,8 +121,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             }
             
             sharedUserNoClass = data
-            print(sharedUser)
-            
+//            sharedUser = data.compactMap { documentSnapshot -> sharedHouseAttributes? in
+//                return try? documentSnapshot.data(as: sharedHouseAttributes.self)
+//            }
+            print("Is this a class \(sharedUser)")
+            print("Is a collection here? \(sharedUserNoClass)")
+
             
 //            print(people)
 //            for i in people {
@@ -180,11 +184,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
 
     
-    @objc func editUserInfo() {
-        self.dismiss(animated: true, completion: nil)
-        //This works but I think is fucked
-        print("testing this")
-       }
+    
     
     @objc func handelLogin() {
         let loginUser = login()
@@ -419,7 +419,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
     }
     
-    private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     //Search Button
     @objc func handleAddPerson() {
         let alert = addHomeMember()
@@ -428,6 +427,14 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         alert.transitioningDelegate = detailsTransitioningDelegate
         self.present(alert, animated: true, completion: nil)
     }
+    
+    @objc func editUserInfo() {
+        let editUserInformation = editUserInfoPage()
+        detailsTransitioningDelegate = halfwayControllerTransitioningDelegate(from: self, to: editUserInformation)
+        editUserInformation.modalPresentationStyle = UIModalPresentationStyle.custom
+        editUserInformation.transitioningDelegate = detailsTransitioningDelegate
+        self.present(editUserInformation, animated: true, completion: nil)
+       }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

@@ -80,7 +80,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             navigationController?.navigationBar.prefersLargeTitles = true
             navigationController?.navigationBar.standardAppearance = navBarAppearance
             navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
             //MARK: Opt out of dark mode
             //overrideUserInterfaceStyle = .light
         }
@@ -127,8 +126,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     }
     
     private func setUpBarButtonItems() {
-        //self.navigationItem.rightBarButtonItem = cam
-        self.navigationItem.leftBarButtonItem = find
+        self.navigationItem.rightBarButtonItem = cam
+        self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
+        
+        //self.navigationItem.leftBarButtonItem = find
         
     }
 

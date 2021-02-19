@@ -14,11 +14,11 @@ var docRef: DocumentReference!
 var colRef: CollectionReference!
 var handle: AuthStateDidChangeListenerHandle?
 let currentUser = firebaseAuth.currentUser
-//let currentHome = firebaseAuth.
 let firebaseAuth = Auth.auth()
 let listId = privatehomeAttributes["listId"] as? String
 
 let currentListID = defaults.value(forKey: "listId")
+let fireBaseUsersName = defaults.value(forKey: "FirstName")
 let homeListID = defaults.value(forKey: "uid")
 let currentUserStatus = defaults.value(forKey: "isAnonymous")
 

@@ -64,6 +64,7 @@ class QRScannerView: UIView {
                                                     "listId" : barcode.rawValue!])
                     //Glitchend
                     listfirebaseProducts.document("\(currentListID!)").updateData(["sharedWith" : FieldValue.arrayUnion([homeListID!])])
+                    //https://cloud.google.com/firestore/docs/manage-data/add-data
                 }
             }
         }
