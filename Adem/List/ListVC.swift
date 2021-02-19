@@ -253,11 +253,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //                        print("Error getting documents: \(err)")
 //                    } else {
 //
-//                        self.defaults.setValuesForKeys((snapshot?.data())!)
+//                        defaults.setValuesForKeys((snapshot?.data())!)
 //
 //                    }
 //                }
-                
+//
                 listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
                         print("No documents")

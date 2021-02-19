@@ -351,6 +351,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
             //Sign out text
             self.personalAttributes.nameofUser.largeNextButton.setTitle("\(defaults.value(forKey: "FirstName")!)", for: .normal)
+            self.personalAttributes.userProfileImage.image = UIImage(named: "\(defaults.value(forKey: "icon")!)")
             self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
 
         } else {

@@ -120,9 +120,16 @@ extension editUserInfoPage: UICollectionViewDelegate, UICollectionViewDataSource
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 
+        var icon = iconOptions[indexPath.item]
+        //need to change automatically like the name
+        defaults.set(icon, forKey: "icon")
+        userfirebaseHomeSettings.updateData([
+                                                "icon" : icon])
+        print(icon)
+        
+        
         //This needs to change the value in firestore
         //default value should be the chefs hat
-        print("testi")
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

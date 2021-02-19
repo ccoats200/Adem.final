@@ -43,7 +43,7 @@ class ProfileView: UIView {
     //UIView Profile Pic
     var userProfileImage: UIImageView = {
         let profPic = UIImageView()
-        profPic.image = UIImage(named: "chop")
+        //profPic.image = UIImage(named: "chop")
         profPic.backgroundColor = UIColor.ademGreen
         profPic.contentMode = .scaleAspectFit
         profPic.layer.cornerRadius = 50
