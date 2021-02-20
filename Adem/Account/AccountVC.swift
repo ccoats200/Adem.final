@@ -126,6 +126,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     func fetchUserPrivateInfo() {
         
+        //Looking for the people in the friends group
         listfirebaseProducts.document("\(currentListID!)").addSnapshotListener { [weak self] documentSnapshot, error in
             
             guard let document = documentSnapshot else {

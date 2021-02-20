@@ -39,6 +39,10 @@ class editUserInfoPage: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
+        //This is so constant changes don't add up to cost in firebase
+        userfirebaseHomeSettings.updateData([
+                                                "icon" : defaults.value(forKey: "icon")!])
+        
     }
    
     let usersName: UILabel = {
@@ -134,8 +138,8 @@ extension editUserInfoPage: UICollectionViewDelegate, UICollectionViewDataSource
         //need to change automatically like the name
     
         defaults.setValue(icon, forKey: "icon")
-        userfirebaseHomeSettings.updateData([
-                                                "icon" : icon])
+        //userfirebaseHomeSettings.updateData([
+                                                //"icon" : icon])
 
         
         

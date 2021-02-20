@@ -191,11 +191,10 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
     
     @objc func handleLeaveGroup() {
         listfirebaseProducts.document("\(currentListID!)").updateData(["sharedWith" : FieldValue.arrayRemove([homeListID!])])
-        defaults.set(homeListID!, forKey: "listId")
+        defaults.setValue(homeListID!, forKey: "listId")
         userfirebaseHomeSettings.updateData([
                                         "listId" : homeListID!])
-        
-
+        print("treying the lee \(currentListID!)")
     }
     
     func leaveGroupButtonAttributes() {

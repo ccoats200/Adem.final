@@ -12,6 +12,7 @@ import AVFoundation
 import CoreData
 import FirebaseFirestoreSwift
 import Lottie
+import Combine
 
 class listViewController: UIViewController, UISearchControllerDelegate, UIGestureRecognizerDelegate {
 
@@ -60,6 +61,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //    MARK: Filter
     var filter = [fireStoreDataClass]()
     var productFilter = [fireStoreDataClass]()
+    var observer: NSKeyValueObservation?
     //    MARK: - Var & Let
     
     
@@ -84,12 +86,22 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //overrideUserInterfaceStyle = .light
         }
             //Revert to default
+        observer = defaults.observe(\.listId, options: [.initial, .new], changeHandler: { (defaults, change) in
+            //https://stackoverflow.com/questions/10784439/ios-nsuserdefaults-watching-the-change-of-values-for-a-single-key
+            //Not sure if this is right but it working
+            //not seeing it change
+            print("why\(currentListID)")
+            self.pullUserInformation()
+            })
         searchBarSetUp()
-        pullUserInformation()
+        //pullUserInformation()
         tableViewSetup()
             setUpBarButtonItems()
             setUpLayouts()
             
+    }
+    deinit {
+        observer?.invalidate()
     }
     
     //MARK: Authentication State listner
@@ -258,6 +270,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //                    }
 //                }
 //
+                print(currentListID)
                 listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
                         print("No documents")

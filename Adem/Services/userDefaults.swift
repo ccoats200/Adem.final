@@ -21,12 +21,9 @@ let currentUserStatus = defaults.value(forKey: "isAnonymous")
 extension UserDefaults {
     @objc dynamic var icon: String {
         return string(forKey: "icon")!
-//        get {
-//            return string(forKey: "icon")!
-//        }
-//        set {
-//            set(newValue, forKey: "icon")
-//        }
+    }
+    @objc dynamic var listId: String {
+        return string(forKey: "listId")!
     }
 }
 
