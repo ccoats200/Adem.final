@@ -27,8 +27,7 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
     
 }
 */
-//MARK: Apple Defaults
-let defaults = UserDefaults.standard
+
 
 //var arrayofPantry = [fireStoreDataStruct]()
 //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.

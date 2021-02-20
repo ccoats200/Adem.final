@@ -62,6 +62,7 @@
 		35B0F300245A82F900823BCE /* firebase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35B0F2FF245A82F900823BCE /* firebase.swift */; };
 		35BAEB8725DF44920045B8D6 /* editUserInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BAEB8625DF44920045B8D6 /* editUserInfo.swift */; };
 		35BAEB8C25DF4F9E0045B8D6 /* iconLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BAEB8B25DF4F9E0045B8D6 /* iconLayout.swift */; };
+		35BAEB9125E182910045B8D6 /* userDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35BAEB9025E182910045B8D6 /* userDefaults.swift */; };
 		35C3A35A23C6075400E12747 /* loginViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C3A35923C6075400E12747 /* loginViews.swift */; };
 		35C6CAF025635BA300A4464E /* addHomeMember.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C6CAEF25635BA300A4464E /* addHomeMember.swift */; };
 		35C6CAF8256375F000A4464E /* QrReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 35C6CAF7256375F000A4464E /* QrReader.swift */; };
@@ -182,6 +183,7 @@
 		35B0F2FF245A82F900823BCE /* firebase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = firebase.swift; sourceTree = "<group>"; };
 		35BAEB8625DF44920045B8D6 /* editUserInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = editUserInfo.swift; sourceTree = "<group>"; };
 		35BAEB8B25DF4F9E0045B8D6 /* iconLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iconLayout.swift; sourceTree = "<group>"; };
+		35BAEB9025E182910045B8D6 /* userDefaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userDefaults.swift; sourceTree = "<group>"; };
 		35C3A35923C6075400E12747 /* loginViews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = loginViews.swift; sourceTree = "<group>"; };
 		35C6CAEF25635BA300A4464E /* addHomeMember.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = addHomeMember.swift; sourceTree = "<group>"; };
 		35C6CAF7256375F000A4464E /* QrReader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrReader.swift; sourceTree = "<group>"; };
@@ -535,6 +537,7 @@
 				351B8DF42342F10A006CEAE1 /* imageText.swift */,
 				35D7199F25BA869300131E67 /* authenticationService.swift */,
 				35D719A425BA87A100131E67 /* firebaseFetches.swift */,
+				35BAEB9025E182910045B8D6 /* userDefaults.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -905,6 +908,7 @@
 				35D6483B22ECBC2300015352 /* Circle Trasition.swift in Sources */,
 				35774D4D255A2BB2005FBFD2 /* halfWay.swift in Sources */,
 				35D6486122ECBDEF00015352 /* settingVC.swift in Sources */,
+				35BAEB9125E182910045B8D6 /* userDefaults.swift in Sources */,
 				35D6484722ECBCBA00015352 /* Design.Elements.swift in Sources */,
 				357B35F223A9DE7000223F51 /* camController.swift in Sources */,
 				35D6480122ECBABA00015352 /* Adem.xcdatamodeld in Sources */,

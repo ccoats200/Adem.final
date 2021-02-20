@@ -131,7 +131,10 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                     "Password": password,
                     "uid": authResult!.user.uid,
                     "isAnonymous": authResult!.user.isAnonymous,
-                    "homeName": "Kitchen"
+                    "homeName": "Kitchen",
+                    "icon": "spatula",
+                    "pantyIsShared": false,
+                    "listIsShared": false,
                 ]) { (error) in
                     if let error = error {
                         print("Error creating documents: \(error.localizedDescription)")

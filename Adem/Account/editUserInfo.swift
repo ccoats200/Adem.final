@@ -18,6 +18,7 @@ class editUserInfoPage: UIViewController {
     var userIcons: UICollectionView!
     let iconCCellID = "Cmeals"
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -29,8 +30,17 @@ class editUserInfoPage: UIViewController {
         setUpAddDismiss()
     }
     
-   
+
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        
+    }
+   
     let usersName: UILabel = {
         var welcome = UILabel()
         welcome.text = "I Identify as..."//"\(fireBaseUsersName!)"
@@ -122,10 +132,11 @@ extension editUserInfoPage: UICollectionViewDelegate, UICollectionViewDataSource
 
         var icon = iconOptions[indexPath.item]
         //need to change automatically like the name
-        defaults.set(icon, forKey: "icon")
+    
+        defaults.setValue(icon, forKey: "icon")
         userfirebaseHomeSettings.updateData([
                                                 "icon" : icon])
-        print(icon)
+
         
         
         //This needs to change the value in firestore

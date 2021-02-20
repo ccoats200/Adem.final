@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Firebase
+import Combine
 
 class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -29,6 +30,8 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
     
     
+    
+    
     var acctOptions = ["Recipies","Diet Preferences","Stores","Flavors","Rate Us","Settings"] //"Apps"]
     
     //MARK: Views to set up
@@ -39,11 +42,13 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     var accountViewToSwitch: [UIView]!
     
     let collectionViewHeaderReuse = "Header"
+    
+    var observer: NSKeyValueObservation?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setNavbar()
+        //setNavbar()
         
         view.backgroundColor = UIColor.white
         
@@ -52,20 +57,27 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         /*This needs to link household and have the option for roomates or families.
          if roommies then put initials next to their items in the pantry.
          */
+        observer = defaults.observe(\.icon, options: [.initial, .new], changeHandler: { (defaults, change) in
+            //Not sure if this is right but it working
+            self.handleUserInfo()
+            })
         
         setUptopViews()
-        handleUserInfo()
+        //handleUserInfo()
         setUpdefaultSegment()
-        
-        //testing
         fetchUserPrivateInfo()
         
     }
     
-    
+
+    deinit {
+        observer?.invalidate()
+    }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print("the view wne")
+        
         
         setNavbar()
         
@@ -77,7 +89,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         }
         
         //MARK: Nav bar is see through
-        setUptopViews()
+        
         
         //MARK: Nav bar is see through
         
@@ -97,11 +109,12 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        handleUserInfo()
+        
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        print("is hdkl")
 
         firebaseAuth.removeStateDidChangeListener(handle!)
     }
@@ -343,6 +356,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
         //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
         
+        self.personalAttributes.userProfileImage.image = UIImage(named: "\(defaults.value(forKey: "icon")!)")
                
         if currentUser?.isAnonymous == false {
             //Sign out text
@@ -351,7 +365,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
             //Sign out text
             self.personalAttributes.nameofUser.largeNextButton.setTitle("\(defaults.value(forKey: "FirstName")!)", for: .normal)
-            self.personalAttributes.userProfileImage.image = UIImage(named: "\(defaults.value(forKey: "icon")!)")
+            
             self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
 
         } else {
@@ -436,6 +450,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         editUserInformation.transitioningDelegate = detailsTransitioningDelegate
         self.present(editUserInformation, animated: true, completion: nil)
        }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
