@@ -48,7 +48,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //setNavbar()
         
         view.backgroundColor = UIColor.white
         
@@ -58,6 +57,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
          if roommies then put initials next to their items in the pantry.
          */
         observer = defaults.observe(\.icon, options: [.initial, .new], changeHandler: { (defaults, change) in
+            //https://stackoverflow.com/questions/10784439/ios-nsuserdefaults-watching-the-change-of-values-for-a-single-key
             //Not sure if this is right but it working
             self.handleUserInfo()
             })
@@ -79,7 +79,11 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         print("the view wne")
         
         
-        setNavbar()
+            
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.isTranslucent = true
+        navigationController?.view.backgroundColor = UIColor.clear
         
         setUpdefaultSegment()
         handleUserInfo()
@@ -161,19 +165,11 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 //          }
     }
     
-    func setNavbar() {
-        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationController?.navigationBar.isTranslucent = true
-        self.navigationController?.view.backgroundColor = UIColor.clear
-    }
-    
     //MARK: - Button Action - Start
     @objc func handleRecipies() {
-        let privacyController = friendsTVC()
+        let recipiesController = mealsuserCreatedAndLikedTVC()
         
-        //FIXME: This is cutting off the top of the user image
-        self.navigationController?.pushViewController(privacyController, animated: true)
+        self.present(recipiesController, animated: true, completion: nil)
     }
     
     

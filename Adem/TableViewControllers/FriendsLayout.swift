@@ -18,8 +18,8 @@ struct friendsListInfo {
     let title: String?
 }
 
-class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
+class mealsuserCreatedAndLikedTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
+    //MARK: Later this will need filters and search
     var data = [friendsListInfo]()
     
     private var likedMealsTableView: UITableView!
@@ -31,30 +31,33 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         super.viewDidLoad()
         
         firebaseLikedMealFetch()
-        
+        view.backgroundColor = UIColor.white
 
         //FIXME: This is cutting off the top of the user image
 
         //let setText = UILabel()
-        navigationItem.title = "Liked Meals"
-        if #available(iOS 13.0, *) {
-            let navBarAppearance = UINavigationBarAppearance()
-            navBarAppearance.configureWithOpaqueBackground()
-            navBarAppearance.titleTextAttributes = [.foregroundColor: UIColor.white]
-            //navBarAppearance.largeTitleTextAttributes = [.foregroundColor: UIColor.white]
-            navBarAppearance.backgroundColor = UIColor.ademBlue
-            navigationController?.navigationBar.prefersLargeTitles = false
-            navigationController?.navigationBar.standardAppearance = navBarAppearance
-            navigationController?.navigationBar.scrollEdgeAppearance = navBarAppearance
-            navigationController?.navigationBar.tintColor = UIColor.white
-        } else {
-            //Something else
-            print("something is wrong")
-        }
-        let displayWidth: CGFloat = self.view.frame.width
-        let displayHeight: CGFloat = self.view.frame.height
+        setUpMealsTVC()
+        setuplayoutConstraints()
         
-        likedMealsTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.view.layoutIfNeeded()
+        self.navigationController?.view.setNeedsLayout()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
+    func setUpMealsTVC() {
+        //let displayWidth: CGFloat = self.view.frame.width
+        //let displayHeight: CGFloat = self.view.frame.height
+        
+        likedMealsTableView = UITableView(frame: self.view.frame)
+        //likedMealsTableView = UITableView(frame: CGRect(x: 0, y: 0, width: displayWidth, height: displayHeight))
         self.likedMealsTableView.separatorStyle = .none
         likedMealsTableView.backgroundColor = UIColor.white
         self.likedMealsTableView.register(customMealViewCell.self, forCellReuseIdentifier: privacy)
@@ -62,10 +65,37 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         
         self.likedMealsTableView.dataSource = self
         self.likedMealsTableView.delegate = self
-        self.view.addSubview(likedMealsTableView)
+        view.addSubview(likedMealsTableView)
+        view.addSubview(welcomeLabel)
+        view.addSubview(textFieldSeparator)
         
+        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+        likedMealsTableView.translatesAutoresizingMaskIntoConstraints = false
     }
    
+    private func setuplayoutConstraints() {
+        
+           NSLayoutConstraint.activate([
+            
+            welcomeLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 20),
+            welcomeLabel.heightAnchor.constraint(equalToConstant: 50),
+            welcomeLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            welcomeLabel.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -50),
+            
+            textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor),
+            textFieldSeparator.centerXAnchor.constraint(equalTo: welcomeLabel.centerXAnchor),
+            textFieldSeparator.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
+            textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
+            
+            
+            likedMealsTableView.topAnchor.constraint(equalTo: textFieldSeparator.bottomAnchor, constant: 20),
+            likedMealsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            likedMealsTableView.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
+            likedMealsTableView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+        ])
+    }
     func firebaseLikedMealFetch() {
         //finds one meal! see Products.swift for other ones
         userfirebaseMeals.whereField("likedMeal", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
@@ -113,6 +143,26 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         print("Settings Tab is active")
     }
     
+//    MARK: - GUI Elements START
+    let welcomeLabel: UILabel = {
+        var welcome = UILabel()
+        welcome.text = "Meals"
+        welcome.textAlignment = .center
+        welcome.textColor = UIColor.ademBlue
+        welcome.backgroundColor = UIColor.white
+        welcome.font = UIFont(name: helNeu, size: 20.0)
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        return welcome
+    }()
+    
+    let textFieldSeparator: UIView = {
+        let textSeparator = UIView()
+        textSeparator.backgroundColor = UIColor.ademBlue
+        textSeparator.translatesAutoresizingMaskIntoConstraints = false
+        return textSeparator
+    }()
+//    MARK: GUI Elements END -
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         print(arrayofLikedMeals.count)
@@ -143,7 +193,7 @@ class friendsTVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
         inspectingFriend()
     }
 }
-extension friendsTVC: CustomTableCellDelegate {
+extension mealsuserCreatedAndLikedTVC: CustomTableCellDelegate {
     func tableView(TableCell: UITableViewCell?, IndexPath: IndexPath) {
          
         let selectedMeal: mealClass!
