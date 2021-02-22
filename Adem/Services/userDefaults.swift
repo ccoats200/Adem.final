@@ -13,6 +13,7 @@ import Foundation
 let defaults = UserDefaults.standard
 
 let currentListID = defaults.value(forKey: "listId")
+let logInStatus = defaults.value(forKey: "isLoggedIn")
 let fireBaseUsersName = defaults.value(forKey: "FirstName")
 let homeListID = defaults.value(forKey: "uid")
 let currentUserStatus = defaults.value(forKey: "isAnonymous")

@@ -135,12 +135,21 @@ class UserInfo: UIViewController, UITextFieldDelegate {
                     "icon": "spatula",
                     "pantyIsShared": false,
                     "listIsShared": false,
+                    "isLoggedIn": true
                 ]) { (error) in
                     if let error = error {
                         print("Error creating documents: \(error.localizedDescription)")
                     }
                 }
-                
+                db.collection("lists").document(authResult!.user.uid).collection("listDetails").document().setData([
+                    "owner": authResult!.user.uid,
+                    "sharedWith": [authResult!.user.uid],
+                    "houseName": "Kitchen"
+                ]) { (error) in
+                    if let error = error {
+                        print("Error creating documents: \(error.localizedDescription)")
+                    }
+                }
                 db.collection("lists").document(authResult!.user.uid).setData([
                     "owner": authResult!.user.uid,
                     "sharedWith": [authResult!.user.uid],

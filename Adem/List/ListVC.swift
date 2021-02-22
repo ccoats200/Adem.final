@@ -87,10 +87,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         }
             //Revert to default
         observer = defaults.observe(\.listId, options: [.initial, .new], changeHandler: { (defaults, change) in
-            //https://stackoverflow.com/questions/10784439/ios-nsuserdefaults-watching-the-change-of-values-for-a-single-key
+            //https://stackoverflowj.com/questions/10784439/ios-nsuserdefaults-watching-the-change-of-values-for-a-single-key
             //Not sure if this is right but it working
             //not seeing it change
-            print("why\(currentListID)")
+            //MARK: This needs to change the current list
+            print("why isn't this working \(currentListID!)")
             self.pullUserInformation()
             })
         searchBarSetUp()
@@ -108,9 +109,12 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //By checking user defaults on the last page of the login I might be able to use user defaults here for checking the login state.
+        print("I can fin it\(currentListID!)")
         pullUserInformation()
         tableViewSetup()
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+            //The calls are all out of wack
+            //self.pullUserInformation()
         }
         print(currentUser?.email)
     }
@@ -250,8 +254,10 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         
             //This is changing and messing it up because the auth changes
             if currentUser == nil {
-                sendToLogIn()
+       // if logInStatus! as! Bool == false {
+                //sendToLogIn()
             } else {
+               
                 //MARK: Search bar not working
                 
                 //FIXME: why is this not working
@@ -269,7 +275,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 //
 //                    }
 //                }
-//
+
+                //print(logInStatus as! Bool)
                 print(currentListID)
                 listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {

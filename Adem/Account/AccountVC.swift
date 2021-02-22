@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Firebase
 import Combine
+import FirebaseFirestoreSwift
 
 class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
@@ -56,14 +57,18 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         /*This needs to link household and have the option for roomates or families.
          if roommies then put initials next to their items in the pantry.
          */
+        
+        self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
         observer = defaults.observe(\.icon, options: [.initial, .new], changeHandler: { (defaults, change) in
             //https://stackoverflow.com/questions/10784439/ios-nsuserdefaults-watching-the-change-of-values-for-a-single-key
-            //Not sure if this is right but it working
+            
+            //This is breaking the signout button text
             self.handleUserInfo()
             })
         
+        
         setUptopViews()
-        //handleUserInfo()
+        //self.handleUserInfo()
         setUpdefaultSegment()
         fetchUserPrivateInfo()
         
@@ -76,37 +81,31 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print("the view wne")
-        
-        
-            
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.view.backgroundColor = UIColor.clear
-        
-        setUpdefaultSegment()
-        handleUserInfo()
 
-        if homeStatssegmentContr.selectedSegmentIndex == 0 {
-            switchStatsViews()
-        }
-        
-        //MARK: Nav bar is see through
+       
         
         
-        //MARK: Nav bar is see through
-        
-        self.navigationController?.view.layoutIfNeeded()
-        self.navigationController?.view.setNeedsLayout()
-        
-        handleUserInfo()
         
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
             
-            if user == nil {
+            if auth.currentUser == nil {
                 self.sendToLogIn()
             } else {
+                //Putting the check here is working??? Not sure why
+                self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+                self.navigationController?.navigationBar.shadowImage = UIImage()
+                self.navigationController?.navigationBar.isTranslucent = true
+                self.navigationController?.view.backgroundColor = UIColor.clear
+                
+                self.setUpdefaultSegment()
+                
+                if self.homeStatssegmentContr.selectedSegmentIndex == 0 {
+                    self.switchStatsViews()
+                }
+
+                self.navigationController?.view.layoutIfNeeded()
+                self.navigationController?.view.setNeedsLayout()
+                self.handleUserInfo()
                 print("User is logged in")
             }
         }
@@ -118,8 +117,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        print("is hdkl")
-
         firebaseAuth.removeStateDidChangeListener(handle!)
     }
     
@@ -127,23 +124,30 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     func fetchUserPrivateInfo() {
         
         //Looking for the people in the friends group
-        listfirebaseProducts.document("\(currentListID!)").addSnapshotListener { [weak self] documentSnapshot, error in
-            
-            guard let document = documentSnapshot else {
-                print("Error fetching document: \(error!)")
+        listfirebaseProducts.document("\(currentListID!)").collection("listDetails").whereField("sharedWith", arrayContains: currentListID).addSnapshotListener { (querySnapshot, error) in
+            guard let documents = querySnapshot?.documents else {
+                print("No documents")
                 return
             }
-            guard let data = document.data() else {
-                print("Document data was empty.")
-                return
+                sharedUser = documents.compactMap { queryDocumentSnapshot -> sharedHouseAttributes? in
+                    return try? queryDocumentSnapshot.data(as: sharedHouseAttributes.self)
+                }
+            print(sharedUser)
+            for items in sharedUser {
+                print(items)
+                db.collection("user").document("\(items.sharedWith)").collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        //sharedUserNoClass = (snapshot?.data())!
+                        print(sharedUserNoClass["FirsName"])
+                    }
+                }
+                print(items.sharedWith)
             }
-            
-            sharedUserNoClass = data
-//            sharedUser = data.compactMap { documentSnapshot -> sharedHouseAttributes? in
-//                return try? documentSnapshot.data(as: sharedHouseAttributes.self)
+//            for items in sharedUserNoClass {
+//                print("\(items)")
 //            }
-            print("Is this a class \(sharedUser)")
-            print("Is a collection here? \(sharedUserNoClass)")
 
             
 //            print(people)
@@ -332,7 +336,10 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         alertController.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { action -> Void in
             self.signOut()
         }))
-        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
+            //Delay on sign out button
+            self.handleUserInfo()
+        }))
         present(alertController, animated: true, completion: nil)
     }
     
@@ -350,29 +357,29 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     func handleUserInfo() {
         
-        self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
-        //handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-        
-        self.personalAttributes.userProfileImage.image = UIImage(named: "\(defaults.value(forKey: "icon")!)")
-               
-        if currentUser?.isAnonymous == false {
-            //Sign out text
-            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
-            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
-            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
-            //Sign out text
-            self.personalAttributes.nameofUser.largeNextButton.setTitle("\(defaults.value(forKey: "FirstName")!)", for: .normal)
-            
-            self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
-
-        } else {
+        if currentUser?.isAnonymous == true {
             let doesNotHaveAccount = "Join now"
             self.personalAttributes.nameofUser.largeNextButton.setTitle(doesNotHaveAccount, for: .normal)
             self.personalAttributes.nameofUser.largeNextButton.setTitleColor(UIColor.white, for: .normal)
             self.personalAttributes.nameofUser.largeNextButton.backgroundColor = UIColor.ademGreen
             self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.signUp), for: .touchDown)
             self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign In", for: .normal)
+            
             self.homeSegmentView.logOutButton.largeNextButton.addTarget(self, action: #selector(self.handelLogin), for: .touchDown)
+
+        } else {
+            
+            //Sign out text
+            self.homeSegmentView.logOutButton.largeNextButton.setTitle("Sign Out", for: .normal)
+            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+            self.personalAttributes.userProfileImage.image = UIImage(named: "\(defaults.value(forKey: "icon")!)")
+            self.homeSegmentView.logOutButton.largeNextButton.backgroundColor = UIColor.clear
+            self.homeSegmentView.logOutButton.largeNextButton.titleLabel?.textColor = UIColor.ademBlue
+            //Sign out text
+            self.personalAttributes.nameofUser.largeNextButton.setTitle("\(fireBaseUsersName!)", for: .normal)
+            self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
+            
+            
             
         }
     }
