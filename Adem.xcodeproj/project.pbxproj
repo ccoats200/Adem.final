@@ -52,6 +52,7 @@
 		3583AEC52401AECE00A5C4F9 /* quantityAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583AEC42401AECE00A5C4F9 /* quantityAlert.swift */; };
 		3583B08224660BA600879559 /* fireStoreProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583B08124660BA600879559 /* fireStoreProtocol.swift */; };
 		3583B08424660F7C00879559 /* fireStoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3583B08324660F7C00879559 /* fireStoreData.swift */; };
+		3587F49B25E4A19F00875969 /* alamoFireSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3587F49A25E4A19F00875969 /* alamoFireSearch.swift */; };
 		358C2C5123BB00110013EE64 /* imageVCRecipt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5023BB00110013EE64 /* imageVCRecipt.swift */; };
 		358C2C5523BFBAC10013EE64 /* ProductsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 358C2C5423BFBAC10013EE64 /* ProductsView.swift */; };
 		3591FBCD23BAD29700C410CF /* camViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3591FBCC23BAD29700C410CF /* camViewController.swift */; };
@@ -173,6 +174,7 @@
 		3583AEC42401AECE00A5C4F9 /* quantityAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = quantityAlert.swift; sourceTree = "<group>"; };
 		3583B08124660BA600879559 /* fireStoreProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fireStoreProtocol.swift; sourceTree = "<group>"; };
 		3583B08324660F7C00879559 /* fireStoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = fireStoreData.swift; sourceTree = "<group>"; };
+		3587F49A25E4A19F00875969 /* alamoFireSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = alamoFireSearch.swift; sourceTree = "<group>"; };
 		358C2C5023BB00110013EE64 /* imageVCRecipt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = imageVCRecipt.swift; sourceTree = "<group>"; };
 		358C2C5423BFBAC10013EE64 /* ProductsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsView.swift; sourceTree = "<group>"; };
 		3591FBCC23BAD29700C410CF /* camViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = camViewController.swift; sourceTree = "<group>"; };
@@ -288,6 +290,7 @@
 				3542B93524B41ED800E259EE /* listSearchResults.swift */,
 				3542B93224A5375A00E259EE /* searchTVC.swift */,
 				3543590E24B82F5D001074CF /* apiExtension.swift */,
+				3587F49A25E4A19F00875969 /* alamoFireSearch.swift */,
 			);
 			path = searchControllers;
 			sourceTree = "<group>";
@@ -946,6 +949,7 @@
 				3527A0EF248720D000956349 /* pantry.swift in Sources */,
 				35D6486C22ECBE7100015352 /* ProductCell.swift in Sources */,
 				35D6485922ECBDA300015352 /* Meals.swift in Sources */,
+				3587F49B25E4A19F00875969 /* alamoFireSearch.swift in Sources */,
 				35669AE1240AD8C900C95DFB /* accountHomeView.swift in Sources */,
 				3509742E24E6DC6C0056AE9A /* emptyList.swift in Sources */,
 				3583B08424660F7C00879559 /* fireStoreData.swift in Sources */,

@@ -10,6 +10,7 @@ import Foundation
 import Firebase
 //allows for codable
 import FirebaseFirestoreSwift
+import Alamofire
 
 //https://cs.opensource.google/firebase-sdk/firebase-ios-sdk
 /*
@@ -105,6 +106,9 @@ class UserRepository {
         }
 
 }
+
+
+
 
 struct individualHomeAttributes: Identifiable, Codable {
 

@@ -12,6 +12,7 @@ import Firebase
 import AVFoundation
 import CoreData
 import FirebaseFirestoreSwift
+import Alamofire
 
 //MARK: This needs to be a collection view
 class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognizerDelegate {
@@ -88,6 +89,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         //FirestoreFetches().FirestorePantryForAuthUser()
         //self.pantryCollectionView.reloadData()
         firebaseDataFetch()
+        //fetchSearchProducts()
     }
     
    
@@ -400,4 +402,16 @@ extension PantryVC: UISearchBarDelegate {
         var isFiltering: Bool {
             return searchController.isActive && !isSearchBarEmpty
         }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        let url = "http://dummy.com/url"
+    }
+//    func fetchSearchProducts() {
+//        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
+//            .validate()
+//            .responseDecodable(of: searchedProducts.self) { (response) in
+//            guard let products = response.value else { return }
+//            print(products.all[0].title)
+//        }
+//    }
 }

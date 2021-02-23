@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Alamofire
 
 protocol searchAddToListDelegate: class {
     func add(cell: searchTableViewCell)
@@ -123,17 +124,26 @@ class PantryResultsTableController: UITableViewController {
     
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
+    var productYouCanAdd: [Displayable] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
+        fetchSearchProducts()
+    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
     }
     
     // MARK: - UITableViewDataSource
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return filteredProducts.count
+        return productYouCanAdd.count
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -142,11 +152,21 @@ class PantryResultsTableController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: tableViewCellIdentifier, for: indexPath)
-        let product = filteredProducts[indexPath.item]
-        cell.textLabel?.text = product.productName
-        cell.textLabel?.backgroundColor = UIColor.orange
+//        let product = filteredProducts[indexPath.item]
+        let product = productYouCanAdd[indexPath.row]
+        cell.textLabel?.text = product.nameOfProduct
+        //cell.textLabel?.backgroundColor = UIColor.orange
     
         return cell
+    }
+    func fetchSearchProducts() {
+        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
+            .validate()
+            .responseDecodable(of: searchedProducts.self) { (response) in
+            guard let products = response.value else { return }
+                self.productYouCanAdd = products.all
+                self.tableView.reloadData()
+        }
     }
 }
 /*
