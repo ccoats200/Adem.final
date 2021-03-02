@@ -120,21 +120,25 @@ class AddResultsTableController: UITableViewController {
     //https://lottiefiles.com/27155-preparing-food
 }
 
-class PantryResultsTableController: UITableViewController {
+class PantryResultsTableController: UITableViewController {//, UISearchControllerDelegate {
     
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
     var productYouCanAdd: [Displayable] = []
+    var searchController: UISearchController!
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: tableViewCellIdentifier)
-        fetchSearchProducts()
+        //setUpSearch()
+        //fetchSearchProducts(
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        //setUpSearch()
     }
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -155,20 +159,115 @@ class PantryResultsTableController: UITableViewController {
 //        let product = filteredProducts[indexPath.item]
         let product = productYouCanAdd[indexPath.row]
         cell.textLabel?.text = product.nameOfProduct
+        
         //cell.textLabel?.backgroundColor = UIColor.orange
     
         return cell
     }
-    func fetchSearchProducts() {
-        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let product = productYouCanAdd[indexPath.row]
+        product.idOfProduct
+        print(product.idOfProduct)
+    }
+//    func fetchSearchProducts() {
+//        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
+//            .validate()
+//            .responseDecodable(of: searchedProducts.self) { (response) in
+//            guard let products = response.value else { return }
+//                self.productYouCanAdd = products.all
+//                self.tableView.reloadData()
+//        }
+//    }
+    
+    func fetchSearchProduct(for name: String) {
+        //let url = "https://api.spoonacular.com/food/products/search"
+        let url = "https://api.spoonacular.com/food/products/search?query="
+        let other = name
+        let last = "&apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        let parameters: [String: String] = ["query": name]
+        //AF.request(url, parameters: parameters)
+        //FIXME: This is working but is not great
+        AF.request(url+other+last)
             .validate()
             .responseDecodable(of: searchedProducts.self) { (response) in
             guard let products = response.value else { return }
-                self.productYouCanAdd = products.all
-                self.tableView.reloadData()
+            self.productYouCanAdd = products.all
+            self.tableView.reloadData()
         }
     }
 }
+/*
+
+extension PantryResultsTableController: UISearchBarDelegate {
+    
+    func setUpSearch() {
+        //MARK: Search bar
+        //pantryResultsTableController = PantryResultsTableController()
+        //pantryResultsTableController.tableView.delegate = self
+        //pantryResultsTableController.collectionView.delegate = self
+        searchController = UISearchController(searchResultsController: self)
+        searchController.delegate = self
+        //searchController.searchResultsUpdater = self
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.searchBar.delegate = self // Monitor when the search button is tapped.
+        definesPresentationContext = true
+                
+                //instantiate the controller
+                
+                // Place the search bar in the navigation bar.
+        navigationItem.searchController = searchController
+                
+            //Design elements
+        searchController.searchBar.placeholder = "Looking for something?"
+        searchController.searchBar.autocorrectionType = .default
+        searchController.searchBar.enablesReturnKeyAutomatically = true
+        searchController.hidesNavigationBarDuringPresentation = true
+        searchController.searchBar.tintColor = UIColor.white
+                
+        if #available(iOS 13.0, *) {
+            searchController.searchBar.searchTextField.textColor = UIColor.white
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+           
+        //let keywords = searchBar.text
+        
+        guard let productName = searchBar.text else { return }
+        PantryResultsTableController().fetchSearchProduct(for: productName)
+        
+        //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
+        //           searchUrl = "https://api.spotify.com/v1/search?q=\(finalKeywords!)&type=track"
+        
+        //self.view.endEditing(true)
+        print(productName)
+        //searchBar.resignFirstResponder()
+        }
+   
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        guard let productName = searchBar.text else { return }
+        PantryResultsTableController().fetchSearchProduct(for: productName)
+        print(productName)
+        
+    }
+        
+    
+        func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.text = nil
+            searchBar.resignFirstResponder()
+            
+            self.dismiss(animated: true, completion: nil)
+        }
+            
+        var isSearchBarEmpty: Bool {
+            return searchController.searchBar.text?.isEmpty ?? true
+        }
+}
+
+*/
 /*
  class PantryResultsTableController: UICollectionViewController {//UITableViewController,  {
      

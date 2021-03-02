@@ -141,7 +141,7 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     private func setUpBarButtonItems() {
         self.navigationItem.leftBarButtonItem = filter
         self.navigationItem.leftBarButtonItem?.tintColor = UIColor.ademBlue
-        //self.navigationItem.rightBarButtonItem = searching
+        self.navigationItem.rightBarButtonItem = searching
         self.navigationItem.rightBarButtonItem?.tintColor = UIColor.white
         
     }
@@ -214,16 +214,19 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     //MARK: Alert product Button
     @objc func handleCamAdd() {
 
-        if #available(iOS 13.0, *) {
-                   let productScreen = camVC()
-            //let productScreen = camView()
-                   productScreen.hidesBottomBarWhenPushed = true
-                   productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-                   self.present(productScreen, animated: true, completion: nil)
-               } else {
-                   // Fallback on earlier versions
-               }
-               print("Camera button working")
+        let alert = PantryResultsTableController()
+        self.present(alert, animated: true, completion: nil)
+        
+//        if #available(iOS 13.0, *) {
+//                   let productScreen = camVC()
+//            //let productScreen = camView()
+//                   productScreen.hidesBottomBarWhenPushed = true
+//                   productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
+//                   self.present(productScreen, animated: true, completion: nil)
+//               } else {
+//                   // Fallback on earlier versions
+//               }
+//               print("Camera button working")
     }
     
     private var detailsTransitioningDelegate: halfwayControllerTransitioningDelegate!
@@ -373,17 +376,29 @@ extension PantryVC: UISearchBarDelegate {
         }
     }
     
+    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-           
-            let keywords = searchBar.text
-        //        let finalKeywords = keywords?.replacingOccurrences(of: " ", with: "+")
-        //           searchUrl = "https://api.spotify.com/v1/search?q=\(finalKeywords!)&type=track"
-            self.view.endEditing(true)
-            print(keywords)
-            searchBar.resignFirstResponder()
-        }
         
+        guard let productName = searchBar.text else { return }
+        //pantryResultsTableController.fetchSearchProducts()
+        pantryResultsTableController.fetchSearchProduct(for: productName)
+        print(productName)
+    }
+   
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        //Working for search kinda 
+        guard let productName = searchBar.text else { return }
+        pantryResultsTableController.fetchSearchProduct(for: productName)
+        print(productName)
+        
+    }
+        
+    
+    
         func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+            searchBar.text = nil
+            searchBar.resignFirstResponder()
+            
             self.dismiss(animated: true, completion: nil)
         }
               
@@ -398,20 +413,4 @@ extension PantryVC: UISearchBarDelegate {
         var isSearchBarEmpty: Bool {
             return searchController.searchBar.text?.isEmpty ?? true
         }
-            
-        var isFiltering: Bool {
-            return searchController.isActive && !isSearchBarEmpty
-        }
-    
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let url = "http://dummy.com/url"
-    }
-//    func fetchSearchProducts() {
-//        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
-//            .validate()
-//            .responseDecodable(of: searchedProducts.self) { (response) in
-//            guard let products = response.value else { return }
-//            print(products.all[0].title)
-//        }
-//    }
 }
