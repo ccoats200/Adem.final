@@ -167,7 +167,8 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = productYouCanAdd[indexPath.row]
         product.idOfProduct
-        print(product.idOfProduct)
+        fetchSearchIdProduct()
+        //print(product.idOfProduct)
     }
 //    func fetchSearchProducts() {
 //        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
@@ -178,6 +179,24 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
 //                self.tableView.reloadData()
 //        }
 //    }
+    func fetchSearchIdProduct() {
+        //let url = "https://api.spoonacular.com/food/products/search"
+        let url = "https://api.spoonacular.com/food/products/upc/041631000564?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        let other = 22347
+        let last = "&apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        //let parameters: [String: String] = ["query": name]
+        //AF.request(url, parameters: parameters)
+        //FIXME: This is working but is not great
+        AF.request(url).responseJSON { (data) in
+            print(data)
+//            .validate()
+//            .responseDecodable(of: searchedProductsId.self) { (response) in
+//            guard let products = response.value else { return }
+//                print(products.all[0].)
+//            self.productYouCanAdd = products.all
+//            self.tableView.reloadData()
+        }
+    }
     
     func fetchSearchProduct(for name: String) {
         //let url = "https://api.spoonacular.com/food/products/search"
