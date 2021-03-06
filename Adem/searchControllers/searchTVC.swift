@@ -168,7 +168,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         let product = productYouCanAdd[indexPath.row]
         product.idOfProduct
         fetchSearchIdProduct()
-        //print(product.idOfProduct)
+        //This needs to send to and populate product screen. When they can add to list or pantry. Also Download data and upload to firebase once they add to a list or pantry.
     }
 //    func fetchSearchProducts() {
 //        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
@@ -181,24 +181,29 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
 //    }
     func fetchSearchIdProduct() {
         //let url = "https://api.spoonacular.com/food/products/search"
-        let url = "https://api.spoonacular.com/food/products/upc/041631000564?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        //need sku and upc for store and manufacturers
+        
+        //let url = "https://api.spoonacular.com/food/products/upc/041631000564?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        let url = "https://api.spoonacular.com/food/products/30004?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
         let other = 22347
         let last = "&apiKey=5f40f799c85b4be089e48ca83e01d3c0"
         //let parameters: [String: String] = ["query": name]
         //AF.request(url, parameters: parameters)
         //FIXME: This is working but is not great
-        AF.request(url).responseJSON { (data) in
-            print(data)
-//            .validate()
-//            .responseDecodable(of: searchedProductsId.self) { (response) in
-//            guard let products = response.value else { return }
-//                print(products.all[0].)
-//            self.productYouCanAdd = products.all
-//            self.tableView.reloadData()
+        //Working for Class and Struct
+        AF.request(url)
+            .validate()
+            .responseDecodable(of: downloadSearchedProduct.self) { (response) in
+            guard let products = response.value else { return }
+                print(products.title)
+                print(products.upc)
+            //self.productYouCanAdd = products.all
+            //self.tableView.reloadData()
         }
     }
     
     func fetchSearchProduct(for name: String) {
+       //MARK: Use GTIN number
         //let url = "https://api.spoonacular.com/food/products/search"
         let url = "https://api.spoonacular.com/food/products/search?query="
         let other = name
@@ -210,13 +215,14 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
             .validate()
             .responseDecodable(of: searchedProducts.self) { (response) in
             guard let products = response.value else { return }
+                //print(products.all[0].title)
             self.productYouCanAdd = products.all
             self.tableView.reloadData()
         }
     }
 }
-/*
 
+/*
 extension PantryResultsTableController: UISearchBarDelegate {
     
     func setUpSearch() {

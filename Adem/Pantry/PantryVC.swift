@@ -388,8 +388,8 @@ extension PantryVC: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         //Working for search kinda 
         guard let productName = searchBar.text else { return }
-        pantryResultsTableController.fetchSearchProduct(for: productName)
-        pantryResultsTableController.fetchSearchIdProduct()
+//        pantryResultsTableController.fetchSearchProduct(for: productName)
+//        pantryResultsTableController.fetchSearchIdProduct()
         print(productName)
         
     }
