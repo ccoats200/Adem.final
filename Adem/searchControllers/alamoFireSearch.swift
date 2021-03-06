@@ -122,7 +122,7 @@ extension searchedProductId: DisplayableId {
 class downloadSearchedProduct: NSObject, Codable {
     
     //https://api.spoonacular.com/food/products/22347
-//    @objc var id: Int
+    @objc var id: Int
     @objc var title: String
 //    @objc var ingredients: [String: String]?
 //    @objc var nutrition: [String: String]
@@ -131,7 +131,7 @@ class downloadSearchedProduct: NSObject, Codable {
     
     
     enum CodingKeys: String, CodingKey {
-//        case id
+        case id
         case title
 //        case ingredients
 //        case nutrition
@@ -140,7 +140,7 @@ class downloadSearchedProduct: NSObject, Codable {
     }
     
     enum ExpressionKeys: String {
-//        case id
+        case id
         case title
 //        case ingredients
 //        case nutrition
@@ -156,10 +156,27 @@ class downloadSearchedProduct: NSObject, Codable {
 //        self.price = price
 //        self.upc = upc
 //    }
-    init(title: String, upc: String) {
+    init(id: Int, title: String, upc: String) {
+        self.id = id
         self.title = title
         self.upc = upc
     }
+}
+
+extension downloadSearchedProduct: DisplayableId {
+    var idOfProduct: Int {
+        id
+    }
+    var nameOfProduct: String {
+        title
+      }
+//    var nameOfingredients: String {
+//        ingredients
+//      }
+    var upcOfProduct: String {
+        upc
+    }
+    
 }
 
 

@@ -125,6 +125,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
     var productYouCanAdd: [Displayable] = []
+    var productYouCanAddId: [DisplayableId] = []
     var searchController: UISearchController!
     
     
@@ -166,37 +167,31 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     }
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = productYouCanAdd[indexPath.row]
-        product.idOfProduct
-        fetchSearchIdProduct()
+        let test = product.idOfProduct
+        fetchSearchIdProduct(indexPath: indexPath, Id: test)
+        
         //This needs to send to and populate product screen. When they can add to list or pantry. Also Download data and upload to firebase once they add to a list or pantry.
     }
-//    func fetchSearchProducts() {
-//        let request = AF.request("https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0")
-//            .validate()
-//            .responseDecodable(of: searchedProducts.self) { (response) in
-//            guard let products = response.value else { return }
-//                self.productYouCanAdd = products.all
-//                self.tableView.reloadData()
-//        }
-//    }
-    func fetchSearchIdProduct() {
+
+    func fetchSearchIdProduct(indexPath: IndexPath, Id: Int) {
         //let url = "https://api.spoonacular.com/food/products/search"
         //need sku and upc for store and manufacturers
         
         //let url = "https://api.spoonacular.com/food/products/upc/041631000564?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
         let url = "https://api.spoonacular.com/food/products/30004?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
-        let other = 22347
-        let last = "&apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        let urlCall = "https://api.spoonacular.com/food/products/"
+        let other = Id
+        let last = "?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
         //let parameters: [String: String] = ["query": name]
         //AF.request(url, parameters: parameters)
         //FIXME: This is working but is not great
         //Working for Class and Struct
-        AF.request(url)
+        AF.request(urlCall+"\(other)"+last)
             .validate()
             .responseDecodable(of: downloadSearchedProduct.self) { (response) in
             guard let products = response.value else { return }
                 print(products.title)
-                print(products.upc)
+                print(products.id)
             //self.productYouCanAdd = products.all
             //self.tableView.reloadData()
         }
@@ -215,8 +210,8 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
             .validate()
             .responseDecodable(of: searchedProducts.self) { (response) in
             guard let products = response.value else { return }
-                //print(products.all[0].title)
-            self.productYouCanAdd = products.all
+                print(products.all[0].id)
+                self.productYouCanAdd = products.all
             self.tableView.reloadData()
         }
     }
