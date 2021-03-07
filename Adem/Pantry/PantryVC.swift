@@ -292,7 +292,7 @@ extension PantryVC: UICollectionViewDelegate, UICollectionViewDataSource, UIColl
         self.present(detailViewController, animated: true, completion: nil)
         //let cell = pantryCollectionView.cellForItem(at: indexPath)
         
-        addTimeStamp(id: arrayofPantry[indexPath.row].id!, action: engagements.engaged.rawValue)
+        addTimeStamp(id: arrayofPantry[indexPath.row].fireBId!, action: engagements.engaged.rawValue)
         
     }
     
@@ -322,7 +322,7 @@ extension PantryVC: pantryDelegate {
     func delete(cell: pantryCell) {
         if let indexPath = pantryCollectionView?.indexPath(for: cell) {
             //1. Change value in data source
-            let item = arrayofPantry[indexPath.row].id
+            let item = arrayofPantry[indexPath.row].fireBId
             
             let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
             let sorted = actionTest.sorted {$0.key < $1.key}
@@ -391,7 +391,6 @@ extension PantryVC: UISearchBarDelegate {
 //        pantryResultsTableController.fetchSearchProduct(for: productName)
 //        pantryResultsTableController.fetchSearchIdProduct()
         print(productName)
-        
     }
         
     

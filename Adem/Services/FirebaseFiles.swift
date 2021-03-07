@@ -165,7 +165,7 @@ extension UIViewController {
     //MARK: -Quantity
     func updateProductQuantityValue(id: String, quantity: Int) {
         // Or more likely change something related to this cell specifically.
-       if arrayofProducts.contains(where: { $0.id == id}) {
+       if arrayofProducts.contains(where: { $0.fireBId == id}) {
         productAnalytics.document("\(id)").updateData([
                "productQuantity": quantity,
            ]) { err in
@@ -175,7 +175,7 @@ extension UIViewController {
                    print("Document successfully updated")
                }
            }
-       } else if arrayofPantry.contains(where: { $0.id == id}) {
+       } else if arrayofPantry.contains(where: { $0.fireBId == id}) {
         productAnalytics.document("\(id)").updateData([
                "productQuantity": quantity,
            ]) { err in

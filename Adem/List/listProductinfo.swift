@@ -69,8 +69,10 @@ class listProductVCLayout: UIViewController {
         //Change color based on product location
         if arrayofProducts.contains(where: { $0.id == self.product.id}) {
             self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+//            self.productNameSection.addToPantry.backgroundColor = UIColor.ademGreen
         } else {
             self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+//            self.productNameSection.addToPantry.backgroundColor = UIColor.ademBlue
         }
     }
     
@@ -144,6 +146,7 @@ class listProductVCLayout: UIViewController {
         productNameSection.translatesAutoresizingMaskIntoConstraints = false
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
         relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(updateQuantity), for: .touchDown)
+//        relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchDown)
         relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchDown)
     }
 
@@ -156,12 +159,12 @@ class listProductVCLayout: UIViewController {
         for actions in sorted {
             let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
                 //kinda works don't trust that much
-                if arrayofProducts.contains(where: { $0.id == self.product.id}) {
+                if arrayofProducts.contains(where: { $0.fireBId == self.product.fireBId}) {
                     self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
-                    self.updateProductQuantityValue(id: self.product.id!, quantity: actions.value)
-                } else if arrayofPantry.contains(where: { $0.id == self.product.id}) {
+                    self.updateProductQuantityValue(id: self.product.fireBId!, quantity: actions.value)
+                } else if arrayofPantry.contains(where: { $0.fireBId == self.product.fireBId}) {
                     self.relatedProductInfoSection.listQuantity.text = "Qty: \(actions.value)"
-                    self.updateProductQuantityValue(id: self.product.id!, quantity: actions.value)
+                    self.updateProductQuantityValue(id: self.product.fireBId!, quantity: actions.value)
                 }
             }
             actionSheetController.addAction(quantity)
@@ -176,11 +179,13 @@ class listProductVCLayout: UIViewController {
     
     @objc func addToOpposite() {
         
-        if arrayofProducts.contains(where: { $0.id == self.product.id}) {
-            self.updateProductLocationValues(indexPath: self.product.id!, pantry: true, list: false)
-            self.addTimeStamp(id: self.product.id!, action: engagements.pantry.rawValue)
-        } else if arrayofPantry.contains(where: { $0.id == self.product.id}) {
-            let find = self.product.id!
+        if arrayofProducts.contains(where: { $0.fireBId == self.product.fireBId}) {
+            self.updateProductLocationValues(indexPath: self.product.fireBId!, pantry: true, list: false)
+            self.addTimeStamp(id: self.product.fireBId!, action: engagements.pantry.rawValue)
+                //Might dismiss here
+            //self.dismiss(animated: true, completion: nil)
+        } else if arrayofPantry.contains(where: { $0.fireBId == self.product.fireBId}) {
+            let find = self.product.fireBId!
             let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
             let sorted = actionTest.sorted {$0.key < $1.key}
             let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
@@ -201,7 +206,7 @@ class listProductVCLayout: UIViewController {
     func setUpProductButtons() {
         //MARK: how to add button interaction
         productNameSection.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-        relatedProductInfoSection.nutritionLabel.addTarget(self, action: #selector(handleNutritionLabel), for: .touchUpInside)
+        productNameSection.nutritionButton.addTarget(self, action: #selector(handleNutritionLabel), for: .touchUpInside)
     }
     
     func setupProductLayoutContstraints() {

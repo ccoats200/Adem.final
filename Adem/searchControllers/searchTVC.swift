@@ -83,7 +83,7 @@ extension ResultsTableController: searchAddToListDelegate {
         
         if let indexPath = tableView?.indexPath(for: cell) {
             //1. Change filteredProducts to api search
-            let item = filteredProducts[indexPath.row].id
+            let item = filteredProducts[indexPath.row].fireBId
             print(item)
             self.updateProductLocationValues(indexPath: item!, pantry: true, list: false)
             self.addTimeStamp(id: item!, action: engagements.added.rawValue)
@@ -125,7 +125,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     let tableViewCellIdentifier = "cellID"
     var filteredProducts = [fireStoreDataClass]()
     var productYouCanAdd: [Displayable] = []
-    var productYouCanAddId: [DisplayableId] = []
+    //var productYouCanAddId: [DisplayableId] = []
     var searchController: UISearchController!
     
     
@@ -165,15 +165,30 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     
         return cell
     }
+    
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = productYouCanAdd[indexPath.row]
         let test = product.idOfProduct
-        fetchSearchIdProduct(indexPath: indexPath, Id: test)
+//        fetchSearchIdProduct(indexPath: indexPath, Id: test!)
+        downloadSearchIdProduct(indexPath: indexPath, Id: test!)
+        
+        
+        
+//        let selectedProduct: fireStoreDataClass!
+//        selectedProduct = productSelected(forIndexPath: indexPath)
+//        let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
+//        self.present(detailViewController, animated: true, completion: nil)
+        
+        
+        
+        
+        //arrayofSearchEngaged = fin
         
         //This needs to send to and populate product screen. When they can add to list or pantry. Also Download data and upload to firebase once they add to a list or pantry.
     }
 
     func fetchSearchIdProduct(indexPath: IndexPath, Id: Int) {
+        let dataSource: [Displayable]
         //let url = "https://api.spoonacular.com/food/products/search"
         //need sku and upc for store and manufacturers
         
@@ -182,19 +197,51 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         let urlCall = "https://api.spoonacular.com/food/products/"
         let other = Id
         let last = "?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        let complete = urlCall+"\(other)"+last
         //let parameters: [String: String] = ["query": name]
         //AF.request(url, parameters: parameters)
         //FIXME: This is working but is not great
-        //Working for Class and Struct
-        AF.request(urlCall+"\(other)"+last)
+        //https://stackoverflow.com/questions/51183795/how-to-convert-one-type-of-object-array-into-another
+        AF.request(complete)
             .validate()
-            .responseDecodable(of: downloadSearchedProduct.self) { (response) in
-            guard let products = response.value else { return }
-                print(products.title)
+            .responseDecodable(of: searchedProductsId.self) { (response) in
+                guard let products = response.value else { return }
+
+                //Need to grab data here. populate the next screen based on grab. See list page tableview select.
+                //print(arrayofSearchEngaged)
+                print(products.name)
                 print(products.id)
+                print(products.upc)
+                print(products.price)
+                
             //self.productYouCanAdd = products.all
             //self.tableView.reloadData()
         }
+    }
+    func downloadSearchIdProduct(indexPath: IndexPath, Id: Int) {
+        let urlCall = "https://api.spoonacular.com/food/products/"
+        let other = Id
+        let last = "?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
+        let complete = urlCall+"\(other)"+last
+        
+        AF.request(complete).validate().responseJSON { response in
+            switch (response.result) {
+            case .success( _):
+                do {
+                    let users = try? JSONDecoder().decode(searchedProductsId.self, from: response.data!)
+                    arrayofSearchEngagedStruct.append(users!)
+                    
+                    //Closer
+                    print(arrayofSearchEngagedStruct.count)
+                    print(users)
+                } catch let error as NSError {
+                    print("Failed to load: \(error.localizedDescription)")
+                }
+            case .failure(let error):
+                print("Request error: \(error.localizedDescription)")
+            }
+        }
+//        AF.download(urlCall+"\(other)"+last, method: .get, parameters: Parameters, encoder: JSONEncoding.default, headers: nil, to: <#T##DownloadRequest.Destination?##DownloadRequest.Destination?##(URL, HTTPURLResponse) -> (destinationURL: URL, options: DownloadRequest.Options)#>)
     }
     
     func fetchSearchProduct(for name: String) {
@@ -205,7 +252,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         let last = "&apiKey=5f40f799c85b4be089e48ca83e01d3c0"
         let parameters: [String: String] = ["query": name]
         //AF.request(url, parameters: parameters)
-        //FIXME: This is working but is not great
+        //FIXME: This is working but is not great. need to use param
         AF.request(url+other+last)
             .validate()
             .responseDecodable(of: searchedProducts.self) { (response) in
@@ -215,6 +262,17 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
             self.tableView.reloadData()
         }
     }
+}
+//MARK: For product selection
+extension PantryResultsTableController {
+    
+    func productSelected(forIndexPath: IndexPath) -> fireStoreDataClass {
+        var product: fireStoreDataClass!
+        product = arrayofSearchEngaged[forIndexPath.item]
+//        product = arrayofProducts[forIndexPath.item]
+        return product
+    }
+    
 }
 
 /*

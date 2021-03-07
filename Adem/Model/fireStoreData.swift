@@ -33,6 +33,8 @@ class fireStoreDataStruct: NSObject, Identifiable, Codable {
 //var arrayofPantry = [fireStoreDataStruct]()
 //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofPantry = [fireStoreDataClass]()
+var arrayofSearchEngaged = [fireStoreDataClass]()
+var arrayofSearchEngagedStruct = [searchedProductsId]()
 var arrayofHome = [individualHomeAttributes]()
 var arrayofHouse = [collectiveHouseAttributes]()
 //var arrayofProducts = [fireStoreDataStruct]()
@@ -265,7 +267,8 @@ class mealClass: NSObject, Identifiable, Codable {
 class fireStoreDataClass: NSObject, Identifiable, Codable {
 
    //Grabs the doc Id for me!
-   @DocumentID var id: String?
+    //MARK need to chang the id to fireBId for api call
+   @DocumentID var fireBId: String?
    @objc var productName: String
    @objc var productPrice: Double
    @objc var productDescription: String
@@ -275,7 +278,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
    @objc var productExpir: Date
    
    enum CodingKeys: String, CodingKey {
-      case id
+      case fireBId
       case productName
       case productPrice
       case productDescription
@@ -286,7 +289,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
    }
     
     enum ExpressionKeys: String {
-       case id
+       case fireBId
        case productName
        case productPrice
        case productDescription
@@ -296,8 +299,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
        case productExpir
     }
     
-    init(id: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date) {
-        self.id = id
+    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date) {
+        self.fireBId = fireBId
         self.productName = productName
         self.productPrice = productPrice
         self.productDescription = productDescription
@@ -308,6 +311,21 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
     }
 }
 
+//MARK: class mapping
+extension fireStoreDataClass: Displayable {
+    var nameOfProduct: String {
+        return productName
+    }
+    var idOfProduct: Int? {
+        return productQuantity
+    }
+    var priceOfProduct: Double? {
+        priceOfProduct
+    }
+    var upcOfProduct: String? {
+        category
+    }
+}
 
 
 struct dietPreferences {

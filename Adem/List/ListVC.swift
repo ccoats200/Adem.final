@@ -374,7 +374,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, leadingSwipeActionsConfigurationForRowAt indexPath: IndexPath) ->   UISwipeActionsConfiguration? {
         //If the product in not in the list and they are searching they can swipe to the left to add it to their list
         // Get current state from data source https://useyourloaf.com/blog/table-swipe-actions/
-        let item = arrayofProducts[indexPath.row].id!
+        let item = arrayofProducts[indexPath.row].fireBId!
         let checkedAsInBasket = UIContextualAction(style: .normal, title: "Add") { (contextualAction, view, boolValue) in
             self.updateProductLocationValues(indexPath: item, pantry: true, list: false)
             self.addTimeStamp(id: item, action: engagements.pantry.rawValue)
@@ -388,7 +388,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
        }
        
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let item = arrayofProducts[indexPath.row].id!
+        let item = arrayofProducts[indexPath.row].fireBId!
         let deleteItemFromListAndPanty = UIContextualAction(style: .destructive, title: "Delete") { (contextualAction, view, boolValue) in
             self.updateProductLocationValues(indexPath: item, pantry: false, list: false)
             self.addTimeStamp(id: item, action: engagements.removed.rawValue)
@@ -442,7 +442,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
         if self.listTableView.isEditing {
             
         } else {
-            addTimeStamp(id: arrayofProducts[indexPath.row].id!, action: engagements.engaged.rawValue)
+            addTimeStamp(id: arrayofProducts[indexPath.row].fireBId!, action: engagements.engaged.rawValue)
 //        addCategory(id: arrayofIds[indexPath.row].id)
             selectedProduct = product(forIndexPath: indexPath)
             let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)

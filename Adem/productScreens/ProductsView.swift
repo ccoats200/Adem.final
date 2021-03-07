@@ -42,15 +42,37 @@ class productViews: UIView {
         return price
     }()
 
+    let nutritionButton: UIButton = {
+        let notify = UIButton()
+        let notifyImage = UIImage(named: infoImage)
+        notify.setImage(notifyImage, for: .normal)
+        notify.translatesAutoresizingMaskIntoConstraints = false
+        notify.contentMode = .scaleAspectFit
+        //notify.backgroundColor = UIColor.blue
+        return notify
+    }()
     
-     var productNameAndBackButton: UIButton = {
-        let back = UIButton(type: .system)
-        back.setTitle("Try again", for: .normal)
-        back.setTitleColor(UIColor.white, for: .normal)
-        back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
-        back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
-        return back
-        
+    var productNameAndBackButton: UIButton = {
+       let back = UIButton(type: .system)
+       back.setTitle("Try again", for: .normal)
+       back.setTitleColor(UIColor.white, for: .normal)
+       back.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+       back.backgroundColor = UIColor.white.withAlphaComponent(0.10)
+       return back
+       
+   }()
+    
+//    var addToPantry: UIButton = {
+//        let addToPantry = UIButton(type: .system)
+//        addToPantry.backgroundColor = UIColor.ademGreen
+//        //addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+//        return addToPantry
+//    }()
+    
+     var addbacking: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white
+        return view
     }()
 
        
@@ -58,12 +80,17 @@ class productViews: UIView {
   private func setupView() {
     self.addSubview(productNameAndBackButton)
     self.addSubview(priceLabel)
+    self.addSubview(addbacking)
+    addbacking.addSubview(nutritionButton)
+    nutritionButton.translatesAutoresizingMaskIntoConstraints = false
+    addbacking.translatesAutoresizingMaskIntoConstraints = false
     productNameAndBackButton.translatesAutoresizingMaskIntoConstraints = false
     priceLabel.translatesAutoresizingMaskIntoConstraints = false
     productNameAndBackButton.clipsToBounds = true
     priceLabel.layer.cornerRadius = 20
     productNameAndBackButton.layer.cornerRadius = 20
-    
+    addbacking.layer.cornerRadius = 20
+    nutritionButton.layer.cornerRadius = 20
     
     NSLayoutConstraint.activate([
 
@@ -75,9 +102,19 @@ class productViews: UIView {
         productNameAndBackButton.heightAnchor.constraint(equalToConstant: 50),
     
         priceLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
-        priceLabel.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 10),
-        priceLabel.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+        priceLabel.trailingAnchor.constraint(equalTo: productNameAndBackButton.leadingAnchor, constant: 10),
+        priceLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 5),
         priceLabel.heightAnchor.constraint(equalToConstant: 50),
+        
+        addbacking.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+        addbacking.leadingAnchor.constraint(equalTo: productNameAndBackButton.trailingAnchor, constant: 10),
+        addbacking.rightAnchor.constraint(equalTo: self.rightAnchor, constant: 5),
+        addbacking.heightAnchor.constraint(equalToConstant: 50),
+        
+        nutritionButton.centerYAnchor.constraint(equalTo: addbacking.centerYAnchor),
+        nutritionButton.centerXAnchor.constraint(equalTo: addbacking.centerXAnchor),
+        nutritionButton.heightAnchor.constraint(equalTo: addbacking.heightAnchor, constant: -2),
+        nutritionButton.widthAnchor.constraint(equalTo: addbacking.widthAnchor, constant: -2),
         
     ])
   }
@@ -215,23 +252,12 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return description
     }()
     
-    
-    
-    let nutritionLabel: UIButton = {
-        let notify = UIButton()
-        let notifyImage = UIImage(named: infoImage)
-        notify.setImage(notifyImage, for: .normal)
-        notify.translatesAutoresizingMaskIntoConstraints = false
-        notify.contentMode = .scaleAspectFit
-        //notify.backgroundColor = UIColor.blue
-        return notify
+    //Might want pop up? or move to the image
+    var addToPantry: UIButton = {
+        let addToPantry = UIButton(type: .system)
+        addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+        return addToPantry
     }()
-    
-   var addToPantry: UIButton = {
-       let addToPantry = UIButton(type: .system)
-       addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
-       return addToPantry
-   }()
 
     
     let itemQuant: UIView = {
@@ -325,7 +351,6 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
         
 
-        self.addSubview(nutritionLabel)
         
     
         self.addSubview(itemQuant)
@@ -340,21 +365,16 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
         NSLayoutConstraint.activate([
         
-            nutritionLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            nutritionLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
-            nutritionLabel.widthAnchor.constraint(equalToConstant: 30),
-            nutritionLabel.heightAnchor.constraint(equalToConstant: 30),
+            itemQuant.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            itemQuant.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
+            itemQuant.widthAnchor.constraint(equalToConstant: 90),//might not want const
+            itemQuant.heightAnchor.constraint(equalToConstant: 30),
             
-            addToPantry.centerYAnchor.constraint(equalTo: nutritionLabel.centerYAnchor),
-            addToPantry.trailingAnchor.constraint(equalTo: itemQuant.leadingAnchor, constant: -10),
+            addToPantry.centerYAnchor.constraint(equalTo: itemQuant.centerYAnchor),
+            addToPantry.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
             //addToPantry.rightAnchor.constraint(equalTo: itemQuant.leftAnchor, constant: -10),
             addToPantry.heightAnchor.constraint(equalToConstant: 25),
             addToPantry.widthAnchor.constraint(equalToConstant: 25),
-            
-            itemQuant.centerYAnchor.constraint(equalTo: nutritionLabel.centerYAnchor),
-            itemQuant.widthAnchor.constraint(equalToConstant: 90),
-            itemQuant.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-            itemQuant.heightAnchor.constraint(equalTo: nutritionLabel.heightAnchor),
             
             listQuantityButon.topAnchor.constraint(equalTo: itemQuant.topAnchor),
             listQuantityButon.widthAnchor.constraint(equalTo: itemQuant.widthAnchor),
@@ -370,7 +390,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             qImage.rightAnchor.constraint(equalTo: itemQuant.rightAnchor, constant: -5),
             qImage.heightAnchor.constraint(equalTo: itemQuant.heightAnchor, multiplier: 1/2),
             
-            productDescription.topAnchor.constraint(equalTo: nutritionLabel.bottomAnchor, constant: 5),
+            productDescription.topAnchor.constraint(equalTo: itemQuant.bottomAnchor, constant: 5),
             productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             productDescription.bottomAnchor.constraint(equalTo: segmentLabel.topAnchor, constant: -5),
             productDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
