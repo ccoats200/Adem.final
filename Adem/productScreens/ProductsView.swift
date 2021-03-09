@@ -139,10 +139,10 @@ class productImageViews: UIView {
         let lightColor = UIView()
         lightColor.backgroundColor = UIColor.white.withAlphaComponent(0.10)
         lightColor.layer.masksToBounds = true
-        lightColor.widthAnchor.constraint(equalToConstant: 300).isActive = true
-        lightColor.heightAnchor.constraint(equalToConstant: 300).isActive = true
+//        lightColor.widthAnchor.constraint(equalToConstant: 300).isActive = true
+//        lightColor.heightAnchor.constraint(equalToConstant: 300).isActive = true
         lightColor.layer.cornerRadius = 150
-        lightColor.translatesAutoresizingMaskIntoConstraints = false
+//        lightColor.translatesAutoresizingMaskIntoConstraints = false
         return lightColor
     }()
     
@@ -157,32 +157,93 @@ class productImageViews: UIView {
         productImageDesign.layer.borderWidth = 1
         productImageDesign.layer.borderColor = UIColor.white.cgColor
         
-        productImageDesign.widthAnchor.constraint(equalToConstant: 200).isActive = true
-        productImageDesign.heightAnchor.constraint(equalToConstant: 200).isActive = true //125 also looks good
-        productImageDesign.translatesAutoresizingMaskIntoConstraints = false
+//        productImageDesign.widthAnchor.constraint(equalToConstant: 200).isActive = true
+//        productImageDesign.heightAnchor.constraint(equalToConstant: 200).isActive = true //125 also looks good
+//        productImageDesign.translatesAutoresizingMaskIntoConstraints = false
         return productImageDesign
+    }()
+    
+    let listButtonBacking: UIView = {
+        let lightColor = UIView()
+        lightColor.backgroundColor = UIColor.white
+        return lightColor
+    }()
+    
+    var listButton: UIButton = {
+        let addToPantry = UIButton(type: .system)
+        addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+        return addToPantry
+    }()
+    
+    let pantryButtonBacking: UIView = {
+        let lightColor = UIView()
+        lightColor.backgroundColor = UIColor.white
+        return lightColor
+    }()
+    
+    var pantryButton: UIButton = {
+        let addToPantry = UIButton(type: .system)
+        addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+        return addToPantry
     }()
        
   //common func to init our view
   private func setupView() {
     self.addSubview(imageMatting)
     self.addSubview(productImage)
+    self.addSubview(listButtonBacking)
+    self.addSubview(pantryButtonBacking)
+    listButtonBacking.addSubview(listButton)
+    pantryButtonBacking.addSubview(pantryButton)
+    pantryButtonBacking.translatesAutoresizingMaskIntoConstraints = false
+    listButtonBacking.translatesAutoresizingMaskIntoConstraints = false
+    listButton.translatesAutoresizingMaskIntoConstraints = false
     imageMatting.translatesAutoresizingMaskIntoConstraints = false
     productImage.translatesAutoresizingMaskIntoConstraints = false
+    pantryButton.translatesAutoresizingMaskIntoConstraints = false
     imageMatting.clipsToBounds = true
     productImage.clipsToBounds = true
+    listButtonBacking.layer.cornerRadius = 25
+    pantryButtonBacking.layer.cornerRadius = 25
 
     
     
-    NSLayoutConstraint.activate([
-    //Product Image matting
-    imageMatting.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-    imageMatting.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-    imageMatting.bottomAnchor.constraint(equalTo: self.bottomAnchor),
     
-    //Prodcut Image
-    productImage.centerXAnchor.constraint(equalTo: imageMatting.centerXAnchor),
-    productImage.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor),
+    NSLayoutConstraint.activate([
+        //Product Image matting
+   
+        imageMatting.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+        imageMatting.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+        imageMatting.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+        imageMatting.widthAnchor.constraint(equalToConstant: 300),
+        imageMatting.heightAnchor.constraint(equalToConstant: 300),
+    
+        //Product Image
+        productImage.centerXAnchor.constraint(equalTo: imageMatting.centerXAnchor),
+        productImage.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor),
+        productImage.widthAnchor.constraint(equalToConstant: 200),
+        productImage.heightAnchor.constraint(equalToConstant: 200),
+        
+        listButtonBacking.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor),
+        listButtonBacking.leftAnchor.constraint(equalTo: imageMatting.leftAnchor, constant: -25),
+        listButtonBacking.widthAnchor.constraint(equalToConstant: 50),
+        listButtonBacking.heightAnchor.constraint(equalToConstant: 50),
+        
+        listButton.centerYAnchor.constraint(equalTo: listButtonBacking.centerYAnchor),
+        listButton.centerXAnchor.constraint(equalTo: listButtonBacking.centerXAnchor),
+        listButton.widthAnchor.constraint(equalToConstant: 40),
+        listButton.heightAnchor.constraint(equalToConstant: 40),
+        
+        pantryButtonBacking.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor),
+        pantryButtonBacking.rightAnchor.constraint(equalTo: imageMatting.rightAnchor, constant: 25),
+        pantryButtonBacking.widthAnchor.constraint(equalToConstant: 50),
+        pantryButtonBacking.heightAnchor.constraint(equalToConstant: 50),
+        
+        pantryButton.centerYAnchor.constraint(equalTo: pantryButtonBacking.centerYAnchor),
+        pantryButton.centerXAnchor.constraint(equalTo: pantryButtonBacking.centerXAnchor),
+        pantryButton.widthAnchor.constraint(equalToConstant: 40),
+        pantryButton.heightAnchor.constraint(equalToConstant: 40),
+        
 
         
     ])
@@ -252,7 +313,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         return description
     }()
     
-    //Might want pop up? or move to the image
+    //Might want pop up so they know it moves? or move to the image
     var addToPantry: UIButton = {
         let addToPantry = UIButton(type: .system)
         addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)

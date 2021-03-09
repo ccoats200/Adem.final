@@ -208,32 +208,35 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                 guard let products = response.value else { return }
 
                 //Need to grab data here. populate the next screen based on grab. See list page tableview select.
-                //print(arrayofSearchEngaged)
                 print(products.name)
                 print(products.id)
                 print(products.upc)
                 print(products.price)
-                
-            //self.productYouCanAdd = products.all
-            //self.tableView.reloadData()
         }
     }
     func downloadSearchIdProduct(indexPath: IndexPath, Id: Int) {
+
+        let dataSource: [Displayable]
         let urlCall = "https://api.spoonacular.com/food/products/"
         let other = Id
         let last = "?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
         let complete = urlCall+"\(other)"+last
+        //https://learnappmaking.com/codable-json-swift-how-to/
         
         AF.request(complete).validate().responseJSON { response in
             switch (response.result) {
             case .success( _):
                 do {
+                    //https://stackoverflow.com/questions/53932841/converting-json-response-to-a-struct-in-swift
                     let users = try? JSONDecoder().decode(searchedProductsId.self, from: response.data!)
                     arrayofSearchEngagedStruct.append(users!)
+//                    arrayofSearchEngagedStruct.map { item -> fireStoreDataClass? in
+//                        item.
+//                    }
                     
-                    //Closer
+                    //Closer it's going into the struct. Now I need to pass it to the class.
                     print(arrayofSearchEngagedStruct.count)
-                    print(users)
+                    print(arrayofSearchEngagedStruct)
                 } catch let error as NSError {
                     print("Failed to load: \(error.localizedDescription)")
                 }
@@ -241,7 +244,6 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                 print("Request error: \(error.localizedDescription)")
             }
         }
-//        AF.download(urlCall+"\(other)"+last, method: .get, parameters: Parameters, encoder: JSONEncoding.default, headers: nil, to: <#T##DownloadRequest.Destination?##DownloadRequest.Destination?##(URL, HTTPURLResponse) -> (destinationURL: URL, options: DownloadRequest.Options)#>)
     }
     
     func fetchSearchProduct(for name: String) {

@@ -12,6 +12,7 @@ import Firebase
 //allows for codable
 import FirebaseFirestoreSwift
 
+//https://www.raywenderlich.com/6587213-alamofire-5-tutorial-for-ios-getting-started
 
 protocol Displayable {
     var nameOfProduct: String { get }
@@ -85,14 +86,7 @@ struct searchedProductsId: Codable {
         case upc
         case price
     }
-    
-//    init(from decoder: Decoder) throws {
-//        let idd = try decoder.container(keyedBy: CodingKeys.self)
-//        self.id = try idd.decode(Int.self, forKey: .id)
-//        self.name = try idd.decode(String.self, forKey: .name)
-//        self.upc = try idd.decode(String.self, forKey: .upc)
-//        self.price = try idd.decode(Double.self, forKey: .price)
-//        }
+
     init(id: Int, name: String, upc: String, price: Double) {
         self.id = id
         self.name = name

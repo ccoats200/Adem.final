@@ -67,15 +67,38 @@ class listProductVCLayout: UIViewController {
         relatedProductInfoSection.listQuantity.text = "Qty: \(product!.productQuantity)"
         
         //Change color based on product location
-        if arrayofProducts.contains(where: { $0.id == self.product.id}) {
-            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
-//            self.productNameSection.addToPantry.backgroundColor = UIColor.ademGreen
-        } else {
-            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
-//            self.productNameSection.addToPantry.backgroundColor = UIColor.ademBlue
-        }
+//        if arrayofProducts.contains(where: { $0.id == self.product.id}) {
+//            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+////            self.productNameSection.addToPantry.backgroundColor = UIColor.ademGreen
+//        } else {
+//            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+////            self.productNameSection.addToPantry.backgroundColor = UIColor.ademBlue
+//        }
+        NewProduct()
     }
     
+    
+    func NewProduct() {
+        switch self.product.productList {
+        case true:
+            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+            self.productImageSection.pantryButtonBacking.isHidden = true
+            self.productImageSection.listButtonBacking.isHidden = true
+        case false:
+            switch self.product.productPantry {
+            case true:
+                self.productImageSection.pantryButtonBacking.isHidden = true
+                self.productImageSection.listButtonBacking.isHidden = true
+                self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
+            case false:
+                self.relatedProductInfoSection.addToPantry.isHidden = true
+            default:
+                print("good")
+            }
+        default:
+            print("good")
+        }
+    }
 
 
     //MARK: Button engagement
@@ -146,9 +169,11 @@ class listProductVCLayout: UIViewController {
         productNameSection.translatesAutoresizingMaskIntoConstraints = false
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
         relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(updateQuantity), for: .touchDown)
-//        relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchDown)
-        relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchDown)
+        relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
+        productImageSection.listButton.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
+        productImageSection.pantryButton.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
     }
+    
 
     //MARK: Quantity
     let actionTest = [1: 1,2: 2,3: 3,4 :4,5: 5]
@@ -179,28 +204,58 @@ class listProductVCLayout: UIViewController {
     
     @objc func addToOpposite() {
         
-        if arrayofProducts.contains(where: { $0.fireBId == self.product.fireBId}) {
+        switch self.product.productList {
+        case true:
             self.updateProductLocationValues(indexPath: self.product.fireBId!, pantry: true, list: false)
             self.addTimeStamp(id: self.product.fireBId!, action: engagements.pantry.rawValue)
-                //Might dismiss here
-            //self.dismiss(animated: true, completion: nil)
-        } else if arrayofPantry.contains(where: { $0.fireBId == self.product.fireBId}) {
-            let find = self.product.fireBId!
-            let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
-            let sorted = actionTest.sorted {$0.key < $1.key}
-            let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
-            let cancelAction: UIAlertAction = UIAlertAction(title: "Not Done Yet", style: .cancel) { action -> Void in }
-            for actions in sorted {
-                let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
-                    self.addWasteAmount(id: find, amount: actions.value)
-                    self.updateProductLocationValues(indexPath: find, pantry: false, list: true)
-                    self.addTimeStamp(id: find, action: engagements.list.rawValue)
+        case false:
+            switch self.product.productPantry {
+            case true:
+                let find = self.product.fireBId!
+                let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
+                let sorted = actionTest.sorted {$0.key < $1.key}
+                let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
+                let cancelAction: UIAlertAction = UIAlertAction(title: "Not Done Yet", style: .cancel) { action -> Void in }
+                for actions in sorted {
+                    let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+                        self.addWasteAmount(id: find, amount: actions.value)
+                        self.updateProductLocationValues(indexPath: find, pantry: false, list: true)
+                        self.addTimeStamp(id: find, action: engagements.list.rawValue)
+                    }
+                    actionSheetController.addAction(quantity)
                 }
-                actionSheetController.addAction(quantity)
+                actionSheetController.addAction(cancelAction)
+                self.present(actionSheetController, animated: true, completion: nil)
+            default:
+                print("quant updated")
             }
-            actionSheetController.addAction(cancelAction)
-            self.present(actionSheetController, animated: true, completion: nil)
+        default:
+            print("quant updated in list")
         }
+        
+        //FIXME: Might be able to delete this for the above
+//        if arrayofProducts.contains(where: { $0.fireBId == self.product.fireBId}) {
+//            self.updateProductLocationValues(indexPath: self.product.fireBId!, pantry: true, list: false)
+//            self.addTimeStamp(id: self.product.fireBId!, action: engagements.pantry.rawValue)
+//                //Might dismiss here
+//            //self.dismiss(animated: true, completion: nil)
+//        } else if arrayofPantry.contains(where: { $0.fireBId == self.product.fireBId}) {
+//            let find = self.product.fireBId!
+//            let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
+//            let sorted = actionTest.sorted {$0.key < $1.key}
+//            let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
+//            let cancelAction: UIAlertAction = UIAlertAction(title: "Not Done Yet", style: .cancel) { action -> Void in }
+//            for actions in sorted {
+//                let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+//                    self.addWasteAmount(id: find, amount: actions.value)
+//                    self.updateProductLocationValues(indexPath: find, pantry: false, list: true)
+//                    self.addTimeStamp(id: find, action: engagements.list.rawValue)
+//                }
+//                actionSheetController.addAction(quantity)
+//            }
+//            actionSheetController.addAction(cancelAction)
+//            self.present(actionSheetController, animated: true, completion: nil)
+//        }
     }
     
     func setUpProductButtons() {
@@ -221,6 +276,7 @@ class listProductVCLayout: UIViewController {
 
         productImageSection.topAnchor.constraint(equalTo: productNameSection.bottomAnchor, constant: 10),
         productImageSection.centerXAnchor.constraint(equalTo: productNameSection.centerXAnchor),
+            productImageSection.widthAnchor.constraint(equalTo: view.widthAnchor),
         
         segmentContr.topAnchor.constraint(equalTo: productImageSection.bottomAnchor, constant: 10),
         segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),

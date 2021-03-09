@@ -276,6 +276,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
    @objc var productImage: String
    @objc var category: String?
    @objc var productExpir: Date
+    @objc var productList: Bool
+    @objc var productPantry: Bool
    
    enum CodingKeys: String, CodingKey {
       case fireBId
@@ -286,6 +288,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
       case productImage
       case category
       case productExpir
+    case productList
+    case productPantry
    }
     
     enum ExpressionKeys: String {
@@ -297,9 +301,11 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
        case productImage
        case category
        case productExpir
+        case productList
+        case productPantry
     }
     
-    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date) {
+    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date, productList: Bool, productPantry: Bool) {
         self.fireBId = fireBId
         self.productName = productName
         self.productPrice = productPrice
@@ -308,6 +314,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         self.productImage = productImage
         self.category = category
         self.productExpir = productExpir
+        self.productList = productList
+        self.productPantry = productPantry
     }
 }
 
