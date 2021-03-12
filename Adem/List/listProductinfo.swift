@@ -204,6 +204,7 @@ class listProductVCLayout: UIViewController {
     
     @objc func addToOpposite() {
         
+        //FIXME: Might be able to delete the commeentted code below for this
         switch self.product.productList {
         case true:
             self.updateProductLocationValues(indexPath: self.product.fireBId!, pantry: true, list: false)
@@ -233,7 +234,7 @@ class listProductVCLayout: UIViewController {
             print("quant updated in list")
         }
         
-        //FIXME: Might be able to delete this for the above
+        
 //        if arrayofProducts.contains(where: { $0.fireBId == self.product.fireBId}) {
 //            self.updateProductLocationValues(indexPath: self.product.fireBId!, pantry: true, list: false)
 //            self.addTimeStamp(id: self.product.fireBId!, action: engagements.pantry.rawValue)

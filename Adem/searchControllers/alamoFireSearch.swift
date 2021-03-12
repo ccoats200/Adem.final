@@ -66,12 +66,15 @@ extension searchedProduct: Displayable {
 
 //MARK: ProductSearchId Start -
 struct searchedProductsId: Codable {
+    
+    var tickets = [fireStoreDataClass]()
     //let all: searchedProductId
-    let id: Int
-    let name: String
-    let upc: String
-    let price: Double
+    var id: Int
+    var name: String
+    var upc: String
+    var price: Double
     //let ingredients: [searchedProductId]
+    //might need additionalInformationKeys https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
   
   enum CodingKeys: String, CodingKey {
     case id
@@ -94,6 +97,27 @@ struct searchedProductsId: Codable {
         self.price = price
     }
 }
+
+//For the list of nutriton
+
+struct NutritionList {
+    var name: String
+    var amount: Double
+    var unit: String
+    var percentOfDailyNeeds: Double
+
+    enum CodingKeys: String, CodingKey {
+        case name
+        case amount
+        case unit
+        case percentOfDailyNeeds
+    }
+    
+    enum AdditionalInfoKeys: String, CodingKey {
+        case elevation
+    }
+}
+
 
 extension searchedProductsId: Displayable {
     var priceOfProduct: Double? {

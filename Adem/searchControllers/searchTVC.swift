@@ -169,11 +169,20 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let product = productYouCanAdd[indexPath.row]
         let test = product.idOfProduct
+        
+        
+        let myGroup = DispatchGroup()
+        if arrayofSearchEngaged.count > 1 {
+            arrayofSearchEngaged.removeAll()
+        }
+        
 //        fetchSearchIdProduct(indexPath: indexPath, Id: test!)
         downloadSearchIdProduct(indexPath: indexPath, Id: test!)
+        print(arrayofSearchEngaged.count)
         
-        
-        
+//        if arrayofSearchEngaged.count == 0 {
+//
+//        }
 //        let selectedProduct: fireStoreDataClass!
 //        selectedProduct = productSelected(forIndexPath: indexPath)
 //        let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
@@ -186,9 +195,15 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         
         //This needs to send to and populate product screen. When they can add to list or pantry. Also Download data and upload to firebase once they add to a list or pantry.
     }
+    
+//    func mapStructToClass() -> fireStoreDataClass {
+//        
+////        print("Mapping search to Class\(arrayofSearchEngaged)")
+//    }
 
     func fetchSearchIdProduct(indexPath: IndexPath, Id: Int) {
-        let dataSource: [Displayable]
+
+        //https://stackoverflow.com/questions/35906568/wait-until-swift-for-loop-with-asynchronous-network-requests-finishes-executing
         //let url = "https://api.spoonacular.com/food/products/search"
         //need sku and upc for store and manufacturers
         
@@ -217,6 +232,8 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     func downloadSearchIdProduct(indexPath: IndexPath, Id: Int) {
 
         let dataSource: [Displayable]
+        var tickets = [fireStoreDataClass]()
+        
         let urlCall = "https://api.spoonacular.com/food/products/"
         let other = Id
         let last = "?apiKey=5f40f799c85b4be089e48ca83e01d3c0"
@@ -230,13 +247,31 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                     //https://stackoverflow.com/questions/53932841/converting-json-response-to-a-struct-in-swift
                     let users = try? JSONDecoder().decode(searchedProductsId.self, from: response.data!)
                     arrayofSearchEngagedStruct.append(users!)
-//                    arrayofSearchEngagedStruct.map { item -> fireStoreDataClass? in
-//                        item.
+//                    func swap() -> String {
+//                        tickets.map { item in
+//                            item.productName = users!.name
+//                        }
 //                    }
+//                    let test = arrayofSearchEngaged
+                    //let test = try? JSONDecoder().decode(fireStoreDataClass.self, from: response.data!)
+//                    test.productName = users!.name
+                    arrayofSearchEngaged = arrayofSearchEngagedStruct.map { item -> fireStoreDataClass in
+
+                        let title = item.name
+                        let id = item.id
+                        let upc = item.upc
+                        let price = item.price
+                    
+                        
+                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: title, productQuantity: id, productImage: title, category: title, productExpir: nil, productList: false, productPantry: false)
+//                        return fireStoreDataClass.init(fireBId: id, productName: title, productPrice: price, productDescription: price, productQuantity: id, productImage: title, category: title, productExpir: nil, productList: false, productPantry: false)
+                    }
                     
                     //Closer it's going into the struct. Now I need to pass it to the class.
-                    print(arrayofSearchEngagedStruct.count)
-                    print(arrayofSearchEngagedStruct)
+//                    print(arrayofSearchEngagedStruct.count)
+//                    print(arrayofSearchEngagedStruct)
+                    print(arrayofSearchEngaged.count)
+                    print(arrayofSearchEngaged.map {$0.productName})
                 } catch let error as NSError {
                     print("Failed to load: \(error.localizedDescription)")
                 }

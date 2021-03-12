@@ -275,7 +275,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
    @objc var productQuantity: Int
    @objc var productImage: String
    @objc var category: String?
-   @objc var productExpir: Date
+   @objc var productExpir: Date?
     @objc var productList: Bool
     @objc var productPantry: Bool
    
@@ -305,7 +305,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         case productPantry
     }
     
-    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date, productList: Bool, productPantry: Bool) {
+    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date?, productList: Bool, productPantry: Bool) {
         self.fireBId = fireBId
         self.productName = productName
         self.productPrice = productPrice
@@ -321,6 +321,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
 
 //MARK: class mapping
 extension fireStoreDataClass: Displayable {
+
     var nameOfProduct: String {
         return productName
     }
@@ -328,10 +329,10 @@ extension fireStoreDataClass: Displayable {
         return productQuantity
     }
     var priceOfProduct: Double? {
-        priceOfProduct
+        return productPrice
     }
     var upcOfProduct: String? {
-        category
+        return category
     }
 }
 
