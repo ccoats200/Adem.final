@@ -170,36 +170,20 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         let product = productYouCanAdd[indexPath.row]
         let test = product.idOfProduct
         
-        
-        let myGroup = DispatchGroup()
-        if arrayofSearchEngaged.count > 1 {
-            arrayofSearchEngaged.removeAll()
-        }
-        
 //        fetchSearchIdProduct(indexPath: indexPath, Id: test!)
         downloadSearchIdProduct(indexPath: indexPath, Id: test!)
         print(arrayofSearchEngaged.count)
         
-//        if arrayofSearchEngaged.count == 0 {
-//
-//        }
-//        let selectedProduct: fireStoreDataClass!
-//        selectedProduct = productSelected(forIndexPath: indexPath)
-//        let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
-//        self.present(detailViewController, animated: true, completion: nil)
-        
-        
-        
-        
-        //arrayofSearchEngaged = fin
-        
-        //This needs to send to and populate product screen. When they can add to list or pantry. Also Download data and upload to firebase once they add to a list or pantry.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5, execute: {
+            //https://www.zerotoappstore.com/create-a-delay-or-wait-in-swift.html
+            let selectedProduct: fireStoreDataClass!
+            selectedProduct = self.productSelected(forIndexPath: indexPath)
+            let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
+            self.present(detailViewController, animated: true, completion: nil)
+        })
+        //Also Download data and upload to firebase once they add to a list or pantry.
     }
     
-//    func mapStructToClass() -> fireStoreDataClass {
-//        
-////        print("Mapping search to Class\(arrayofSearchEngaged)")
-//    }
 
     func fetchSearchIdProduct(indexPath: IndexPath, Id: Int) {
 
@@ -230,9 +214,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         }
     }
     func downloadSearchIdProduct(indexPath: IndexPath, Id: Int) {
-
-        let dataSource: [Displayable]
-        var tickets = [fireStoreDataClass]()
+        //https://stackoverflow.com/questions/43204249/wait-until-alamofire-is-done-getting-request-and-making-object
         
         let urlCall = "https://api.spoonacular.com/food/products/"
         let other = Id
@@ -247,29 +229,19 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                     //https://stackoverflow.com/questions/53932841/converting-json-response-to-a-struct-in-swift
                     let users = try? JSONDecoder().decode(searchedProductsId.self, from: response.data!)
                     arrayofSearchEngagedStruct.append(users!)
-//                    func swap() -> String {
-//                        tickets.map { item in
-//                            item.productName = users!.name
-//                        }
-//                    }
-//                    let test = arrayofSearchEngaged
-                    //let test = try? JSONDecoder().decode(fireStoreDataClass.self, from: response.data!)
-//                    test.productName = users!.name
+                    print(arrayofSearchEngagedStruct.count)
+
                     arrayofSearchEngaged = arrayofSearchEngagedStruct.map { item -> fireStoreDataClass in
 
                         let title = item.name
                         let id = item.id
                         let upc = item.upc
                         let price = item.price
+                        let brand = item.brand
                     
                         
-                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: title, productQuantity: id, productImage: title, category: title, productExpir: nil, productList: false, productPantry: false)
-//                        return fireStoreDataClass.init(fireBId: id, productName: title, productPrice: price, productDescription: price, productQuantity: id, productImage: title, category: title, productExpir: nil, productList: false, productPantry: false)
+                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: title, category: title, productExpir: nil, productList: false, productPantry: false)
                     }
-                    
-                    //Closer it's going into the struct. Now I need to pass it to the class.
-//                    print(arrayofSearchEngagedStruct.count)
-//                    print(arrayofSearchEngagedStruct)
                     print(arrayofSearchEngaged.count)
                     print(arrayofSearchEngaged.map {$0.productName})
                 } catch let error as NSError {
@@ -306,7 +278,6 @@ extension PantryResultsTableController {
     func productSelected(forIndexPath: IndexPath) -> fireStoreDataClass {
         var product: fireStoreDataClass!
         product = arrayofSearchEngaged[forIndexPath.item]
-//        product = arrayofProducts[forIndexPath.item]
         return product
     }
     

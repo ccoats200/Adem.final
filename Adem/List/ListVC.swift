@@ -266,15 +266,17 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                 
                 //See firestoreData.swift
                 
-//                db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
-//                    if let err = err {
-//                        print("Error getting documents: \(err)")
-//                    } else {
-//
-//                        defaults.setValuesForKeys((snapshot?.data())!)
-//
-//                    }
-//                }
+                //Pmf5J2YfEZZSX2dWh1TYeVHejse2
+                db.collection("user").document(currentUser!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+
+                        defaults.setValuesForKeys((snapshot?.data())!)
+
+                    }
+                }
+
 
                 //print(logInStatus as! Bool)
                 print(currentListID)

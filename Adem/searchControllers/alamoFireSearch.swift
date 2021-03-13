@@ -20,6 +20,7 @@ protocol Displayable {
     var idOfProduct: Int? { get }
 //    var nameOfingredients: String { get }
     var upcOfProduct: String? { get }
+    var brandOfProduct: String? { get }
 }
 
 
@@ -46,6 +47,10 @@ struct searchedProducts: Decodable {
 }
 
 extension searchedProduct: Displayable {
+    var brandOfProduct: String? {
+        nil
+    }
+    
     var priceOfProduct: Double? {
         nil
     }
@@ -67,12 +72,12 @@ extension searchedProduct: Displayable {
 //MARK: ProductSearchId Start -
 struct searchedProductsId: Codable {
     
-    var tickets = [fireStoreDataClass]()
     //let all: searchedProductId
     var id: Int
     var name: String
     var upc: String
     var price: Double
+    var brand: String
     //let ingredients: [searchedProductId]
     //might need additionalInformationKeys https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
   
@@ -81,6 +86,7 @@ struct searchedProductsId: Codable {
     case price
     case name = "title"
     case upc
+    case brand
   }
     
     enum ExpressionKeys: String {
@@ -88,13 +94,15 @@ struct searchedProductsId: Codable {
         case name
         case upc
         case price
+        case brand
     }
 
-    init(id: Int, name: String, upc: String, price: Double) {
+    init(id: Int, name: String, upc: String, price: Double, brand: String) {
         self.id = id
         self.name = name
         self.upc = upc
         self.price = price
+        self.brand = brand
     }
 }
 
@@ -120,6 +128,10 @@ struct NutritionList {
 
 
 extension searchedProductsId: Displayable {
+    var brandOfProduct: String? {
+        brand
+    }
+    
     var priceOfProduct: Double? {
         price
     }
@@ -181,6 +193,11 @@ class downloadSearchedProduct: NSObject, Codable {
 }
 
 extension downloadSearchedProduct: Displayable {
+    
+    var brandOfProduct: String? {
+        nil
+    }
+    
     var priceOfProduct: Double? {
         price
     }

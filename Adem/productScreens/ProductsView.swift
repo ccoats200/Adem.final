@@ -175,39 +175,20 @@ class productImageViews: UIView {
         return addToPantry
     }()
     
-    let pantryButtonBacking: UIView = {
-        let lightColor = UIView()
-        lightColor.backgroundColor = UIColor.white
-        return lightColor
-    }()
-    
-    var pantryButton: UIButton = {
-        let addToPantry = UIButton(type: .system)
-        addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
-        return addToPantry
-    }()
        
   //common func to init our view
   private func setupView() {
     self.addSubview(imageMatting)
     self.addSubview(productImage)
     self.addSubview(listButtonBacking)
-    self.addSubview(pantryButtonBacking)
     listButtonBacking.addSubview(listButton)
-    pantryButtonBacking.addSubview(pantryButton)
-    pantryButtonBacking.translatesAutoresizingMaskIntoConstraints = false
     listButtonBacking.translatesAutoresizingMaskIntoConstraints = false
     listButton.translatesAutoresizingMaskIntoConstraints = false
     imageMatting.translatesAutoresizingMaskIntoConstraints = false
     productImage.translatesAutoresizingMaskIntoConstraints = false
-    pantryButton.translatesAutoresizingMaskIntoConstraints = false
     imageMatting.clipsToBounds = true
     productImage.clipsToBounds = true
-    listButtonBacking.layer.cornerRadius = 25
-    pantryButtonBacking.layer.cornerRadius = 25
-
-    
-    
+    listButtonBacking.layer.cornerRadius = 20
     
     NSLayoutConstraint.activate([
         //Product Image matting
@@ -224,25 +205,15 @@ class productImageViews: UIView {
         productImage.widthAnchor.constraint(equalToConstant: 200),
         productImage.heightAnchor.constraint(equalToConstant: 200),
         
-        listButtonBacking.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor),
-        listButtonBacking.leftAnchor.constraint(equalTo: imageMatting.leftAnchor, constant: -25),
-        listButtonBacking.widthAnchor.constraint(equalToConstant: 50),
-        listButtonBacking.heightAnchor.constraint(equalToConstant: 50),
+        listButtonBacking.centerXAnchor.constraint(equalTo: imageMatting.centerXAnchor),
+        listButtonBacking.topAnchor.constraint(equalTo: productImage.bottomAnchor, constant: 5),
+        listButtonBacking.widthAnchor.constraint(equalToConstant: 40),
+        listButtonBacking.heightAnchor.constraint(equalToConstant: 40),
         
         listButton.centerYAnchor.constraint(equalTo: listButtonBacking.centerYAnchor),
         listButton.centerXAnchor.constraint(equalTo: listButtonBacking.centerXAnchor),
-        listButton.widthAnchor.constraint(equalToConstant: 40),
-        listButton.heightAnchor.constraint(equalToConstant: 40),
-        
-        pantryButtonBacking.centerYAnchor.constraint(equalTo: imageMatting.centerYAnchor),
-        pantryButtonBacking.rightAnchor.constraint(equalTo: imageMatting.rightAnchor, constant: 25),
-        pantryButtonBacking.widthAnchor.constraint(equalToConstant: 50),
-        pantryButtonBacking.heightAnchor.constraint(equalToConstant: 50),
-        
-        pantryButton.centerYAnchor.constraint(equalTo: pantryButtonBacking.centerYAnchor),
-        pantryButton.centerXAnchor.constraint(equalTo: pantryButtonBacking.centerXAnchor),
-        pantryButton.widthAnchor.constraint(equalToConstant: 40),
-        pantryButton.heightAnchor.constraint(equalToConstant: 40),
+        listButton.widthAnchor.constraint(equalTo: listButtonBacking.widthAnchor, constant: -10),
+        listButton.heightAnchor.constraint(equalTo: listButtonBacking.heightAnchor,constant: -10),
         
 
         

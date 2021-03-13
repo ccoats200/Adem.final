@@ -322,6 +322,10 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
 //MARK: class mapping
 extension fireStoreDataClass: Displayable {
 
+    var brandOfProduct: String? {
+        productDescription
+    }
+    
     var nameOfProduct: String {
         return productName
     }

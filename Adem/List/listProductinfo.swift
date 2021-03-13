@@ -82,12 +82,10 @@ class listProductVCLayout: UIViewController {
         switch self.product.productList {
         case true:
             self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
-            self.productImageSection.pantryButtonBacking.isHidden = true
             self.productImageSection.listButtonBacking.isHidden = true
         case false:
             switch self.product.productPantry {
             case true:
-                self.productImageSection.pantryButtonBacking.isHidden = true
                 self.productImageSection.listButtonBacking.isHidden = true
                 self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
             case false:
@@ -171,7 +169,6 @@ class listProductVCLayout: UIViewController {
         relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(updateQuantity), for: .touchDown)
         relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
         productImageSection.listButton.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
-        productImageSection.pantryButton.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
     }
     
 

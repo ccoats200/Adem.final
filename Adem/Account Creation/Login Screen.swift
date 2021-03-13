@@ -116,6 +116,9 @@ class login: UIViewController, UITextFieldDelegate {
                 
                 
                 //This may be wrong but I need to grab defaults on login if user deleted app. only the first time. don't want multiple calls to fb.
+                
+                //https://brainwashinc.com/2017/07/21/loading-activity-indicator-ios-swift/
+                //Why isnt this working
                 handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
                     db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
                         if let err = err {

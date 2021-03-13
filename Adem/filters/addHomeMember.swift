@@ -194,6 +194,7 @@ class addHomeMember: UIViewController, UITextFieldDelegate {
         defaults.setValue(homeListID, forKey: "listId")
         userfirebaseHomeSettings.updateData([
                                         "listId" : homeListID!])
+        //listViewController().listTableView?.reloadData()
         //MARK: This needs to change the current list 
         print("treying the lee \(currentListID!)")
     }
