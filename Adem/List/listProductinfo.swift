@@ -168,7 +168,24 @@ class listProductVCLayout: UIViewController {
         segmentContr.translatesAutoresizingMaskIntoConstraints = false
         relatedProductInfoSection.listQuantityButon.addTarget(self, action: #selector(updateQuantity), for: .touchDown)
         relatedProductInfoSection.addToPantry.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
-        productImageSection.listButton.addTarget(self, action: #selector(addToOpposite), for: .touchUpInside)
+        productImageSection.listButton.addTarget(self, action: #selector(addToAnything), for: .touchUpInside)
+    }
+    
+    @objc func addToAnything() {
+        let alertController = UIAlertController(title: nil, message: "Where do you want this?", preferredStyle: .actionSheet)
+        alertController.addAction(UIAlertAction(title: "Add to List", style: .default, handler: { action -> Void in
+            //Code to add to list
+            print("list")
+            print(self.product)
+        }))
+        alertController.addAction(UIAlertAction(title: "Add to Pantry", style: .default, handler: { action -> Void in
+            //Code to add to Pantry
+            print("pantry")
+        }))
+        alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
+            //Delay on sign out button
+        }))
+        present(alertController, animated: true, completion: nil)
     }
     
 

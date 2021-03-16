@@ -7,6 +7,7 @@
 //
 import Foundation
 import UIKit
+import ImageIO
 
 //MARK: Fonts
 let headerFont = "Montserrat"
@@ -29,18 +30,52 @@ extension UIColor {
     static let ademRed = UIColor.rgb(red: 216, green: 15, blue: 4)
 }
 
-////Constraints Extension
-//extension UIView {
-//    func addConstraintsWithFormats(format: String, views: UIView...) {
-//        var viewsDictionary = [String: UIView]()
-//        for (index, view) in views.enumerated() {
-//            let key = "v\(index)"
-//            view.translatesAutoresizingMaskIntoConstraints = false
-//            viewsDictionary[key] = view
-//        }
-//        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutConstraint.FormatOptions(), metrics: nil, views: viewsDictionary))
-//    }
-//}
+struct ImageHeaderData {
+    //https://stackoverflow.com/questions/29644168/get-image-file-type-programmatically-in-swift
+    static var PNG: [UInt8] = [0x89]
+    static var JPEG: [UInt8] = [0xFF]
+    static var GIF: [UInt8] = [0x47]
+    static var TIFF_01: [UInt8] = [0x49]
+    static var TIFF_02: [UInt8] = [0x4D]
+}
+enum ImageFormat {
+    case Unknown, PNG, JPEG, GIF, TIFF
+}
+extension Data {
+    var imageFormat: ImageFormat {
+        var buffer = [UInt8](repeating: 0, count: 1)
+        copyBytes(to: &buffer, from: 0..<1)
+        if buffer == ImageHeaderData.PNG { return .PNG }
+        if buffer == ImageHeaderData.JPEG { return .JPEG }
+        if buffer == ImageHeaderData.GIF { return .GIF }
+        if buffer == ImageHeaderData.TIFF_01 ||
+           buffer == ImageHeaderData.TIFF_02 {
+            return .TIFF
+        }
+        return .Unknown
+    }
+}
+
+extension NSData{
+    var imageFormat: ImageFormat{
+        var buffer = [UInt8](repeating: 0, count: 1)
+        self.getBytes(&buffer, range: NSRange(location: 0,length: 1))
+        if buffer == ImageHeaderData.PNG
+        {
+            return .PNG
+        } else if buffer == ImageHeaderData.JPEG
+        {
+            return .JPEG
+        } else if buffer == ImageHeaderData.GIF
+        {
+            return .GIF
+        } else if buffer == ImageHeaderData.TIFF_01 || buffer == ImageHeaderData.TIFF_02{
+            return .TIFF
+        } else{
+            return .Unknown
+        }
+    }
+}
 
 //SuperClass Collection View Cell
 class CellBasics: UICollectionViewCell {

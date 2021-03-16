@@ -268,28 +268,28 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
 
    //Grabs the doc Id for me!
     //MARK need to chang the id to fireBId for api call
-   @DocumentID var fireBId: String?
-   @objc var productName: String
-   @objc var productPrice: Double
-   @objc var productDescription: String
-   @objc var productQuantity: Int
-   @objc var productImage: String
-   @objc var category: String?
-   @objc var productExpir: Date?
+    @DocumentID var fireBId: String?
+    @objc var productName: String
+    @objc var productPrice: Double
+    @objc var productDescription: String
+    @objc var productQuantity: Int
+    @objc var productImage: String
+    @objc var category: String?
+    @objc var productExpir: Date?
     @objc var productList: Bool
     @objc var productPantry: Bool
    
-   enum CodingKeys: String, CodingKey {
-      case fireBId
-      case productName
-      case productPrice
-      case productDescription
-      case productQuantity
-      case productImage
-      case category
-      case productExpir
-    case productList
-    case productPantry
+    enum CodingKeys: String, CodingKey {
+        case fireBId
+        case productName
+        case productPrice
+        case productDescription
+        case productQuantity
+        case productImage
+        case category
+        case productExpir
+        case productList
+        case productPantry
    }
     
     enum ExpressionKeys: String {
@@ -322,6 +322,10 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
 //MARK: class mapping
 extension fireStoreDataClass: Displayable {
 
+    var imagesOfProduct: [String]? {
+        nil
+    }
+    
     var brandOfProduct: String? {
         productDescription
     }

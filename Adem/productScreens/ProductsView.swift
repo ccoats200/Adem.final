@@ -148,7 +148,6 @@ class productImageViews: UIView {
     
     let productImage: UIImageView = {
         let productImageDesign = UIImageView()
-        productImageDesign.image = UIImage(named: "bacon")
         productImageDesign.contentMode = .center
         productImageDesign.contentMode = .scaleAspectFill
         productImageDesign.clipsToBounds = true

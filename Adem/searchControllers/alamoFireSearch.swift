@@ -21,6 +21,7 @@ protocol Displayable {
 //    var nameOfingredients: String { get }
     var upcOfProduct: String? { get }
     var brandOfProduct: String? { get }
+    var imagesOfProduct: [String]? { get }
 }
 
 
@@ -47,6 +48,10 @@ struct searchedProducts: Decodable {
 }
 
 extension searchedProduct: Displayable {
+    var imagesOfProduct: [String]? {
+        nil
+    }
+    
     var brandOfProduct: String? {
         nil
     }
@@ -78,6 +83,8 @@ struct searchedProductsId: Codable {
     var upc: String
     var price: Double
     var brand: String
+    var images: [String]
+    var nutrition: nutrition
     //let ingredients: [searchedProductId]
     //might need additionalInformationKeys https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
   
@@ -87,6 +94,8 @@ struct searchedProductsId: Codable {
     case name = "title"
     case upc
     case brand
+    case images
+    case nutrition = "nutrition"
   }
     
     enum ExpressionKeys: String {
@@ -95,16 +104,93 @@ struct searchedProductsId: Codable {
         case upc
         case price
         case brand
+        case images
+        case nutrition
     }
 
-    init(id: Int, name: String, upc: String, price: Double, brand: String) {
+    init(id: Int, name: String, upc: String, price: Double, brand: String, images: [String], nutrition: nutrition) {
         self.id = id
         self.name = name
         self.upc = upc
         self.price = price
         self.brand = brand
+        self.images = images
+        self.nutrition = nutrition
     }
 }
+
+struct nutrition: Codable {
+    
+    var nutrients: [nutrients]
+
+  enum CodingKeys: String, CodingKey {
+    case nutrients = "nutrients"
+  }
+
+}
+
+struct nutrients: Codable {
+    
+    var name: String
+    var title: String
+    var amount: Double
+    var unit: String
+    var percentOfDailyNeeds: Double
+
+  
+  enum CodingKeys: String, CodingKey {
+    case name
+    case title
+    case amount
+    case unit
+    case percentOfDailyNeeds
+  }
+    
+    enum ExpressionKeys: String {
+        case name
+        case title
+        case amount
+        case unit
+        case percentOfDailyNeeds
+        
+    }
+
+    init(name: String, title: String, amount: Double, unit: String, percentOfDailyNeeds: Double) {
+        self.name = name
+        self.title = title
+        self.amount = amount
+        self.unit = unit
+        self.percentOfDailyNeeds = percentOfDailyNeeds
+    }
+}
+
+
+
+//struct nutProductsId: Codable {
+//
+//    var title: String
+//    var name: String
+//
+//    //let ingredients: [searchedProductId]
+//    //might need additionalInformationKeys https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
+//
+//  enum CodingKeys: String, CodingKey {
+//    case title
+//    case name
+//
+//  }
+//
+//    enum ExpressionKeys: String {
+//        case title
+//        case name
+//
+//    }
+//
+//    init(title: String, name: String) {
+//        self.title = title
+//        self.name = name
+//    }
+//}
 
 //For the list of nutriton
 
@@ -128,6 +214,10 @@ struct NutritionList {
 
 
 extension searchedProductsId: Displayable {
+    var imagesOfProduct: [String]? {
+        images
+    }
+    
     var brandOfProduct: String? {
         brand
     }
@@ -193,6 +283,10 @@ class downloadSearchedProduct: NSObject, Codable {
 }
 
 extension downloadSearchedProduct: Displayable {
+    var imagesOfProduct: [String]? {
+        nil
+    }
+    
     
     var brandOfProduct: String? {
         nil
