@@ -62,13 +62,6 @@ class productViews: UIView {
        
    }()
     
-//    var addToPantry: UIButton = {
-//        let addToPantry = UIButton(type: .system)
-//        addToPantry.backgroundColor = UIColor.ademGreen
-//        //addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
-//        return addToPantry
-//    }()
-    
      var addbacking: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor.white

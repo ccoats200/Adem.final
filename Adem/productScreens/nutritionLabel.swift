@@ -11,13 +11,16 @@ import UIKit
 
 class nutritionLabelVC: UIViewController {
     
+    var nutritionCollectionView: UICollectionView!
+    let nutritionCID = "Cmeals"
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.layer.cornerRadius = 15
         view.backgroundColor = UIColor.white
         
-        setUpProductButtons()
+        setUpCollection()
         setupProductLayoutContstraints()
         
         //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
@@ -26,27 +29,29 @@ class nutritionLabelVC: UIViewController {
         self.dismiss(animated: true, completion: nil)
     }
     
-    var initialTouchPoint: CGPoint = CGPoint(x: 0,y: 0)
-    @objc func panGestureRecognizerAction(_ gesture: UIPanGestureRecognizer) {
+    func setUpCollection() {
+        let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
+        mealsCollectionViewlayouts.scrollDirection = .vertical
         
-        let touchPoint = gesture.location(in: self.view?.window)
-        
-        if gesture.state == UIGestureRecognizer.State.began {
-            initialTouchPoint = touchPoint
-        } else if gesture.state == UIGestureRecognizer.State.changed {
-            if touchPoint.y - initialTouchPoint.y > 0 {
-                self.view.frame = CGRect(x: 0, y: touchPoint.y - initialTouchPoint.y, width: self.view.frame.size.width, height: self.view.frame.size.height)
-            }
-        } else if gesture.state == UIGestureRecognizer.State.ended || gesture.state == UIGestureRecognizer.State.cancelled {
-            if touchPoint.y - initialTouchPoint.y > 100 {
-                self.dismiss(animated: true, completion: nil)
-            } else {
-                UIView.animate(withDuration: 0.3, animations: {
-                    self.view.frame = CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: self.view.frame.size.height)
-                })
-            }
+        self.nutritionCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
+
+          
+        nutritionCollectionView.showsVerticalScrollIndicator = false
+        self.nutritionCollectionView.dataSource = self
+        self.nutritionCollectionView.delegate = self
+        self.nutritionCollectionView.register(pantryCell.self, forCellWithReuseIdentifier: nutritionCID)
+        if #available(iOS 13.0, *) {
+            self.nutritionCollectionView.backgroundColor = UIColor.systemGray6
+        } else {
+            // Fallback on earlier versions
         }
-        print(gesture)
+        self.nutritionCollectionView.isUserInteractionEnabled = true
+        self.nutritionCollectionView.isScrollEnabled = true
+        
+        //CollectionView spacing
+        nutritionCollectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
+        
+        
     }
     
 
@@ -117,19 +122,11 @@ class nutritionLabelVC: UIViewController {
         return faveProduct
     }()
 
-
-
-
-    func setUpProductButtons() {
-        //MARK: how to add button interaction
-        
-//        productNameSection.productNameAndBackButton.addTarget(self, action: #selector(handleBack), for: .touchUpInside)
-//        relatedProductInfoSection.nutritionDetails.addTarget(self, action: #selector(handleCamera), for: .touchUpInside)
-    }
     
     func setupProductLayoutContstraints() {
         
         view.addSubview(nutritionImage)
+        view.addSubview(nutritionCollectionView)
         
         let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
 
@@ -137,6 +134,8 @@ class nutritionLabelVC: UIViewController {
         
         healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
         nutritionImage.translatesAutoresizingMaskIntoConstraints = false
+        nutritionCollectionView.translatesAutoresizingMaskIntoConstraints = false
+        //adding subviews to the view controller
         
         healthInfoStackView.contentMode = .scaleAspectFit
         healthInfoStackView.spacing = 5
@@ -156,17 +155,38 @@ class nutritionLabelVC: UIViewController {
             healthInfoStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             healthInfoStackView.heightAnchor.constraint(equalToConstant: 30),
             
-        nutritionImage.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 10),
-        nutritionImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        nutritionImage.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-        nutritionImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -10),
-        
-        
-
-        
-        ])
+            nutritionImage.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 10),
+            nutritionImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nutritionImage.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+            nutritionImage.heightAnchor.constraint(equalToConstant: 100),
             
+            nutritionCollectionView.topAnchor.constraint(equalTo: nutritionImage.bottomAnchor),
+            nutritionCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            nutritionCollectionView.widthAnchor.constraint(equalTo: nutritionImage.widthAnchor),
+            nutritionCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+        ])
     }
+}
+
+extension nutritionLabelVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return arrayofPantry.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: nutritionCID, for: indexPath) as! pantryCell
+    
+        let pantryList = arrayofPantry[indexPath.item]
+        
+        pantryItemsCell.pantryItemName.text = pantryList.productName
+
+        pantryItemsCell.layer.cornerRadius = 5
+        return pantryItemsCell
+    }
+    
+    
 }
 
 

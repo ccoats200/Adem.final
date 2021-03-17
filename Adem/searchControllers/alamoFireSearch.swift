@@ -85,6 +85,9 @@ struct searchedProductsId: Codable {
     var brand: String
     var images: [String]
     var nutrition: nutrition
+    
+    //Mark: Will need Ingredients
+    
     //let ingredients: [searchedProductId]
     //might need additionalInformationKeys https://developer.apple.com/documentation/foundation/archives_and_serialization/encoding_and_decoding_custom_types
   

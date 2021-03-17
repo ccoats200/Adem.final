@@ -175,13 +175,13 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
         downloadSearchIdProduct(indexPath: indexPath, Id: test!)
         print(arrayofSearchEngaged.count)
         
-//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-//            //https://www.zerotoappstore.com/create-a-delay-or-wait-in-swift.html
-//            let selectedProduct: fireStoreDataClass!
-//            selectedProduct = self.productSelected(forIndexPath: indexPath)
-//            let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
-//            self.present(detailViewController, animated: true, completion: nil)
-//        })
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+            //https://www.zerotoappstore.com/create-a-delay-or-wait-in-swift.html
+            let selectedProduct: fireStoreDataClass!
+            selectedProduct = self.productSelected(forIndexPath: indexPath)
+            let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
+            self.present(detailViewController, animated: true, completion: nil)
+        })
         //Also Download data and upload to firebase once they add to a list or pantry.
     }
     
@@ -234,22 +234,23 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                     print(arrayofSearchEngagedStruct.map {$0.nutrition.nutrients[0]})
                     
 
-//                    arrayofSearchEngaged = arrayofSearchEngagedStruct.map { item -> fireStoreDataClass in
-//
-//                        let title = item.name
-//                        let id = item.id
-//                        let upc = item.upc
-//                        let price = item.price
-//                        let brand = item.brand
-//                        let image = item.images[0]
-//
-//
-//                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: nil, productList: false, productPantry: false)
-//                    }
-//                    print(" there are blank \(arrayofSearchEngaged.count)")
-//                    print(arrayofSearchEngaged.map {$0.productImage})
-//                } catch let error as NSError {
-//                    print("Failed to load: \(error.localizedDescription)")
+                    arrayofSearchEngaged = arrayofSearchEngagedStruct.map { item -> fireStoreDataClass in
+
+                        let title = item.name
+                        let id = item.id
+                        let upc = item.upc
+                        let price = item.price
+                        let brand = item.brand
+                        let image = item.images[0]
+
+
+                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: nil, productList: false, productPantry: false)
+                    }
+                    print(" there are blank \(arrayofSearchEngaged.count)")
+                    print(arrayofSearchEngaged.map {$0.productImage})
+                } catch let error as NSError {
+                    print("Failed to load: \(error.localizedDescription)")
+                   // */
                 }
             case .failure(let error):
                 print("Request error: \(error.localizedDescription)")
