@@ -92,7 +92,8 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //not seeing it change
             //MARK: This needs to change the current list
             print("why isn't this working \(currentListID!)")
-            self.pullUserInformation()
+            //Need the below but it calls too many times
+            //self.pullUserInformation()
             })
         searchBarSetUp()
         //pullUserInformation()
@@ -280,16 +281,29 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
 
                 //print(logInStatus as! Bool)
                 print(currentListID)
+                
+                //This needs to point to a top level collection where the person list has a ref to the product
                 listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
                         print("No documents")
                         return
                     }
+                    documents.forEach { doc in
+                        //Why is this running 3 times
+                        let docID = doc.get("groceryReferenc")
+                        print(docID)
+                        gProductfirebaseProducts.document("\(docID!)").addSnapshotListener { (querySnapshot, error) in
+                            guard let documents = querySnapshot?.data() else {
+                                print("No documents")
+                                return
+                            }
+                            print(documents)
+                        }
+                    }
+                    
                         arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
                             return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
                         }
-                        print("this is another test of the find \(arrayofProducts)")
-                        
                     if arrayofProducts.isEmpty == true {
                         self.tableViewIsEmpty()
                     }

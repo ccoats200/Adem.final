@@ -50,8 +50,6 @@ class nutritionLabelVC: UIViewController {
         
         //CollectionView spacing
         nutritionCollectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
-        
-        
     }
     
 

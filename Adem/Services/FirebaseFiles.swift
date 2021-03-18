@@ -21,6 +21,7 @@ let listId = privatehomeAttributes["listId"] as? String
 
 let userfirebaseProducts = db.collection("user").document(currentUser!.uid).collection("public").document("products").collection("List")
 let listfirebaseProducts = db.collection("lists")
+let gProductfirebaseProducts = db.collection("groceryProducts")
 let productAnalytics = listfirebaseProducts.document("\(currentListID!)").collection("list")
 
 //let userfirebaseProducts = db.collection("home").document(currentUser!.uid).collection("members").document(currentUser!.uid).collection("public").document("products").collection("List")

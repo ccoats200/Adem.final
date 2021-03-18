@@ -56,18 +56,6 @@ class ProfileView: UIView {
         return profPic
     }()
     
-    
-//    var nameofUser: UILabel = {
-//        let userName = UILabel()
-//        userName.textAlignment = .center
-//        userName.numberOfLines = 1
-//        userName.adjustsFontSizeToFitWidth = true
-//        userName.font = UIFont.boldSystemFont(ofSize: 20)
-//        userName.textColor = UIColor.ademBlue
-//        print("sets the item name")
-//        return userName
-//    }(){
-    
     let nameofUser = navigationButton()
     
     func nameButtonSetUp() {
