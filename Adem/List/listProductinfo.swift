@@ -176,19 +176,21 @@ class listProductVCLayout: UIViewController {
         let alertController = UIAlertController(title: nil, message: "Where do you want this?", preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "Add to List", style: .default, handler: { action -> Void in
             //Code to add to list
-            productToAdd.productList = true
-            self.addToFirebase(dabest: productToAdd)
-            print(self.product)
+            
+            if (arrayofProducts.contains { $0.productUPC == productToAdd.productUPC}) {
+                self.updateQuantitySearch(location: "List")
+            } else {
+                productToAdd.productList = true
+                self.addToFirebase(dabest: productToAdd)
+            }
         }))
         alertController.addAction(UIAlertAction(title: "Add to Pantry", style: .default, handler: { action -> Void in
             //Code to add to Pantry
-            productToAdd.productPantry = true
-            let test = arrayofPantry.contains { $0.productUPC == productToAdd.productUPC}
-            if test {
-                //MARK: Needs a popup if they want to add again update quantitiy
-                print("true")
+            
+            if (arrayofPantry.contains { $0.productUPC == productToAdd.productUPC}) {
+                self.updateQuantitySearch(location: "Pantry")
             } else {
-                //MARK: Needs a popup
+                productToAdd.productPantry = true
                 self.addToFirebase(dabest: productToAdd)
             }
         }))
@@ -205,7 +207,16 @@ class listProductVCLayout: UIViewController {
           catch {
             print(error)
           }
+    }
+    
+    @objc func updateQuantitySearch(location: String) {
+        let sorted = actionTest.sorted {$0.key > $1.key}
+        let actionSheetController: UIAlertController = UIAlertController(title: "This Item is Already in your \(location)", message: nil, preferredStyle: .alert)
+        let cancelAction: UIAlertAction = UIAlertAction(title: "Done", style: .cancel) { action -> Void in }
         
+        actionSheetController.addAction(cancelAction)
+        self.present(actionSheetController, animated: true, completion: nil)
+
     }
     
 
@@ -230,10 +241,7 @@ class listProductVCLayout: UIViewController {
         }
         actionSheetController.addAction(cancelAction)
         self.present(actionSheetController, animated: true, completion: nil)
-//        updateQuantity()
-//        let updateQuantity = quantityAlert()
-//        updateQuantity.modalPresentationStyle = UIModalPresentationStyle.formSheet
-//        self.present(updateQuantity, animated: true, completion: nil)
+
     }
     
     @objc func addToOpposite() {
