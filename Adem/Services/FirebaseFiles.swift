@@ -139,7 +139,7 @@ extension UIViewController {
     }
     
     //MARK: -Waste
-    func addWasteAmount(id: String, amount: String) {
+    func addWasteAmount(id: String, amount: Int) {
         
         productAnalytics.document(id).collection("wasteData").addDocument(data: [
                 "time" : Firebase.Timestamp(),

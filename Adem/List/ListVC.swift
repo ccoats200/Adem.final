@@ -95,6 +95,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //Need the below but it calls too many times
             //self.pullUserInformation()
             })
+        //MARK: If the pantry breaks
+//        arrayofPantry = []
+//        print("thingst \(arrayofPantry)")
         searchBarSetUp()
         //pullUserInformation()
         tableViewSetup()
@@ -288,19 +291,25 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                         print("No documents")
                         return
                     }
-                    documents.forEach { doc in
-                        //Why is this running 3 times
-                        let docID = doc.get("groceryReferenc")
-                        print(docID)
-                        gProductfirebaseProducts.document("\(docID!)").addSnapshotListener { (querySnapshot, error) in
-                            guard let documents = querySnapshot?.data() else {
-                                print("No documents")
-                                return
-                            }
-                            print(documents)
-                        }
-                    }
                     
+                    
+                    //MAR: - This is ideal but I can't do it.
+//                    documents.forEach { doc in
+//                        let docID = doc.get("groceryReferenc")
+//                        print(docID)
+//                        gProductfirebaseProducts.document("\(docID!)").addSnapshotListener { (querySnapshot, error) in
+//                            guard let documents = querySnapshot?.data() else {
+//                                print("No documents")
+//                                return
+//                            }
+//
+////                            arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
+////                                return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
+////                            }
+////                            print(arrayofProducts)
+////                            print(documents)
+//                        }
+//                    }
                         arrayofProducts = documents.compactMap { queryDocumentSnapshot -> fireStoreDataClass? in
                             return try? queryDocumentSnapshot.data(as: fireStoreDataClass.self)
                         }

@@ -172,20 +172,40 @@ class listProductVCLayout: UIViewController {
     }
     
     @objc func addToAnything() {
+        let productToAdd = arrayofSearchEngaged[0]
         let alertController = UIAlertController(title: nil, message: "Where do you want this?", preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "Add to List", style: .default, handler: { action -> Void in
             //Code to add to list
-            print("list")
+            productToAdd.productList = true
+            self.addToFirebase(dabest: productToAdd)
             print(self.product)
         }))
         alertController.addAction(UIAlertAction(title: "Add to Pantry", style: .default, handler: { action -> Void in
             //Code to add to Pantry
-            print("pantry")
+            productToAdd.productPantry = true
+            let test = arrayofPantry.contains { $0.productUPC == productToAdd.productUPC}
+            if test {
+                //MARK: Needs a popup if they want to add again update quantitiy
+                print("true")
+            } else {
+                //MARK: Needs a popup
+                self.addToFirebase(dabest: productToAdd)
+            }
         }))
         alertController.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action -> Void in
             //Delay on sign out button
         }))
         present(alertController, animated: true, completion: nil)
+    }
+    
+    func addToFirebase(dabest: fireStoreDataClass) {
+        do {
+            let _ = try listfirebaseProducts.document("\(currentListID!)").collection("list").addDocument(from: dabest)
+          }
+          catch {
+            print(error)
+          }
+        
     }
     
 
@@ -227,12 +247,12 @@ class listProductVCLayout: UIViewController {
             switch self.product.productPantry {
             case true:
                 let find = self.product.fireBId!
-                let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
+                let actionTest = [1: 100,2: 75,3: 50,4 : 25,5: 0]
                 let sorted = actionTest.sorted {$0.key < $1.key}
                 let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
                 let cancelAction: UIAlertAction = UIAlertAction(title: "Not Done Yet", style: .cancel) { action -> Void in }
                 for actions in sorted {
-                    let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+                    let quantity: UIAlertAction = UIAlertAction(title: "\(actions.value)%", style: .default) { action -> Void in
                         self.addWasteAmount(id: find, amount: actions.value)
                         self.updateProductLocationValues(indexPath: find, pantry: false, list: true)
                         self.addTimeStamp(id: find, action: engagements.list.rawValue)

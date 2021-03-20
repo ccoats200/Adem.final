@@ -108,7 +108,6 @@ class productViews: UIView {
         nutritionButton.centerXAnchor.constraint(equalTo: addbacking.centerXAnchor),
         nutritionButton.heightAnchor.constraint(equalTo: addbacking.heightAnchor, constant: -2),
         nutritionButton.widthAnchor.constraint(equalTo: addbacking.widthAnchor, constant: -2),
-        
     ])
   }
 }

@@ -268,6 +268,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
 
    //Grabs the doc Id for me!
     //MARK need to chang the id to fireBId for api call
+    //add upc and sku
     @DocumentID var fireBId: String?
     @objc var productName: String
     @objc var productPrice: Double
@@ -278,6 +279,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
     @objc var productExpir: Date?
     @objc var productList: Bool
     @objc var productPantry: Bool
+    @objc var productSKU: String?
+    @objc var productUPC: String?
    
     enum CodingKeys: String, CodingKey {
         case fireBId
@@ -290,6 +293,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         case productExpir
         case productList
         case productPantry
+        case productSKU
+        case productUPC
    }
     
     enum ExpressionKeys: String {
@@ -303,9 +308,11 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
        case productExpir
         case productList
         case productPantry
+        case productSKU
+        case productUPC
     }
     
-    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date?, productList: Bool, productPantry: Bool) {
+    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date?, productList: Bool, productPantry: Bool, productSKU: String?, productUPC: String?) {
         self.fireBId = fireBId
         self.productName = productName
         self.productPrice = productPrice
@@ -316,6 +323,8 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         self.productExpir = productExpir
         self.productList = productList
         self.productPantry = productPantry
+        self.productSKU = productSKU
+        self.productUPC = productUPC
     }
 }
 

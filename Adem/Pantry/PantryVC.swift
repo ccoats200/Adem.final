@@ -324,12 +324,12 @@ extension PantryVC: pantryDelegate {
             //1. Change value in data source
             let item = arrayofPantry[indexPath.row].fireBId
             
-            let actionTest = [1: "100%",2: "75%",3: "50%",4 :"25%",5: "0%"]
+            let actionTest = [1: 100,2: 75,3: 50,4 : 25,5: 0]
             let sorted = actionTest.sorted {$0.key < $1.key}
             let actionSheetController: UIAlertController = UIAlertController(title: "How Much Was Left?", message: "This helps us learn how to help you!", preferredStyle: .actionSheet)
             let cancelAction: UIAlertAction = UIAlertAction(title: "Not Done Yet", style: .cancel) { action -> Void in }
             for actions in sorted {
-                let quantity: UIAlertAction = UIAlertAction(title: String(actions.value), style: .default) { action -> Void in
+                let quantity: UIAlertAction = UIAlertAction(title: "\(actions.value)%", style: .default) { action -> Void in
                     self.addWasteAmount(id: item!, amount: actions.value)
                     self.updateProductLocationValues(indexPath: item!, pantry: false, list: true)
                     self.addTimeStamp(id: item!, action: engagements.list.rawValue)

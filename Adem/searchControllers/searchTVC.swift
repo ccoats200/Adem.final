@@ -214,6 +214,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                 print(products.price)
         }
     }
+    
     func downloadSearchIdProduct(indexPath: IndexPath, Id: Int) {
         //https://stackoverflow.com/questions/43204249/wait-until-alamofire-is-done-getting-request-and-making-object
         
@@ -243,8 +244,7 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                         let brand = item.brand
                         let image = item.images[0]
 
-
-                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: nil, productList: false, productPantry: false)
+                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: Date(), productList: false, productPantry: false, productSKU: upc, productUPC: upc)
                     }
                     print(" there are blank \(arrayofSearchEngaged.count)")
                     print(arrayofSearchEngaged.map {$0.productImage})
