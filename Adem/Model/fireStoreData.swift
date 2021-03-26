@@ -281,6 +281,7 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
     @objc var productPantry: Bool
     @objc var productSKU: String?
     @objc var productUPC: String?
+    var nutrition: nutrition?
    
     enum CodingKeys: String, CodingKey {
         case fireBId
@@ -295,24 +296,26 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         case productPantry
         case productSKU
         case productUPC
+        case nutrition
    }
     
     enum ExpressionKeys: String {
-       case fireBId
-       case productName
-       case productPrice
-       case productDescription
-       case productQuantity
-       case productImage
-       case category
-       case productExpir
+        case fireBId
+        case productName
+        case productPrice
+        case productDescription
+        case productQuantity
+        case productImage
+        case category
+        case productExpir
         case productList
         case productPantry
         case productSKU
         case productUPC
+        case nutrition
     }
     
-    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date?, productList: Bool, productPantry: Bool, productSKU: String?, productUPC: String?) {
+    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date?, productList: Bool, productPantry: Bool, productSKU: String?, productUPC: String?, nutrition: nutrition?) {
         self.fireBId = fireBId
         self.productName = productName
         self.productPrice = productPrice
@@ -325,8 +328,10 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         self.productPantry = productPantry
         self.productSKU = productSKU
         self.productUPC = productUPC
+        self.nutrition = nutrition
     }
 }
+
 
 //MARK: class mapping
 extension fireStoreDataClass: Displayable {

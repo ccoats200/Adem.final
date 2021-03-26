@@ -243,8 +243,12 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                         let price = item.price
                         let brand = item.brand
                         let image = item.images[0]
+                        let nutritionInfo = item.nutrition
+                        //Need to add this to the class
+                        let ingredientList = item.ingredientList
+                        print(ingredientList)
 
-                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: Date(), productList: false, productPantry: false, productSKU: upc, productUPC: upc)
+                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: Date(), productList: false, productPantry: false, productSKU: upc, productUPC: upc, nutrition: nutritionInfo)
                     }
                     print(" there are blank \(arrayofSearchEngaged.count)")
                     print(arrayofSearchEngaged.map {$0.productImage})

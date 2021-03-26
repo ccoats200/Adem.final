@@ -259,7 +259,6 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         relatedProducts = relatedProduct(forIndexPath: indexPath)
         productDelegate?.relatedProductCollectionView(collectioncell: productCellTap, IndexPath: indexPath)
         //MARK: for meals
-        print("\(relatedProducts.productName.capitalized)")
     }
     
     
@@ -320,7 +319,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     let segmentLabel: UILabel = {
         let meal = UILabel()
         meal.textColor = UIColor.ademBlue
-        meal.text = "You May Also Like"
+        meal.text = "You May Also Want"
         meal.font = UIFont(name: hNBold, size: 18)
         meal.textAlignment = .center
         meal.layer.cornerRadius = 5
@@ -371,11 +370,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
         segmentLabel.translatesAutoresizingMaskIntoConstraints = false
         listProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
         productDescription.translatesAutoresizingMaskIntoConstraints = false
-    
-        
 
-        
-    
         self.addSubview(itemQuant)
         itemQuant.addSubview(listQuantity)
         itemQuant.addSubview(listQuantityButon)

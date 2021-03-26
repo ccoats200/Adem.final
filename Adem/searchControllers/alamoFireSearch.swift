@@ -85,7 +85,7 @@ struct searchedProductsId: Codable {
     var brand: String
     var images: [String]
     var nutrition: nutrition
-    
+    var ingredientList: String
     //Mark: Will need Ingredients
     
     //let ingredients: [searchedProductId]
@@ -99,6 +99,7 @@ struct searchedProductsId: Codable {
     case brand
     case images
     case nutrition = "nutrition"
+    case ingredientList
   }
     
     enum ExpressionKeys: String {
@@ -109,9 +110,10 @@ struct searchedProductsId: Codable {
         case brand
         case images
         case nutrition
+        case ingredientList
     }
 
-    init(id: Int, name: String, upc: String, price: Double, brand: String, images: [String], nutrition: nutrition) {
+    init(id: Int, name: String, upc: String, price: Double, brand: String, images: [String], nutrition: nutrition, ingredientList: String) {
         self.id = id
         self.name = name
         self.upc = upc
@@ -119,6 +121,7 @@ struct searchedProductsId: Codable {
         self.brand = brand
         self.images = images
         self.nutrition = nutrition
+        self.ingredientList = ingredientList
     }
 }
 
