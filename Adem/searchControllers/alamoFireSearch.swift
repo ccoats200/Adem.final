@@ -86,6 +86,7 @@ struct searchedProductsId: Codable {
     var images: [String]
     var nutrition: nutrition
     var ingredientList: String
+    var ingredients: [ingredients]
     //Mark: Will need Ingredients
     
     //let ingredients: [searchedProductId]
@@ -100,6 +101,7 @@ struct searchedProductsId: Codable {
     case images
     case nutrition = "nutrition"
     case ingredientList
+    case ingredients
   }
     
     enum ExpressionKeys: String {
@@ -111,9 +113,10 @@ struct searchedProductsId: Codable {
         case images
         case nutrition
         case ingredientList
+        case ingredients
     }
 
-    init(id: Int, name: String, upc: String, price: Double, brand: String, images: [String], nutrition: nutrition, ingredientList: String) {
+    init(id: Int, name: String, upc: String, price: Double, brand: String, images: [String], nutrition: nutrition, ingredientList: String, ingredients: [ingredients]) {
         self.id = id
         self.name = name
         self.upc = upc
@@ -122,6 +125,7 @@ struct searchedProductsId: Codable {
         self.images = images
         self.nutrition = nutrition
         self.ingredientList = ingredientList
+        self.ingredients = ingredients
     }
 }
 
@@ -129,10 +133,9 @@ struct nutrition: Codable {
     
     var nutrients: [nutrients]
 
-  enum CodingKeys: String, CodingKey {
-    case nutrients = "nutrients"
-  }
-
+    enum CodingKeys: String, CodingKey {
+        case nutrients = "nutrients"
+    }
 }
 
 struct nutrients: Codable {
@@ -142,7 +145,6 @@ struct nutrients: Codable {
     var amount: Double
     var unit: String
     var percentOfDailyNeeds: Double
-
   
   enum CodingKeys: String, CodingKey {
     case name
@@ -167,6 +169,34 @@ struct nutrients: Codable {
         self.amount = amount
         self.unit = unit
         self.percentOfDailyNeeds = percentOfDailyNeeds
+    }
+}
+
+struct ingredients: Codable {
+    
+    var name: String
+    var safetyLevel: String?
+    var description: String?
+  
+  enum CodingKeys: String, CodingKey {
+    case name
+    case safetyLevel = "safety_level"
+    case description
+    
+  }
+    
+    enum ExpressionKeys: String {
+        case name
+        case safetyLevel
+        case description
+        
+    }
+
+    init(name: String, safetyLevel: String?, description: String?) {
+        self.name = name
+        self.safetyLevel = safetyLevel
+        self.description = description
+        
     }
 }
 

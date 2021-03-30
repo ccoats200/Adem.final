@@ -274,13 +274,16 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
     @objc var productPrice: Double
     @objc var productDescription: String
     @objc var productQuantity: Int
+    //MARK: Needs to be an image not string
     @objc var productImage: String
+    @objc var productImageImage: Data?
     @objc var category: String?
     @objc var productExpir: Date?
     @objc var productList: Bool
     @objc var productPantry: Bool
     @objc var productSKU: String?
     @objc var productUPC: String?
+    @objc var productIngredientList: String?
     var nutrition: nutrition?
    
     enum CodingKeys: String, CodingKey {
@@ -290,12 +293,14 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         case productDescription
         case productQuantity
         case productImage
+        case productImageImage
         case category
         case productExpir
         case productList
         case productPantry
         case productSKU
         case productUPC
+        case productIngredientList
         case nutrition
    }
     
@@ -306,28 +311,32 @@ class fireStoreDataClass: NSObject, Identifiable, Codable {
         case productDescription
         case productQuantity
         case productImage
+        case productImageImage
         case category
         case productExpir
         case productList
         case productPantry
         case productSKU
         case productUPC
+        case productIngredientList
         case nutrition
     }
     
-    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, category: String, productExpir: Date?, productList: Bool, productPantry: Bool, productSKU: String?, productUPC: String?, nutrition: nutrition?) {
+    init(fireBId: String, productName: String, productPrice: Double, productDescription: String, productQuantity: Int, productImage: String, productImageImage: Data?, category: String, productExpir: Date?, productList: Bool, productPantry: Bool, productSKU: String?, productUPC: String?, productIngredientList: String?, nutrition: nutrition?) {
         self.fireBId = fireBId
         self.productName = productName
         self.productPrice = productPrice
         self.productDescription = productDescription
         self.productQuantity = productQuantity
         self.productImage = productImage
+        self.productImageImage = productImageImage
         self.category = category
         self.productExpir = productExpir
         self.productList = productList
         self.productPantry = productPantry
         self.productSKU = productSKU
         self.productUPC = productUPC
+        self.productIngredientList = productIngredientList
         self.nutrition = nutrition
     }
 }

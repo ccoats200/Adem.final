@@ -11,13 +11,12 @@ import UIKit
 import Firebase
 import FirebaseFirestoreSwift
 
-
-
 class listProductVCLayout: UIViewController {
     //MARK: ALL ITEMS NEED PRIVATE
     
     //Delegate to pass data
     var product: fireStoreDataClass!
+    let storage = Storage.storage()
     
     //MARK: View set up
     var productNameSection = productViews()
@@ -59,7 +58,13 @@ class listProductVCLayout: UIViewController {
         productNameSection.productNameAndBackButton.setTitle(product!.productName, for: .normal)
         productNameSection.priceLabel.text = "$\(product!.productPrice)"
         //Image elements
-        productImageSection.productImage.image = UIImage(named: product!.productImage)
+        //MARK this this so the data can be used
+        if product.productImageImage == nil {
+            productImageSection.productImage.image = UIImage(named: product!.productImage)
+        } else {
+            productImageSection.productImage.image = UIImage(data: product!.productImageImage!)
+        }
+        
         
         
         //Detail elements
@@ -79,6 +84,8 @@ class listProductVCLayout: UIViewController {
     
     
     func NewProduct() {
+        
+        //MARK: needs to indicate that the item is added
         switch self.product.productList {
         case true:
             self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)

@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import Firebase
 
 protocol searchAddToListDelegate: class {
     func add(cell: searchTableViewCell)
@@ -128,7 +129,6 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
     //var productYouCanAddId: [DisplayableId] = []
     var searchController: UISearchController!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -246,9 +246,11 @@ class PantryResultsTableController: UITableViewController {//, UISearchControlle
                         let nutritionInfo = item.nutrition
                         //Need to add this to the class
                         let ingredientList = item.ingredientList
+                        let ingredients = item.ingredients
                         print(ingredientList)
+                        print(ingredients)
 
-                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, category: title, productExpir: Date(), productList: false, productPantry: false, productSKU: upc, productUPC: upc, nutrition: nutritionInfo)
+                        return fireStoreDataClass(fireBId: title, productName: title, productPrice: price, productDescription: brand, productQuantity: 1, productImage: image, productImageImage: nil, category: title, productExpir: Date(), productList: false, productPantry: false, productSKU: upc, productUPC: upc, productIngredientList: ingredientList, nutrition: nutritionInfo)
                     }
                     print(" there are blank \(arrayofSearchEngaged.count)")
                     print(arrayofSearchEngaged.map {$0.productImage})
