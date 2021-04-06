@@ -9,10 +9,16 @@
 import Foundation
 import UIKit
 
+protocol passNutrition {
+    func nutritionCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath)
+}
+
 class nutritionLabelVC: UIViewController {
     
     var nutritionCollectionView: UICollectionView!
     let nutritionCID = "Cmeals"
+    var nutritionInformation: fireStoreDataClass!
+    var nutritionDelegate: passNutrition?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,16 +36,17 @@ class nutritionLabelVC: UIViewController {
     }
     
     func setUpCollection() {
-        let mealsCollectionViewlayouts = UICollectionViewFlowLayout()
-        mealsCollectionViewlayouts.scrollDirection = .vertical
+        let nutritionCollectionViewlayouts = UICollectionViewFlowLayout()
+        nutritionCollectionViewlayouts.scrollDirection = .vertical
+        nutritionCollectionViewlayouts.itemSize = CGSize(width: 100, height: 50)
         
-        self.nutritionCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: mealsCollectionViewlayouts)
+        self.nutritionCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: nutritionCollectionViewlayouts)
 
           
         nutritionCollectionView.showsVerticalScrollIndicator = false
         self.nutritionCollectionView.dataSource = self
         self.nutritionCollectionView.delegate = self
-        self.nutritionCollectionView.register(pantryCell.self, forCellWithReuseIdentifier: nutritionCID)
+        self.nutritionCollectionView.register(nutritionCell.self, forCellWithReuseIdentifier: nutritionCID)
         if #available(iOS 13.0, *) {
             self.nutritionCollectionView.backgroundColor = UIColor.systemGray6
         } else {
@@ -153,16 +160,19 @@ class nutritionLabelVC: UIViewController {
             healthInfoStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
             healthInfoStackView.heightAnchor.constraint(equalToConstant: 30),
             
-            nutritionImage.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 10),
-            nutritionImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            nutritionImage.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-            nutritionImage.heightAnchor.constraint(equalToConstant: 100),
             
-            nutritionCollectionView.topAnchor.constraint(equalTo: nutritionImage.bottomAnchor),
-            nutritionCollectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            nutritionCollectionView.widthAnchor.constraint(equalTo: nutritionImage.widthAnchor),
+            
+            nutritionCollectionView.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 10),
+            nutritionCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
             nutritionCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nutritionCollectionView.bottomAnchor.constraint(equalTo: nutritionImage.topAnchor),
 
+            nutritionImage.topAnchor.constraint(equalTo: nutritionCollectionView.bottomAnchor, constant: 10),
+            nutritionImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nutritionImage.widthAnchor.constraint(equalTo: nutritionCollectionView.widthAnchor),
+            nutritionImage.heightAnchor.constraint(equalToConstant: 100),
+            nutritionImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
         ])
     }
 }
@@ -170,22 +180,38 @@ class nutritionLabelVC: UIViewController {
 extension nutritionLabelVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+       //This needs to be the ingredients list count. two sections. Aslo needs ingrediatns and nutriton
+        //This just needs to be built out.
+        
+        //return product.nutrition!.nutrients.count
         return arrayofPantry.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: nutritionCID, for: indexPath) as! pantryCell
+        let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: nutritionCID, for: indexPath) as! nutritionCell
     
-        let pantryList = arrayofPantry[indexPath.item]
+        let pantryListtet = listProductVCLayout().product?.nutrition?.nutrients
+        print(pantryListtet)
         
-        pantryItemsCell.pantryItemName.text = pantryList.productName
+        let pantryList = arrayofPantry[indexPath.item]
+        for i in pantryList.nutrition!.nutrients {
+            print(i.name)
+        }
+        pantryItemsCell.nutriName.text = pantryList.nutrition?.nutrients[0].name
+        pantryItemsCell.nutriAmount.text = "\(pantryList.nutrition!.nutrients[0].amount) \(pantryList.nutrition!.nutrients[0].unit)"
 
         pantryItemsCell.layer.cornerRadius = 5
         return pantryItemsCell
     }
-    
-    
 }
 
-
+//MARK: For product selection
+extension nutritionLabelVC {
+    
+    func productArrayInformation(forIndexPath: IndexPath) -> fireStoreDataClass {
+        var product: fireStoreDataClass!
+        product = arrayofProducts[forIndexPath.row]
+        return product
+    }
+}
 

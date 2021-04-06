@@ -22,6 +22,7 @@ class listProductVCLayout: UIViewController {
     var productNameSection = productViews()
     var productImageSection = productImageViews()
     var relatedProductInfoSection = productInfoViews()
+    var nutrition = nutritionLabelVC()
     //If not in cart use quantity as add button
     
     override func viewDidLoad() {
@@ -57,6 +58,7 @@ class listProductVCLayout: UIViewController {
         //Top elements
         productNameSection.productNameAndBackButton.setTitle(product!.productName, for: .normal)
         productNameSection.priceLabel.text = "$\(product!.productPrice)"
+//
         //Image elements
         //MARK this this so the data can be used
         if product.productImageImage == nil {
@@ -352,7 +354,7 @@ class listProductVCLayout: UIViewController {
     }
 }
 
-extension listProductVCLayout: passMeal, passProduct {
+extension listProductVCLayout: passMeal, passProduct, passNutrition {
     
     func relatedProductCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
         let selectedMeal: fireStoreDataClass!
@@ -361,6 +363,13 @@ extension listProductVCLayout: passMeal, passProduct {
         self.present(detail, animated: true, completion: nil)
     }
    
+    func nutritionCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
+        let selectedMeal: fireStoreDataClass!
+        selectedMeal = similarProduct(forIndexPath: IndexPath)
+        let detail = listProductVCLayout.detailViewControllerForProduct(selectedMeal)
+        self.present(detail, animated: true, completion: nil)
+    }
+    
     func relatedMealCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
         let selectedMeal: mealClass!
         selectedMeal = mealYouCanMake(forIndexPath: IndexPath)
