@@ -62,10 +62,12 @@ class listProductVCLayout: UIViewController {
         //FIXME: Why wont this pass to the next screen?
         //This will be the way to get nutrition info
         nutritionPage.nutritionImage.text = "\(product!.productIngredientList ?? "We're sorry this product doesn't currently have nutrition information. We are working on ensuring accurate nutrition information for all products.")"
-        
-        for i in product!.nutrition!.nutrients {
-            arrayofNutrients.append(i)
-            print(arrayofNutrients.count)
+        if product!.nutrition?.nutrients == nil {
+            arrayofNutrients.append(nutrients(name: "Not Available", title: "Not Available", amount: 0.00, unit: "N/A", percentOfDailyNeeds: 0.0))
+        } else {
+            for i in product!.nutrition!.nutrients {
+                arrayofNutrients.append(i)
+            }
         }
         
         //Image elements
@@ -363,7 +365,7 @@ class listProductVCLayout: UIViewController {
     }
 }
 
-extension listProductVCLayout: passMeal, passProduct, passNutrition {
+extension listProductVCLayout: passMeal, passProduct {
     
     func relatedProductCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath) {
         let selectedMeal: fireStoreDataClass!

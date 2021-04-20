@@ -9,16 +9,11 @@
 import Foundation
 import UIKit
 
-protocol passNutrition {
-    func nutritionCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath)
-}
 
 class nutritionLabelVC: UIView {
     
     var nutritionCollectionView: UICollectionView!
     let nutritionCID = "Cmeals"
-    var product: fireStoreDataClass!
-    var nutritionDelegate: passNutrition?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,15 +57,14 @@ class nutritionLabelVC: UIView {
         nutritionCollectionView.contentInset = UIEdgeInsets(top: 5, left: 2.5, bottom: 5, right: 2.5)
     }
 
-    let nutritionImage: UITextView = {
-        let nutritionImg = UITextView()
-        nutritionImg.layer.cornerRadius = 5
-        nutritionImg.isEditable = false
-        nutritionImg.textColor = UIColor.ademBlue
-        nutritionImg.text = "placeholder"
-        nutritionImg.layer.masksToBounds = true
-        nutritionImg.translatesAutoresizingMaskIntoConstraints = false
-        return nutritionImg
+    let nutritionIngredientsTextView: UITextView = {
+        let nutritionTxtView = UITextView()
+        nutritionTxtView.layer.cornerRadius = 5
+        nutritionTxtView.isEditable = false
+        nutritionTxtView.textColor = UIColor.ademBlue
+        nutritionTxtView.layer.masksToBounds = true
+        nutritionTxtView.translatesAutoresizingMaskIntoConstraints = false
+        return nutritionTxtView
     }()
     
     let whereToBuy: UIButton = {
@@ -102,7 +96,7 @@ class nutritionLabelVC: UIView {
     
     func setupProductLayoutContstraints() {
         
-        self.addSubview(nutritionImage)
+        self.addSubview(nutritionIngredientsTextView)
         self.addSubview(nutritionCollectionView)
         
         let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
@@ -110,7 +104,7 @@ class nutritionLabelVC: UIView {
         self.addSubview(healthInfoStackView)
         
         healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
-        nutritionImage.translatesAutoresizingMaskIntoConstraints = false
+        nutritionIngredientsTextView.translatesAutoresizingMaskIntoConstraints = false
         nutritionCollectionView.translatesAutoresizingMaskIntoConstraints = false
         //adding subviews to the view controller
         
@@ -135,13 +129,13 @@ class nutritionLabelVC: UIView {
             nutritionCollectionView.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 10),
             nutritionCollectionView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -25),
             nutritionCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            nutritionCollectionView.bottomAnchor.constraint(equalTo: nutritionImage.topAnchor),
+            nutritionCollectionView.bottomAnchor.constraint(equalTo: nutritionIngredientsTextView.topAnchor),
 
-            nutritionImage.topAnchor.constraint(equalTo: nutritionCollectionView.bottomAnchor, constant: 10),
-            nutritionImage.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            nutritionImage.widthAnchor.constraint(equalTo: nutritionCollectionView.widthAnchor),
-            nutritionImage.heightAnchor.constraint(equalToConstant: 100),
-            nutritionImage.bottomAnchor.constraint(equalTo: self.bottomAnchor),
+            nutritionIngredientsTextView.topAnchor.constraint(equalTo: nutritionCollectionView.bottomAnchor, constant: 10),
+            nutritionIngredientsTextView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            nutritionIngredientsTextView.widthAnchor.constraint(equalTo: nutritionCollectionView.widthAnchor),
+            nutritionIngredientsTextView.heightAnchor.constraint(equalToConstant: 100),
+            nutritionIngredientsTextView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
         ])
     }
@@ -150,34 +144,17 @@ class nutritionLabelVC: UIView {
 extension nutritionLabelVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        //FIXME: This should be an optional in case they don't have information
+        //FIXME: I feel like there should be a check of some sort here.
         return arrayofNutrients.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let pantryItemsCell = collectionView.dequeueReusableCell(withReuseIdentifier: nutritionCID, for: indexPath) as! nutritionCell
-    
-        let pantryListtet = listProductVCLayout().product?.nutrition?.nutrients
-        print(pantryListtet)
-        
         let pantryList = arrayofNutrients[indexPath.item]
         pantryItemsCell.nutriName.text = pantryList.name
         pantryItemsCell.nutriAmount.text = "\(pantryList.amount) \(pantryList.unit)"
-
- 
         pantryItemsCell.layer.cornerRadius = 5
+        
         return pantryItemsCell
     }
 }
-
-//MARK: For product selection
-extension nutritionLabelVC {
-    
-    func productArrayInformation(forIndexPath: IndexPath) -> fireStoreDataClass {
-        var product: fireStoreDataClass!
-        product = arrayofProducts[forIndexPath.row]
-        return product
-    }
-}
-
