@@ -24,20 +24,22 @@ import Foundation
  - Add limit to related meals
  - Meals ingerdiants indexpath is off
  - Settings page needed
- - Kitchen name edit not working
- - Kitchen name not updating
  - Stats not working
- - Sign out button not staying visable
  - Recipies in settings not clicking
  - Meal ratings not working: work with halves for now
  - Meal steps needs to be made. table view
  - Pantry sections/groupings
- - Account page top cutting off user image
  - User image selection and change name not set up
  - Meal section headers
  - Camera barcode reader
  - Search switching
- - Move the plus button to the price label and the price label to the left of the title on the product page
+ - Move Change image to image not on name
+ - Resize the user Icons
+ - You may want screen Limit to 3. pull from Firebase?
+ - You can Make Screen Limit to 6. Where to pull from?
+ - Nutrition Icons. Keep?
+ - Change the product image type to data. Add a default.
+ 
  
  //MARK: - Long term
  - Camera reciept reader

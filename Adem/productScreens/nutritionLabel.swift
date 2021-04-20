@@ -20,10 +20,8 @@ class nutritionLabelVC: UIView {
         
         self.layer.cornerRadius = 15
         self.backgroundColor = UIColor.white
-        
         setUpCollection()
         setupProductLayoutContstraints()
-        
     }
     
     required init?(coder: NSCoder) {
