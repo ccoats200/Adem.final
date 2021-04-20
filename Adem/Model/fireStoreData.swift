@@ -37,6 +37,8 @@ var arrayofSearchEngaged = [fireStoreDataClass]()
 var arrayofSearchEngagedStruct = [searchedProductsId]()
 var arrayofHome = [individualHomeAttributes]()
 var arrayofHouse = [collectiveHouseAttributes]()
+
+var arrayofNutrients = [nutrients]()//[nutrition]()//[nutrients]()
 //var arrayofProducts = [fireStoreDataStruct]()
 //FIXME: need to search even if the pantry tab isn't tapped. waiting for the pantry call too early.
 var arrayofProducts = [fireStoreDataClass]()

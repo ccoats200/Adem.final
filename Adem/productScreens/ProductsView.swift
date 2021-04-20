@@ -264,10 +264,10 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
 
     let productDescription: UITextView = {
-        let desc = "This goes great at breakfast. I usually don't have time for it but I've only heard good things."
+       // let desc = "This goes great at breakfast. I usually don't have time for it but I've only heard good things."
         let description = UITextView()
         description.layer.masksToBounds = true
-        description.text = "\(desc)"
+        //description.text = "\(desc)"
         description.isEditable = false
         description.textColor = UIColor.ademBlue
         description.font = UIFont.boldSystemFont(ofSize: 16)

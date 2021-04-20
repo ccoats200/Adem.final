@@ -13,26 +13,29 @@ protocol passNutrition {
     func nutritionCollectionView(collectioncell: UICollectionViewCell?, IndexPath: IndexPath)
 }
 
-class nutritionLabelVC: UIViewController {
+class nutritionLabelVC: UIView {
     
     var nutritionCollectionView: UICollectionView!
     let nutritionCID = "Cmeals"
-    var nutritionInformation: fireStoreDataClass!
+    var product: fireStoreDataClass!
     var nutritionDelegate: passNutrition?
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         
-        view.layer.cornerRadius = 15
-        view.backgroundColor = UIColor.white
+        self.layer.cornerRadius = 15
+        self.backgroundColor = UIColor.white
         
         setUpCollection()
         setupProductLayoutContstraints()
         
-        //let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureRecognizerAction(_:)))
-        //self.view.addGestureRecognizer(panGestureRecognizer)
-        
-        self.dismiss(animated: true, completion: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setUpCollection()
+        setupProductLayoutContstraints()
+        fatalError("init(coder:) has not been implemented")
     }
     
     func setUpCollection() {
@@ -40,7 +43,7 @@ class nutritionLabelVC: UIViewController {
         nutritionCollectionViewlayouts.scrollDirection = .vertical
         nutritionCollectionViewlayouts.itemSize = CGSize(width: 100, height: 50)
         
-        self.nutritionCollectionView = UICollectionView(frame: self.view.bounds, collectionViewLayout: nutritionCollectionViewlayouts)
+        self.nutritionCollectionView = UICollectionView(frame: self.frame, collectionViewLayout: nutritionCollectionViewlayouts)
 
           
         nutritionCollectionView.showsVerticalScrollIndicator = false
@@ -56,46 +59,16 @@ class nutritionLabelVC: UIViewController {
         self.nutritionCollectionView.isScrollEnabled = true
         
         //CollectionView spacing
-        nutritionCollectionView.contentInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
-    }
-    
-
-    //MARK: Button engagement
-    //product Button
-    @objc func handleFacts() {
-        //let signUpInfo = circleTest()
-        let signUpInfo = Meals()
-        self.present(signUpInfo, animated: true)
-        print("went to new page")
-    }
- 
-    //product Button
-    @objc func handleBack() {
-        self.dismiss(animated: true, completion: nil)
-        print("went back to previous page")
-    }
-        
-    @objc func handleCamera() {
-        if #available(iOS 13.0, *) {
-            let productScreen = camVC()
-            productScreen.hidesBottomBarWhenPushed = true
-            productScreen.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
-            self.present(productScreen, animated: true, completion: nil)
-        } else {
-            // Fallback on earlier versions
-        }
-        
-        print("Camera button working")
+        nutritionCollectionView.contentInset = UIEdgeInsets(top: 5, left: 2.5, bottom: 5, right: 2.5)
     }
 
-    let nutritionImage: UIImageView = {
-        let nutritionImg = UIImageView()
-        nutritionImg.image = UIImage(named: "rec")
-        //nutritionImg.backgroundColor = UIColor.white
+    let nutritionImage: UITextView = {
+        let nutritionImg = UITextView()
         nutritionImg.layer.cornerRadius = 5
-        nutritionImg.clipsToBounds = true
+        nutritionImg.isEditable = false
+        nutritionImg.textColor = UIColor.ademBlue
+        nutritionImg.text = "placeholder"
         nutritionImg.layer.masksToBounds = true
-        nutritionImg.contentMode = .scaleAspectFit
         nutritionImg.translatesAutoresizingMaskIntoConstraints = false
         return nutritionImg
     }()
@@ -126,16 +99,15 @@ class nutritionLabelVC: UIViewController {
         faveProduct.contentMode = .scaleAspectFit
         return faveProduct
     }()
-
     
     func setupProductLayoutContstraints() {
         
-        view.addSubview(nutritionImage)
-        view.addSubview(nutritionCollectionView)
+        self.addSubview(nutritionImage)
+        self.addSubview(nutritionCollectionView)
         
         let healthInfoStackView = UIStackView(arrangedSubviews: [nutritionDetails, favoriteProduct, whereToBuy])
 
-        view.addSubview(healthInfoStackView)
+        self.addSubview(healthInfoStackView)
         
         healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
         nutritionImage.translatesAutoresizingMaskIntoConstraints = false
@@ -144,9 +116,9 @@ class nutritionLabelVC: UIViewController {
         
         healthInfoStackView.contentMode = .scaleAspectFit
         healthInfoStackView.spacing = 5
-        healthInfoStackView.translatesAutoresizingMaskIntoConstraints = false
         healthInfoStackView.clipsToBounds = true
         healthInfoStackView.layer.masksToBounds = true
+        healthInfoStackView.layer.cornerRadius = 15
         healthInfoStackView.distribution = .fillEqually
         healthInfoStackView.backgroundColor = UIColor.white
 
@@ -155,23 +127,21 @@ class nutritionLabelVC: UIViewController {
         NSLayoutConstraint.activate([
             
             
-            healthInfoStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 30),
-            healthInfoStackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            healthInfoStackView.widthAnchor.constraint(equalTo: view.widthAnchor),
+            healthInfoStackView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
+            healthInfoStackView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            healthInfoStackView.widthAnchor.constraint(equalTo: self.widthAnchor),
             healthInfoStackView.heightAnchor.constraint(equalToConstant: 30),
             
-            
-            
             nutritionCollectionView.topAnchor.constraint(equalTo: healthInfoStackView.bottomAnchor, constant: 10),
-            nutritionCollectionView.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-            nutritionCollectionView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nutritionCollectionView.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -25),
+            nutritionCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             nutritionCollectionView.bottomAnchor.constraint(equalTo: nutritionImage.topAnchor),
 
             nutritionImage.topAnchor.constraint(equalTo: nutritionCollectionView.bottomAnchor, constant: 10),
-            nutritionImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            nutritionImage.centerXAnchor.constraint(equalTo: self.centerXAnchor),
             nutritionImage.widthAnchor.constraint(equalTo: nutritionCollectionView.widthAnchor),
             nutritionImage.heightAnchor.constraint(equalToConstant: 100),
-            nutritionImage.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            nutritionImage.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             
         ])
     }
@@ -180,11 +150,9 @@ class nutritionLabelVC: UIViewController {
 extension nutritionLabelVC: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       //This needs to be the ingredients list count. two sections. Aslo needs ingrediatns and nutriton
-        //This just needs to be built out.
         
-        //return product.nutrition!.nutrients.count
-        return arrayofPantry.count
+        //FIXME: This should be an optional in case they don't have information
+        return arrayofNutrients.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -193,13 +161,11 @@ extension nutritionLabelVC: UICollectionViewDelegate, UICollectionViewDataSource
         let pantryListtet = listProductVCLayout().product?.nutrition?.nutrients
         print(pantryListtet)
         
-        let pantryList = arrayofPantry[indexPath.item]
-        for i in pantryList.nutrition!.nutrients {
-            print(i.name)
-        }
-        pantryItemsCell.nutriName.text = pantryList.nutrition?.nutrients[0].name
-        pantryItemsCell.nutriAmount.text = "\(pantryList.nutrition!.nutrients[0].amount) \(pantryList.nutrition!.nutrients[0].unit)"
+        let pantryList = arrayofNutrients[indexPath.item]
+        pantryItemsCell.nutriName.text = pantryList.name
+        pantryItemsCell.nutriAmount.text = "\(pantryList.amount) \(pantryList.unit)"
 
+ 
         pantryItemsCell.layer.cornerRadius = 5
         return pantryItemsCell
     }

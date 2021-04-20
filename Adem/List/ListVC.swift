@@ -468,7 +468,6 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
             
         } else {
             addTimeStamp(id: arrayofProducts[indexPath.row].fireBId!, action: engagements.engaged.rawValue)
-//        addCategory(id: arrayofIds[indexPath.row].id)
             selectedProduct = product(forIndexPath: indexPath)
             let detailViewController = listProductVCLayout.detailViewControllerForProduct(selectedProduct)
 
@@ -678,32 +677,3 @@ extension listViewController {
         return product
     }
 }
-
-extension listViewController {
-    //    MARK: - Api Reference
-        func parseJSON(product: String) {
-            //https://api.spoonacular.com/food/products/search?query=pizza&apiKey=5f40f799c85b4be089e48ca83e01d3c0
-            var searchterm = tableViewSearchController.searchBar.text
-            var semaphore = DispatchSemaphore (value: 0)
-
-            var request = URLRequest(url: URL(string: "https://api.wegmans.io/products/search?query=\(searchterm ?? "something went wrong")&api-version=2018-10-18")!,timeoutInterval: Double.infinity)
-            request.addValue("c455d00cb0f64e238a5282d75921f27e", forHTTPHeaderField: "Subscription-Key")
-
-            request.httpMethod = "GET"
-
-            let task = URLSession.shared.dataTask(with: request) { data, response, error in
-              guard let data = data else {
-                print(String(describing: error))
-                return
-              }
-              print(String(data: data, encoding: .utf8)!)
-              semaphore.signal()
-            }
-
-            task.resume()
-            semaphore.wait()
-    }
-
-        //MARK: - Api end
-}
-

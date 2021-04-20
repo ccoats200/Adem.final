@@ -58,7 +58,16 @@ class listProductVCLayout: UIViewController {
         //Top elements
         productNameSection.productNameAndBackButton.setTitle(product!.productName, for: .normal)
         productNameSection.priceLabel.text = "$\(product!.productPrice)"
-//
+        
+        //FIXME: Why wont this pass to the next screen?
+        //This will be the way to get nutrition info
+        nutritionPage.nutritionImage.text = "\(product!.productIngredientList ?? "We're sorry this product doesn't currently have nutrition information. We are working on ensuring accurate nutrition information for all products.")"
+        
+        for i in product!.nutrition!.nutrients {
+            arrayofNutrients.append(i)
+            print(arrayofNutrients.count)
+        }
+        
         //Image elements
         //MARK this this so the data can be used
         if product.productImageImage == nil {
@@ -67,23 +76,17 @@ class listProductVCLayout: UIViewController {
             productImageSection.productImage.image = UIImage(data: product!.productImageImage!)
         }
         
-        
-        
         //Detail elements
         relatedProductInfoSection.productDescription.text = "\(product!.productDescription)"
         relatedProductInfoSection.listQuantity.text = "Qty: \(product!.productQuantity)"
-        
-        //Change color based on product location
-//        if arrayofProducts.contains(where: { $0.id == self.product.id}) {
-//            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
-////            self.productNameSection.addToPantry.backgroundColor = UIColor.ademGreen
-//        } else {
-//            self.relatedProductInfoSection.addToPantry.setBackgroundImage(UIImage(named: "addButton"), for: .normal)
-////            self.productNameSection.addToPantry.backgroundColor = UIColor.ademBlue
-//        }
+
         NewProduct()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        arrayofNutrients.removeAll()
+    }
     
     func NewProduct() {
         
@@ -122,20 +125,26 @@ class listProductVCLayout: UIViewController {
     }
         
     @objc func handleNutritionLabel() {
-        let productScreen = nutritionLabelVC()
-        productScreen.hidesBottomBarWhenPushed = true
-        self.present(productScreen, animated: true, completion: nil)
-        
-        print("Camera button working")
+//        let productScreen = nutritionLabelVC()
+//        productScreen.hidesBottomBarWhenPushed = true
+//        self.present(productScreen, animated: true, completion: nil)
+        print("testi")
     }
     
+    let mealsPage = mealsSegment()
+    let statsPage = statsSegment()
+    let nutritionPage = nutritionLabelVC()
+    var segmentViews: [UIView]!
+    
     @objc func switchViewAction(_ segmentContr: UISegmentedControl) {
+        //https://www.tutorialspoint.com/how-to-programmatically-add-a-uisegmentedcontrol-to-a-container-view
+        
         self.view.bringSubviewToFront(segmentViews[segmentContr.selectedSegmentIndex])
     }
     
     //MARK: Button engagement
     let segmentContr: UISegmentedControl = {
-        let items = ["Description", "Meals"]//, "Stats"]
+        let items = ["Description", "Meals", "Nutrition"]//, "Stats"]
         let segmentContr = UISegmentedControl(items: items)
         segmentContr.tintColor = UIColor.white
         segmentContr.selectedSegmentIndex = 0
@@ -153,22 +162,20 @@ class listProductVCLayout: UIViewController {
   
     }()
     
-    let mealsPage = mealsSegment()
-    let statsPage = statsSegment()
-    var segmentViews: [UIView]!
+    
     
     func setUpViews() {
         
         //Add back stats when its time
-        segmentViews = [relatedProductInfoSection,mealsPage]//,statsPage]
+        segmentViews = [relatedProductInfoSection, mealsPage, nutritionPage]//,statsPage]
 
         view.addSubview(productNameSection)
         view.addSubview(productImageSection)
         
-        for v in segmentViews {
-            view.addSubview(v)
-            v.layer.cornerRadius = 10
-            v.translatesAutoresizingMaskIntoConstraints = false
+        for viewSegments in segmentViews {
+            view.addSubview(viewSegments)
+            viewSegments.layer.cornerRadius = 10
+            viewSegments.translatesAutoresizingMaskIntoConstraints = false
         }
         view.bringSubviewToFront(segmentViews[0])
         view.addSubview(segmentContr)
@@ -181,6 +188,7 @@ class listProductVCLayout: UIViewController {
     }
     
     @objc func addToAnything() {
+        //FIXME: This cant be an index
         let productToAdd = arrayofSearchEngaged[0]
         let alertController = UIAlertController(title: nil, message: "Where do you want this?", preferredStyle: .actionSheet)
         alertController.addAction(UIAlertAction(title: "Add to List", style: .default, handler: { action -> Void in
@@ -346,10 +354,11 @@ class listProductVCLayout: UIViewController {
         mealsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
         mealsPage.bottomAnchor.constraint(equalTo: relatedProductInfoSection.bottomAnchor),
         
-//        statsPage.heightAnchor.constraint(equalTo: relatedProductInfoSection.heightAnchor),
-//        statsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
-//        statsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
-//        statsPage.centerYAnchor.constraint(equalTo: relatedProductInfoSection.centerYAnchor),
+        
+            nutritionPage.heightAnchor.constraint(equalTo: relatedProductInfoSection.heightAnchor),
+            nutritionPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
+            nutritionPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
+            nutritionPage.centerYAnchor.constraint(equalTo: relatedProductInfoSection.centerYAnchor),
         ])
     }
 }

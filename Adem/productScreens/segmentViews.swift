@@ -134,7 +134,6 @@ class statsSegment: UIView, UICollectionViewDelegate, UICollectionViewDataSource
     //initWithFrame to init view from code
   
     override init(frame: CGRect) {
-   
         super.init(frame: frame)
     
     

@@ -85,9 +85,10 @@ class mealVCLayout: UIViewController, UITableViewDataSource, UITableViewDelegate
     }
     
     @objc func handleNutritionLabel() {
-        let productScreen = nutritionLabelVC()
-        productScreen.hidesBottomBarWhenPushed = true
-        self.present(productScreen, animated: true, completion: nil)
+        print("testing this")
+//        let productScreen = nutritionLabelVC()
+//        productScreen.hidesBottomBarWhenPushed = true
+//        self.present(productScreen, animated: true, completion: nil)
     }
     
     @objc func handlefave(sender: UIButton) {
