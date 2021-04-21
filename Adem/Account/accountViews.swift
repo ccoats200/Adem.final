@@ -43,7 +43,6 @@ class ProfileView: UIView {
     //UIView Profile Pic
     var userProfileImage: UIImageView = {
         let profPic = UIImageView()
-        //profPic.image = UIImage(named: "chop")
         profPic.backgroundColor = UIColor.ademGreen
         profPic.contentMode = .scaleAspectFit
         profPic.layer.cornerRadius = 50
@@ -56,12 +55,13 @@ class ProfileView: UIView {
         return profPic
     }()
     
+    let editUserImage = navigationButton()
     let nameofUser = navigationButton()
     
     func nameButtonSetUp() {
         nameofUser.largeNextButton.setTitleColor(UIColor.ademBlue, for: .normal)
         nameofUser.largeNextButton.backgroundColor = UIColor.clear
-        
+        editUserImage.largeNextButton.backgroundColor = UIColor.clear
     }
 
     func setupViews() {
@@ -72,30 +72,39 @@ class ProfileView: UIView {
         self.addSubview(coverPhoto)
         self.addSubview(userProfileImage)
         self.addSubview(nameofUser)
+        self.addSubview(editUserImage)
         
         coverPhoto.translatesAutoresizingMaskIntoConstraints = false
         userProfileImage.translatesAutoresizingMaskIntoConstraints = false
         nameofUser.translatesAutoresizingMaskIntoConstraints = false
+        editUserImage.translatesAutoresizingMaskIntoConstraints = false
 
         
         //CoverPhoto
+       
         NSLayoutConstraint.activate([
             
-        coverPhoto.widthAnchor.constraint(equalTo: self.widthAnchor),
-        coverPhoto.topAnchor.constraint(equalTo: self.topAnchor), // height
-        coverPhoto.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 6/10),
+       
+            coverPhoto.widthAnchor.constraint(equalTo: self.widthAnchor),
+            coverPhoto.topAnchor.constraint(equalTo: self.topAnchor), // height
+            coverPhoto.heightAnchor.constraint(equalTo: self.heightAnchor, multiplier: 6/10),
         
-        //Profile Pic
-        userProfileImage.centerXAnchor.constraint(equalTo: coverPhoto.centerXAnchor), //set the location of collection view
-        userProfileImage.centerYAnchor.constraint(equalTo: coverPhoto.bottomAnchor), //set the location of collection view
-        userProfileImage.heightAnchor.constraint(equalToConstant: 100), // width
-        userProfileImage.widthAnchor.constraint(equalToConstant: 100),
+            //Profile Pic
+            userProfileImage.centerXAnchor.constraint(equalTo: coverPhoto.centerXAnchor), //set the location of collection view
+            userProfileImage.centerYAnchor.constraint(equalTo: coverPhoto.bottomAnchor), //set the location of collection view
+            userProfileImage.heightAnchor.constraint(equalToConstant: 100), // width
+            userProfileImage.widthAnchor.constraint(equalToConstant: 100),
+            
+            editUserImage.centerXAnchor.constraint(equalTo: userProfileImage.centerXAnchor), //set the location of collection view
+            editUserImage.centerYAnchor.constraint(equalTo: userProfileImage.centerYAnchor), //set the location of collection view
+            editUserImage.heightAnchor.constraint(equalTo: userProfileImage.heightAnchor), // width
+            editUserImage.widthAnchor.constraint(equalTo: userProfileImage.widthAnchor),
         
-        //Users Name
-        nameofUser.centerXAnchor.constraint(equalTo: userProfileImage.centerXAnchor),
-        nameofUser.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 5),
-        nameofUser.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -125),
-        nameofUser.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
+            //Users Name
+            nameofUser.centerXAnchor.constraint(equalTo: userProfileImage.centerXAnchor),
+            nameofUser.topAnchor.constraint(equalTo: userProfileImage.bottomAnchor, constant: 5),
+            nameofUser.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -125),
+            nameofUser.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5)
     
         ])
     }

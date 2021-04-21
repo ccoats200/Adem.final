@@ -82,10 +82,6 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-       
-        
-        
-        
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
             
             if auth.currentUser == nil {
@@ -176,9 +172,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         self.present(recipiesController, animated: true, completion: nil)
     }
-    
-    
-    
+ 
     @objc func handleDiet() {
 
         let moreController = updateDietPreferencesTwo()
@@ -378,7 +372,7 @@ class AccountVC: UIViewController, UITableViewDataSource, UITableViewDelegate {
             //Sign out text
             self.personalAttributes.nameofUser.largeNextButton.setTitle("\(fireBaseUsersName!)", for: .normal)
             self.personalAttributes.nameofUser.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
-            
+            self.personalAttributes.editUserImage.largeNextButton.addTarget(self, action: #selector(self.editUserInfo), for: .touchDown)
             
             
         }

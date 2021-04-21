@@ -18,25 +18,19 @@ import Foundation
  - List Search not searching the firebase database
  - Pantry Search not searching the firebase database
  - Meals not pulling from the meals firebase database
- - User data not populating the right place in firebase
- - Homes collection is not working
  - Filter is not working
- - Add limit to related meals
  - Meals ingerdiants indexpath is off
  - Settings page needed
  - Stats not working
- - Recipies in settings not clicking
  - Meal ratings not working: work with halves for now
  - Meal steps needs to be made. table view
  - Pantry sections/groupings
- - User image selection and change name not set up
  - Meal section headers
  - Camera barcode reader
  - Search switching
- - Move Change image to image not on name
  - Resize the user Icons
- - You may want screen Limit to 3. pull from Firebase?
- - You can Make Screen Limit to 6. Where to pull from?
+ - 'You may want' screen Limit to 3. pull from Firebase?
+ - 'You can Make' Screen Limit to 6. Where to pull from?
  - Nutrition Icons. Keep?
  - Change the product image type to data. Add a default.
  
