@@ -331,31 +331,31 @@ class listProductVCLayout: UIViewController {
         //MARK: Constraints
         NSLayoutConstraint.activate([
             
-        productNameSection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-        productNameSection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        productNameSection.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
-        productNameSection.heightAnchor.constraint(equalToConstant: 50),
+            productNameSection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
+            productNameSection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            productNameSection.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -24),
+            productNameSection.heightAnchor.constraint(equalToConstant: 50),
 
-        productImageSection.topAnchor.constraint(equalTo: productNameSection.bottomAnchor, constant: 10),
-        productImageSection.centerXAnchor.constraint(equalTo: productNameSection.centerXAnchor),
+            productImageSection.topAnchor.constraint(equalTo: productNameSection.bottomAnchor, constant: 10),
+            productImageSection.centerXAnchor.constraint(equalTo: productNameSection.centerXAnchor),
             productImageSection.widthAnchor.constraint(equalTo: view.widthAnchor),
         
-        segmentContr.topAnchor.constraint(equalTo: productImageSection.bottomAnchor, constant: 10),
-        segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        segmentContr.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
-        segmentContr.heightAnchor.constraint(equalToConstant: 25),
-        
-        
-        relatedProductInfoSection.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 5),
-        relatedProductInfoSection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-        relatedProductInfoSection.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
-        relatedProductInfoSection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-        
-        mealsPage.topAnchor.constraint(equalTo: relatedProductInfoSection.topAnchor),
-        mealsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
-        mealsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
-        mealsPage.bottomAnchor.constraint(equalTo: relatedProductInfoSection.bottomAnchor),
-        
+            segmentContr.topAnchor.constraint(equalTo: productImageSection.bottomAnchor, constant: 10),
+            segmentContr.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            segmentContr.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
+            segmentContr.heightAnchor.constraint(equalToConstant: 25),
+            
+            
+            relatedProductInfoSection.topAnchor.constraint(equalTo: segmentContr.bottomAnchor, constant: 5),
+            relatedProductInfoSection.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            relatedProductInfoSection.widthAnchor.constraint(equalTo: view.widthAnchor, constant: -25),
+            relatedProductInfoSection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            
+            mealsPage.topAnchor.constraint(equalTo: relatedProductInfoSection.topAnchor),
+            mealsPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),
+            mealsPage.widthAnchor.constraint(equalTo: relatedProductInfoSection.widthAnchor),
+            mealsPage.bottomAnchor.constraint(equalTo: relatedProductInfoSection.bottomAnchor),
+            
         
             nutritionPage.heightAnchor.constraint(equalTo: relatedProductInfoSection.heightAnchor),
             nutritionPage.centerXAnchor.constraint(equalTo: relatedProductInfoSection.centerXAnchor),

@@ -165,11 +165,6 @@ class Meals: UIViewController, UIGestureRecognizerDelegate, UISearchControllerDe
 //        mealCollectionView.register(mealsCellLayout.self, forCellWithReuseIdentifier: mealsCellID)
 //        mealCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        if #available(iOS 13.0, *) {
-//            mealCollectionView.backgroundColor = UIColor.systemGray6
-        } else {
-            // Fallback on earlier versions
-        }
         
         if #available(iOS 13.0, *) {
             let compositionalLayout: UICollectionViewCompositionalLayout = {

@@ -24,6 +24,7 @@ class nutritionLabelVC: UIView {
         setupProductLayoutContstraints()
     }
     
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         setUpCollection()

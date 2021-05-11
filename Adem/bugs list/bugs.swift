@@ -33,6 +33,8 @@ import Foundation
  - 'You can Make' Screen Limit to 6. Where to pull from?
  - Nutrition Icons. Keep?
  - Change the product image type to data. Add a default.
+ - Notification icon on the tabs
+ - Remove the image from the cover photo in account
  
  
  //MARK: - Long term

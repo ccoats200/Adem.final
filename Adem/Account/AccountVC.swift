@@ -490,7 +490,8 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
         if (kind == UICollectionView.elementKindSectionHeader) {
             // Create Header
             let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: ffHeader, for: indexPath) as! householdAdd
-            headerView.addFam.largeNextButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
+//            headerView.addFam.largeNextButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
+            headerView.addFamButton.addTarget(self, action: #selector(handleAddPerson), for: .touchDown)
             userfirebaseHomeSettings.addSnapshotListener { (querySnapshot, error) in
                 guard let documents = querySnapshot?.data() else {
                     print("No documents")
@@ -529,7 +530,7 @@ extension AccountVC: UICollectionViewDelegate, UICollectionViewDataSource, UICol
 class householdAdd: UICollectionReusableView {
     
     
-    var addFam = navigationButton()
+    var addFamButton = UIButton()
     //Label should be pulling from firebase but the firebase should populate from the text field
     var homeName: UILabel = {
         var homeNickName = UILabel()
@@ -552,16 +553,20 @@ class householdAdd: UICollectionReusableView {
     
 
     func myCustomInit() {
-        self.addSubview(addFam)
+        addSubview(addFamButton)
         self.addSubview(homeName)
+        
+        let largeConfig = UIImage.SymbolConfiguration(pointSize: 60, weight: .regular, scale: .default)
+
         //Will need to update user defauls when changed. snapshotlistner
         homeName.text = "\(defaults.value(forKey: "homeName")!)"
-        addFam.largeNextButton.backgroundColor = UIColor.ademGreen
-        addFam.largeNextButton.layer.cornerRadius = 15
+        addFamButton.layer.cornerRadius = 15
         //Not finding image
-        addFam.largeNextButton.setBackgroundImage(UIImage(named: "greenAddButton"), for: .normal)
+        addFamButton.setImage(UIImage(systemName: "plus.circle.fill", withConfiguration: largeConfig), for: .normal)
+        addFamButton.tintColor = UIColor.ademGreen
+        addFamButton.backgroundColor = UIColor.white
         //MARK: THE BEV
-        addFam.translatesAutoresizingMaskIntoConstraints = false
+        addFamButton.translatesAutoresizingMaskIntoConstraints = false
         homeName.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -572,11 +577,11 @@ class householdAdd: UICollectionReusableView {
             homeName.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1/2),
             homeName.centerYAnchor.constraint(equalTo: self.centerYAnchor),
            
-            addFam.topAnchor.constraint(equalTo: self.topAnchor),
-            addFam.heightAnchor.constraint(equalToConstant: 30),//self.heightAnchor),
-            addFam.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
-            addFam.widthAnchor.constraint(equalToConstant: 30),
-            addFam.centerYAnchor.constraint(equalTo: homeName.centerYAnchor),
+            addFamButton.topAnchor.constraint(equalTo: self.topAnchor),
+            addFamButton.heightAnchor.constraint(equalToConstant: 30),//self.heightAnchor),
+            addFamButton.rightAnchor.constraint(equalTo: self.rightAnchor, constant: -5),
+            addFamButton.widthAnchor.constraint(equalToConstant: 30),
+            addFamButton.centerYAnchor.constraint(equalTo: homeName.centerYAnchor),
         ])
     }
 }

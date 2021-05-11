@@ -13,19 +13,21 @@ import UIKit
 class navigationButton: UIView {
   
     //initWithFrame to init view from code
-  override init(frame: CGRect) {
-    super.init(frame: frame)
-  
-    setupView()
-  }
+ 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+      
+        setupView()
+      }
   
   //initWithCode to init view from xib or storyboard
-  required init?(coder aDecoder: NSCoder) {
-    super.init(coder: aDecoder)
+ 
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        
+        setupView()
+      }
     
-    setupView()
-  }
-  
     let largeNextButton: UIButton = {
         let login = UIButton(type: .system)
         login.backgroundColor = UIColor.ademBlue
@@ -39,24 +41,23 @@ class navigationButton: UIView {
         return login
     }()
     
-    
   //common func to init our view
-  private func setupView() {
+    private func setupView() {
 
-    self.layer.masksToBounds = true
-    
-    self.addSubview(largeNextButton)
-    largeNextButton.translatesAutoresizingMaskIntoConstraints = false
-    
-    
-    NSLayoutConstraint.activate([
+        self.layer.masksToBounds = true
         
-        largeNextButton.topAnchor.constraint(equalTo: self.topAnchor),
-        largeNextButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-        largeNextButton.widthAnchor.constraint(equalTo: self.widthAnchor),
-        largeNextButton.heightAnchor.constraint(equalTo: self.heightAnchor)
-    ])
-  }
+        self.addSubview(largeNextButton)
+        largeNextButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        NSLayoutConstraint.activate([
+            
+            largeNextButton.topAnchor.constraint(equalTo: self.topAnchor),
+            largeNextButton.centerXAnchor.constraint(equalTo: self.centerXAnchor),
+            largeNextButton.widthAnchor.constraint(equalTo: self.widthAnchor),
+            largeNextButton.heightAnchor.constraint(equalTo: self.heightAnchor)
+        ])
+    }
 }
 
 

@@ -224,6 +224,7 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     var listProductCollectionView: UICollectionView!
     var relatedProducts: fireStoreDataClass!
     var productDelegate: passProduct?
+    let headerCell = "header"
 
     //initWithFrame to init view from code
   override init(frame: CGRect) {
@@ -309,43 +310,61 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
     let qImage: UIImageView = {
         let qimg = UIImageView()
+//        qimg.image = UIImage(
         qimg.image = UIImage(named: "arrow")
         qimg.contentMode = .scaleAspectFit
         qimg.translatesAutoresizingMaskIntoConstraints = false
         return qimg
     }()
-
-    
-    let segmentLabel: UILabel = {
-        let meal = UILabel()
-        meal.textColor = UIColor.ademBlue
-        meal.text = "You May Also Want"
-        meal.font = UIFont(name: hNBold, size: 18)
-        meal.textAlignment = .center
-        meal.layer.cornerRadius = 5
-        meal.translatesAutoresizingMaskIntoConstraints = false
-        return meal
-    }()
-    
     
     
 
     private func setUPCollection() {
         
-        let layouts = UICollectionViewFlowLayout()
-        layouts.itemSize = CGSize(width: 100, height: 100)
+//        let layouts = UICollectionViewFlowLayout()
+//        layouts.itemSize = CGSize(width: 100, height: 100)
+        
+        
+        if #available(iOS 13.0, *) {
+            let compositionalLayout: UICollectionViewCompositionalLayout = {
+                let fraction: CGFloat = 1.75 / 3.0
+                let inset: CGFloat = 5.0
+                
+                // Item
+                let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.5), heightDimension: .fractionalHeight(0.5))
+                let item = NSCollectionLayoutItem(layoutSize: itemSize)
+                item.contentInsets = NSDirectionalEdgeInsets(top: inset, leading: inset, bottom: inset, trailing: inset)
+                    
+                // Group
+                let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(fraction), heightDimension: .fractionalWidth(fraction))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+                // Section
+                let section = NSCollectionLayoutSection(group: group)
+                    section.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: inset, bottom: 0, trailing: inset)
+                
+                let headerItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(35))//.estimated(100))
+                let headerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerItemSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [headerItem]
+                    
+                return UICollectionViewCompositionalLayout(section: section)
+                }()
           
-        listProductCollectionView = UICollectionView(frame: self.frame, collectionViewLayout: layouts)
+        listProductCollectionView = UICollectionView(frame: self.frame, collectionViewLayout: compositionalLayout)
         listProductCollectionView.isScrollEnabled = false
         listProductCollectionView.dataSource = self
         listProductCollectionView.delegate = self
         listProductCollectionView.register(recommendedProductCells.self, forCellWithReuseIdentifier: cellID)
+            listProductCollectionView.register(similarProductsHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: headerCell)
         listProductCollectionView.backgroundColor = UIColor.white
                
         listProductCollectionView.clipsToBounds = true
         listProductCollectionView.layer.masksToBounds = true
-        listProductCollectionView.isScrollEnabled = true
+        //listProductCollectionView.isScrollEnabled = true
+        listProductCollectionView.layer.cornerRadius = 5
         
+    } else {
+        // Fallback on earlier versions
+    }
     }
   
     //common func to init our view
@@ -353,21 +372,12 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
     
         self.backgroundColor = UIColor.white
         setUPCollection()
-       
-    
-        //MARK: Text line
-        let textFieldSeparator = UIView()
-        textFieldSeparator.backgroundColor = UIColor.ademBlue
         
         self.addSubview(addToPantry)
         self.addSubview(productDescription)
         self.addSubview(listProductCollectionView)
-        self.addSubview(segmentLabel)
-        self.addSubview(textFieldSeparator)
         
         addToPantry.translatesAutoresizingMaskIntoConstraints = false
-        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
-        segmentLabel.translatesAutoresizingMaskIntoConstraints = false
         listProductCollectionView.translatesAutoresizingMaskIntoConstraints = false
         productDescription.translatesAutoresizingMaskIntoConstraints = false
 
@@ -410,26 +420,36 @@ class productInfoViews: UIView, UICollectionViewDelegate, UICollectionViewDataSo
             
             productDescription.topAnchor.constraint(equalTo: itemQuant.bottomAnchor, constant: 5),
             productDescription.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            productDescription.bottomAnchor.constraint(equalTo: segmentLabel.topAnchor, constant: -5),
             productDescription.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -12),
+            productDescription.bottomAnchor.constraint(equalTo: listProductCollectionView.topAnchor, constant: -5),
             
-            segmentLabel.bottomAnchor.constraint(equalTo: textFieldSeparator.topAnchor, constant: -3),
-            segmentLabel.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            segmentLabel.heightAnchor.constraint(equalToConstant: 30),
-            segmentLabel.widthAnchor.constraint(equalTo: self.widthAnchor, constant: -50),
-            
-            textFieldSeparator.bottomAnchor.constraint(equalTo: listProductCollectionView.topAnchor, constant: -10),
-            textFieldSeparator.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
-            textFieldSeparator.widthAnchor.constraint(equalTo: segmentLabel.widthAnchor),
-            
-            listProductCollectionView.heightAnchor.constraint(equalToConstant: 120),
+            listProductCollectionView.heightAnchor.constraint(equalToConstant: 140),
             listProductCollectionView.centerXAnchor.constraint(equalTo: self.centerXAnchor),
-            listProductCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
             listProductCollectionView.widthAnchor.constraint(equalTo: productDescription.widthAnchor),
-
+            listProductCollectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -5),
     ])
   }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+            switch kind {
+            case UICollectionView.elementKindSectionHeader:
+                guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: headerCell, for: indexPath) as? similarProductsHeaderView else {
+                    return HeaderSupplementaryView()
+                }
+                
+                headerView.viewModel = similarProductsHeaderView.ViewModel(title: "You May Also Like")
+                return headerView
+                
+            case "new-banner":
+                let bannerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "NewBannerSupplementaryView", for: indexPath)
+                bannerView.isHidden = indexPath.row % 5 != 0 // show on every 5th item
+                return bannerView
+                
+            default:
+                assertionFailure("Unexpected element kind: \(kind).")
+                return UICollectionReusableView()
+            }
+        }
+    
 }
 
 extension productInfoViews {
@@ -438,5 +458,73 @@ extension productInfoViews {
         var product: fireStoreDataClass!
         product = arrayofProducts[forIndexPath.item]
         return product
+    }
+}
+
+class similarProductsHeaderView: UICollectionReusableView {
+    
+    //https://github.com/Lickability/collection-view-compositional-layout-demo/tree/main/Photos
+    
+    /// Encapsulates the properties required to display the contents of the view.
+    struct ViewModel {
+        /// The title to display in the view.
+        let title: String
+    }
+   
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.myCustomInit()
+        self.backgroundColor = UIColor.clear
+        self.layer.cornerRadius = 5
+        self.layer.masksToBounds = true
+    }
+
+    required init(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)!
+        self.myCustomInit()
+    }
+    
+    
+    
+    let welcomeLabel: UILabel = {
+        let welcome = UILabel()
+        welcome.textAlignment = .center
+        welcome.textColor = UIColor.ademBlue
+        welcome.font = UIFont(name: hNBold, size: 18)
+
+        welcome.translatesAutoresizingMaskIntoConstraints = false
+        return welcome
+    }()
+    
+    /// The cell’s view model. Setting the view model updates the display of the view’s contents.
+    var viewModel: ViewModel? {
+        didSet {
+            welcomeLabel.text = viewModel?.title
+        }
+    }
+    
+    func myCustomInit() {
+        let textFieldSeparator = UIView()
+        textFieldSeparator.backgroundColor = UIColor.ademBlue
+        self.addSubview(textFieldSeparator)
+        self.addSubview(welcomeLabel)
+        welcomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        textFieldSeparator.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            
+            welcomeLabel.topAnchor.constraint(equalTo: self.topAnchor),
+            //Check this
+            welcomeLabel.heightAnchor.constraint(equalTo: self.heightAnchor, constant: -11),
+            welcomeLabel.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 10),
+            welcomeLabel.widthAnchor.constraint(equalTo: self.widthAnchor),
+            welcomeLabel.centerYAnchor.constraint(equalTo: self.centerYAnchor),
+            
+            textFieldSeparator.centerXAnchor.constraint(equalTo: welcomeLabel.centerXAnchor),
+            textFieldSeparator.heightAnchor.constraint(equalToConstant: 1),
+            textFieldSeparator.widthAnchor.constraint(equalTo: welcomeLabel.widthAnchor),
+            textFieldSeparator.topAnchor.constraint(equalTo: welcomeLabel.bottomAnchor, constant: 10),
+           
+        ])
     }
 }
