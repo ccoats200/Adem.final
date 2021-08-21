@@ -28,6 +28,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     
     //    MARK: - Var & Let
     let mostRecent = "most recent"
+    // MARK: - This is the RFID holder
     let productRFIDNumber = "3860407808"
     
     
@@ -91,7 +92,9 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //Not sure if this is right but it working
             //not seeing it change
             //MARK: This needs to change the current list
-            print("why isn't this working \(currentListID!)")
+            //FIXME: this needs to be cleared
+//            print("why isn't this working \(currentListID!)")
+            
             //Need the below but it calls too many times
             //self.pullUserInformation()
             })
@@ -113,7 +116,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //By checking user defaults on the last page of the login I might be able to use user defaults here for checking the login state.
-        print("I can fin it\(currentListID!)")
+        //print("I can fin it\(currentListID!)")
         pullUserInformation()
         tableViewSetup()
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
@@ -265,7 +268,6 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                 //MARK: Search bar not working
                 
                 //FIXME: why is this not working
-                //setUpFilterView()
                 //MARK: Firebase working below
                 
                 //See firestoreData.swift
@@ -281,11 +283,11 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                     }
                 }
 
-
                 //print(logInStatus as! Bool)
                 print(currentListID)
                 
                 //This needs to point to a top level collection where the person list has a ref to the product
+                //MARK: If this breaks use "Pmf5J2YfEZZSX2dWh1TYeVHejse2" fo C3 testing
                 listfirebaseProducts.document("\(currentListID!)").collection("list").whereField("productList", isEqualTo: true).addSnapshotListener { (querySnapshot, error) in
                     guard let documents = querySnapshot?.documents else {
                         print("No documents")

@@ -60,8 +60,19 @@ class login: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        //MARK: This is working a little better but now it's funky in the log out
         handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
 
+            db.collection("user").document("\(user?.uid)").collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else if currentUser == nil {
+                    print("no current user")
+                } else {
+                    self.defaults.setValuesForKeys((snapshot?.data())!)
+                    print(self.defaults)
+                }
+            }
         }
         
     }
@@ -84,7 +95,7 @@ class login: UIViewController, UITextFieldDelegate {
         guard let email = userInfoCaptureElements.emailTextField.text else { return }
         guard let password = userInfoCaptureElements.passwordTextField.text else { return }
         
-        //User: Signed in with email
+        //User: Sign in with email
         firebaseAuth.signIn(withEmail: email, password: password) { [weak self] (authResult, error) in
             guard let strongSelf = self else { return }
             
@@ -112,23 +123,22 @@ class login: UIViewController, UITextFieldDelegate {
                   print("Error: \(error.localizedDescription)")
               }
             } else {
-                
-                
-                
+                                
                 //This may be wrong but I need to grab defaults on login if user deleted app. only the first time. don't want multiple calls to fb.
                 
                 //https://brainwashinc.com/2017/07/21/loading-activity-indicator-ios-swift/
                 //This is working mauybe...
-                handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
-                    db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
-                        if let err = err {
-                            print("Error getting documents: \(err)")
-                        } else {
-                            self?.defaults.setValuesForKeys((snapshot?.data())!)
-                            print(self?.defaults)
-                        }
-                    }
-                }
+//                handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+//                    db.collection("user").document(user!.uid).collection("private").document("usersPrivateData").getDocument { (snapshot, err) in
+//                        if let err = err {
+//                            print("Error getting documents: \(err)")
+//                        } else {
+//                            self?.defaults.setValuesForKeys((snapshot?.data())!)
+//                            print(self?.defaults)
+//                        }
+//                    }
+//                }
+                
                 //Need to see if this list is accurate or showing the old list. Need to go through user defaults
                 //Might need these for later
                 //https://stackoverflow.com/questions/55795444/how-to-check-is-user-is-log-in-in-different-view-controllers-in-firebase/55795674
