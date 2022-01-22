@@ -109,8 +109,10 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
                 
-           self.navigationController?.view.layoutIfNeeded()
-           self.navigationController?.view.setNeedsLayout()
+        handle = firebaseAuth.addStateDidChangeListener { (auth, user) in
+        }
+        self.navigationController?.view.layoutIfNeeded()
+        self.navigationController?.view.setNeedsLayout()
         self.pantryCollectionView.reloadData()
     }
     
@@ -119,6 +121,8 @@ class PantryVC: UIViewController, UISearchControllerDelegate, UIGestureRecognize
         self.navigationController?.view.layoutIfNeeded()
         self.navigationController?.view.setNeedsLayout()
         self.isEditing = false
+        firebaseAuth.removeStateDidChangeListener(handle!)
+
     }
     
     func firebaseDataFetch() {

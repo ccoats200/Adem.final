@@ -30,9 +30,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     let mostRecent = "most recent"
     // MARK: - This is the RFID holder
     let productRFIDNumber = "3860407808"
-    
-    
-        
+            
     //    MARK: FireBase List
     var products: [food] = [food]()
     var productsInList = [fireStoreDataClass]()
@@ -41,7 +39,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     var tableViewSearchController: UISearchController!
     var resultsTableController: ResultsTableController!
     var addResultsTableController: AddResultsTableController!
-        
+    
     //Empty
     var footerView = emptyList()
     
@@ -66,7 +64,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     //    MARK: - Var & Let
     
     
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -123,6 +121,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
             //The calls are all out of wack
             //self.pullUserInformation()
         }
+        
         print(currentUser?.email)
     }
     
@@ -421,6 +420,7 @@ extension listViewController: UITableViewDataSource, UITableViewDelegate {
             self.addTimeStamp(id: item, action: engagements.removed.rawValue)
             boolValue(true) // pass true if you want the handler to allow the action
         }
+        
         deleteItemFromListAndPanty.backgroundColor = UIColor.ademRed
         let swipeActions = UISwipeActionsConfiguration(actions: [deleteItemFromListAndPanty])
         return swipeActions
