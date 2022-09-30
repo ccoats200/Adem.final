@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import Firebase
 
-protocol searchAddToListDelegate: class {
+protocol searchAddToListDelegate: AnyObject {
     func add(cell: searchTableViewCell)
 //    func add(cell: IndexPath)
 }

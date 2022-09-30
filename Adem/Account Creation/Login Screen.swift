@@ -12,6 +12,10 @@ import Firebase
 
 class login: UIViewController, UITextFieldDelegate {
     
+    /*
+     Need a forgot password button.
+     */
+    
     //MARK: Login Views
     var userInfoCaptureElements = loginInfoView()
     var buttonsUsedToLogIn = loginButtonView()

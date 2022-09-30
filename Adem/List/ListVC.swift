@@ -22,7 +22,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
     lazy var find = UIBarButtonItem(image: UIImage(named: "filter")?.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(handleAlert))
 //    lazy var add = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleSearch))
 //    lazy var trashed = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(handleBatchDelete))
-    //MARK: Navigation buttons - End
+//    MARK: Navigation buttons - End
     
     var filterController = filterViewController()
     
