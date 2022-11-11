@@ -14,6 +14,8 @@ import Foundation
 //https://developer.apple.com/library/archive/documentation/Xcode/Reference/xcode_markup_formatting_ref/ComentBlock.html
 /*
  
+ - Forgot Password button needed
+ - Reduce account log in time
  - Sign in is sending me to the last signed in account on load
  - List Search not searching the firebase database
  - Pantry Search not searching the firebase database
@@ -35,6 +37,7 @@ import Foundation
  - Change the product image type to data. Add a default.
  - Notification icon on the tabs
  - Remove the image from the cover photo in account
+ 
  
  
  //MARK: - Long term

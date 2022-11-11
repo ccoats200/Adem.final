@@ -260,7 +260,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
         
             //This is changing and messing it up because the auth changes
             if currentUser == nil {
-       // if logInStatus! as! Bool == false {
+//        if logInStatus! as! Bool == false {
                 //sendToLogIn()
             } else {
                
@@ -294,7 +294,7 @@ class listViewController: UIViewController, UISearchControllerDelegate, UIGestur
                     }
                     
                     
-                    //MAR: - This is ideal but I can't do it.
+                    //MARK: - This is ideal but I can't do it.
 //                    documents.forEach { doc in
 //                        let docID = doc.get("groceryReferenc")
 //                        print(docID)
